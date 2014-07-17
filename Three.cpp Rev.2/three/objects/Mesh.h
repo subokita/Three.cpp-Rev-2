@@ -1,0 +1,39 @@
+//
+//  Mesh.h
+//  Three.cpp Rev.2
+//
+//  Created by Saburo Okita on 09/07/14.
+//  Copyright (c) 2014 Saburo Okita. All rights reserved.
+//
+
+#ifndef __Three_cpp_Rev_2__Mesh__
+#define __Three_cpp_Rev_2__Mesh__
+
+#include <iostream>
+#include "Constants.h"
+#include "Object3D.h"
+#include "Geometry.h"
+#include "Material.h"
+#include "Texture.h"
+#include "Shader.h"
+
+namespace three {
+    class Mesh : public Object3D {
+    public:
+        static PTR(Mesh) create();
+        static PTR(Mesh) create(PTR(Geometry) geometry, PTR(Material) material);
+        
+        void draw(PTR(Shader) shader, bool gammaInput);
+
+        
+        Mesh();
+        Mesh( PTR(Geometry) geometry, PTR(Material) material );
+        ~Mesh();
+        
+        PTR(Texture) texture;
+        PTR(Geometry) geometry;
+        PTR(Material) material;
+    };
+}
+
+#endif /* defined(__Three_cpp_Rev_2__Mesh__) */
