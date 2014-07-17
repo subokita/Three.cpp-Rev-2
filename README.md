@@ -1,7 +1,9 @@
-Three.cpp
+Three.cpp (Rev 2)
 =========
 
-A port of Three.js into C++
+A port of Three.js into C++. 
+
+Rev 2, because originally I tried to import by porting JavaScript code directly starting from the more modular ones (e.g. Math packages) to the more encompassing classes (e.g. Renderer), however it backfired, because of JavaScript's dynamic typing, everything becomes more confusing, data members can be added way later and hidden in the codes. In Rev 2 approach, I try to create a working example as soon as possible.
 
 
 Overview
@@ -12,7 +14,9 @@ I'm not a 3D programmer, I wanted to have a 3D library that I can use to show th
 
 Current Progress
 ================
-Still very early, nothing can be shown yet, some of the math-related classes have already been implemented.
+The library is able to render primitives such as textured cube or sphere on a scene, utilizing blinn-phong shading. 
+
+Many codes are still unoptimized, and some of the codes are patchy in the nature, aka not the optimal solution, but at least able to show working example.
 
 
 
