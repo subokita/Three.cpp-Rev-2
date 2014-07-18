@@ -15,7 +15,7 @@
 namespace three {
     class RenderPlugin {
     public:
-        virtual void render( PTR(Scene), PTR(Camera) );
+        virtual void render( ptr<Scene>, ptr<Camera> );
     };
 }
 

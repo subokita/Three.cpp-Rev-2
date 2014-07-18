@@ -31,8 +31,8 @@ namespace three {
         Object3D();
         virtual ~Object3D();
         
-        PTR(Box3) computeBoundingBox();
-        PTR(Sphere) computeBoundingSphere();
+        ptr<Box3> computeBoundingBox();
+        ptr<Sphere> computeBoundingSphere();
         
         
         void translate( const float x, const float y, const float z );
@@ -44,11 +44,11 @@ namespace three {
         
         void updateMatrix();
         void updateMatrixWorld(bool force);
-        void add( PTR(Object3D) object );
-        void remove( PTR(Object3D) object );
+        void add( ptr<Object3D> object );
+        void remove( ptr<Object3D> object );
         
-        void traverse( std::function<void(PTR(Object3D))> callback );
-        PTR(Object3D) getObjectByID( const unsigned int id, bool recursive );
+        void traverse( std::function<void(ptr<Object3D>)> callback );
+        ptr<Object3D> getObjectByID( const unsigned int id, bool recursive );
         
         
     public:
@@ -60,8 +60,8 @@ namespace three {
         bool matrixAutoUpdate;
         bool matrixWorldNeedsUpdate;
         
-        PTR(Object3D) parent;
-        std::map<int, PTR(Object3D)> children;
+        ptr<Object3D> parent;
+        std::map<int, ptr<Object3D>> children;
         
         glm::quat quaternion;
         glm::vec3 scale;

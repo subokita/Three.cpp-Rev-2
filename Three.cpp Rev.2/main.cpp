@@ -9,8 +9,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <glm/gtc/quaternion.hpp>
-
 #include "three/three.h"
 
 using namespace std;
@@ -20,42 +18,55 @@ unsigned int sphere_id;
 unsigned int cube_id;
 unsigned int bounding_box_id;
 
-PTR(Object3D) createCompositeObject();
+ptr<Object3D> createCompositeObject();
 
 int main(int argc, const char * argv[])
 {
     Renderer renderer;
-    renderer.init( "", 1324, 652 );
-//    renderer.shader = Shader::create( "sandbox.vsh", "sandbox.fsh" );
+    renderer.init( "", 1600 * 3 / 4, 900 * 3 / 4 );
     renderer.shaderLib = make_shared<ShaderLib::Shader>(ShaderLib::phong);
     
     /* Create scene */
     auto scene = Scene::create();
-    scene->fog = Fog::create( Color(0x72645b), 2.0, 15.0 );
+    scene->fog = Fog::create( Color(0x72645b / 2), 2.0, 15.0 );
     
     /* Create camera */
     auto camera = PerspectiveCamera::create( 50.0, renderer.aspectRatio, 0.001, 15.0 );
     camera->position = glm::vec3(0.0, 1.5, 5.5);
     camera->lookAt( 0.0, 1.5, 0.0 );
     
+    
+    /* Add our composite object */
     auto composite = createCompositeObject();
     scene->add( composite );
     
+    
     /* Create ground plane */
     auto plane_mesh = Mesh::create( PlaneGeometry::create(20.0f, 1),
-                                    MeshPhongMaterial::create(0x999999, 0x666666, 0x000000, 0x101010 ) );
+                                    MeshPhongMaterial::create(0x101010, 0x666666, 0x000000, 0x101010 ) );
     plane_mesh->rotateX(-90.0);
     scene->add( plane_mesh );
     
+    
     /* Create directional light */
-    auto dir_light = DirectionalLight::create(Color(0xFFFFFF), 1.35, glm::vec3(3.0, 1.0, 3.0) );
+    auto dir_light = DirectionalLight::create(Color(0x99CCFF), 1.35, glm::vec3(3.0, 1.0, 3.0) );
     scene->add( dir_light );
     
+    
+    /* Create an ambient light */
+    scene->add( AmbientLight::create(Color(0x101010) ));
+    
+    /* Create a spot light */
+    auto spot_light = SpotLight::create( Color(0xFFFFFF), 3.0, 10.0, 20.0, 1.0 );
+    spot_light->translate(0.0f, 5.0f, 0.0f);
+    scene->add( spot_light );
     
     /* Create a post render callback function that allow us to rotate the light and objects */
     float light_rotation_1 = 0.0;
     bool rotate_objects = false;
+    
     renderer.setPostRenderCallbackHandler( [&](){
+        /* rotate the directional light */
         dir_light->position.x = 3.0 * cosf( light_rotation_1 );
         dir_light->position.z = 3.0 * sinf( light_rotation_1 );
         
@@ -63,6 +74,9 @@ int main(int argc, const char * argv[])
         
         if( rotate_objects )
             composite->rotateY(-1.0f);
+        
+        /* Widen the spot light */
+        spot_light->angle = Math::clamp(spot_light->angle + 0.01f, 15.0, 300.0);
     });
     
     /* Override key callback handler */
@@ -73,23 +87,23 @@ int main(int argc, const char * argv[])
                     glfwSetWindowShouldClose( window, GL_TRUE );
                     return;
                     
-                case GLFW_KEY_W: {
-                    PTR(Mesh) sphere = DOWNCAST(composite->getObjectByID(sphere_id, true), Mesh);
+                case GLFW_KEY_W: { /* Toggle wireframe */
+                    ptr<Mesh> sphere = downcast(composite->getObjectByID(sphere_id, true), Mesh);
                     sphere->material->wireframe = !sphere->material->wireframe;
                     
-                    PTR(Mesh) cube = DOWNCAST(composite->getObjectByID(cube_id, true), Mesh);
+                    ptr<Mesh> cube = downcast(composite->getObjectByID(cube_id, true), Mesh);
                     cube->material->wireframe = !cube->material->wireframe;
                     
                     break;
                 }
                     
-                case GLFW_KEY_B: {
-                    PTR(Mesh) bounding = DOWNCAST(composite->getObjectByID(bounding_box_id, true), Mesh);
+                case GLFW_KEY_B: { /* Toggle bounding box visibility */
+                    ptr<Mesh> bounding = downcast(composite->getObjectByID(bounding_box_id, true), Mesh);
                     bounding->visible = !bounding->visible;
                     break;
                 }
                     
-                case GLFW_KEY_R:
+                case GLFW_KEY_R: /* Toggle rotation */
                     rotate_objects = !rotate_objects;
                     break;
                     
@@ -105,28 +119,37 @@ int main(int argc, const char * argv[])
     renderer.clearColor = scene->fog->color;
     renderer.render(scene, camera );
     
-    
     return 0;
 }
 
-PTR(Object3D) createCompositeObject() {
+ptr<Object3D> createCompositeObject() {
+    
+    string path = "/Users/saburookita/Desktop/Dropbox/OpenGL-master/Binaries/";
+    string filename = "four_shapes_color.tga";
+    
+    /*Create a composite object*/
     auto composite = make_shared<Object3D>();
     
+    /* Main part is a sphere */
     auto sphere = Mesh::create( SphereGeometry::create(30, 15, 0.66f ),
-                                MeshPhongMaterial::create( 0x990099, 0xFFFFFF, 0x000000, 0x111111, 30.0, false ) );
+                                MeshPhongMaterial::create( 0xFFFFFF, 0xFFFFFF, 0x000000, 0x111111, 30.0, false ) );
     composite->add( sphere );
+    sphere->texture = TextureUtils::loadImageAsTexture( path, filename );
     
+    
+    /* But a cube is attached to the sphere (not to composite directly), thus transformation is relative to sphere */
     auto cube = Mesh::create( CubeGeometry::create( 1.0f ),
                               MeshPhongMaterial::create( 0xFFFFFF, 0xFFFFFF, 0x000000, 0x111111, 50.0, true ) );
     
     cube->translate( 2.0, 0.0, 0.0 );
     sphere->add( cube );
-    
-    string path = "/Users/saburookita/Desktop/Dropbox/OpenGL-master/Binaries/";
-    string filename = "crate.tga";
+
+    /* Try to add a texture on to it */
+//    /Users/saburookita/Downloads/mrdoob-three.js-d3cb4e7/examples/textures/UV_Grid_Sm.jpg
+//    /Users/saburookita/Desktop/Dropbox/OpenGL-master/Binaries/four_shapes_normal.tga
     cube->texture = TextureUtils::loadImageAsTexture( path, filename );
     
-    
+    /* Just for testing, add the bounding box to the composite object, it should cover both sphere and cube */
     auto bound_geom = composite->computeBoundingBox();
     auto bound_mat  = MeshPhongMaterial::create();
     bound_mat->wireframe = true;

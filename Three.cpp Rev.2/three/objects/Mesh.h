@@ -20,19 +20,19 @@
 namespace three {
     class Mesh : public Object3D {
     public:
-        static PTR(Mesh) create();
-        static PTR(Mesh) create(PTR(Geometry) geometry, PTR(Material) material);
+        static ptr<Mesh> create();
+        static ptr<Mesh> create(ptr<Geometry> geometry, ptr<Material> material);
         
-        void draw(PTR(Shader) shader, bool gammaInput);
+        void draw(ptr<Shader> shader, bool gammaInput);
 
         
         Mesh();
-        Mesh( PTR(Geometry) geometry, PTR(Material) material );
+        Mesh( ptr<Geometry> geometry, ptr<Material> material );
         ~Mesh();
         
-        PTR(Texture) texture;
-        PTR(Geometry) geometry;
-        PTR(Material) material;
+        ptr<Texture> texture;
+        ptr<Geometry> geometry;
+        ptr<Material> material;
     };
 }
 

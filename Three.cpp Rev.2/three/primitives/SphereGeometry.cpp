@@ -12,12 +12,12 @@
 using namespace std;
 namespace three {
     
-    PTR(SphereGeometry) SphereGeometry::create(const unsigned int slices, const unsigned int parallels, const float size){
+    ptr<SphereGeometry> SphereGeometry::create(const int slices, const int parallels, const float size){
         return make_shared<SphereGeometry>( SphereGeometry(slices, parallels, size) );
     }
     
 
-    SphereGeometry::SphereGeometry(const unsigned int slices, const unsigned int parallels, const float size){
+    SphereGeometry::SphereGeometry(const int slices, const int parallels, const float size){
         this->init(slices, parallels, size );
     }
     
@@ -28,55 +28,115 @@ namespace three {
     }
     
     
-    void SphereGeometry::init(const unsigned int slices, const unsigned int parallels, const float size){
-        if( size <= 0.0f )
-            throw std::runtime_error( "Unable to create sphere with size less than 0.0" );
+    void SphereGeometry::init( int slices, int parallels, const float radius ){
+        int width_segments  = max( 3, slices );
+        int height_segments = max( 2, parallels );
         
-        float angle_step = (M_PI * 2.0) / slices ;
-        vector<glm::vec2> uvs;
+        float phi_start = 0.0;
+        float phi_length = M_PI * 2.0;
         
-        for( int i = 0; i < parallels + 1; i++ ) {
-            for( int j = 0; j < slices + 1; j++ ) {
-                glm::vec3 vertex;
-                vertex.x = sinf( angle_step * i ) * sinf( angle_step * j );
-                vertex.y = cosf( angle_step * i );
-                vertex.z = sinf( angle_step * i ) * cosf( angle_step * j );
-                
-                glm::vec2 uv( j * 1.0 / slices, 1.0 - i * 1.0 / parallels );
-                
-                uvs.push_back( uv );
-                vertices.push_back( vertex );
-            }
-        }
+        float theta_start = 0.0;
+        float theta_length = M_PI;
         
-        for( glm::vec3& vert: vertices )
-            vert *= size;
+        this->vertices.clear();
         
-        vector<unsigned short> index( slices * parallels * 6 );
-        int index_counter = 0;
-        for( int i = 0; i < parallels; i++ ) {
-            for( int j = 0; j < slices; j++ ) {
-                index[index_counter++] = i       * (slices + 1) + j;
-                index[index_counter++] = (i + 1) * (slices + 1) + j;
-                index[index_counter++] = (i + 1) * (slices + 1) + (j + 1);
-                
-                index[index_counter++] = i       * (slices + 1) + j;
-                index[index_counter++] = (i + 1) * (slices + 1) + (j + 1);
-                index[index_counter++] = i       * (slices + 1) + (j + 1);
-            }
-        }
+        vector2D<uint> face_indexes( height_segments + 1, vector<uint>(width_segments + 1, 0) );
+        vector2D<glm::vec2> uvs( height_segments + 1, vector<glm::vec2>(width_segments + 1, glm::vec2(0.0)) );
         
-        for( int i = 0; i < index.size(); i+= 3 ) {
-            PTR(Face3) face = Face3::create(index[i], index[i+1], index[i+2]);
+        for( int y = 0; y < height_segments + 1; y++ ) {
+            float v = y * 1.0 / height_segments;
             
-            face->uvs.push_back( uvs[i] );
-            face->uvs.push_back( uvs[i+1] );
-            face->uvs.push_back( uvs[i+2] );
-            faces.push_back( face );
+            float sin_theta = sinf( theta_start + v * theta_length );
+            float cos_theta = cosf( theta_start + v * theta_length );
+            
+            for( int x = 0; x < width_segments + 1; x++ ) {
+                float u = x * 1.0 / width_segments;
+                
+                glm::vec3 vertex(
+                    -radius * cosf( phi_start + u * phi_length ) * sin_theta,
+                    radius * cos_theta,
+                    radius * sinf( phi_start + u * phi_length ) * sin_theta
+                );
+                
+                vertices.push_back( vertex );
+                face_indexes[y][x] = static_cast<uint>( this->vertices.size() - 1);
+                uvs[y][x] = glm::vec2(u, 1.0 - v);
+            }
         }
         
-        mergeVertices();
+        
+        for(int y = 0; y < height_segments; y++ ) {
+            for( int x = 0; x < width_segments; x++ ) {
+                uint v1 = face_indexes[y  ][x+1];
+                uint v2 = face_indexes[y  ][x  ];
+                uint v3 = face_indexes[y+1][x  ];
+                uint v4 = face_indexes[y+1][x+1];
+                
+                glm::vec3 n1 = glm::normalize(this->vertices[v1]);
+                glm::vec3 n2 = glm::normalize(this->vertices[v2]);
+                glm::vec3 n3 = glm::normalize(this->vertices[v3]);
+                glm::vec3 n4 = glm::normalize(this->vertices[v4]);
+                
+                glm::vec2 uv1 = uvs[y  ][x+1];
+                glm::vec2 uv2 = uvs[y  ][x  ];
+                glm::vec2 uv3 = uvs[y+1][x  ];
+                glm::vec2 uv4 = uvs[y+1][x+1];
+                
+                if( fabs( this->vertices[v1].y ) == radius ) {
+                    uv1.x = (uv1.x + uv2.x) / 2.0;
+                    
+                    ptr<Face3> face = Face3::create( v1, v3, v4 );
+                    
+                    face->vertexNormals.push_back( n1 );
+                    face->vertexNormals.push_back( n3 );
+                    face->vertexNormals.push_back( n4 );
+                    
+                    face->uvs.push_back( uv1 );
+                    face->uvs.push_back( uv3 );
+                    face->uvs.push_back( uv4 );
+                    faces.push_back( face );
+                }
+                else if( fabs( this->vertices[v3].y ) == radius ) {
+                    uv3.x = (uv3.x + uv4.x) / 2.0;
+                    
+                    ptr<Face3> face = Face3::create( v1, v2, v3 );
+                    
+                    face->vertexNormals.push_back( n1 );
+                    face->vertexNormals.push_back( n2 );
+                    face->vertexNormals.push_back( n3 );
+                    
+                    face->uvs.push_back( uv1 );
+                    face->uvs.push_back( uv2 );
+                    face->uvs.push_back( uv3 );
+                    
+                    faces.push_back( face );
+                }
+                else {
+                    ptr<Face3> face = Face3::create( v1, v2, v4 );
+                    
+                    face->vertexNormals.push_back( n1 );
+                    face->vertexNormals.push_back( n2 );
+                    face->vertexNormals.push_back( n4 );
+                    
+                    face->uvs.push_back( uv1 );
+                    face->uvs.push_back( uv2 );
+                    face->uvs.push_back( uv4 );
+                    faces.push_back( face );
+                    
+                    face = Face3::create( v2, v3, v4 );
+                    
+                    face->vertexNormals.push_back( n2 );
+                    face->vertexNormals.push_back( n3 );
+                    face->vertexNormals.push_back( n4 );
+                    
+                    face->uvs.push_back( uv2 );
+                    face->uvs.push_back( uv3 );
+                    face->uvs.push_back( uv4 );
+                    faces.push_back( face );
+                }
+            }
+        }
+        
         computeFaceNormals();
-        computeVertexNormals(true);
     }
 }

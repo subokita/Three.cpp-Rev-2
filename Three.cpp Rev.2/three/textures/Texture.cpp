@@ -13,7 +13,9 @@ namespace three {
     
     Texture::Texture() :
         HasID    ( textureIDCount++ ),
-        textureID( 0 )
+        textureID( 0 ),
+        width    ( 0 ),
+        height   ( 0 )
     {}
     
     Texture::~Texture(){

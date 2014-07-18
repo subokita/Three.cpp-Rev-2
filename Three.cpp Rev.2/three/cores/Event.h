@@ -17,8 +17,8 @@ namespace  three {
     class Event {
     public:
         std::string type;
-        PTR(Object3D) object;
-        PTR(Object3D) scene;
+        ptr<Object3D> object;
+        ptr<Object3D> scene;
     };
 }
 

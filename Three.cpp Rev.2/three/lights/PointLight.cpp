@@ -11,11 +11,11 @@
 using namespace std;
 
 namespace three {
-    PTR(PointLight) PointLight::create(){
+    ptr<PointLight> PointLight::create(){
         return make_shared<PointLight>();
     }
     
-    PTR(PointLight) PointLight::create( const glm::vec3 position, const Color color, const float intensity, const float distance ){
+    ptr<PointLight> PointLight::create( const glm::vec3 position, const Color color, const float intensity, const float distance ){
         return make_shared<PointLight>(PointLight(position, color, intensity, distance));
     }
     

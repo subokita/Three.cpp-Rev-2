@@ -11,11 +11,11 @@
 using namespace std;
 namespace three {
     
-    PTR(HemisphereLight) HemisphereLight::create(){
+    ptr<HemisphereLight> HemisphereLight::create(){
         return make_shared<HemisphereLight>();
     }
     
-    PTR(HemisphereLight) HemisphereLight::create(const Color sky_color, const Color ground_color, const float intensity){
+    ptr<HemisphereLight> HemisphereLight::create(const Color sky_color, const Color ground_color, const float intensity){
         return make_shared<HemisphereLight>(HemisphereLight(sky_color, ground_color, intensity));
     }
     

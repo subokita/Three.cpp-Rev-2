@@ -11,11 +11,11 @@
 using namespace std;
 namespace three {
     
-    PTR(FogExp2) FogExp2::create() {
+    ptr<FogExp2> FogExp2::create() {
         return make_shared<FogExp2>();
     }
     
-    PTR(FogExp2) FogExp2::create( Color color, float distance ) {
+    ptr<FogExp2> FogExp2::create( Color color, float distance ) {
         return make_shared<FogExp2>( FogExp2(color, distance) );
     }
     

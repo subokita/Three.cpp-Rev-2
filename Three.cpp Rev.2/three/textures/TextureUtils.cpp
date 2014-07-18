@@ -20,31 +20,31 @@ namespace three {
         if( bitmap == NULL )
             throw runtime_error( "Unable to load file" );
         
-        return bitmap;
+        return FreeImage_ConvertTo24Bits( bitmap );
     }
     
-    PTR(Texture) TextureUtils::loadImageAsTexture( const std::string path, const std::string filename ) {
+    ptr<Texture> TextureUtils::loadImageAsTexture( const std::string path, const std::string filename ) {
         FIBITMAP* bitmap = loadImage( path, filename );
-        PTR(Texture) texture = make_shared<Texture>();
+        ptr<Texture> texture = make_shared<Texture>();
+        texture->width  = FreeImage_GetWidth (bitmap);
+        texture->height = FreeImage_GetHeight(bitmap);
         
         glGenTextures(1, &texture->textureID);
         glBindTexture( GL_TEXTURE_2D, texture->textureID );
         
-        if( FreeImage_GetColorType( bitmap ) == FIC_RGB ) {
-            RGBQUAD * quad;
-            FreeImage_GetPixelColor( bitmap, 1, 1, quad );
-            
-            bitmap = FreeImage_ConvertTo24Bits( bitmap );
-            if( quad->rgbBlue != 0 ) {
-                glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, FreeImage_GetWidth(bitmap), FreeImage_GetHeight(bitmap), 0, GL_BGR, GL_UNSIGNED_BYTE, (void*) FreeImage_GetBits( bitmap ));
-            }
-            else {
-                glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB8, FreeImage_GetWidth(bitmap), FreeImage_GetHeight(bitmap), 0, GL_BGR, GL_UNSIGNED_BYTE, (void*) FreeImage_GetBits( bitmap ));
-            }
+        FREE_IMAGE_COLOR_TYPE color_type = FreeImage_GetColorType( bitmap );
+        
+        if( color_type == FIC_RGB ) {
+            glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, texture->width, texture->height, 0, GL_BGR, GL_UNSIGNED_BYTE, FreeImage_GetBits( bitmap ));
+        }
+        else if ( color_type == FIC_PALETTE ) {
+            glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, texture->width, texture->height, 0, GL_BGR, GL_UNSIGNED_BYTE, FreeImage_GetBits( bitmap ));
+        }
+        else if( color_type == FIC_RGBALPHA ) {
+            glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, FreeImage_GetBits( bitmap ));
         }
         else {
-            
-            glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, FreeImage_GetWidth(bitmap), FreeImage_GetHeight(bitmap), 0, GL_BGRA, GL_UNSIGNED_BYTE, (void*) FreeImage_GetBits( bitmap ));
+            throw runtime_error( "Unhandled case of image type" );
         }
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -59,8 +59,8 @@ namespace three {
     }
     
     
-    PTR(Texture) TextureUtils::loadEmptyWhiteTexture() {
-        PTR(Texture) texture = make_shared<Texture>();
+    ptr<Texture> TextureUtils::loadEmptyWhiteTexture() {
+        ptr<Texture> texture = make_shared<Texture>();
 
         glGenTextures(1, &texture->textureID);
         glBindTexture( GL_TEXTURE_2D, texture->textureID );

@@ -15,8 +15,8 @@
 namespace three {
     class HemisphereLight : public Light {
     public:
-        static PTR(HemisphereLight) create();
-        static PTR(HemisphereLight) create(const Color sky_color, const Color ground_color, const float intensity);
+        static ptr<HemisphereLight> create();
+        static ptr<HemisphereLight> create(const Color sky_color, const Color ground_color, const float intensity);
         
         HemisphereLight();
         HemisphereLight(const Color sky_color, const Color ground_color, const float intensity);

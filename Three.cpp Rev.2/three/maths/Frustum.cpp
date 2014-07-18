@@ -13,13 +13,13 @@ using namespace std;
 
 namespace three {
     
-    PTR(Frustum) Frustum::create(){
+    ptr<Frustum> Frustum::create(){
         return make_shared<Frustum>();
     }
     
     Frustum::Frustum(){
         planes.resize(6);
-        for( PTR(Plane)& plane: planes )
+        for( ptr<Plane>& plane: planes )
             plane = Plane::create();
     }
     
@@ -38,13 +38,13 @@ namespace three {
         return *this;
     }
     
-    bool Frustum::intersects( PTR(Object3D) object ){
-        PTR(Sphere) sphere = object->computeBoundingSphere();
+    bool Frustum::intersects( ptr<Object3D> object ){
+        ptr<Sphere> sphere = object->computeBoundingSphere();
         sphere->applyMatrix( object->matrixWorld );
         return intersects( sphere );
     }
     
-    bool Frustum::intersects( PTR(Sphere) sphere ){
+    bool Frustum::intersects( ptr<Sphere> sphere ){
         for( int i = 0; i < 6; i++ ) {
             float distance = planes[i]->distanceTo( sphere->center );
             if( distance < -sphere->radius )
@@ -53,7 +53,7 @@ namespace three {
         return true;
     }
     
-    bool Frustum::intersects( PTR(Box3) box ){
+    bool Frustum::intersects( ptr<Box3> box ){
         glm::vec3 p1, p2;
         
         for( int i = 0; i < 6; i++ ) {

@@ -12,18 +12,18 @@ using namespace std;
 
 namespace three {
     
-    PTR(SpotLight) SpotLight::create(){
+    ptr<SpotLight> SpotLight::create(){
         return make_shared<SpotLight>();
     }
     
-    PTR(SpotLight) SpotLight::create( const Color color, const float intensity, const float distance, const float angle, const float exponent ){
+    ptr<SpotLight> SpotLight::create( const Color color, const float intensity, const float distance, const float angle, const float exponent ){
         return make_shared<SpotLight>(color, intensity, distance, angle, exponent);
     }
     
     /** Constructors **/
     SpotLight::SpotLight():
         distance(0.0),
-        angle(M_PI / 3.0),
+        angle(Math::radToDeg(M_PI / 3.0)),
         exponent(10.0),
         target( 0.0, 0.0, 0.0 )
     {

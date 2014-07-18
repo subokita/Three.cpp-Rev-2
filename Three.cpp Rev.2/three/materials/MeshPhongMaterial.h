@@ -17,7 +17,7 @@
 namespace three {
     class MeshPhongMaterial: public Material {
     public:
-        static PTR(MeshPhongMaterial) create(
+        static ptr<MeshPhongMaterial> create(
              Color color        = 0xFFFFFF,
              Color ambient      = 0xFFFFFF,
              Color emissive     = 0x000000,

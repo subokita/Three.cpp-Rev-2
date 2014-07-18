@@ -17,8 +17,8 @@
 namespace three {
     class Plane {
     public:
-        static PTR(Plane) create();
-        static PTR(Plane) create( glm::vec3 normal, float constant );
+        static ptr<Plane> create();
+        static ptr<Plane> create( glm::vec3 normal, float constant );
         
         Plane();
         Plane( glm::vec3 normal, float constant );

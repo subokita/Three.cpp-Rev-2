@@ -21,15 +21,11 @@ namespace three {
     Geometry::~Geometry() {}
     
     void Geometry::computeFaceNormals() {
-        for( PTR(Face3) face: faces ) {
+        for( ptr<Face3> face: faces ) {
             glm::vec3 a = this->vertices[face->a];
             glm::vec3 b = this->vertices[face->b];
             glm::vec3 c = this->vertices[face->c];
             face->normal = glm::normalize( glm::cross(c - b, a - b) );
-            
-            face->vertexNormals.push_back( face->normal );
-            face->vertexNormals.push_back( face->normal );
-            face->vertexNormals.push_back( face->normal );
         }
     }
     
@@ -150,7 +146,7 @@ namespace three {
         vector<glm::vec3> vertices( this->vertices.size() );
         
         if( area_weighted ) {
-            for( PTR(Face3) face : faces ) {
+            for( ptr<Face3> face : faces ) {
                 glm::vec3 a = this->vertices[face->a];
                 glm::vec3 b = this->vertices[face->b];
                 glm::vec3 c = this->vertices[face->c];
@@ -165,7 +161,7 @@ namespace three {
             }
         }
         else {
-            for( PTR(Face3) face : faces ) {
+            for( ptr<Face3> face : faces ) {
                 vertices[face->a] += face->normal;
                 vertices[face->b] += face->normal;
                 vertices[face->c] += face->normal;
@@ -175,7 +171,7 @@ namespace three {
         for( glm::vec3& vertex : vertices )
             vertex = glm::normalize( vertex );
         
-        for( PTR(Face3) face: faces ) {
+        for( ptr<Face3> face: faces ) {
             face->vertexNormals.resize(3);
             
             face->vertexNormals[0] = vertices[face->a];
@@ -211,7 +207,7 @@ namespace three {
         
         vector<int> face_indices_to_be_removed;
         for( int i = 0; i < faces.size(); i++ ) {
-            PTR(Face3) face = faces[i];
+            ptr<Face3> face = faces[i];
             
             face->a = changes[face->a];
             face->b = changes[face->b];
@@ -239,7 +235,7 @@ namespace three {
 
     void Geometry::computeVertexNormalsForNonMergedFaces() {
         for( int i = 0; i < faces.size(); i++ ){
-            PTR(Face3) face_1 = faces[i];
+            ptr<Face3> face_1 = faces[i];
             
             vector<glm::vec3> vertices_1 = {
                 vertices[face_1->a],
@@ -248,7 +244,7 @@ namespace three {
             };
             
             for( int j = i + 1; j < faces.size(); j++ ){
-                PTR(Face3) face_2 = faces[j];
+                ptr<Face3> face_2 = faces[j];
                 
                 vector<glm::vec3> vertices_2 = {
                     vertices[face_2->a],
@@ -283,7 +279,7 @@ namespace three {
         std::vector<glm::vec3> normals( vertices.size() );
         std::vector<glm::vec2> uvs( vertices.size() );
         
-        for( PTR(Face3) face: faces ) {
+        for( ptr<Face3> face: faces ) {
             index.push_back( face->a );
             index.push_back( face->b );
             index.push_back( face->c );

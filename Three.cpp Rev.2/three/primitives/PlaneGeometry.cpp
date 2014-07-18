@@ -12,7 +12,7 @@ using namespace std;
 
 namespace three {
     
-    PTR(PlaneGeometry) PlaneGeometry::create( const float size, const int segments ) {
+    ptr<PlaneGeometry> PlaneGeometry::create( const float size, const int segments ) {
         return std::make_shared<PlaneGeometry>(PlaneGeometry(size, segments));
     }
     
@@ -80,7 +80,7 @@ namespace three {
                 glm::vec2 uvc( ( ix + 1 ) / gridX, 1 - ( iz + 1 ) / gridZ );
                 glm::vec2 uvd( ( ix + 1 ) / gridX, 1 - iz / gridZ );
                 
-                PTR(Face3) face = Face3::create( a, b, d );
+                ptr<Face3> face = Face3::create( a, b, d );
                 face->normal = normal;
                 face->vertexNormals.push_back( normal );
                 face->vertexNormals.push_back( normal );

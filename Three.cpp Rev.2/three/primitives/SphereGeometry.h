@@ -15,14 +15,14 @@
 namespace three {
     class SphereGeometry: public Geometry {
     public:
-        static PTR(SphereGeometry) create(const unsigned int slices, const unsigned int parallels, const float size);
+        static ptr<SphereGeometry> create(const int slices, const int parallels, const float size);
         ~SphereGeometry();
         
     protected:
-        SphereGeometry(const unsigned int slices, const unsigned int parallels, const float size);
+        SphereGeometry(const int slices, const int parallels, const float size);
         SphereGeometry();
         
-        void init(const unsigned int slices, const unsigned int parallels, const float size);
+        void init(const int slices, const int parallels, const float size);
     };
 }
 

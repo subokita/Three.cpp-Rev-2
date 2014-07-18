@@ -46,14 +46,14 @@ namespace three {
         uniforms.clear();
     }
     
-    PTR(Shader) Shader::create( const char * vertex_filename, const char * fragment_filename ) {
+    ptr<Shader> Shader::create( const char * vertex_filename, const char * fragment_filename ) {
         shared_ptr<Shader> shader = make_shared<Shader>();
         shader->initFromSource( vertex_filename, fragment_filename );
         return shader;
     }
     
     
-    PTR(Shader) Shader::create( const ShaderLib::Shader& shader_code ) {
+    ptr<Shader> Shader::create( const ShaderLib::Shader& shader_code ) {
         shared_ptr<Shader> shader = make_shared<Shader>();
         shader->initFromSource(shader_code);
         return shader;

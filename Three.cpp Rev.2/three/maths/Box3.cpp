@@ -13,11 +13,11 @@ using namespace std;
 
 namespace three {
     
-    PTR(Box3) Box3::create(){
+    ptr<Box3> Box3::create(){
         return make_shared<Box3>();
     }
     
-    PTR(Box3) Box3::create( glm::vec3 min_vec, glm::vec3 max_vec ){
+    ptr<Box3> Box3::create( glm::vec3 min_vec, glm::vec3 max_vec ){
         return make_shared<Box3>( Box3(min_vec, max_vec) );
     }
     
@@ -115,13 +115,13 @@ namespace three {
     }
     
 
-    Box3& Box3::setFrom(PTR(Object3D) obj) {
+    Box3& Box3::setFrom(ptr<Object3D> obj) {
         obj->updateMatrixWorld(true);
         this->makeEmpty();
         
-        obj->traverse([&]( PTR(Object3D) node ) {
-            if( INSTANCE_OF(node, Mesh)) {
-                PTR(Mesh) mesh = DOWNCAST(node, Mesh);
+        obj->traverse([&]( ptr<Object3D> node ) {
+            if( instance_of(node, Mesh)) {
+                ptr<Mesh> mesh = downcast(node, Mesh);
                 
                 if( mesh->geometry != nullptr ) {
                     for( glm::vec3 vec : mesh->geometry->vertices ) {
@@ -176,7 +176,7 @@ namespace three {
         return true;
     }
     
-    bool Box3::contains( PTR(Box3) box ) {
+    bool Box3::contains( ptr<Box3> box ) {
         if ( (min.x <= box->min.x) && (min.y <= box->min.y) && (min.z <= box->min.z)  &&
             (box->max.x <= max.x) && (box->max.y <= max.y) && (box->max.z <= max.z) )
             return true;
@@ -217,7 +217,7 @@ namespace three {
     }
     
     
-    PTR(Sphere) Box3::getBoundingSphere() {
+    ptr<Sphere> Box3::getBoundingSphere() {
         return make_shared<Sphere>( this->center(), glm::length(this->size()) * 0.5 );
     }
     

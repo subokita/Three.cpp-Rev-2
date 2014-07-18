@@ -19,15 +19,15 @@ namespace three {
     
     class EventDispatcher {
     public:
-        void addEventListener( std::string type, PTR(EventDispatcher) obj );
-        bool hasEventListener( std::string type, PTR(EventDispatcher) obj );
-        void removeEventListener( std::string type, PTR(EventDispatcher) obj );
+        void addEventListener( std::string type, ptr<EventDispatcher> obj );
+        bool hasEventListener( std::string type, ptr<EventDispatcher> obj );
+        void removeEventListener( std::string type, ptr<EventDispatcher> obj );
         void dispatchEvent( Event event );
         void setEventHandler( std::function<void(EventDispatcher&, Event&)> handler );
         
     protected:
         std::function<void(EventDispatcher&, Event&)> eventHandler = [](EventDispatcher&, Event&){};
-        std::map<std::string, std::vector<PTR(EventDispatcher) >> listeners;
+        std::map<std::string, std::vector<ptr<EventDispatcher> >> listeners;
     };
 }
 

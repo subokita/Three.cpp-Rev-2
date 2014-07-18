@@ -16,7 +16,7 @@ namespace three {
     class PerspectiveCamera : public Camera {
         
     public:
-        static PTR(PerspectiveCamera) create(const float fov, const float aspect, const float near, const float far );
+        static ptr<PerspectiveCamera> create(const float fov, const float aspect, const float near, const float far );
         
         PerspectiveCamera();
         PerspectiveCamera(const float fov, const float aspect, const float near, const float far );

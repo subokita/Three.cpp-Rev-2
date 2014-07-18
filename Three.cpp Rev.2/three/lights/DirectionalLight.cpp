@@ -11,11 +11,11 @@
 using namespace std;
 namespace three {
     
-    PTR(DirectionalLight) DirectionalLight::create(){
+    ptr<DirectionalLight> DirectionalLight::create(){
         return make_shared<DirectionalLight>();
     }
     
-    PTR(DirectionalLight) DirectionalLight::create( Color color, float intensity, glm::vec3 position ){
+    ptr<DirectionalLight> DirectionalLight::create( Color color, float intensity, glm::vec3 position ){
         return make_shared<DirectionalLight>(DirectionalLight(color, intensity, position));
     }
     

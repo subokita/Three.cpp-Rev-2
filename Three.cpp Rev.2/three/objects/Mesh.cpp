@@ -13,18 +13,18 @@ using namespace std;
 
 namespace  three {
     
-    PTR(Mesh) Mesh::create(){
+    ptr<Mesh> Mesh::create(){
         return make_shared<Mesh>();
     }
     
-    PTR(Mesh) Mesh::create(PTR(Geometry) geometry, PTR(Material) material) {
+    ptr<Mesh> Mesh::create(ptr<Geometry> geometry, ptr<Material> material) {
         return make_shared<Mesh>( Mesh(geometry, material) );
     }
     
     Mesh::Mesh()
     {}
     
-    Mesh::Mesh( PTR(Geometry) geometry, PTR(Material) material ) :
+    Mesh::Mesh( ptr<Geometry> geometry, ptr<Material> material ) :
         geometry( geometry ),
         material( material )
     {}
@@ -32,14 +32,14 @@ namespace  three {
     Mesh::~Mesh()
     {}
     
-    void Mesh::draw(PTR(Shader) shader, bool gamma ) {
+    void Mesh::draw(ptr<Shader> shader, bool gamma ) {
         
         glPolygonMode( GL_FRONT_AND_BACK, material->wireframe ? GL_LINE : GL_FILL );
         glLineWidth( material->wireframeLinewidth );
         
-        PTR(MeshPhongMaterial) phong_material;
-        if( INSTANCE_OF(material, MeshPhongMaterial )) {
-            phong_material = DOWNCAST(material, MeshPhongMaterial );
+        ptr<MeshPhongMaterial> phong_material;
+        if( instance_of(material, MeshPhongMaterial )) {
+            phong_material = downcast(material, MeshPhongMaterial );
             
             shader->setUniform( "opacity",   phong_material->opacity );
             shader->setUniform( "emissive",  phong_material->emissive, 1.0, gamma );

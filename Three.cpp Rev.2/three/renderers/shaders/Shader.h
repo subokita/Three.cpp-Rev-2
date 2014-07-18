@@ -23,8 +23,8 @@
 namespace three {
     class Shader {
     public:
-        static PTR(Shader) create( const char * vertex_filename, const char * fragment_filename );
-        static PTR(Shader) create( const ShaderLib::Shader& shader_code );
+        static ptr<Shader> create( const char * vertex_filename, const char * fragment_filename );
+        static ptr<Shader> create( const ShaderLib::Shader& shader_code );
         
         void initFromSource( const char * vertex_filename, const char * fragment_filename );
         void initFromSource( const ShaderLib::Shader& shader );

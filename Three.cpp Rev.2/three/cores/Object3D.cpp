@@ -34,14 +34,14 @@ namespace three {
     }
     
     
-    PTR(Box3) Object3D::computeBoundingBox() {
-        PTR(Box3) box = Box3::create();
+    ptr<Box3> Object3D::computeBoundingBox() {
+        ptr<Box3> box = Box3::create();
         box->setFrom(shared_from_this());
         return box;
     }
     
-    PTR(Sphere) Object3D::computeBoundingSphere() {
-        PTR(Box3) box = Box3::create();
+    ptr<Sphere> Object3D::computeBoundingSphere() {
+        ptr<Box3> box = Box3::create();
         box->setFrom(shared_from_this());
         return box->getBoundingSphere();
     }
@@ -99,7 +99,7 @@ namespace three {
             child.second->updateMatrixWorld( force );
     }
     
-    void Object3D::add( PTR(Object3D) object ) {
+    void Object3D::add( ptr<Object3D> object ) {
         if( object == shared_from_this() ) {
             cerr << "Unable to add object as its own child" << endl;
             return;
@@ -113,7 +113,7 @@ namespace three {
     }
     
     
-    void Object3D::remove( PTR(Object3D) object ) {
+    void Object3D::remove( ptr<Object3D> object ) {
         if( children.count(object->id) == 0 )
             return;
         
@@ -123,7 +123,7 @@ namespace three {
     }
     
     
-    void Object3D::traverse( std::function<void(PTR(Object3D))> callback ) {
+    void Object3D::traverse( std::function<void(ptr<Object3D>)> callback ) {
         callback( shared_from_this() );
         
         for( auto entry: children )
@@ -131,13 +131,13 @@ namespace three {
     }
     
     
-    PTR(Object3D) Object3D::getObjectByID( const unsigned int id, bool recursive ) {
+    ptr<Object3D> Object3D::getObjectByID( const unsigned int id, bool recursive ) {
         if( children.count( id ) != 0 )
             return children[id];
         
         if( recursive ) {
             for( auto entry: children ) {
-                PTR(Object3D) result = entry.second->getObjectByID( id, recursive );
+                ptr<Object3D> result = entry.second->getObjectByID( id, recursive );
                 if( result != nullptr )
                     return result;
             }

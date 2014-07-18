@@ -12,11 +12,11 @@
 
 namespace three {
     
-    PTR(Sphere) Sphere::create(){
+    ptr<Sphere> Sphere::create(){
         return make_shared<Sphere>();
     }
     
-    PTR(Sphere) Sphere::create( glm::vec3 center, float radius ) {
+    ptr<Sphere> Sphere::create( glm::vec3 center, float radius ) {
         return make_shared<Sphere>( Sphere(center, radius) );
     }
     

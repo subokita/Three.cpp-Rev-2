@@ -12,11 +12,11 @@
 using namespace std;
 namespace three {
     
-    PTR(Plane) Plane::create() {
+    ptr<Plane> Plane::create() {
         return make_shared<Plane>();
     }
     
-    PTR(Plane) Plane::create( glm::vec3 normal, float constant ) {
+    ptr<Plane> Plane::create( glm::vec3 normal, float constant ) {
         return make_shared<Plane>( Plane(normal, constant) );
     }
     

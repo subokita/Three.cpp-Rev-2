@@ -20,9 +20,9 @@
 namespace three {
     class Face3 {
     public:
-        static PTR(Face3) create();
-        static PTR(Face3) create(int a, int b, int c);
-        static PTR(Face3) create(int a, int b, int c, glm::vec3 normal, Color color = 0xFFFFFF, int material_index = 0);
+        static ptr<Face3> create();
+        static ptr<Face3> create(int a, int b, int c);
+        static ptr<Face3> create(int a, int b, int c, glm::vec3 normal, Color color = 0xFFFFFF, int material_index = 0);
         
         Face3();
         Face3( int a, int b, int c );

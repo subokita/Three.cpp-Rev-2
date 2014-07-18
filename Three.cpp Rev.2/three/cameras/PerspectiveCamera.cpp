@@ -34,7 +34,7 @@ namespace three {
     
     PerspectiveCamera::~PerspectiveCamera(){}
     
-    PTR(PerspectiveCamera) PerspectiveCamera::create( const float fov, const float aspect, const float near,
+    ptr<PerspectiveCamera> PerspectiveCamera::create( const float fov, const float aspect, const float near,
                                                       const float far ){
         return make_shared<PerspectiveCamera>( PerspectiveCamera(fov, aspect, near, far) );
     }

@@ -59,6 +59,7 @@ namespace three {
             glfwTerminate();
         }
         
+        glfwSetInputMode( window, GLFW_STICKY_KEYS, GL_TRUE );
         glfwMakeContextCurrent( window );
      
         glGenVertexArrays(1, &vertexArrayId );
@@ -140,11 +141,11 @@ namespace three {
      * to the the vertex and fragment shaders, depending on the 
      * how the user defines the scene
      */
-    void Renderer::addDefinitionsToShader( PTR(Scene) scene ) {
+    void Renderer::addDefinitionsToShader( ptr<Scene> scene ) {
         if( scene->fog != nullptr ) {
             shaderLib->defines.push_back("#define USE_FOG");
             
-            if( INSTANCE_OF(scene->fog, FogExp2))
+            if( instance_of(scene->fog, FogExp2))
                 shaderLib->defines.push_back("#define FOG_EXP2");
         }
         
@@ -157,25 +158,25 @@ namespace three {
         stringstream ss;
 
         ss.str("");
-        ss << "#define MAX_DIR_LIGHTS " << static_cast<int>(count_if( scene->directionalLights.begin(), scene->directionalLights.end(), [](PTR(DirectionalLight) light){
+        ss << "#define MAX_DIR_LIGHTS " << static_cast<int>(count_if( scene->directionalLights.begin(), scene->directionalLights.end(), [](ptr<DirectionalLight> light){
             return light->visible;
         }));
         shaderLib->defines.push_back( ss.str() );
 
         ss.str("");
-        ss << "#define MAX_POINT_LIGHTS " << static_cast<int>(count_if( scene->pointLights.begin(), scene->pointLights.end(), [](PTR(PointLight) light){
+        ss << "#define MAX_POINT_LIGHTS " << static_cast<int>(count_if( scene->pointLights.begin(), scene->pointLights.end(), [](ptr<PointLight> light){
             return light->visible;
         }));
         shaderLib->defines.push_back( ss.str() );
         
         ss.str("");
-        ss << "#define MAX_HEMI_LIGHTS " << static_cast<int>(count_if( scene->hemisphereLights.begin(), scene->hemisphereLights.end(), [](PTR(HemisphereLight) light){
+        ss << "#define MAX_HEMI_LIGHTS " << static_cast<int>(count_if( scene->hemisphereLights.begin(), scene->hemisphereLights.end(), [](ptr<HemisphereLight> light){
             return light->visible;
         }));
         shaderLib->defines.push_back( ss.str() );
         
         ss.str("");
-        ss << "#define MAX_SPOT_LIGHTS " << static_cast<int>(count_if( scene->spotLights.begin(), scene->spotLights.end(), [](PTR(SpotLight) light){
+        ss << "#define MAX_SPOT_LIGHTS " << static_cast<int>(count_if( scene->spotLights.begin(), scene->spotLights.end(), [](ptr<SpotLight> light){
             return light->visible;
         }));
         shaderLib->defines.push_back( ss.str() );
@@ -197,7 +198,7 @@ namespace three {
     
     void Renderer::setDirectionalLights(){
         size_t size = count_if( scene->directionalLights.begin(), scene->directionalLights.end(),
-        [](PTR(DirectionalLight) light){
+        [](ptr<DirectionalLight> light){
             return light->visible;
         });
         
@@ -208,7 +209,7 @@ namespace three {
         vector<Color> colors;
         vector<float> intensities;
         
-        for( PTR(DirectionalLight) light : scene->directionalLights ) {
+        for( ptr<DirectionalLight> light : scene->directionalLights ) {
             if( !light->visible )
                 continue;
             
@@ -223,7 +224,7 @@ namespace three {
     
     void Renderer::setSpotLights(){
         size_t size = count_if( scene->spotLights.begin(), scene->spotLights.end(),
-        [](PTR(SpotLight) light){
+        [](ptr<SpotLight> light){
            return light->visible;
         });
 
@@ -238,12 +239,12 @@ namespace three {
         vector<float> exponents;
         vector<float> distances;
         
-        for( PTR(SpotLight) light: scene->spotLights ){
+        for( ptr<SpotLight> light: scene->spotLights ){
             colors.push_back     (light->color);
             intensities.push_back(light->intensity);
             positions.push_back  (light->position);
             directions.push_back (glm::normalize(light->position - light->target));
-            cos_angles.push_back (cosf(light->angle));
+            cos_angles.push_back (cosf(Math::degToRad(light->angle)));
             exponents.push_back  (light->exponent);
             distances.push_back  (light->distance);
         }
@@ -260,7 +261,7 @@ namespace three {
     
     void Renderer::setHemisphereLights(){
         size_t size = count_if( scene->hemisphereLights.begin(), scene->hemisphereLights.end(),
-        [](PTR(HemisphereLight) light){
+        [](ptr<HemisphereLight> light){
            return light->visible;
         });
         if( size == 0 )
@@ -271,7 +272,7 @@ namespace three {
         vector<float> intensities;
         vector<glm::vec3> directions;
         
-        for( PTR(HemisphereLight) light: scene->hemisphereLights ){
+        for( ptr<HemisphereLight> light: scene->hemisphereLights ){
             sky_colors.push_back   (light->color);
             ground_colors.push_back(light->groundColor);
             intensities.push_back  (light->intensity);
@@ -285,7 +286,7 @@ namespace three {
     
     void Renderer::setPointLights() {
         size_t size = count_if( scene->pointLights.begin(), scene->pointLights.end(),
-        [](PTR(PointLight) light){
+        [](ptr<PointLight> light){
            return light->visible;
         });
         if( size == 0 )
@@ -296,7 +297,7 @@ namespace three {
         vector<float> intensities;
         vector<float> distances;
         
-        for( PTR(PointLight) light: scene->pointLights ) {
+        for( ptr<PointLight> light: scene->pointLights ) {
             colors.push_back     (light->color);
             intensities.push_back(light->intensity);
             positions.push_back  (light->position);
@@ -311,14 +312,14 @@ namespace three {
     void Renderer::setFog() {
         /* Setting fog */
         if( scene->fog != nullptr ) {
-            if( INSTANCE_OF(scene->fog, Fog)) {
-                PTR(Fog) fog = DOWNCAST(scene->fog, Fog);
+            if( instance_of(scene->fog, Fog)) {
+                ptr<Fog> fog = downcast(scene->fog, Fog);
                 shader->setUniform( "fog_color", fog->color, 1.0, gammaInput );
                 shader->setUniform( "fog_near", fog->near );
                 shader->setUniform( "fog_far",  fog->far );
             }
-            else if( INSTANCE_OF(scene->fog, FogExp2)) {
-                PTR(FogExp2) fog = DOWNCAST(scene->fog, FogExp2);
+            else if( instance_of(scene->fog, FogExp2)) {
+                ptr<FogExp2> fog = downcast(scene->fog, FogExp2);
                 shader->setUniform( "fog_color", fog->color, 1.0, gammaInput );
                 shader->setUniform( "fog_density", fog->distance );
             }
@@ -326,9 +327,9 @@ namespace three {
 
     }
     
-    void Renderer::drawObjects(PTR(Object3D) object) {
+    void Renderer::drawObjects(ptr<Object3D> object) {
         for( auto entry : object->children ) {
-            PTR(Object3D) child = entry.second;
+            ptr<Object3D> child = entry.second;
             
             if( !child->visible )
                 continue;
@@ -338,8 +339,8 @@ namespace three {
             shader->setUniform( "normal_mat", glm::inverseTranspose( glm::mat3(mv) ) );
             shader->setUniform( "model_view_mat", mv );
             
-            if( INSTANCE_OF(child, Mesh ) ) {
-                PTR(Mesh) mesh = DOWNCAST(child, Mesh) ;
+            if( instance_of(child, Mesh ) ) {
+                ptr<Mesh> mesh = downcast(child, Mesh) ;
                 mesh->draw(shader, gammaInput);
             }
             
@@ -357,12 +358,12 @@ namespace three {
         drawObjects( scene );
     }
     
-    void Renderer::initObjects( PTR(Object3D) object ) {
+    void Renderer::initObjects( ptr<Object3D> object ) {
         for( auto entry : object->children ) {
-            PTR(Object3D) child = entry.second;
+            ptr<Object3D> child = entry.second;
             
-            if( INSTANCE_OF(child, Mesh ) ) {
-                PTR(Mesh) mesh = DOWNCAST(child, Mesh) ;
+            if( instance_of(child, Mesh ) ) {
+                ptr<Mesh> mesh = downcast(child, Mesh) ;
                 if( mesh->geometry != nullptr && !mesh->geometry->glBuffersInitialized )
                     mesh->geometry->initGLBuffers();
             }
@@ -423,11 +424,11 @@ namespace three {
     }
     
     
-    void Renderer::renderPlugins( std::vector<PTR(RenderPlugin)>& plugins, PTR(Scene) scene, PTR(Camera) camera ) {
+    void Renderer::renderPlugins( std::vector<ptr<RenderPlugin>>& plugins, ptr<Scene> scene, ptr<Camera> camera ) {
         if( plugins.empty() )
             return;
         
-        for( PTR(RenderPlugin) plugin: plugins ) {
+        for( ptr<RenderPlugin> plugin: plugins ) {
             plugin->render( scene, camera );
         }
     }

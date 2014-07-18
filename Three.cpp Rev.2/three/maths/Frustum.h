@@ -16,19 +16,19 @@
 namespace three {
     class Frustum{
     public:
-        static PTR(Frustum) create();
+        static ptr<Frustum> create();
         
         Frustum();
         ~Frustum();
         
         Frustum& setFrom( glm::mat4 matrix );
-        bool intersects( PTR(Object3D) object );
-        bool intersects( PTR(Sphere) sphere );
-        bool intersects( PTR(Box3) box );
+        bool intersects( ptr<Object3D> object );
+        bool intersects( ptr<Sphere> sphere );
+        bool intersects( ptr<Box3> box );
         bool contains( glm::vec3 point );
         
     public:
-        std::vector<PTR(Plane)> planes;
+        std::vector<ptr<Plane>> planes;
     };
 }
 

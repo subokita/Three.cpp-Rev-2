@@ -16,8 +16,8 @@
 namespace three {
     class DirectionalLight : public Light {
     public:
-        static PTR(DirectionalLight) create();
-        static PTR(DirectionalLight) create( Color color, float intensity, glm::vec3 position );
+        static ptr<DirectionalLight> create();
+        static ptr<DirectionalLight> create( Color color, float intensity, glm::vec3 position );
         
         DirectionalLight();
         DirectionalLight( Color color, float intensity, glm::vec3 position );

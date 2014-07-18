@@ -15,8 +15,8 @@
 namespace three {
     class AmbientLight: public Light {
     public:
-        static PTR(AmbientLight) create();
-        static PTR(AmbientLight) create(Color color);
+        static ptr<AmbientLight> create();
+        static ptr<AmbientLight> create(Color color);
 
         
         /** Constructors **/

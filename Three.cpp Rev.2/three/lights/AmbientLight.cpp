@@ -12,11 +12,11 @@
 using namespace std;
 namespace three {
     
-    PTR(AmbientLight) AmbientLight::create() {
+    ptr<AmbientLight> AmbientLight::create() {
         return make_shared<AmbientLight>();
     }
     
-    PTR(AmbientLight) AmbientLight::create(Color color) {
+    ptr<AmbientLight> AmbientLight::create(Color color) {
         return make_shared<AmbientLight>( AmbientLight(color) );
     }
     

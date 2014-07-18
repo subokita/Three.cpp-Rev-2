@@ -10,19 +10,19 @@
 #include "Event.h"
 
 namespace three {
-    void EventDispatcher::addEventListener(string type, PTR(EventDispatcher) obj ){
+    void EventDispatcher::addEventListener(string type, ptr<EventDispatcher> obj ){
         if( find( listeners[type].begin(), listeners[type].end(), obj) == listeners[type].end() )
             listeners[type].push_back( obj );
     }
     
-    bool EventDispatcher::hasEventListener( string type, PTR(EventDispatcher) obj ) {
+    bool EventDispatcher::hasEventListener( string type, ptr<EventDispatcher> obj ) {
         if( listeners.count(type) == 0 )
             return false;
         
         return find(listeners[type].begin(), listeners[type].end(), obj ) != listeners[type].end();
     }
     
-    void EventDispatcher::removeEventListener( string type, PTR(EventDispatcher) obj ) {
+    void EventDispatcher::removeEventListener( string type, ptr<EventDispatcher> obj ) {
         if( hasEventListener(type, obj) )
             std::remove( listeners[type].begin(), listeners[type].end(), obj );
     }

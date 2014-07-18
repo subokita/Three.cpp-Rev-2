@@ -10,7 +10,7 @@
 #include "three.h"
 
 namespace three {
-    void RenderPlugin::render( PTR(Scene), PTR(Camera) ) {
+    void RenderPlugin::render( ptr<Scene>, ptr<Camera> ) {
         
     }
 }

@@ -16,8 +16,8 @@
 namespace three {
     class Sphere {
     public:
-        static PTR(Sphere) create();
-        static PTR(Sphere) create( glm::vec3 center, float radius );
+        static ptr<Sphere> create();
+        static ptr<Sphere> create( glm::vec3 center, float radius );
         
         Sphere();
         Sphere( glm::vec3 center, float radius );
@@ -26,7 +26,7 @@ namespace three {
         Sphere& set( glm::vec3 center, float radius );
         Sphere& setFrom( std::vector<glm::vec3>& points );
         Sphere& setFrom( std::vector<glm::vec3>& points, glm::vec3 center );
-        Sphere& setFrom( PTR(Object3D) obj );
+        Sphere& setFrom( ptr<Object3D> obj );
         
         
         bool empty();

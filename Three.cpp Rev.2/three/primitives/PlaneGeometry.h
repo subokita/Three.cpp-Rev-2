@@ -16,7 +16,7 @@
 namespace three {
     class PlaneGeometry: public Geometry {
     public:
-        static PTR(PlaneGeometry) create( const float size, const int segments = 1 );
+        static ptr<PlaneGeometry> create( const float size, const int segments = 1 );
         ~PlaneGeometry();
         
     protected:

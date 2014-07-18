@@ -10,11 +10,22 @@
 #define __Three_cpp_Rev_2__Constants__
 
 #include <iostream>
+#include <vector>
+#include <numeric>
 #include <glm/glm.hpp>
 
-#define PTR(type) std::shared_ptr<type>
-#define INSTANCE_OF(var, type) ( std::dynamic_pointer_cast<type>(var) != nullptr )
-#define DOWNCAST(var, type) std::dynamic_pointer_cast<type>(var)
+#define instance_of(var, type) ( std::dynamic_pointer_cast<type>(var) != nullptr )
+#define downcast(var, type) std::dynamic_pointer_cast<type>(var)
+
+/* Use alias declaration instead of macro definitions */
+template<typename T>
+using ptr = std::shared_ptr<T>;
+
+template<typename T>
+using vector2D = std::vector<std::vector<T>>;
+
+
+
 
 static const float MAX_FLOAT = std::numeric_limits<float>::max();
 static const float MIN_FLOAT = std::numeric_limits<float>::min();

@@ -41,7 +41,7 @@ namespace three {
     protected:
         GLuint bufferIDs[4];
         std::vector<glm::vec3> vertices;
-        std::vector<PTR(Face3)> faces;
+        std::vector<ptr<Face3>> faces;
 //        std::vector<glm::vec2> uvs;
         int noOfElements;
     };

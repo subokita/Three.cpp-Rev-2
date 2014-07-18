@@ -15,8 +15,8 @@
 namespace three {
     class Fog: public IFog {
     public:
-        static PTR(Fog) create();
-        static PTR(Fog) create( Color color, float near, float far );
+        static ptr<Fog> create();
+        static ptr<Fog> create( Color color, float near, float far );
         
         Fog();
         Fog( Color color, float near, float far );

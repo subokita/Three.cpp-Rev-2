@@ -18,13 +18,16 @@
 
 namespace three {
     static unsigned int textureIDCount = 0;
-    static PTR(Texture) emptyWhiteTexture; /* Initialized in renderer */
+    static ptr<Texture> emptyWhiteTexture; /* Initialized in renderer */
     
     class Texture : public HasID, public EventDispatcher {
     public:
         Texture();
         ~Texture();
-           
+        
+        unsigned int width;
+        unsigned int height;
+        
         GLuint textureID;
         GLuint wrapS;
         GLuint wrapT;

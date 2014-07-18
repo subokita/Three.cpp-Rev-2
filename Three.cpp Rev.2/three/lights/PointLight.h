@@ -15,8 +15,8 @@
 namespace three {
     class PointLight: public Light {
     public:
-        static PTR(PointLight) create();
-        static PTR(PointLight) create( const glm::vec3 position, const Color color, const float intensity, const float distance );
+        static ptr<PointLight> create();
+        static ptr<PointLight> create( const glm::vec3 position, const Color color, const float intensity, const float distance );
         
         
         /** Constructors **/

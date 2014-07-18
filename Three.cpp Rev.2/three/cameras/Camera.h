@@ -11,6 +11,8 @@
 
 #include <iostream>
 #include <glm/glm.hpp>
+
+#include "Constants.h"
 #include "Object3D.h"
 #include "Utils.h"
 

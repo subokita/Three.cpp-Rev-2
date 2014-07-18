@@ -29,7 +29,7 @@ namespace three {
         virtual ~Renderer();
         
         void init( std::string window_title, GLuint window_width, GLuint window_height );
-        void render( PTR(Scene) scene, PTR(Camera) camera );
+        void render( ptr<Scene> scene, ptr<Camera> camera );
         void setDefaultGLState();
         
         void setPostRenderCallbackHandler ( std::function<void()> handler );
@@ -40,13 +40,13 @@ namespace three {
         void setMouseButtonCallbackHandler( std::function<void(GLFWwindow*, int, int, int)> handler );
         void setCursorCallbackHandler     ( std::function<void(GLFWwindow*, double, double)> handler );
         
-        void renderPlugins( std::vector<PTR(RenderPlugin)>& plugins, PTR(Scene) scene, PTR(Camera) camera );
+        void renderPlugins( std::vector<ptr<RenderPlugin>>& plugins, ptr<Scene> scene, ptr<Camera> camera );
         
     public:
-        std::vector<PTR(RenderPlugin)> preRenderPlugins;
-        std::vector<PTR(RenderPlugin)> postRenderPlugins;
-        PTR(Shader) shader;
-        PTR(ShaderLib::Shader) shaderLib;
+        std::vector<ptr<RenderPlugin>> preRenderPlugins;
+        std::vector<ptr<RenderPlugin>> postRenderPlugins;
+        ptr<Shader> shader;
+        ptr<ShaderLib::Shader> shaderLib;
         bool gammaInput;
         bool gammaOutput;
         Color clearColor;
@@ -61,7 +61,7 @@ namespace three {
         static void mouseButtonCallback    ( GLFWwindow * window, int button, int action, int mods );
         static void cursorCallback         ( GLFWwindow *window, double x, double y );
         void initCallbacks();
-        void addDefinitionsToShader( PTR(Scene) scene );
+        void addDefinitionsToShader( ptr<Scene> scene );
         
         
         void setFog();
@@ -70,15 +70,15 @@ namespace three {
         void setSpotLights();
         void setHemisphereLights();
         void setPointLights();
-        void initObjects( PTR(Object3D) object );
+        void initObjects( ptr<Object3D> object );
         void drawObjects();
-        void drawObjects(PTR(Object3D) object);
+        void drawObjects(ptr<Object3D> object);
 
         
     protected:
         Arcball arcball;
-        PTR(Scene) scene;
-        PTR(Camera) camera;
+        ptr<Scene> scene;
+        ptr<Camera> camera;
         static Renderer* instance;
         GLuint width;
         GLuint height;

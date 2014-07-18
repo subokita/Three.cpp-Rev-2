@@ -47,12 +47,12 @@ namespace three {
     
     CubeGeometry::~CubeGeometry(){}
     
-    PTR(CubeGeometry) CubeGeometry::create( const float size, const int segments ) {
+    ptr<CubeGeometry> CubeGeometry::create( const float size, const int segments ) {
         return make_shared<CubeGeometry>(CubeGeometry(size, segments));
     }
     
     
-    PTR(CubeGeometry) CubeGeometry::create( const float width, const float height, const float depth,
+    ptr<CubeGeometry> CubeGeometry::create( const float width, const float height, const float depth,
                                             const int width_segments, const int height_segments, const int depth_segments ) {
         return make_shared<CubeGeometry>(CubeGeometry(width, height, depth, width_segments, height_segments, depth_segments));
     }
@@ -131,7 +131,7 @@ namespace three {
 				glm::vec2 uvc = glm::vec2( ( ix + 1.0 ) / grid_x, 1.0 - ( iy + 1.0 ) / grid_y );
 				glm::vec2 uvd = glm::vec2( ( ix + 1.0 ) / grid_x, 1.0 - iy / grid_y );
                 
-				PTR(Face3) face = Face3::create( a + offset, b + offset, d + offset );
+				ptr<Face3> face = Face3::create( a + offset, b + offset, d + offset );
 				face->normal = normal;
                 face->vertexNormals.resize(3, normal);
 				face->materialIndex = material_index;

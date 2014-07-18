@@ -11,7 +11,7 @@
 using namespace std;
 
 namespace three {
-    PTR(MeshPhongMaterial) MeshPhongMaterial::create( Color color, Color ambient, Color emissive, Color specular,
+    ptr<MeshPhongMaterial> MeshPhongMaterial::create( Color color, Color ambient, Color emissive, Color specular,
                                                       float shininess, bool metal ) {
         return make_shared<MeshPhongMaterial>(MeshPhongMaterial( color, ambient, emissive, specular, shininess, metal ));
     }

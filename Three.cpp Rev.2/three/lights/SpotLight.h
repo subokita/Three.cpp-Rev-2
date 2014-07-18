@@ -15,8 +15,8 @@
 namespace three {
     class SpotLight : public Light {
     public:
-        static PTR(SpotLight) create();
-        static PTR(SpotLight) create( const Color color, const float intensity, const float distance, const float angle, const float exponent );
+        static ptr<SpotLight> create();
+        static ptr<SpotLight> create( const Color color, const float intensity, const float distance, const float angle, const float exponent );
 
         /** Constructors **/
         SpotLight();

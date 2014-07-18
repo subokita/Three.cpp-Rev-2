@@ -20,41 +20,41 @@ namespace three {
         
     }
     
-    PTR(Scene) Scene::create() {
+    ptr<Scene> Scene::create() {
         return shared_ptr<Scene>( new Scene() );
     }
     
-    Scene& Scene::addLight( PTR(Light) light ) {
+    Scene& Scene::addLight( ptr<Light> light ) {
 
-        if( INSTANCE_OF(light, AmbientLight) ) {
-            this->ambientLight = DOWNCAST(light, AmbientLight);
+        if( instance_of(light, AmbientLight) ) {
+            this->ambientLight = downcast(light, AmbientLight);
         }
-        else if( INSTANCE_OF(light, DirectionalLight) ) {
-            directionalLights.push_back( DOWNCAST(light, DirectionalLight) );
+        else if( instance_of(light, DirectionalLight) ) {
+            directionalLights.push_back( downcast(light, DirectionalLight) );
         }
-        else if( INSTANCE_OF(light, PointLight) ) {
-            pointLights.push_back( DOWNCAST(light, PointLight) );
+        else if( instance_of(light, PointLight) ) {
+            pointLights.push_back( downcast(light, PointLight) );
         }
-        else if( INSTANCE_OF(light, HemisphereLight) ) {
-            hemisphereLights.push_back( DOWNCAST(light, HemisphereLight) );
+        else if( instance_of(light, HemisphereLight) ) {
+            hemisphereLights.push_back( downcast(light, HemisphereLight) );
         }
-        else if( INSTANCE_OF(light, SpotLight) ) {
-            spotLights.push_back( DOWNCAST(light, SpotLight) );
+        else if( instance_of(light, SpotLight) ) {
+            spotLights.push_back( downcast(light, SpotLight) );
         }
         
         return *this;
     }
     
-    Scene& Scene::add( PTR(Object3D) object ) {
-        if( INSTANCE_OF(object, Light) )
-            this->addLight( DOWNCAST(object, Light) );
+    Scene& Scene::add( ptr<Object3D> object ) {
+        if( instance_of(object, Light) )
+            this->addLight( downcast(object, Light) );
         else
             Object3D::add( object );
         
         return *this;
     }
     
-    Scene& Scene::add( PTR(Mesh) object ) {
+    Scene& Scene::add( ptr<Mesh> object ) {
         Object3D::add( object );
         return *this;
     }

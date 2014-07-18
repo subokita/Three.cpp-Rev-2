@@ -26,10 +26,10 @@ namespace three {
         /* Data members */
         Color color;
         float intensity;
-        PTR(Object3D) target;
+        ptr<Object3D> target;
         
         // FIXME: Is it Light or Object3D?
-        std::vector<PTR(Light)> shadowCascadeArray;
+        std::vector<ptr<Light>> shadowCascadeArray;
         
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const Light& obj ) {
