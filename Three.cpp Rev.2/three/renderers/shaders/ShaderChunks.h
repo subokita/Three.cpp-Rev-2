@@ -35,6 +35,36 @@ namespace three {
             "out vec4 frag_color;",
         });
         
+        static const string normalMapVertexParams = Utils::join({
+        });
+        
+        
+        static const string normalMapFragmentParams = Utils::join({
+            "#ifdef USE_NORMALMAP",
+                "uniform sampler2D normal_map;",
+            
+                "vec3 perturbNormal2Arb( vec3 eye_pos, vec3 surf_norm ) {",
+                    "vec3 q0    = dFdx( eye_pos.xyz );",
+                    "vec3 q1    = dFdy( eye_pos.xyz );",
+                    "vec2 st0   = dFdx( uv.st );",
+                    "vec2 st1   = dFdy( uv.st );",
+                    "vec3 S     = normalize(  q0 * st1.t - q1 * st0.t );",
+                    "vec3 T     = normalize( -q0 * st1.s + q1 * st0.s );",
+                    "vec3 N     = normalize( surf_norm );",
+                    "vec3 mapN  = texture( normal_map, uv ).xyz * 2.0 - 1.0;",
+                    "mapN.xy    = 1.0 * mapN.xy;",
+                    "mat3 tsn   = mat3( S, T, N );",
+                    "return normalize( tsn * mapN );",
+                "}",
+            "#endif",
+        });
+        
+        static const string normalMapFragment = Utils::join({
+            "#ifdef USE_NORMALMAP",
+                "norm_normal_c = perturbNormal2Arb( -eye_direction_c, norm_normal_c );",
+            "#endif",
+        }, "\t");
+        
         static const string textureVertexParams = Utils::join({
             "#ifdef USE_MAP",
                 "out vec2 uv;",

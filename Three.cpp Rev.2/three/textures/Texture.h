@@ -14,7 +14,6 @@
 #include "internal_headers.h"
 #include "EventDispatcher.h"
 #include "HasID.h"
-#include "TextureUtils.h"
 
 namespace three {
     static unsigned int textureIDCount = 0;

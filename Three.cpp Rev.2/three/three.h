@@ -65,6 +65,7 @@
 
 /* ./three/textures */
 #include "Texture.h"
+#include "NormalTexture.h"
 #include "TextureUtils.h"
 
 

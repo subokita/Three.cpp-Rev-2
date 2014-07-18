@@ -33,6 +33,7 @@ namespace three {
                 Chunks::standardVertexParams,
                 Chunks::phongVertexParams,
                 Chunks::textureVertexParams,
+                Chunks::normalMapVertexParams,
             }),
             Utils::join({
                 "void main() {",
@@ -49,10 +50,12 @@ namespace three {
                 Chunks::spotLightsFragmentParams,
                 Chunks::fogFragmentParams,
                 Chunks::textureFragmentParams,
+                Chunks::normalMapFragmentParams,
             }),
             Utils::join({
                 "void main() {",
                     Chunks::phongFragment_1,
+                    Chunks::normalMapFragment,
                     Chunks::textureFragment,
                     Chunks::pointLightsFragment,
                     Chunks::directionalLightsFragment,

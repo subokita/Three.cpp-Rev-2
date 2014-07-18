@@ -183,6 +183,7 @@ namespace three {
         
         
         shaderLib->defines.push_back( "#define USE_MAP" );
+        shaderLib->defines.push_back( "#define USE_NORMALMAP" );
     }
     
     

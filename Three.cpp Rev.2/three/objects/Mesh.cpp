@@ -7,11 +7,11 @@
 //
 
 #include "Mesh.h"
-#include "MeshPhongMaterial.h"
+#include "three.h"
 
 using namespace std;
 
-namespace  three {
+namespace three {
     
     ptr<Mesh> Mesh::create(){
         return make_shared<Mesh>();
@@ -59,6 +59,16 @@ namespace  three {
         glActiveTexture( GL_TEXTURE0 );
         glBindTexture( GL_TEXTURE_2D, texture->textureID );
         shader->setUniform("map", 0);
+        
+        if( normalMap == nullptr ) {
+            if( blankNormalMap == nullptr )
+                blankNormalMap = TextureUtils::loadBlankNormalMap();
+            normalMap = blankNormalMap;
+        }
+        
+        glActiveTexture( GL_TEXTURE1 );
+        glBindTexture( GL_TEXTURE_2D, normalMap->textureID );
+        shader->setUniform("normal_map", 1);
         
         /* Vertices */
         glEnableVertexAttribArray( 0 );

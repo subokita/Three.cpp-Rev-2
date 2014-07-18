@@ -82,6 +82,7 @@ namespace three {
     
     /* ./three/renderers/textures */
     class Texture;
+    class NormalTexture;
     
     namespace ShaderLib {
         class Shader;

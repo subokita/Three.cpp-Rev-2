@@ -45,7 +45,7 @@ int main(int argc, const char * argv[])
     auto plane_mesh = Mesh::create( PlaneGeometry::create(20.0f, 1),
                                     MeshPhongMaterial::create(0x101010, 0x666666, 0x000000, 0x101010 ) );
     plane_mesh->rotateX(-90.0);
-    scene->add( plane_mesh );
+//    scene->add( plane_mesh );
     
     
     /* Create directional light */
@@ -124,17 +124,16 @@ int main(int argc, const char * argv[])
 
 ptr<Object3D> createCompositeObject() {
     
-    string path = "/Users/saburookita/Desktop/Dropbox/OpenGL-master/Binaries/";
-    string filename = "four_shapes_color.tga";
+    string path = "/Users/saburookita/Personal Projects/Three.cpp Rev.2/examples/assets/";
     
     /*Create a composite object*/
     auto composite = make_shared<Object3D>();
     
     /* Main part is a sphere */
     auto sphere = Mesh::create( SphereGeometry::create(30, 15, 0.66f ),
-                                MeshPhongMaterial::create( 0xFFFFFF, 0xFFFFFF, 0x000000, 0x111111, 30.0, false ) );
+                                MeshPhongMaterial::create( 0x990099, 0xFFFFFF, 0x000000, 0x111111, 30.0, false ) );
     composite->add( sphere );
-    sphere->texture = TextureUtils::loadImageAsTexture( path, filename );
+    sphere->normalMap = TextureUtils::loadAsNormalMap( path, "tutorial_normals07.gif" );
     
     
     /* But a cube is attached to the sphere (not to composite directly), thus transformation is relative to sphere */
@@ -145,9 +144,8 @@ ptr<Object3D> createCompositeObject() {
     sphere->add( cube );
 
     /* Try to add a texture on to it */
-//    /Users/saburookita/Downloads/mrdoob-three.js-d3cb4e7/examples/textures/UV_Grid_Sm.jpg
-//    /Users/saburookita/Desktop/Dropbox/OpenGL-master/Binaries/four_shapes_normal.tga
-    cube->texture = TextureUtils::loadImageAsTexture( path, filename );
+    cube->texture   = TextureUtils::loadImageAsTexture( path, "rock_color.tga" );
+    cube->normalMap = TextureUtils::loadAsNormalMap( path, "rock_normal.tga" );
     
     /* Just for testing, add the bounding box to the composite object, it should cover both sphere and cube */
     auto bound_geom = composite->computeBoundingBox();

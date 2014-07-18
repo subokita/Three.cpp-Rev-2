@@ -19,6 +19,8 @@ namespace three {
         static FIBITMAP* loadImage( const std::string path, const std::string filename );
         static ptr<Texture> loadImageAsTexture( const std::string path, const std::string filename );
         static ptr<Texture> loadEmptyWhiteTexture();
+        static ptr<NormalTexture> loadAsNormalMap( const std::string path, const std::string filename );
+        static ptr<NormalTexture> loadBlankNormalMap();
     };
 }
 

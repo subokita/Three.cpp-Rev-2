@@ -31,6 +31,7 @@ namespace three {
         ~Mesh();
         
         ptr<Texture> texture;
+        ptr<NormalTexture> normalMap;
         ptr<Geometry> geometry;
         ptr<Material> material;
     };
