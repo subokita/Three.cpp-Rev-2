@@ -12,31 +12,53 @@
 using namespace std;
 namespace three {
     
-    ptr<SphereGeometry> SphereGeometry::create(const int slices, const int parallels, const float size){
-        return make_shared<SphereGeometry>( SphereGeometry(slices, parallels, size) );
+    ptr<SphereGeometry> SphereGeometry::create(const int slices, const int parallels, const float radius,
+                                               const float phi_start, const float phi_end, const float theta_start,
+                                               const float theta_end ){
+        
+        return make_shared<SphereGeometry>( SphereGeometry(slices, parallels, radius,
+                                                           phi_start, phi_end, theta_start, theta_end) );
     }
     
 
-    SphereGeometry::SphereGeometry(const int slices, const int parallels, const float size){
-        this->init(slices, parallels, size );
+    SphereGeometry::SphereGeometry(const int slices, const int parallels, const float radius, const float phi_start,
+                                   const float phi_end, const float theta_start, const float theta_end) :
+        slices    (slices),
+        parallels (parallels),
+        radius    (radius),
+        phiStart  (phi_start),
+        phiEnd    (phi_end),
+        thetaStart(theta_start),
+        thetaEnd  (theta_end)
+    {
+        this->init();
     }
     
-    SphereGeometry::SphereGeometry(){
+    SphereGeometry::SphereGeometry() :
+        slices    (8),
+        parallels (6),
+        radius    (1.0),
+        phiStart  (0.0),
+        phiEnd    (360.0),
+        thetaStart(0.0),
+        thetaEnd  (180.0)
+    {
+        this->init();
     }
     
     SphereGeometry::~SphereGeometry(){
     }
     
     
-    void SphereGeometry::init( int slices, int parallels, const float radius ){
-        int width_segments  = max( 3, slices );
-        int height_segments = max( 2, parallels );
+    void SphereGeometry::init(){
+        int width_segments  = max( 3, this->slices );
+        int height_segments = max( 2, this->parallels );
         
-        float phi_start = 0.0;
-        float phi_length = M_PI * 2.0;
+        float phi_start     = Math::degToRad( this->phiStart );
+        float phi_length    = Math::degToRad( this->phiEnd );
         
-        float theta_start = 0.0;
-        float theta_length = M_PI;
+        float theta_start   = Math::degToRad( this->thetaStart );
+        float theta_length  = Math::degToRad( this->thetaEnd );
         
         this->vertices.clear();
         
@@ -86,52 +108,27 @@ namespace three {
                     uv1.x = (uv1.x + uv2.x) / 2.0;
                     
                     ptr<Face3> face = Face3::create( v1, v3, v4 );
-                    
-                    face->vertexNormals.push_back( n1 );
-                    face->vertexNormals.push_back( n3 );
-                    face->vertexNormals.push_back( n4 );
-                    
-                    face->uvs.push_back( uv1 );
-                    face->uvs.push_back( uv3 );
-                    face->uvs.push_back( uv4 );
+                    face->addVertexNormals({n1, n3, n4});
+                    face->addVertexUVs({uv1, uv3, uv4});
                     faces.push_back( face );
                 }
                 else if( fabs( this->vertices[v3].y ) == radius ) {
                     uv3.x = (uv3.x + uv4.x) / 2.0;
                     
                     ptr<Face3> face = Face3::create( v1, v2, v3 );
-                    
-                    face->vertexNormals.push_back( n1 );
-                    face->vertexNormals.push_back( n2 );
-                    face->vertexNormals.push_back( n3 );
-                    
-                    face->uvs.push_back( uv1 );
-                    face->uvs.push_back( uv2 );
-                    face->uvs.push_back( uv3 );
-                    
+                    face->addVertexNormals({n1, n2, n3});
+                    face->addVertexUVs({uv1, uv2, uv3});
                     faces.push_back( face );
                 }
                 else {
                     ptr<Face3> face = Face3::create( v1, v2, v4 );
-                    
-                    face->vertexNormals.push_back( n1 );
-                    face->vertexNormals.push_back( n2 );
-                    face->vertexNormals.push_back( n4 );
-                    
-                    face->uvs.push_back( uv1 );
-                    face->uvs.push_back( uv2 );
-                    face->uvs.push_back( uv4 );
+                    face->addVertexNormals({n1, n2, n4});
+                    face->addVertexUVs({uv1, uv2, uv4});
                     faces.push_back( face );
                     
                     face = Face3::create( v2, v3, v4 );
-                    
-                    face->vertexNormals.push_back( n2 );
-                    face->vertexNormals.push_back( n3 );
-                    face->vertexNormals.push_back( n4 );
-                    
-                    face->uvs.push_back( uv2 );
-                    face->uvs.push_back( uv3 );
-                    face->uvs.push_back( uv4 );
+                    face->addVertexNormals({n2, n3, n4});
+                    face->addVertexUVs({uv2, uv3, uv4});
                     faces.push_back( face );
                 }
             }

@@ -34,6 +34,7 @@
 		A8AC4AFD19764C4500D4449B /* HasID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AC4AFB19764C4500D4449B /* HasID.cpp */; };
 		A8DA557D1976E689000CC869 /* RenderPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DA557B1976E689000CC869 /* RenderPlugin.cpp */; };
 		A8DC9EC419794618004C75FB /* NormalTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DC9EC219794618004C75FB /* NormalTexture.cpp */; };
+		A8DC9EC7197994DD004C75FB /* CylinderGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DC9EC5197994DD004C75FB /* CylinderGeometry.cpp */; };
 		A8F0EE34196E7C7A003EDB98 /* PointLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F0EE32196E7C7A003EDB98 /* PointLight.cpp */; };
 		A8F0EE3A196E8C74003EDB98 /* SphereGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F0EE38196E8C74003EDB98 /* SphereGeometry.cpp */; };
 		A8F4C3DF196A687600D191DC /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F4C3DE196A687600D191DC /* main.cpp */; };
@@ -125,6 +126,8 @@
 		A8DA557C1976E689000CC869 /* RenderPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderPlugin.h; sourceTree = "<group>"; };
 		A8DC9EC219794618004C75FB /* NormalTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NormalTexture.cpp; sourceTree = "<group>"; };
 		A8DC9EC319794618004C75FB /* NormalTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalTexture.h; sourceTree = "<group>"; };
+		A8DC9EC5197994DD004C75FB /* CylinderGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CylinderGeometry.cpp; sourceTree = "<group>"; };
+		A8DC9EC6197994DD004C75FB /* CylinderGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CylinderGeometry.h; sourceTree = "<group>"; };
 		A8F0EE2A196E56FB003EDB98 /* three.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = three.h; sourceTree = "<group>"; };
 		A8F0EE2B196E585C003EDB98 /* internal_headers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = internal_headers.h; sourceTree = "<group>"; };
 		A8F0EE32196E7C7A003EDB98 /* PointLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointLight.cpp; sourceTree = "<group>"; };
@@ -366,6 +369,8 @@
 			children = (
 				A8F4C41D196AAC6500D191DC /* CubeGeometry.cpp */,
 				A8F4C41E196AAC6500D191DC /* CubeGeometry.h */,
+				A8DC9EC5197994DD004C75FB /* CylinderGeometry.cpp */,
+				A8DC9EC6197994DD004C75FB /* CylinderGeometry.h */,
 				A8F4C435196B08F300D191DC /* PlaneGeometry.cpp */,
 				A8F4C436196B08F300D191DC /* PlaneGeometry.h */,
 				A8F0EE38196E8C74003EDB98 /* SphereGeometry.cpp */,
@@ -490,6 +495,7 @@
 				A8A33FB51973F78D00037E90 /* EventDispatcher.cpp in Sources */,
 				A8F4C42D196AE05D00D191DC /* Math.cpp in Sources */,
 				A8DA557D1976E689000CC869 /* RenderPlugin.cpp in Sources */,
+				A8DC9EC7197994DD004C75FB /* CylinderGeometry.cpp in Sources */,
 				A8A33FAC1973D8F900037E90 /* Arcball.cpp in Sources */,
 				A8F4C413196AA06E00D191DC /* Geometry.cpp in Sources */,
 				A88AF9F4196C336A00601287 /* Face3.cpp in Sources */,

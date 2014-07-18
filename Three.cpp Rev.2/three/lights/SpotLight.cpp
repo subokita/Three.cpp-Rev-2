@@ -12,10 +12,6 @@ using namespace std;
 
 namespace three {
     
-    ptr<SpotLight> SpotLight::create(){
-        return make_shared<SpotLight>();
-    }
-    
     ptr<SpotLight> SpotLight::create( const Color color, const float intensity, const float distance, const float angle, const float exponent ){
         return make_shared<SpotLight>(color, intensity, distance, angle, exponent);
     }

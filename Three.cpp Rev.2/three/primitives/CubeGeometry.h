@@ -17,7 +17,10 @@ namespace three {
     class CubeGeometry: public Geometry {
     public:
         static ptr<CubeGeometry> create( const float size, const int segments = 1 );
-        static ptr<CubeGeometry> create( const float width, const float height, const float depth, const int width_segments = 1, const int height_segments = 1, const int depth_segments = 1 );
+        static ptr<CubeGeometry> create( const float width, const float height, const float depth,
+                                         const int width_segments  = 1,
+                                         const int height_segments = 1,
+                                         const int depth_segments  = 1 );
         ~CubeGeometry();
         
     protected:
@@ -33,7 +36,7 @@ namespace three {
         CubeGeometry( const float width, const float height, const float depth,
                       const int width_segments, const int height_segments, const int depth_segments);
         
-        void init();
+        virtual void init() override;
         
         void buildPlane( int u, int v, int udir, int vdir, float width, float height, float depth, int material_index );
     };

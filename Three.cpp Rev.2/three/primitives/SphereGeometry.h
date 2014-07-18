@@ -15,14 +15,29 @@
 namespace three {
     class SphereGeometry: public Geometry {
     public:
-        static ptr<SphereGeometry> create(const int slices, const int parallels, const float size);
+        static ptr<SphereGeometry> create(const int slices          = 8,
+                                          const int parallels       = 6,
+                                          const float radius        = 1.0,
+                                          const float phi_start     = 0.0,
+                                          const float phi_end       = 360.0,
+                                          const float theta_start   = 0.0,
+                                          const float theta_end     = 180.0);
         ~SphereGeometry();
         
     protected:
-        SphereGeometry(const int slices, const int parallels, const float size);
+        int slices;
+        int parallels;
+        float radius;
+        float phiStart;
+        float phiEnd;
+        float thetaStart;
+        float thetaEnd;
+        
+        SphereGeometry(const int slices, const int parallels, const float radius,
+                       const float phi_start, const float phi_end, const float theta_start, const float theta_end);
         SphereGeometry();
         
-        void init(const int slices, const int parallels, const float size);
+        virtual void init() override;
     };
 }
 

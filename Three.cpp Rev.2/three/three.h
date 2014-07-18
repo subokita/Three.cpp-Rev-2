@@ -57,6 +57,7 @@
 
 /* ./three/primitives */
 #include "CubeGeometry.h"
+#include "CylinderGeometry.h"
 #include "PlaneGeometry.h"
 #include "SphereGeometry.h"
 

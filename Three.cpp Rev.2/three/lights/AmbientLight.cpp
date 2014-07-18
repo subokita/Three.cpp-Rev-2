@@ -12,10 +12,6 @@
 using namespace std;
 namespace three {
     
-    ptr<AmbientLight> AmbientLight::create() {
-        return make_shared<AmbientLight>();
-    }
-    
     ptr<AmbientLight> AmbientLight::create(Color color) {
         return make_shared<AmbientLight>( AmbientLight(color) );
     }

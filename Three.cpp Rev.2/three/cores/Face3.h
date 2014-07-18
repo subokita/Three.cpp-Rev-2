@@ -20,15 +20,20 @@
 namespace three {
     class Face3 {
     public:
-        static ptr<Face3> create();
         static ptr<Face3> create(int a, int b, int c);
         static ptr<Face3> create(int a, int b, int c, glm::vec3 normal, Color color = 0xFFFFFF, int material_index = 0);
         
+        ~Face3();
+        
+        void addVertexNormals( std::initializer_list<glm::vec3> vertex_normals );
+        void addVertexUVs( std::initializer_list<glm::vec2> vertex_uvs );
+        
+    protected:
         Face3();
         Face3( int a, int b, int c );
         Face3( int a, int b, int c, glm::vec3 normal, Color color, int material_index );
-        ~Face3();
         
+
         
     public:
         /* Data members */

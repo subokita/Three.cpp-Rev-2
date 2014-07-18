@@ -63,8 +63,10 @@ namespace three {
     class Utils;
     
     /* ./three/primitives */
-    class Cube;
+    class CubeGeometry;
+    class CylinderGeometry;
     class PlaneGeometry;
+    class SphereGeometry;
     
     /* ./three/renderers */
     class Renderer;

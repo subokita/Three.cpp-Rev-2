@@ -14,13 +14,16 @@
 
 namespace three {
     class HemisphereLight : public Light {
+    friend class Renderer;
+
     public:
-        static ptr<HemisphereLight> create();
         static ptr<HemisphereLight> create(const Color sky_color, const Color ground_color, const float intensity);
+        ~HemisphereLight();
         
+    protected:
         HemisphereLight();
         HemisphereLight(const Color sky_color, const Color ground_color, const float intensity);
-        ~HemisphereLight();
+        
         
         /* Data members */
         Color groundColor;

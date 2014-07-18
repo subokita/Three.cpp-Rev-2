@@ -17,17 +17,21 @@ namespace three {
         
     public:
         static ptr<PerspectiveCamera> create(const float fov, const float aspect, const float near, const float far );
-        
-        PerspectiveCamera();
-        PerspectiveCamera(const float fov, const float aspect, const float near, const float far );
+
         ~PerspectiveCamera();
-        
         virtual void updateProjectionMatrix() override;
+        
         void setLens( const float focal_length, const float frame_height );
         
-        void setViewOffset( const float full_width, const float full_height, const float x, const float y, const float width, const float height );
+        void setViewOffset( const float full_width, const float full_height,
+                            const float x, const float y, const float width, const float height );
         
-    public:
+        
+    protected:
+        PerspectiveCamera();
+        PerspectiveCamera(const float fov, const float aspect, const float near, const float far );
+
+    protected:
         float fov;
         float aspect;
         float near;

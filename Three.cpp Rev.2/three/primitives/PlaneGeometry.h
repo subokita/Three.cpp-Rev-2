@@ -27,7 +27,7 @@ namespace three {
         
         PlaneGeometry();
         PlaneGeometry(const float size, const int segments);
-        void init();
+        virtual void init() override;
         
     };
 }

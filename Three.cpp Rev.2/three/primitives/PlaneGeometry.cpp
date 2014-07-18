@@ -55,21 +55,16 @@ namespace three {
         
         glm::vec3 normal(0, 0, 1);
         for ( int iz = 0; iz < gridZ1; iz ++ ) {
-            
             float y = iz * segment_height - height_half;
             
             for ( int ix = 0; ix < gridX1; ix ++ ) {
-                
                 float x = ix * segment_width - width_half;
-                
                 vertices.push_back( glm::vec3(x, -y, 0.0) );
             }
         }
         
         for ( int iz = 0; iz < gridZ; iz ++ ) {
-            
             for ( int ix = 0; ix < gridX; ix ++ ) {
-                
                 int a = ix + gridX1 * iz;
                 int b = ix + gridX1 * ( iz + 1 );
                 int c = ( ix + 1 ) + gridX1 * ( iz + 1 );
@@ -80,61 +75,18 @@ namespace three {
                 glm::vec2 uvc( ( ix + 1 ) / gridX, 1 - ( iz + 1 ) / gridZ );
                 glm::vec2 uvd( ( ix + 1 ) / gridX, 1 - iz / gridZ );
                 
-                ptr<Face3> face = Face3::create( a, b, d );
-                face->normal = normal;
-                face->vertexNormals.push_back( normal );
-                face->vertexNormals.push_back( normal );
-                face->vertexNormals.push_back( normal );
-                
+                ptr<Face3> face = Face3::create( a, b, d, normal );
+                face->addVertexNormals({normal, normal, normal});
+                face->addVertexUVs({uva, uvb, uvd});
                 faces.push_back( face );
-                face->uvs.push_back( uva );
-                face->uvs.push_back( uvb );
-                face->uvs.push_back( uvd );
                 
-                face = Face3::create( b, c, d );
-                face->normal = normal;
-                face->vertexNormals.push_back( normal );
-                face->vertexNormals.push_back( normal );
-                face->vertexNormals.push_back( normal );
-                
-                
+                face = Face3::create( b, c, d, normal );
+                face->addVertexNormals({normal, normal, normal});
+                face->addVertexUVs({uvb, uvc, uvd});
                 faces.push_back( face );
-                face->uvs.push_back( uva );
-                face->uvs.push_back( uvb );
-                face->uvs.push_back( uvd );
             }
         }
         
-        
-//        if( size <= 0.0 )
-//            throw std::runtime_error( "Unable to create plane with size less than 0" );
-//        
-//        vertices = {
-//            /* Top */
-//            glm::vec3( -1.0f, 0.0f, -1.0f ),
-//            glm::vec3( -1.0f, 0.0f, +1.0f ),
-//            glm::vec3( +1.0f, 0.0f, +1.0f ),
-//            glm::vec3( +1.0f, 0.0f, -1.0f ),
-//        };
-//        
-//        if( size != 1.0f ) {
-//            std::transform( vertices.begin(), vertices.end(), vertices.begin(), [&](glm::vec3& vertex){
-//                return vertex * size;
-//            });
-//        }
-//        
-//        
-//        faces = {
-//            Face3::create(0, 1, 2),
-//            Face3::create(0, 2, 3),
-//        };
-//        
-//        
-//        uvs = {
-//            glm::vec2( 0.0f, 1.0f ),
-//            glm::vec2( 0.0f, 0.0f ),
-//            glm::vec2( 1.0f, 0.0f ),
-//            glm::vec2( 1.0f, 1.0f ),
-//        };
+        mergeVertices();
     }
 }

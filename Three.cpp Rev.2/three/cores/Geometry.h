@@ -20,14 +20,16 @@
 
 namespace three {
     class Geometry : public Object3D{
+        friend class Mesh;
+        friend class Box3;
+        
     public:
         ~Geometry();
         void initGLBuffers();
         
-        friend class Mesh;
-        friend class Box3;
-        
     protected:
+        virtual void init() = 0;
+        
         Geometry();
         void mergeVertices();
         void computeFaceNormals();
@@ -42,7 +44,6 @@ namespace three {
         GLuint bufferIDs[4];
         std::vector<glm::vec3> vertices;
         std::vector<ptr<Face3>> faces;
-//        std::vector<glm::vec2> uvs;
         int noOfElements;
     };
 }

@@ -11,10 +11,6 @@
 using namespace std;
 
 namespace three {
-    ptr<PointLight> PointLight::create(){
-        return make_shared<PointLight>();
-    }
-    
     ptr<PointLight> PointLight::create( const glm::vec3 position, const Color color, const float intensity, const float distance ){
         return make_shared<PointLight>(PointLight(position, color, intensity, distance));
     }

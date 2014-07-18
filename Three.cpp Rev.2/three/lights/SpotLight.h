@@ -14,14 +14,16 @@
 
 namespace three {
     class SpotLight : public Light {
-    public:
-        static ptr<SpotLight> create();
-        static ptr<SpotLight> create( const Color color, const float intensity, const float distance, const float angle, const float exponent );
+    friend class Renderer;
 
+    public:
+        static ptr<SpotLight> create( const Color color, const float intensity, const float distance, const float angle, const float exponent );
+        ~SpotLight();
+        
         /** Constructors **/
         SpotLight();
         SpotLight( const Color color, const float intensity, const float distance, const float angle, const float exponent );
-        ~SpotLight();
+
         
         glm::vec3 target; //FIXME: Target should be an object
         float distance;

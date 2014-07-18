@@ -26,10 +26,10 @@ namespace three {
     ptr<NormalTexture> TextureUtils::loadBlankNormalMap() {
         ptr<NormalTexture> map = make_shared<NormalTexture>();
         
-        map->width  = 1;
-        map->height = 1;
+        map->width  = 256;
+        map->height = 256;
         
-        vector<glm::vec3> normals(1, glm::vec3(1.0));
+        vector<glm::vec3> normals(map->width * map->height, glm::vec3(1.0, 1.0, 1.0));
         
         glGenTextures(1, &map->textureID);
         glBindTexture( GL_TEXTURE_2D, map->textureID );

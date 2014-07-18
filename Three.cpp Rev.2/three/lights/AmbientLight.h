@@ -15,14 +15,13 @@
 namespace three {
     class AmbientLight: public Light {
     public:
-        static ptr<AmbientLight> create();
         static ptr<AmbientLight> create(Color color);
-
+        ~AmbientLight();
         
+    protected:
         /** Constructors **/
         AmbientLight();
         AmbientLight(Color& color);
-        ~AmbientLight();        
     };
 }
 

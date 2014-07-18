@@ -16,16 +16,16 @@ namespace three {
     class OrthographicCamera : public Camera {
         
     public:
-        static ptr<OrthographicCamera> create();
         static ptr<OrthographicCamera> create(float left, float right, float top, float bottom, float near, float far );
 
-        OrthographicCamera();
-        OrthographicCamera( float left, float right, float top, float bottom, float near, float far );
         ~OrthographicCamera();
         
         virtual void updateProjectionMatrix() override;
         
-    public:
+    protected:
+        OrthographicCamera();
+        OrthographicCamera( float left, float right, float top, float bottom, float near, float far );
+        
         /* Data members */
         float left;
         float right;

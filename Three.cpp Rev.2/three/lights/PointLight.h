@@ -14,15 +14,17 @@
 
 namespace three {
     class PointLight: public Light {
+    friend class Renderer;
+
     public:
-        static ptr<PointLight> create();
         static ptr<PointLight> create( const glm::vec3 position, const Color color, const float intensity, const float distance );
+        ~PointLight();
         
-        
+    protected:
         /** Constructors **/
         PointLight();
         PointLight( const glm::vec3 position, const Color color, const float intensity, const float distance );
-        ~PointLight();
+
         
         /* Data members */
         float distance;

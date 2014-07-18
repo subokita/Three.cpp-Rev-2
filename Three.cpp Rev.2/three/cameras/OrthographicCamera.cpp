@@ -13,11 +13,8 @@ using namespace std;
 
 namespace three{
     
-    ptr<OrthographicCamera> OrthographicCamera::create() {
-        return make_shared<OrthographicCamera>();
-    }
-    
-    ptr<OrthographicCamera> OrthographicCamera::create(float left, float right, float top, float bottom, float near, float far ) {
+    ptr<OrthographicCamera> OrthographicCamera::create(float left, float right, float top, float bottom,
+                                                       float near, float far ) {
         return make_shared<OrthographicCamera>( OrthographicCamera( left, right, top, bottom, near, far) );
     }
     
