@@ -14,9 +14,12 @@ I'm not a 3D programmer, I wanted to have a 3D library that I can use to show th
 
 Current Progress
 ================
-The library is able to render primitives such as textured cube or sphere on a scene, utilizing blinn-phong shading. 
+* The library is able to render primitives such as textured cube or sphere on a scene, utilizing blinn-phong shading. 
+* Normal mapping and texture mapping are implemented
 
-Many codes are still unoptimized, and some of the codes are patchy in the nature, aka not the optimal solution, but at least able to show working example.
+Many codes are still unoptimized, and some of the codes are patchy in the nature, aka not the optimal solution, but at least able to show working example. 
+
+PS: I'm going to rewrite the how the shader is bound. Currently it's one shader per renderer, but since it's not a good fit for scene with objects that uses different type of materials (imagine if one uses normal map and other doesn't, it will mess up the shaders without using if-else statements in shaders, which is notoriously resource hog), I'd need to reimplement so it's one shader per one unique material.
 
 
 
