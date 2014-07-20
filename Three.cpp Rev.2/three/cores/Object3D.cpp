@@ -23,10 +23,11 @@ namespace three {
         scale        ( glm::vec3(1.0, 1.0, 1.0) ),
         position     ( glm::vec3(0.0, 0.0, 0.0) ),
         up           ( glm::vec3(0.0, 1.0, 0.0) ),
-        matrix( glm::mat4(1.0 )),
-        matrixWorld( glm::mat4(1.0 )),
-        matrixAutoUpdate( true ),
-        matrixWorldNeedsUpdate( false )
+        matrix                  ( glm::mat4(1.0 )),
+        matrixWorld             ( glm::mat4(1.0 )),
+        matrixAutoUpdate        ( true ),
+        matrixWorldNeedsUpdate  ( false ),
+        shaderID                ("")
     {
     }
     
@@ -146,4 +147,18 @@ namespace three {
         return nullptr;
     }
     
+    
+    vector<ptr<Object3D>> Object3D::getDescendants() {
+        vector<ptr<Object3D>> descendants;
+        
+        for( auto entry: children ){
+            descendants.push_back( entry.second );
+            
+            vector<ptr<Object3D>> grandchildren = entry.second->getDescendants();
+            if( !grandchildren.empty() )
+                copy( grandchildren.begin(), grandchildren.end(), back_inserter(descendants) );
+        }
+        
+        return descendants;
+    }
 }

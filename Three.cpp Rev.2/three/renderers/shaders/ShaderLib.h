@@ -10,23 +10,75 @@
 #define __Three_cpp_Rev_2__ShaderLib__
 
 #include <iostream>
+#include "internal_headers.h"
 #include "Utils.h"
 #include "ShaderChunks.h"
 
 namespace three {
-    namespace ShaderLib {
-        static const std::string VERSION = "#version 410 core";
+    static const std::string SHADER_VERSION = "#version 410 core";
+    
+    class ShaderLib {
+    public:
+        static ptr<ShaderLib> create( ptr<Mesh> mesh );
         
-        struct Shader {
-            std::vector<std::string> precisions;
-            std::vector<std::string> defines;
-            std::string vertexParams;
-            std::string vertexShader;
-            std::string fragmentParams;
-            std::string fragmentShader;
-        };
+        static ptr<ShaderLib> create( std::string name, std::vector<std::string> precisions,
+                                      std::vector<std::string> defines,
+                                      std::string vertex_params, std::string vertex_code,
+                                      std::string fragment_params, std::string fragment_code );
         
-        static const Shader phong = {
+        ShaderLib( const ShaderLib& rhs );
+        ptr<ShaderLib> clone() const;
+        
+        ~ShaderLib();
+        
+        void addDefinitions(ptr<Scene> scene, ptr<Mesh> mesh, bool gamma_input, bool gamma_output);
+        void addDefinitions(ptr<Scene> scene, bool gamma_input, bool gamma_output);
+        
+        bool empty();
+        
+        std::string getID();
+        std::string getVertexParams();
+        std::string getFragmentParams();
+        
+        std::string getVertexCode();
+        std::string getFragmentCode();
+        
+        std::string constructFragmentShader();
+        std::string constructVertexShader();
+        
+        void compileShader();
+        void bind();
+        void unbind();
+        
+        void draw( ptr<Camera> camera, ptr<Arcball> arcball, ptr<Object3D> object, bool gamma_input );
+        
+        void setFog              ( ptr<IFog> ifog, bool gamma_input );
+        void setAmbientLights    ( ptr<AmbientLight> lights, bool gamma_input );
+        void setHemisphereLights ( std::vector<ptr<HemisphereLight>>& lights, bool gamma_input );
+        void setDirectionalLights( std::vector<ptr<DirectionalLight>>& lights, bool gamma_input );
+        void setPointLights      ( std::vector<ptr<PointLight>>& lights, bool gamma_input );
+        void setSpotLights       ( std::vector<ptr<SpotLight>>& lights, bool gamma_input );
+        
+    protected:
+        ShaderLib( std::string name, std::vector<std::string> precisions, std::vector<std::string> defines,
+                   std::string vertex_params, std::string vertex_code,
+                   std::string fragment_params, std::string fragment_code );
+        
+        ptr<Shader> shader;
+        std::bitset<32> config;
+        std::string id;
+        std::string name;
+        std::string version;
+        std::vector<std::string> precisions;
+        std::vector<std::string> defines;
+        std::string vertexParams;
+        std::string vertexCode;
+        std::string fragmentParams;
+        std::string fragmentCode;
+    };
+    
+    static const ptr<ShaderLib> ShaderLib_PHONG = ShaderLib::create(
+            "phong",
             {"precision highp float;", "precision highp int;"},
             {},
             Utils::join({
@@ -64,9 +116,8 @@ namespace three {
                     Chunks::phongFragment_2,
                     Chunks::fogFragment,
                 "}",
-            }),
-        };
-    }
+            })
+    );
 }
 
 #endif /* defined(__Three_cpp_Rev_2__ShaderLib__) */

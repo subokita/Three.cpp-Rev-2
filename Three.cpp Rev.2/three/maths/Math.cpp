@@ -180,9 +180,6 @@ namespace three {
     }
     
     
-//    glm::vec3 Math::applyQuaternion( glm::vec3& vec, Quaternion& q ) {
-//        return applyQuaternion( vec, q.rep );
-//    }
     
     glm::vec3 Math::applyQuaternion( glm::vec3& vec, glm::quat& q ) {
         glm::vec3 result;

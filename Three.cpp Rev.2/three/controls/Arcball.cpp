@@ -15,6 +15,14 @@
 #include <glm/gtc/matrix_inverse.hpp>
 
 namespace three {
+    
+    ptr<Arcball> Arcball::create( int window_width, int window_height, GLfloat roll_speed, bool x_axis, bool y_axis  ) {
+        ptr<Arcball> arcball = std::make_shared<Arcball>();
+        arcball->init(window_width, window_height, roll_speed, x_axis, y_axis );
+        return arcball;
+    }
+    
+    
     /**
      * @param roll_speed the speed of rotation
      */

@@ -66,22 +66,26 @@ namespace three {
         }, "\t");
         
         static const string textureVertexParams = Utils::join({
-            "#ifdef USE_MAP",
+            "#if defined( USE_MAP ) || defined( USE_NORMALMAP )",
                 "out vec2 uv;",
+            "#endif",
+            "#ifdef USE_MAP",
                 "uniform sampler2D map;",
             "#endif",
         });
         
         static const string textureFragmentParams = Utils::join({
-            "#ifdef USE_MAP",
+            "#if defined( USE_MAP ) || defined( USE_NORMALMAP )",
                 "in vec2 uv;",
+            "#endif",
+            "#ifdef USE_MAP",
                 "uniform sampler2D map;",
             "#endif",
         });
         
         
         static const string textureVertex = Utils::join({
-            "#ifdef USE_MAP",
+            "#if defined( USE_MAP ) || defined( USE_NORMALMAP )",
                 "uv = vertex_uv_m;",
             "#endif",
         });

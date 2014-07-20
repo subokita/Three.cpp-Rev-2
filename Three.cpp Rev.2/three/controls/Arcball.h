@@ -10,6 +10,7 @@
 #define __Three_cpp_Rev_2__Arcball__
 
 #include <iostream>
+#include "internal_headers.h"
 #include <OpenGL/gl3.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -34,7 +35,9 @@ namespace three {
         bool yAxis;
         
     public:
-        void init( int window_width, int window_height, GLfloat roll_speed = 1.0f, bool x_axis = true, bool y_axis = true );
+        static ptr<Arcball> create(int window_width, int window_height, GLfloat roll_speed = 1.0f, bool x_axis = true, bool y_axis = true);
+        
+        void init( int window_width, int window_height, GLfloat roll_speed, bool x_axis, bool y_axis );
         glm::vec3 toScreenCoord( double x, double y );
         
         void mouseButtonCallback( GLFWwindow * window, int button, int action, int mods );

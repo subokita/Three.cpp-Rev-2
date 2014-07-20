@@ -53,7 +53,7 @@ namespace three {
     }
     
     
-    ptr<Shader> Shader::create( const ShaderLib::Shader& shader_code ) {
+    ptr<Shader> Shader::create( ShaderLib& shader_code ) {
         shared_ptr<Shader> shader = make_shared<Shader>();
         shader->initFromSource(shader_code);
         return shader;
@@ -67,50 +67,44 @@ namespace three {
         compileShader( vertex_code, fragment_code );
     }
     
-    void Shader::initFromSource( const ShaderLib::Shader& shader ) {
-        if( shader.vertexShader.empty() || shader.fragmentShader.empty() ) {
-            cerr << "Unable to utilize empty shader code" << endl;
-            exit( 1 );
-        }
+    void Shader::initFromSource( ShaderLib& shader ) {
+        if( shader.empty() )
+            throw runtime_error( "Unable to use empty shader code" );
         
         parseShader( shader );
         
-        string vertex_code = Utils::join({
-            ShaderLib::VERSION,
-            Utils::join(shader.precisions),
-            Utils::join(shader.defines),
-            shader.vertexParams,
-            shader.vertexShader,
-        });
-        
-        string fragment_code = Utils::join({
-            ShaderLib::VERSION,
-            Utils::join(shader.precisions),
-            Utils::join(shader.defines),
-            shader.fragmentParams,
-            shader.fragmentShader,
-        });
-
-        Utils::printWithLineNumbers( vertex_code );
-        Utils::printWithLineNumbers( fragment_code );
+        string vertex_code      = shader.constructVertexShader();
+        string fragment_code    = shader.constructFragmentShader();
         
         compileShader( vertex_code, fragment_code );
     }
     
     
     void Shader::compileShader( const std::string& vertex_code, const std::string& fragment_code ) {
+        bool result = true;
+        
         vertexShaderId   = glCreateShader( GL_VERTEX_SHADER );
         fragmentShaderId = glCreateShader( GL_FRAGMENT_SHADER );
         
         const char * vcs = vertex_code.c_str();
         glShaderSource( vertexShaderId, 1, &vcs, 0 );
         glCompileShader( vertexShaderId );
-        Shader::getShaderLog( "Vertex", cout, vertexShaderId );
+        result &= Shader::getShaderLog( "Vertex", cout, vertexShaderId );
+        
+        if( !result ) {
+            Utils::printWithLineNumbers( vertex_code );
+            throw runtime_error( "Unable to compile vertex shader code" );
+        }
         
         const char * fcs = fragment_code.c_str();
         glShaderSource( fragmentShaderId, 1, &fcs, 0 );
         glCompileShader( fragmentShaderId );
-        Shader::getShaderLog( "Fragment", cout, fragmentShaderId );
+        result &= Shader::getShaderLog( "Fragment", cout, fragmentShaderId );
+        
+        if( !result ) {
+            Utils::printWithLineNumbers( fragment_code );
+            throw runtime_error( "Unable to compile fragment shader code" );
+        }
         
         programId = glCreateProgram();
         glAttachShader( programId, vertexShaderId );
@@ -260,9 +254,9 @@ namespace three {
     }
     
     
-    void Shader::parseShader( const ShaderLib::Shader& shader ) {
+    void Shader::parseShader( ShaderLib& shader ) {
         std::string line;
-        std::istringstream lines( shader.vertexParams );
+        std::istringstream lines( shader.getVertexParams() );
         
         while(std::getline( lines, line, '\n')) {
             vector<string> tokens;
@@ -285,7 +279,7 @@ namespace three {
             }
         }
         
-        lines = std::istringstream( shader.fragmentParams );
+        lines = std::istringstream( shader.getFragmentParams() );
         
         while(std::getline( lines, line, '\n')) {
             vector<string> tokens;
@@ -305,12 +299,11 @@ namespace three {
                 
                 var_name = Utils::trim( var_name );
                 uniforms[var_name]  = -1;
-//                cout << "[" << var_name << "]" << endl;
             }
         }
     }
     
-    void Shader::getShaderLog( const char * message, ostream& os, GLuint shader_id ) {
+    bool Shader::getShaderLog( const char * message, ostream& os, GLuint shader_id ) {
         int info_log_length = 0;
         glGetShaderiv( shader_id, GL_INFO_LOG_LENGTH, &info_log_length );
         
@@ -322,14 +315,16 @@ namespace three {
             os << message << " info log: " << info_log_buffer << endl;
             
             delete [] info_log_buffer;
+            return false;
         }
         else {
             os << message << ": OK" << endl;
+            return true;
         }
     }
     
     
-    void Shader::getProgramLog( ostream &os, GLuint program_id ) {
+    bool Shader::getProgramLog( ostream &os, GLuint program_id ) {
         int info_log_length = 0;
         glGetProgramiv( program_id, GL_INFO_LOG_LENGTH, &info_log_length );
         
@@ -341,9 +336,11 @@ namespace three {
             os << "Shader info log: " << info_log_buffer << endl;
             
             delete [] info_log_buffer;
+            return false;
         }
         else {
             //os << "Shader info log: OK" << endl;
+            return true;
         }
     }
     

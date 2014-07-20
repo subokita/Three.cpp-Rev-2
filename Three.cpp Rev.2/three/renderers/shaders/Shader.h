@@ -24,10 +24,10 @@ namespace three {
     class Shader {
     public:
         static ptr<Shader> create( const char * vertex_filename, const char * fragment_filename );
-        static ptr<Shader> create( const ShaderLib::Shader& shader_code );
+        static ptr<Shader> create( ShaderLib& shader_code );
         
         void initFromSource( const char * vertex_filename, const char * fragment_filename );
-        void initFromSource( const ShaderLib::Shader& shader );
+        void initFromSource( ShaderLib& shader );
         
     public:
         Shader();
@@ -55,7 +55,7 @@ namespace three {
         void setUniform( const char * struct_name, const char * variable, glm::vec3 vector );
         void setUniform( const char * struct_name, const char * variable, glm::vec4 vector );
         
-    private:
+    protected:
         GLuint vertexShaderId;
         GLuint fragmentShaderId;
         GLuint programId;
@@ -63,11 +63,11 @@ namespace three {
         
         std::string readShader( const char * filename );
         void compileShader( const std::string& vertex_code, const std::string& fragment_code );
-        void parseShader( const ShaderLib::Shader& shader );
+        void parseShader( ShaderLib& shader );
         
         void getUniform( const std::string uniform_name );
-        static void getShaderLog( const char * message, std::ostream& os, GLuint shader_id );
-        static void getProgramLog( std::ostream& os, GLuint program_id );
+        static bool getShaderLog( const char * message, std::ostream& os, GLuint shader_id );
+        static bool getProgramLog( std::ostream& os, GLuint program_id );
         GLint getStructLocation( const char * struct_name, const char * variable );
     };
 }

@@ -14,7 +14,7 @@
 
 namespace three {
     class PointLight: public Light {
-    friend class Renderer;
+    friend class ShaderLib;
 
     public:
         static ptr<PointLight> create( const glm::vec3 position, const Color color, const float intensity, const float distance );

@@ -24,9 +24,7 @@
 namespace three {
     static unsigned int Object3DIDCount = 0;
     
-    class Object3D : public HasID,
-                     public EventDispatcher,
-                     public std::enable_shared_from_this<Object3D> {
+    class Object3D : public HasID, public EventDispatcher, public std::enable_shared_from_this<Object3D> {
     public:
         Object3D();
         virtual ~Object3D();
@@ -50,6 +48,8 @@ namespace three {
         void traverse( std::function<void(ptr<Object3D>)> callback );
         ptr<Object3D> getObjectByID( const unsigned int id, bool recursive );
         
+        std::vector<ptr<Object3D>> getDescendants();
+        
         
     public:
         bool visible;
@@ -63,12 +63,14 @@ namespace three {
         ptr<Object3D> parent;
         std::map<int, ptr<Object3D>> children;
         
+        glm::vec3 target;
         glm::quat quaternion;
         glm::vec3 scale;
         glm::vec3 position;
         glm::vec3 up;
         glm::mat4 matrix;
         glm::mat4 matrixWorld;
+        std::string shaderID;
     };
 }
 

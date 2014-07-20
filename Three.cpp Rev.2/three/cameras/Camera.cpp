@@ -16,8 +16,8 @@ using namespace std;
 
 namespace three {
     Camera::Camera(){
-        up = glm::vec3(0.0, 1.0, 0.0);
-        projection = glm::mat4(1.0);
+        up          = glm::vec3(0.0, 1.0, 0.0);
+        projection  = glm::mat4(1.0);
     }
     
     Camera::Camera(const glm::vec3 position, const glm::vec3 up) {
@@ -25,7 +25,7 @@ namespace three {
         this->up        = up;
         
         projection = glm::mat4(1.0);
-        lookAt( glm::vec3(0.0));
+        lookAt( glm::vec3(0.0) );
     }
     
     Camera::~Camera(){}
@@ -36,8 +36,8 @@ namespace three {
     }
     
     void Camera::lookAt(const glm::vec3 vec ) {
-        this->matrix = glm::lookAt( position, vec, up );
-        
-        Math::decomposeMatrix( this->matrix, position, quaternion, scale );
+        this->target = vec;
+        this->matrix = glm::lookAt( this->position, vec, this->up );
+        Math::decomposeMatrix( this->matrix, this->position, this->quaternion, this->scale );
     }
 }

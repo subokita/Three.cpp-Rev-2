@@ -14,7 +14,7 @@
 
 namespace three {
     class HemisphereLight : public Light {
-    friend class Renderer;
+    friend class ShaderLib;
 
     public:
         static ptr<HemisphereLight> create(const Color sky_color, const Color ground_color, const float intensity);

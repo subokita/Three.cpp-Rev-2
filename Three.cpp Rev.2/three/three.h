@@ -16,6 +16,9 @@
 #include "OrthographicCamera.h"
 #include "PerspectiveCamera.h"
 
+/* ./three/controls/ */
+#include "Arcball.h"
+
 /* ./three/cores/ */
 #include "Event.h"
 #include "EventDispatcher.h"

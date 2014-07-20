@@ -14,8 +14,6 @@
 #include "Texture.h"
 
 namespace three {
-    static ptr<NormalTexture> blankNormalMap; /* Initialized in renderer */
-    
     class NormalTexture : public Texture {
     public:
         NormalTexture();

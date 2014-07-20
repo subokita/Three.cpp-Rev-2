@@ -151,17 +151,17 @@ namespace three {
         return string( temp );
     }
     
-    string Utils::toString( const ShaderLib::Shader& shader ) {
+    string Utils::toString( ShaderLib& shader ) {
         return Utils::join( {
             "/* ============= VERTEX SHADER ============ */\n",
-            shader.vertexParams,
+            shader.getVertexParams(),
             "\n",
-            shader.vertexShader,
+            shader.getVertexCode(),
             "\n",
             "/* ============= FRAGMENT SHADER ============ */\n",
-            shader.fragmentParams,
+            shader.getFragmentParams(),
             "\n",
-            shader.fragmentShader,
+            shader.getFragmentCode(),
         } );
     }
     

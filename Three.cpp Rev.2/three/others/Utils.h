@@ -22,7 +22,7 @@ namespace three {
     public:
         static void printWithLineNumbers( const std::string str );
         
-        static std::string toString( const ShaderLib::Shader& shader );
+        static std::string toString( ShaderLib& shader );
         
         static std::string join( std::initializer_list<std::string> vec );
         static std::string join( const std::vector<std::string>& vec, const char* start = "", const char * end = "\n" );

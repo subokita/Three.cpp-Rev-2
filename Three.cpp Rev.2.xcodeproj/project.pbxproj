@@ -32,6 +32,7 @@
 		A8AC4AF71976456F00D4449B /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AC4AF51976456F00D4449B /* Texture.cpp */; };
 		A8AC4AFA19764BCF00D4449B /* TextureUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AC4AF819764BCF00D4449B /* TextureUtils.cpp */; };
 		A8AC4AFD19764C4500D4449B /* HasID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AC4AFB19764C4500D4449B /* HasID.cpp */; };
+		A8B372ED197BEA43009B168D /* ShaderLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8B372EC197BEA43009B168D /* ShaderLib.cpp */; };
 		A8DA557D1976E689000CC869 /* RenderPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DA557B1976E689000CC869 /* RenderPlugin.cpp */; };
 		A8DC9EC419794618004C75FB /* NormalTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DC9EC219794618004C75FB /* NormalTexture.cpp */; };
 		A8DC9EC7197994DD004C75FB /* CylinderGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DC9EC5197994DD004C75FB /* CylinderGeometry.cpp */; };
@@ -122,6 +123,7 @@
 		A8AC4AF919764BCF00D4449B /* TextureUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureUtils.h; sourceTree = "<group>"; };
 		A8AC4AFB19764C4500D4449B /* HasID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HasID.cpp; sourceTree = "<group>"; };
 		A8AC4AFC19764C4500D4449B /* HasID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HasID.h; sourceTree = "<group>"; };
+		A8B372EC197BEA43009B168D /* ShaderLib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderLib.cpp; sourceTree = "<group>"; };
 		A8DA557B1976E689000CC869 /* RenderPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderPlugin.cpp; sourceTree = "<group>"; };
 		A8DA557C1976E689000CC869 /* RenderPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderPlugin.h; sourceTree = "<group>"; };
 		A8DC9EC219794618004C75FB /* NormalTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NormalTexture.cpp; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 				A8F4C3F8196A825E00D191DC /* Shader.h */,
 				A88AF9E7196BB6B500601287 /* ShaderChunks.h */,
 				A88AF9ED196BC15200601287 /* ShaderLib.h */,
+				A8B372EC197BEA43009B168D /* ShaderLib.cpp */,
 			);
 			path = shaders;
 			sourceTree = "<group>";
@@ -475,6 +478,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8B372ED197BEA43009B168D /* ShaderLib.cpp in Sources */,
 				A88AF9F1196BD04E00601287 /* Constants.cpp in Sources */,
 				A8AC4AFA19764BCF00D4449B /* TextureUtils.cpp in Sources */,
 				A8A33FC119740D9C00037E90 /* Plane.cpp in Sources */,

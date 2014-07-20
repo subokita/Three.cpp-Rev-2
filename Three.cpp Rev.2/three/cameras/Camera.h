@@ -12,7 +12,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
-#include "Constants.h"
+#include "internal_headers.h"
 #include "Object3D.h"
 #include "Utils.h"
 
@@ -25,15 +25,15 @@ namespace three {
         virtual ~Camera();
         virtual void updateProjectionMatrix() = 0;
         
-    public: /* Methods */
+    public:
+        /* Methods */
         void lookAt( const glm::vec3 vec );
         void lookAt( const float x, const float y, const float z );
         
-    protected:
-        
-    public: /* Data members */
-        glm::mat4x4 matrixWorldInverse;
-        glm::mat4x4 projection;
+    public:
+        /* Data members */
+        glm::mat4 matrixWorldInverse;
+        glm::mat4 projection;
         
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const Camera& obj ) {

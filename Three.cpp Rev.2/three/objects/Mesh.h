@@ -24,12 +24,12 @@ namespace three {
         static ptr<Mesh> create(ptr<Geometry> geometry, ptr<Material> material);
         
         void draw(ptr<Shader> shader, bool gammaInput);
+        ~Mesh();
 
-        
         Mesh();
         Mesh( ptr<Geometry> geometry, ptr<Material> material );
-        ~Mesh();
         
+    public:
         ptr<Texture> texture;
         ptr<NormalTexture> normalMap;
         ptr<Geometry> geometry;

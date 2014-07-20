@@ -31,6 +31,10 @@ namespace three {
     class Geometry;
     class Object3D;
     
+    
+    /* ./three/controls/ */
+    class Arcball;
+    
     /* ./three/lights */
     class Light;
     class AmbientLight;
@@ -80,15 +84,14 @@ namespace three {
     /* ./three/renderers/shaders */
     class Shader;
     class ShaderChunks;
-    
+    class ShaderLib;
     
     /* ./three/renderers/textures */
     class Texture;
     class NormalTexture;
+
     
-    namespace ShaderLib {
-        class Shader;
-    }
+    
 };
 
 #endif

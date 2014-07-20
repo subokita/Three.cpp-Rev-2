@@ -22,28 +22,7 @@ namespace three {
         
         return FreeImage_ConvertTo24Bits( bitmap );
     }
-    
-    ptr<NormalTexture> TextureUtils::loadBlankNormalMap() {
-        ptr<NormalTexture> map = make_shared<NormalTexture>();
         
-        map->width  = 256;
-        map->height = 256;
-        
-        vector<glm::vec3> normals(map->width * map->height, glm::vec3(1.0, 1.0, 1.0));
-        
-        glGenTextures(1, &map->textureID);
-        glBindTexture( GL_TEXTURE_2D, map->textureID );
-        glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, map->width, map->height, 0, GL_BGR, GL_FLOAT, &normals[0]);
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        
-        return map;
-    }
-    
     ptr<NormalTexture> TextureUtils::loadAsNormalMap( const std::string path, const std::string filename ) {
         FIBITMAP * bitmap = loadImage(path, filename);
         

@@ -24,9 +24,7 @@ ptr<Object3D> createCompositeObject();
 int main(int argc, const char * argv[])
 {
     Renderer renderer;
-    renderer.init( "", 1600 * 3 / 4, 900 * 3 / 4 );
-    renderer.shaderLib = make_shared<ShaderLib::Shader>(ShaderLib::phong);
-    
+    renderer.init( "", 1600 * 3 / 4, 900 * 3 / 4 );    
     /* Create scene */
     auto scene = Scene::create();
     scene->fog = Fog::create( Color(0x72645b / 2), 2.0, 15.0 );
@@ -41,12 +39,11 @@ int main(int argc, const char * argv[])
     auto composite = createCompositeObject();
     scene->add( composite );
     
-    
     /* Create ground plane */
-//    auto plane_mesh = Mesh::create( PlaneGeometry::create(20.0f, 1),
-//                                    MeshPhongMaterial::create(0xFFFFFF, 0x666666, 0x000000, 0x101010 ) );
-//    plane_mesh->rotateX(-90.0);
-//    scene->add( plane_mesh );
+    auto plane_mesh = Mesh::create( PlaneGeometry::create(20.0f, 1),
+                                    MeshPhongMaterial::create(0xFFFFFF, 0x666666, 0x000000, 0x101010 ) );
+    plane_mesh->rotateX(-90.0);
+    scene->add( plane_mesh );
     
     
     /* Create directional light */
@@ -58,7 +55,7 @@ int main(int argc, const char * argv[])
     scene->add( AmbientLight::create(Color(0x101010) ));
     
     /* Create a spot light */
-    auto spot_light = SpotLight::create( Color(0xFFFFFF), 3.0, 10.0, 20.0, 1.0 );
+    auto spot_light = SpotLight::create( Color(0xFFFFFF), 1.0, 10.0, 20.0, 1.0 );
     spot_light->translate(0.0f, 5.0f, 0.0f);
     scene->add( spot_light );
     
@@ -127,13 +124,13 @@ ptr<Object3D> createCompositeObject() {
     
     /*Create a composite object*/
     auto composite = make_shared<Object3D>();
+    composite->name = "composite";
     
     /* Main part is a sphere */
     auto sphere = Mesh::create( SphereGeometry::create(8, 6, 0.66f ),
                                 MeshPhongMaterial::create( 0x990099, 0xFFFFFF, 0x000000, 0x111111, 30.0, false ) );
-    composite->add( sphere );
     sphere->normalMap = TextureUtils::loadAsNormalMap( path, "tutorial_normals07.gif" );
-    
+    composite->add( sphere );
     
     /* But a cube is attached to the sphere (not to composite directly), thus transformation is relative to sphere */
     auto cube = Mesh::create( CubeGeometry::create( 1.0f ),
@@ -164,6 +161,7 @@ ptr<Object3D> createCompositeObject() {
     bound_mesh->translate( bound_geom->center() - composite->position ) ;
     bound_mesh->scale     = bound_geom->size();
     bound_mesh->visible   = true;
+
     
     composite->add( bound_mesh );
     composite->translate(0.0f, 1.5f, 0.0f);

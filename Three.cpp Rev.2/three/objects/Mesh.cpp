@@ -12,7 +12,6 @@
 using namespace std;
 
 namespace three {
-    
     ptr<Mesh> Mesh::create(){
         return make_shared<Mesh>();
     }
@@ -50,25 +49,18 @@ namespace three {
             shader->setUniform( "model_mat", matrixWorld );
         }
         
-        if( texture == nullptr ) {
-            if( emptyWhiteTexture == nullptr )
-                emptyWhiteTexture = TextureUtils::loadEmptyWhiteTexture();
-            texture = emptyWhiteTexture;
+        if( texture != nullptr ) {
+            glActiveTexture( GL_TEXTURE0 );
+            glBindTexture( GL_TEXTURE_2D, texture->textureID );
+            shader->setUniform("map", 0);
         }
         
-        glActiveTexture( GL_TEXTURE0 );
-        glBindTexture( GL_TEXTURE_2D, texture->textureID );
-        shader->setUniform("map", 0);
-        
-        if( normalMap == nullptr ) {
-            if( blankNormalMap == nullptr )
-                blankNormalMap = TextureUtils::loadBlankNormalMap();
-            normalMap = blankNormalMap;
+        if( normalMap != nullptr ) {
+            glActiveTexture( GL_TEXTURE1 );
+            glBindTexture( GL_TEXTURE_2D, normalMap->textureID );
+            shader->setUniform("normal_map", 1);
         }
         
-        glActiveTexture( GL_TEXTURE1 );
-        glBindTexture( GL_TEXTURE_2D, normalMap->textureID );
-        shader->setUniform("normal_map", 1);
         
         /* Vertices */
         glEnableVertexAttribArray( 0 );

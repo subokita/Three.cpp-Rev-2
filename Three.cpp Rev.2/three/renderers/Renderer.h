@@ -43,10 +43,9 @@ namespace three {
         void renderPlugins( std::vector<ptr<RenderPlugin>>& plugins, ptr<Scene> scene, ptr<Camera> camera );
         
     public:
+        std::map<std::string, ptr<ShaderLib>> shaders;
         std::vector<ptr<RenderPlugin>> preRenderPlugins;
         std::vector<ptr<RenderPlugin>> postRenderPlugins;
-        ptr<Shader> shader;
-        ptr<ShaderLib::Shader> shaderLib;
         bool gammaInput;
         bool gammaOutput;
         Color clearColor;
@@ -61,22 +60,11 @@ namespace three {
         static void mouseButtonCallback    ( GLFWwindow * window, int button, int action, int mods );
         static void cursorCallback         ( GLFWwindow *window, double x, double y );
         void initCallbacks();
-        void addDefinitionsToShader( ptr<Scene> scene );
-        
-        
-        void setFog();
-        void setAmbientLights();
-        void setDirectionalLights();
-        void setSpotLights();
-        void setHemisphereLights();
-        void setPointLights();
         void initObjects( ptr<Object3D> object );
-        void drawObjects();
-        void drawObjects(ptr<Object3D> object);
 
         
     protected:
-        Arcball arcball;
+        ptr<Arcball> arcball;
         ptr<Scene> scene;
         ptr<Camera> camera;
         static Renderer* instance;
