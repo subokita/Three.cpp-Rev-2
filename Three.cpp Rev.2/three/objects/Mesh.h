@@ -31,7 +31,9 @@ namespace three {
         
     public:
         ptr<Texture> texture;
-        ptr<NormalTexture> normalMap;
+        ptr<NormalMap> normalMap;
+        ptr<SpecularMap> specularMap;
+        ptr<EnvMap> envMap;
         ptr<Geometry> geometry;
         ptr<Material> material;
     };

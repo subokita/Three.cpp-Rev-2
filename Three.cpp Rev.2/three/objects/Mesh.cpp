@@ -36,6 +36,47 @@ namespace three {
         glPolygonMode( GL_FRONT_AND_BACK, material->wireframe ? GL_LINE : GL_FILL );
         glLineWidth( material->wireframeLinewidth );
         
+        if( material->wrapAround )
+            shader->setUniform("wrapRGB", material->wrapRGB );
+        
+        if( texture != nullptr ) {
+            if( instance_of(texture, EnvMap)) {
+                glCullFace( GL_BACK );
+                glFrontFace( GL_CW );
+                
+                glActiveTexture( GL_TEXTURE0 );
+                glBindTexture( GL_TEXTURE_2D, texture->textureID );
+                shader->setUniform("map", 0);
+            }
+            else {
+                glActiveTexture( GL_TEXTURE0 );
+                glBindTexture( GL_TEXTURE_2D, texture->textureID );
+                shader->setUniform("map", 0);
+            }
+        }
+        
+        if( normalMap != nullptr ) {
+            glActiveTexture( GL_TEXTURE1 );
+            glBindTexture( GL_TEXTURE_2D, normalMap->textureID );
+            shader->setUniform("normal_map", 1);
+        }
+        
+        if( specularMap != nullptr ) {
+            glActiveTexture( GL_TEXTURE2 );
+            glBindTexture( GL_TEXTURE_2D, specularMap->textureID );
+            shader->setUniform( "specular_map" , 2 );
+        }
+        
+        if( envMap != nullptr ) {
+            glCullFace( GL_BACK );
+            glFrontFace( GL_CW );
+            
+            glActiveTexture( GL_TEXTURE3 );
+            glBindTexture( GL_TEXTURE_CUBE_MAP, envMap->textureID );
+            shader->setUniform( "env_map", 3 );
+        }
+        
+        
         ptr<MeshPhongMaterial> phong_material;
         if( instance_of(material, MeshPhongMaterial )) {
             phong_material = downcast(material, MeshPhongMaterial );
@@ -47,18 +88,17 @@ namespace three {
             shader->setUniform( "specular",  phong_material->specular, 1.0, gamma );
             shader->setUniform( "shininess", phong_material->shininess );
             shader->setUniform( "model_mat", matrixWorld );
-        }
-        
-        if( texture != nullptr ) {
-            glActiveTexture( GL_TEXTURE0 );
-            glBindTexture( GL_TEXTURE_2D, texture->textureID );
-            shader->setUniform("map", 0);
-        }
-        
-        if( normalMap != nullptr ) {
-            glActiveTexture( GL_TEXTURE1 );
-            glBindTexture( GL_TEXTURE_2D, normalMap->textureID );
-            shader->setUniform("normal_map", 1);
+
+            
+            
+            
+            if( this->envMap != nullptr ) {
+                shader->setUniform( "combine",          phong_material->combine );
+                shader->setUniform( "reflectivity",     (GLfloat) 1.0 ); //phong_material->reflectivity );
+                shader->setUniform( "refraction_ratio", (GLfloat) 0.0 ); //phong_material->refractionRatio );
+                shader->setUniform( "flip_env_map",     (GLfloat)-1.0 );
+                shader->setUniform( "use_refraction",   false );
+            }
         }
         
         

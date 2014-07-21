@@ -60,7 +60,6 @@ namespace three {
         static void mouseButtonCallback    ( GLFWwindow * window, int button, int action, int mods );
         static void cursorCallback         ( GLFWwindow *window, double x, double y );
         void initCallbacks();
-        void initObjects( ptr<Object3D> object );
 
         
     protected:

@@ -101,63 +101,53 @@ namespace three {
         }));
         this->defines.push_back( ss.str() );
         
-        config = 0;
+        config.reset();
         
         if( mesh->texture != nullptr ) {
-            this->defines.push_back( "#define USE_MAP" );
-            config[0] = 1;
+            if( instance_of(mesh->texture, EnvMap)) {
+                this->defines.push_back( "#define USE_CUBEMAP" );
+                config[1] = 1;
+            }
+            else {
+                this->defines.push_back( "#define USE_MAP" );
+                config[0] = 1;
+            }
         }
+        
         
         if( mesh->normalMap != nullptr ) {
             this->defines.push_back( "#define USE_NORMALMAP" );
-            config[1] = 1;
+            config[2] = 1;
         }
-    }
-    
-    void ShaderLib::addDefinitions(ptr<Scene> scene, bool gamma_input, bool gamma_output ) {
-        if( scene->fog != nullptr ) {
-            this->defines.push_back("#define USE_FOG");
-
-            if( instance_of(scene->fog, FogExp2))
-                this->defines.push_back("#define FOG_EXP2");
-        }
-
-        if( gamma_input )
-            this->defines.push_back("#define GAMMA_INPUT");
-
-        if( gamma_output )
-            this->defines.push_back("#define GAMMA_OUTPUT");
-
-        stringstream ss;
-        ss.str("");
-        ss << "#define MAX_DIR_LIGHTS " << static_cast<int>(count_if( scene->directionalLights.begin(), scene->directionalLights.end(), [](ptr<DirectionalLight> light){
-            return light->visible;
-        }));
-        this->defines.push_back( ss.str() );
-
-        ss.str("");
-        ss << "#define MAX_POINT_LIGHTS " << static_cast<int>(count_if( scene->pointLights.begin(), scene->pointLights.end(), [](ptr<PointLight> light){
-            return light->visible;
-        }));
-        this->defines.push_back( ss.str() );
-
-        ss.str("");
-        ss << "#define MAX_HEMI_LIGHTS " << static_cast<int>(count_if( scene->hemisphereLights.begin(), scene->hemisphereLights.end(), [](ptr<HemisphereLight> light){
-            return light->visible;
-        }));
-        this->defines.push_back( ss.str() );
-
-        ss.str("");
-        ss << "#define MAX_SPOT_LIGHTS " << static_cast<int>(count_if( scene->spotLights.begin(), scene->spotLights.end(), [](ptr<SpotLight> light){
-            return light->visible;
-        }));
-        this->defines.push_back( ss.str() );
         
         
-        this->defines.push_back( "#define USE_MAP" );
-        this->defines.push_back( "#define USE_NORMALMAP" );
+        if( mesh->specularMap!= nullptr ) {
+            this->defines.push_back( "#define USE_SPECULARMAP" );
+            config[3] = 1;
+        }
+        
+        
+        
+        if( mesh->envMap != nullptr ) {
+            this->defines.push_back( "#define USE_ENVMAP" );
+            config[4] = 1;
+        }
+        
+        
+        if( mesh->material->alphaTest > 0.0 ) {
+            ss.str("");
+            ss << "#define ALPHATEST " << mesh->material->alphaTest ;
+            this->defines.push_back( ss.str() );
+            config[5] = 1;
+        }
+        
+        
+        if( mesh->material->wrapAround ) {
+            this->defines.push_back( "#define WRAP_AROUND" );
+            config[6] = 1;
+        }
+        
     }
-    
     
     void ShaderLib::compileShader() {
         this->shader = Shader::create( *this );

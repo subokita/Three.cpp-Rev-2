@@ -11,6 +11,8 @@
 		A81C53C41970792F00EDCA57 /* SpotLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A81C53C21970792F00EDCA57 /* SpotLight.cpp */; };
 		A825E618196D6D290003C5C7 /* MeshPhongMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A825E616196D6D290003C5C7 /* MeshPhongMaterial.cpp */; };
 		A825E61B196D71F20003C5C7 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A825E619196D71F20003C5C7 /* Mesh.cpp */; };
+		A848B2E2197CD9A10042B91B /* SpecularMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A848B2E0197CD9A10042B91B /* SpecularMap.cpp */; };
+		A848B2E5197CFB2C0042B91B /* EnvMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A848B2E3197CFB2C0042B91B /* EnvMap.cpp */; };
 		A850585219756B0500866386 /* Frustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A850585019756B0500866386 /* Frustum.cpp */; };
 		A882D375196D903D0051958C /* FogExp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A882D373196D903D0051958C /* FogExp2.cpp */; };
 		A882D378196D9FB40051958C /* DirectionalLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A882D376196D9FB40051958C /* DirectionalLight.cpp */; };
@@ -34,7 +36,7 @@
 		A8AC4AFD19764C4500D4449B /* HasID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AC4AFB19764C4500D4449B /* HasID.cpp */; };
 		A8B372ED197BEA43009B168D /* ShaderLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8B372EC197BEA43009B168D /* ShaderLib.cpp */; };
 		A8DA557D1976E689000CC869 /* RenderPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DA557B1976E689000CC869 /* RenderPlugin.cpp */; };
-		A8DC9EC419794618004C75FB /* NormalTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DC9EC219794618004C75FB /* NormalTexture.cpp */; };
+		A8DC9EC419794618004C75FB /* NormalMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DC9EC219794618004C75FB /* NormalMap.cpp */; };
 		A8DC9EC7197994DD004C75FB /* CylinderGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DC9EC5197994DD004C75FB /* CylinderGeometry.cpp */; };
 		A8F0EE34196E7C7A003EDB98 /* PointLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F0EE32196E7C7A003EDB98 /* PointLight.cpp */; };
 		A8F0EE3A196E8C74003EDB98 /* SphereGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F0EE38196E8C74003EDB98 /* SphereGeometry.cpp */; };
@@ -81,6 +83,10 @@
 		A825E617196D6D290003C5C7 /* MeshPhongMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshPhongMaterial.h; sourceTree = "<group>"; };
 		A825E619196D71F20003C5C7 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
 		A825E61A196D71F20003C5C7 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
+		A848B2E0197CD9A10042B91B /* SpecularMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpecularMap.cpp; sourceTree = "<group>"; };
+		A848B2E1197CD9A10042B91B /* SpecularMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecularMap.h; sourceTree = "<group>"; };
+		A848B2E3197CFB2C0042B91B /* EnvMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnvMap.cpp; sourceTree = "<group>"; };
+		A848B2E4197CFB2C0042B91B /* EnvMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnvMap.h; sourceTree = "<group>"; };
 		A850585019756B0500866386 /* Frustum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Frustum.cpp; sourceTree = "<group>"; };
 		A850585119756B0500866386 /* Frustum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Frustum.h; sourceTree = "<group>"; };
 		A882D373196D903D0051958C /* FogExp2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FogExp2.cpp; sourceTree = "<group>"; };
@@ -126,8 +132,8 @@
 		A8B372EC197BEA43009B168D /* ShaderLib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderLib.cpp; sourceTree = "<group>"; };
 		A8DA557B1976E689000CC869 /* RenderPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderPlugin.cpp; sourceTree = "<group>"; };
 		A8DA557C1976E689000CC869 /* RenderPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderPlugin.h; sourceTree = "<group>"; };
-		A8DC9EC219794618004C75FB /* NormalTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NormalTexture.cpp; sourceTree = "<group>"; };
-		A8DC9EC319794618004C75FB /* NormalTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalTexture.h; sourceTree = "<group>"; };
+		A8DC9EC219794618004C75FB /* NormalMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NormalMap.cpp; sourceTree = "<group>"; };
+		A8DC9EC319794618004C75FB /* NormalMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalMap.h; sourceTree = "<group>"; };
 		A8DC9EC5197994DD004C75FB /* CylinderGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CylinderGeometry.cpp; sourceTree = "<group>"; };
 		A8DC9EC6197994DD004C75FB /* CylinderGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CylinderGeometry.h; sourceTree = "<group>"; };
 		A8F0EE2A196E56FB003EDB98 /* three.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = three.h; sourceTree = "<group>"; };
@@ -233,8 +239,12 @@
 			children = (
 				A8AC4AF51976456F00D4449B /* Texture.cpp */,
 				A8AC4AF61976456F00D4449B /* Texture.h */,
-				A8DC9EC219794618004C75FB /* NormalTexture.cpp */,
-				A8DC9EC319794618004C75FB /* NormalTexture.h */,
+				A848B2E3197CFB2C0042B91B /* EnvMap.cpp */,
+				A848B2E4197CFB2C0042B91B /* EnvMap.h */,
+				A8DC9EC219794618004C75FB /* NormalMap.cpp */,
+				A8DC9EC319794618004C75FB /* NormalMap.h */,
+				A848B2E0197CD9A10042B91B /* SpecularMap.cpp */,
+				A848B2E1197CD9A10042B91B /* SpecularMap.h */,
 				A8AC4AF819764BCF00D4449B /* TextureUtils.cpp */,
 				A8AC4AF919764BCF00D4449B /* TextureUtils.h */,
 			);
@@ -483,12 +493,14 @@
 				A8AC4AFA19764BCF00D4449B /* TextureUtils.cpp in Sources */,
 				A8A33FC119740D9C00037E90 /* Plane.cpp in Sources */,
 				A8F4C41F196AAC6500D191DC /* CubeGeometry.cpp in Sources */,
-				A8DC9EC419794618004C75FB /* NormalTexture.cpp in Sources */,
+				A8DC9EC419794618004C75FB /* NormalMap.cpp in Sources */,
 				A8F4C431196AF9DC00D191DC /* Material.cpp in Sources */,
 				A81C53C41970792F00EDCA57 /* SpotLight.cpp in Sources */,
+				A848B2E2197CD9A10042B91B /* SpecularMap.cpp in Sources */,
 				A8AC4AF71976456F00D4449B /* Texture.cpp in Sources */,
 				A8F4C3F2196A693000D191DC /* Renderer.cpp in Sources */,
 				A8F4C414196AA06E00D191DC /* Object3D.cpp in Sources */,
+				A848B2E5197CFB2C0042B91B /* EnvMap.cpp in Sources */,
 				A81C53C119706B1400EDCA57 /* HemisphereLight.cpp in Sources */,
 				A825E618196D6D290003C5C7 /* MeshPhongMaterial.cpp in Sources */,
 				A88AF9FE196D0CCA00601287 /* IFog.cpp in Sources */,

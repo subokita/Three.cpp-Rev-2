@@ -46,7 +46,7 @@ namespace three {
 //        Texture     lightMap;
 //        Texture     bumpMap;
 //        float       bumpScale;
-//        Texture     normalMap;
+//        Texture     NormalMap;
 //        glm::vec2   normalScale;
 //        Texture     specularMap;
 //        Texture     envMap;

@@ -88,8 +88,9 @@ namespace three {
     
     /* ./three/renderers/textures */
     class Texture;
-    class NormalTexture;
-
+    class NormalMap;
+    class SpecularMap;
+    class EnvMap;
     
     
 };

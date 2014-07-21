@@ -32,7 +32,6 @@ namespace three {
         ~ShaderLib();
         
         void addDefinitions(ptr<Scene> scene, ptr<Mesh> mesh, bool gamma_input, bool gamma_output);
-        void addDefinitions(ptr<Scene> scene, bool gamma_input, bool gamma_output);
         
         bool empty();
         
@@ -85,12 +84,13 @@ namespace three {
                 Chunks::standardVertexParams,
                 Chunks::phongVertexParams,
                 Chunks::textureVertexParams,
-                Chunks::normalMapVertexParams,
+                Chunks::envMapVertexParams,
             }),
             Utils::join({
                 "void main() {",
                     Chunks::textureVertex,
                     Chunks::phongVertex,
+                    Chunks::envMapVertex,
                 "}",
             }),
             Utils::join({
@@ -103,10 +103,13 @@ namespace three {
                 Chunks::fogFragmentParams,
                 Chunks::textureFragmentParams,
                 Chunks::normalMapFragmentParams,
+                Chunks::specularMapFragmentParams,
+                Chunks::envMapFragmentParams,
             }),
             Utils::join({
                 "void main() {",
                     Chunks::phongFragment_1,
+                    Chunks::specularMapFragment,
                     Chunks::normalMapFragment,
                     Chunks::textureFragment,
                     Chunks::pointLightsFragment,
@@ -114,6 +117,8 @@ namespace three {
                     Chunks::hemisphereLightsFragment,
                     Chunks::spotLightsFragment,
                     Chunks::phongFragment_2,
+                    Chunks::envMapFragment,
+                    Chunks::phongFragment_3,
                     Chunks::fogFragment,
                 "}",
             })

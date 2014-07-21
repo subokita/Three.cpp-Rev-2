@@ -69,7 +69,9 @@
 
 /* ./three/textures */
 #include "Texture.h"
-#include "NormalTexture.h"
+#include "EnvMap.h"
+#include "NormalMap.h"
+#include "SpecularMap.h"
 #include "TextureUtils.h"
 
 

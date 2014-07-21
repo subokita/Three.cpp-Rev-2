@@ -18,8 +18,10 @@ unsigned int sphere_id;
 unsigned int cube_id;
 unsigned int bounding_box_id;
 
-const string path = "/Users/saburookita/Personal Projects/Three.cpp Rev.2/examples/assets/";
 ptr<Object3D> createCompositeObject();
+
+const string path = "/Users/saburookita/Personal Projects/Three.cpp Rev.2/examples/assets/";
+
 
 int main(int argc, const char * argv[])
 {
@@ -27,10 +29,10 @@ int main(int argc, const char * argv[])
     renderer.init( "", 1600 * 3 / 4, 900 * 3 / 4 );    
     /* Create scene */
     auto scene = Scene::create();
-    scene->fog = Fog::create( Color(0x72645b / 2), 2.0, 15.0 );
+    scene->fog = Fog::create( 0x72645b / 2, 2.0, 100.0 );
     
     /* Create camera */
-    auto camera = PerspectiveCamera::create( 50.0, renderer.aspectRatio, 0.001, 15.0 );
+    auto camera = PerspectiveCamera::create( 50.0, renderer.aspectRatio, 0.001, 100.0 );
     camera->position = glm::vec3(0.0, 1.5, 5.5);
     camera->lookAt( 0.0, 1.5, 0.0 );
     
@@ -40,24 +42,25 @@ int main(int argc, const char * argv[])
     scene->add( composite );
     
     /* Create ground plane */
-    auto plane_mesh = Mesh::create( PlaneGeometry::create(20.0f, 1),
-                                    MeshPhongMaterial::create(0xFFFFFF, 0x666666, 0x000000, 0x101010 ) );
-    plane_mesh->rotateX(-90.0);
-    scene->add( plane_mesh );
+//    auto plane_mesh = Mesh::create( PlaneGeometry::create(20.0f, 1),
+//                                    MeshPhongMaterial::create(0xFFFFFF, 0x666666, 0x000000, 0x101010 ) );
+//    plane_mesh->rotateX(-90.0);
+//    scene->add( plane_mesh );
+    
+    auto env = Mesh::create( CubeGeometry::create(20.0f),
+                             MeshPhongMaterial::create(0xFFFFFF, 0x000000, 0x999999, 0x101010 ) );
+    env->texture = TextureUtils::loadAsEnvMap( path + "cube/Park3Med", "nx.jpg", "ny.jpg", "nz.jpg",
+                                              "px.jpg", "py.jpg", "pz.jpg");
+    scene->add( env );
     
     
     /* Create directional light */
-    auto dir_light = DirectionalLight::create(Color(0x99CCFF), 1.35, glm::vec3(3.0, 1.0, 3.0) );
+    auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3(3.0, 1.0, 3.0) );
     scene->add( dir_light );
     
     
     /* Create an ambient light */
-    scene->add( AmbientLight::create(Color(0x101010) ));
-    
-    /* Create a spot light */
-    auto spot_light = SpotLight::create( Color(0xFFFFFF), 1.0, 10.0, 20.0, 1.0 );
-    spot_light->translate(0.0f, 5.0f, 0.0f);
-    scene->add( spot_light );
+    scene->add( AmbientLight::create(0x101010));
     
     /* Create a post render callback function that allow us to rotate the light and objects */
     float light_rotation_1 = 0.0;
@@ -72,9 +75,7 @@ int main(int argc, const char * argv[])
         
         if( rotate_objects )
             composite->rotateY(-1.0f);
-        
-        /* Widen the spot light */
-        spot_light->angle = Math::clamp(spot_light->angle + 0.01f, 15.0, 300.0);
+
     });
     
     /* Override key callback handler */
@@ -120,6 +121,8 @@ int main(int argc, const char * argv[])
     return 0;
 }
 
+
+
 ptr<Object3D> createCompositeObject() {
     
     /*Create a composite object*/
@@ -127,15 +130,16 @@ ptr<Object3D> createCompositeObject() {
     composite->name = "composite";
     
     /* Main part is a sphere */
-    auto sphere = Mesh::create( SphereGeometry::create(8, 6, 0.66f ),
-                                MeshPhongMaterial::create( 0x990099, 0xFFFFFF, 0x000000, 0x111111, 30.0, false ) );
-    sphere->normalMap = TextureUtils::loadAsNormalMap( path, "tutorial_normals07.gif" );
+    auto sphere = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
+                                MeshPhongMaterial::create( 0xFFFFFF, 0x101010, 0x000000, 0x111111, 130.0, false ) );
+    sphere->texture     = TextureUtils::loadImageAsTexture( path + "planets", "earth_atmos_2048.jpg");
+    sphere->normalMap   = TextureUtils::loadAsNormalMap   ( path + "planets", "earth_normal_2048.jpg" );
+    sphere->specularMap = TextureUtils::loadAsSpecularMap ( path + "planets", "earth_specular_2048.jpg" );
     composite->add( sphere );
     
     /* But a cube is attached to the sphere (not to composite directly), thus transformation is relative to sphere */
     auto cube = Mesh::create( CubeGeometry::create( 1.0f ),
-                              MeshPhongMaterial::create( 0xFFFFFF, 0xFFFFFF, 0x000000, 0x111111, 50.0, true ) );
-    
+                              MeshPhongMaterial::create( 0xFFFFFF, 0x101010, 0x000000, 0x111111, 50.0, false ) );
     cube->translate( 2.0, 0.0, 0.0 );
     sphere->add( cube );
 
@@ -145,7 +149,7 @@ ptr<Object3D> createCompositeObject() {
     
     
     auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 1.0, 30, 5),
-                                  MeshPhongMaterial::create( 0xFFFFFF, 0xFFFFFF, 0x000000, 0x111111, 50.0, true ) );
+                                  MeshPhongMaterial::create( 0xFFFFFF, 0x101010, 0x000000, 0x111111, 50.0, false ) );
     cylinder->translate( -2.0, 0.0, 0.0 );
     cylinder->texture   = TextureUtils::loadImageAsTexture( path, "rock_color.tga" );
     cylinder->normalMap = TextureUtils::loadAsNormalMap( path, "rock_normal.tga" );

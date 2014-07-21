@@ -41,6 +41,9 @@ namespace three {
         wireframeLinewidth  = 1;
         wireframeLinecap    = "round";
         wireframeLinejoin   = "round";
+        
+        wrapAround          = false;
+        wrapRGB             = glm::vec3(1.0, 1.0, 1.0);
     }
     
     Material::~Material() {

@@ -18,6 +18,7 @@ namespace three {
     using namespace std;
     
     namespace Chunks {
+
         static const string standardVertexParams = Utils::join({
             "layout (location = 0) in vec3 vertex_pos_m;",
             "layout (location = 1) in vec3 vertex_normal_m;",
@@ -35,9 +36,90 @@ namespace three {
             "out vec4 frag_color;",
         });
         
-        static const string normalMapVertexParams = Utils::join({
+        static const string specularMapFragmentParams = Utils::join({
+            "#ifdef USE_SPECULARMAP",
+                "uniform sampler2D specular_map;",
+            "#endif",
         });
         
+        static const string envMapVertexParams = Utils::join({
+            "#if defined( USE_ENVMAP ) && !defined( USE_BUMPMAP ) && !defined( USE_NORMALMAP )",
+                "out vec3 reflect_c;",
+                "uniform float refraction_ratio;",
+                "uniform bool use_refraction;",
+            "#endif",
+        });
+        static const string envMapFragmentParams = Utils::join({
+            "#ifdef USE_ENVMAP",
+                "uniform float reflectivity;",
+                "uniform int combine;",
+                "uniform float flip_env_map;",
+                "uniform samplerCube env_map;",
+            
+                "#if defined( USE_BUMPMAP ) || defined( USE_NORMALMAP ) ",
+                    "uniform bool use_refraction;",
+                    "uniform float refraction_ratio;",
+                "#else",
+                    "in vec3 reflect_c;",
+                "#endif",
+            "#endif",
+        });
+        
+        static const string envMapVertex = Utils::join({
+            "#if defined( USE_ENVMAP ) && !defined( USE_BUMPMAP ) && !defined( USE_NORMALMAP )",
+                "vec3 world_normal = mat3(model_mat[0].xyz, model_mat[1].xyz, model_mat[2].xyz) * vertex_normal_m;",
+                "world_normal = normalize( world_normal );",
+                "vec3 camera_to_vert = normalize( vertex_pos_w.xyz - camera_pos_w );",
+                "if( use_refraction ) {",
+                    "reflect_c = refract(camera_to_vert, world_normal, refraction_ratio );",
+                "}",
+                "else {",
+                    "reflect_c = reflect(camera_to_vert, world_normal );",
+                "}",
+            "#endif",
+        });
+        
+        static const string envMapFragment = Utils::join({
+            "#ifdef USE_ENVMAP",
+                "vec3 reflect_vec;",
+            
+                "#if defined( USE_BUMPMAP ) || defined( USE_NORMALMAP ) ",
+                    "vec3 camera_to_vert = normalize( vertex_pos_w - camera_pos_w );",
+                    "vec3 world_normal   = normalize( vec3( vec4(norm_normal_c, 0.0) * view_mat ) );",
+                    "if ( use_refraction ) {",
+                        "reflect_vec = refract(camera_to_vert, world_normal, refraction_ratio );",
+                    "}",
+                    "else {",
+                        "reflect_vec = reflect(camera_to_vert, world_normal );",
+                    "}",
+                "#else",
+                    "reflect_vec = reflect_c;",
+                "#endif",
+            
+                "#ifdef DOUBLE_SIDED",
+                    "float flip_normal = (-1.0 + 2.0 * float( gl_FrontFacing ) );",
+                    "vec4 cube_color = texture( env_map, flip_normal * vec3( flip_env_map * reflect_vec.x, reflect_vec.yz ) );",
+                "#else",
+                    "vec4 cube_color = texture( env_map, vec3( flip_env_map * reflect_vec.x, reflect_vec.yz ) );",
+                "#endif",
+
+                "#ifdef GAMMA_INPUT",
+                    "cube_color.xyz *= cube_color.xyz;",
+                "#endif",
+
+                "if( combine == 1 ) {",
+                    "frag_color.xyz = mix( frag_color.xyz, cube_color.xyz, specular_strength * reflectivity );",
+                "}",
+                "else if( combine == 2 ) {",
+                    "frag_color.xyz += cube_color.xyz * specular_strength * reflectivity;",
+                "}",
+                "else {",
+                    "frag_color.xyz = mix( frag_color.xyz, frag_color.xyz * cube_color.xyz, specular_strength * reflectivity );",
+                "}",
+            
+            "#endif",
+        });
+
         
         static const string normalMapFragmentParams = Utils::join({
             "#ifdef USE_NORMALMAP",
@@ -66,27 +148,39 @@ namespace three {
         }, "\t");
         
         static const string textureVertexParams = Utils::join({
-            "#if defined( USE_MAP ) || defined( USE_NORMALMAP )",
+            "#if defined( USE_MAP ) || defined( USE_NORMALMAP ) || defined( USE_SPECULARMAP )",
                 "out vec2 uv;",
             "#endif",
             "#ifdef USE_MAP",
                 "uniform sampler2D map;",
             "#endif",
+            "#ifdef USE_CUBEMAP",
+                "out vec3 vertex_ray;",
+                "uniform samplerCube map;",
+            "#endif",
         });
         
         static const string textureFragmentParams = Utils::join({
-            "#if defined( USE_MAP ) || defined( USE_NORMALMAP )",
+            "#if defined( USE_MAP ) || defined( USE_NORMALMAP ) || defined( USE_SPECULARMAP )",
                 "in vec2 uv;",
             "#endif",
             "#ifdef USE_MAP",
                 "uniform sampler2D map;",
             "#endif",
+            "#ifdef USE_CUBEMAP",
+                "in vec3 vertex_ray;",
+                "uniform samplerCube map;",
+            "#endif",
         });
         
         
         static const string textureVertex = Utils::join({
-            "#if defined( USE_MAP ) || defined( USE_NORMALMAP )",
+            "#if defined( USE_MAP ) || defined( USE_NORMALMAP ) || defined( USE_SPECULARMAP )",
                 "uv = vertex_uv_m;",
+            "#endif",
+            
+            "#ifdef USE_CUBEMAP",
+                "vertex_ray = normalize(-vertex_pos_m);",
             "#endif",
         });
         
@@ -99,6 +193,21 @@ namespace three {
                 "#endif",
             
                 "frag_color = frag_color * texel_color;",
+            "#endif",
+            "#ifdef USE_CUBEMAP",
+                "vec4 texel_color = texture(map, vertex_ray);",
+                
+                "#ifdef GAMMA_INPUT",
+                    "texel_color.xyz *= texel_color.xyz;",
+                "#endif",
+                
+                "frag_color = frag_color * texel_color;",
+            "#endif",
+        });
+        
+        static const string alphaTestFragment = Utils::join({
+            "#ifdef ALPHATEST",
+                "if( frag_color.a < ALPHATEST ) discard;",
             "#endif",
         });
         
@@ -136,6 +245,12 @@ namespace three {
             "#endif",
         });
         
+        static const string specularMapFragment = Utils::join({
+            "#ifdef USE_SPECULARMAP",
+                "vec4 texel_specular = texture( specular_map, uv );",
+                "specular_strength   = texel_specular.r;",
+            "#endif",
+        }, "\t");
         
         static const string phongFragment_1 = Utils::join({
             "frag_color = vec4( vec3( 1.0 ), opacity );",
@@ -154,12 +269,15 @@ namespace three {
             "#else",
                 "frag_color.xyz = frag_color.xyz * ( emissive + ambient_light_color * ambient + total_diffuse ) + total_specular;",
             "#endif",
+        }, "\t" );
+        
+        
+        static const string phongFragment_3 = Utils::join({
             "#ifdef GAMMA_OUTPUT",
                 "frag_color.xyz = sqrt(frag_color.xyz);",
             "#endif",
         }, "\t" );
-        
-        
+
         static const string pointLightsFragmentParams = Utils::join({
             "#if MAX_POINT_LIGHTS > 0",
                 "uniform vec3 point_light_color     [MAX_POINT_LIGHTS];",

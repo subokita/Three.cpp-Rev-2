@@ -117,7 +117,7 @@ namespace three {
         };
         
         scrollCallbackHandler = []( GLFWwindow *window, double x, double y ) {
-            glm::vec3 pos = instance->camera->position * instance->camera->quaternion;
+            glm::vec3 pos = instance->camera->position * instance->camera->quaternion * instance->camera->scale;
             glm::vec3 dir = glm::normalize(instance->camera->target + pos) * static_cast<float>(y);
             instance->camera->position = (pos - dir);
         };
@@ -139,20 +139,6 @@ namespace three {
     }
     
     
-    void Renderer::initObjects( ptr<Object3D> object ) {
-        for( auto entry : object->children ) {
-            ptr<Object3D> child = entry.second;
-            
-            if( instance_of(child, Mesh ) ) {
-                ptr<Mesh> mesh = downcast(child, Mesh) ;
-                if( mesh->geometry != nullptr && !mesh->geometry->glBuffersInitialized )
-                    mesh->geometry->initGLBuffers();
-            }
-            
-            initObjects( child );
-        }
-    }
-    
     void Renderer::render(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera) {
         if( scene == nullptr || camera == nullptr )
             throw runtime_error( "Unable to render scene without a valid scene and camera" );
@@ -160,18 +146,17 @@ namespace three {
         this->scene = scene;
         this->camera = camera;
         
-        setDefaultGLState();
-        
-        initObjects( scene );
         
         vector<ptr<Object3D>> descendants = scene->getDescendants();
         for( auto object: descendants ) {
             if( instance_of(object, Mesh)) {
                 ptr<Mesh> mesh = downcast(object, Mesh);
+                
+                if( mesh->geometry != nullptr && !mesh->geometry->glBuffersInitialized )
+                    mesh->geometry->initGLBuffers();
+                
                 ptr<ShaderLib> shader = ShaderLib::create(mesh);
-                
                 shader->addDefinitions( scene, mesh, gammaInput, gammaOutput );
-                
                 mesh->shaderID = shader->getID();
                 
                 if( shaders.count( mesh->shaderID ) == 0) {
@@ -184,6 +169,7 @@ namespace three {
         while( !glfwWindowShouldClose( window )) {
             glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
             
+            setDefaultGLState();
             camera->updateMatrix();
             
             renderPlugins( preRenderPlugins, scene, camera );
@@ -196,6 +182,7 @@ namespace three {
                 
                 ptr<ShaderLib> shader = shaders[object->shaderID];
                 shader->bind();
+                {
                     shader->setFog              ( scene->fog, gammaInput );
                     shader->setAmbientLights    ( scene->ambientLight, gammaInput );
                     shader->setHemisphereLights ( scene->hemisphereLights, gammaInput );
@@ -204,6 +191,7 @@ namespace three {
                     shader->setSpotLights       ( scene->spotLights, gammaInput);
                 
                     shader->draw(camera, arcball, object, gammaInput );
+                }
                 shader->unbind();
             }
             

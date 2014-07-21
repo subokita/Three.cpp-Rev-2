@@ -43,6 +43,8 @@ namespace three {
         float overdraw;
         bool  visible;
         bool  needsUpdate;
+        bool  wrapAround;
+        glm::vec3 wrapRGB;
         
         
         bool        wireframe;

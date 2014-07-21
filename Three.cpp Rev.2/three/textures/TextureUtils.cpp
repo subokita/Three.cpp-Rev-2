@@ -13,33 +13,109 @@ using namespace std;
 
 namespace three {
     
-    FIBITMAP * TextureUtils::loadImage( const std::string path, const std::string filename ) {
-        const char * file = (path + filename).c_str();
+    ptr<fipImage> TextureUtils::loadImage( const string path, const string filename ) {
+        // cout << path + "/" + filename << endl;
         
-        FIBITMAP* bitmap = FreeImage_Load(FreeImage_GetFileType(file), file);
-        if( bitmap == NULL )
-            throw runtime_error( "Unable to load file" );
+        ptr<fipImage> image = make_shared<fipImage>();
         
-        return FreeImage_ConvertTo24Bits( bitmap );
+        if( image->load( (path + "/" + filename).c_str() ) == false ) {
+            image->clear();
+            string error_message = "Unable to load image " + path + "/" + filename;
+            throw runtime_error( error_message );
+        }
+        return image;
     }
+    
+    
+    ptr<EnvMap> TextureUtils::loadAsEnvMap( const string path,
+                                            const string neg_x, const string neg_y, const string neg_z,
+                                            const string pos_x, const string pos_y, const string pos_z ) {
         
-    ptr<NormalTexture> TextureUtils::loadAsNormalMap( const std::string path, const std::string filename ) {
-        FIBITMAP * bitmap = loadImage(path, filename);
+        ptr<EnvMap> map = make_shared<EnvMap>();
         
-        if( FreeImage_GetColorType( bitmap ) != FIC_RGB ) {
-            throw runtime_error("Unable to load normal map which is of not RGB type");
-            FreeImage_Unload(bitmap);
+        glGenTextures(1, &map->textureID);
+        glBindTexture( GL_TEXTURE_CUBE_MAP, map->textureID );
+        
+        const vector<std::string> filenames = {
+            neg_x, neg_y, neg_z, pos_x, pos_y, pos_z
+        };
+        
+        const static vector<GLenum> targets = {
+            GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+            GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+            GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
+            GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+            GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+            GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+        };
+        
+        for ( int i = 0; i < 6; i++ ) {
+            ptr<fipImage> image = loadImage(path, filenames[i]);
+            
+            map->width  = image->getWidth();
+            map->height = image->getHeight();
+
+            image->convertTo32Bits();
+            glTexImage2D( targets[i], 0, GL_RGBA, map->width, map->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->accessPixels() );
+            
+            image = nullptr;
         }
         
-        ptr<NormalTexture> map = make_shared<NormalTexture>();
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         
-        map->width  = FreeImage_GetWidth (bitmap);
-        map->height = FreeImage_GetHeight(bitmap);
+        return map;
+    }
+    
+    ptr<SpecularMap> TextureUtils::loadAsSpecularMap( const string path, const string filename ) {
+        ptr<fipImage> image = loadImage(path, filename);
+        ptr<SpecularMap> map = make_shared<SpecularMap>();
+        
+        map->width  = image->getWidth();
+        map->height = image->getHeight();
+        
+        image->convertToGrayscale();
         
         size_t size = map->width * map->height;
         
+        vector<float> speculars(size);
+        BYTE* data = image->accessPixels();
+        
+        for( int i = 0; i < size; i++ )
+            speculars[i] = static_cast<float>(data[i]) / 255.0;
+        
+        glGenTextures(1, &map->textureID);
+        glBindTexture( GL_TEXTURE_2D, map->textureID );
+        glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, map->width, map->height, 0, GL_RED, GL_FLOAT, &speculars[0]);
+        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        
+        image->clear();
+        image = nullptr;
+        
+        return map;
+    }
+    
+    ptr<NormalMap> TextureUtils::loadAsNormalMap( const string path, const string filename ) {
+        ptr<fipImage> image = loadImage(path, filename);
+        ptr<NormalMap> map = make_shared<NormalMap>();
+        
+        map->width  = image->getWidth();
+        map->height = image->getHeight();
+        
+        size_t size = map->width * map->height;
+        
+        image->convertTo24Bits();
+        
         vector<glm::vec3> normals(size, glm::vec3(0.0));
-        BYTE* data = FreeImage_GetBits( bitmap );
+        BYTE* data = image->accessPixels();
         
         for( int i = 0, j = 0; i < size * 3; i+=3, j++ ) {
             normals[j].x = static_cast<int>(data[i  ]) / 255.0;
@@ -47,8 +123,6 @@ namespace three {
             normals[j].z = static_cast<int>(data[i+2]) / 255.0;
         }
         
-        FreeImage_Unload( bitmap );
-
         glGenTextures(1, &map->textureID);
         glBindTexture( GL_TEXTURE_2D, map->textureID );
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, map->width, map->height, 0, GL_BGR, GL_FLOAT, &normals[0]);
@@ -59,41 +133,44 @@ namespace three {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glGenerateMipmap(GL_TEXTURE_2D);
         
+        image->clear();
+        image = nullptr;
+        
         return map;
     }
     
-    ptr<Texture> TextureUtils::loadImageAsTexture( const std::string path, const std::string filename ) {
-        FIBITMAP* bitmap = loadImage( path, filename );
+    ptr<Texture> TextureUtils::loadImageAsTexture( const string path, const string filename ) {
+        ptr<fipImage> image = loadImage(path, filename);
+        
         ptr<Texture> texture = make_shared<Texture>();
-        texture->width  = FreeImage_GetWidth (bitmap);
-        texture->height = FreeImage_GetHeight(bitmap);
+        texture->width  = image->getWidth();
+        texture->height = image->getHeight();
         
         glGenTextures(1, &texture->textureID);
         glBindTexture( GL_TEXTURE_2D, texture->textureID );
         
-        FREE_IMAGE_COLOR_TYPE color_type = FreeImage_GetColorType( bitmap );
+        switch( image->getColorType() ) {
+            case FIC_RGB:
+                image->convertTo32Bits();
+                glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->accessPixels() );
+                
+                break;
+            case FIC_PALETTE:
+                image->convertTo32Bits();
+                glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->accessPixels() );
+                break;
+            default:
+                throw runtime_error( "Unhandled image type" );
+                break;
+        }
         
-        if( color_type == FIC_RGB ) {
-            glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, texture->width, texture->height, 0, GL_BGR, GL_UNSIGNED_BYTE, FreeImage_GetBits( bitmap ));
-        }
-        else if ( color_type == FIC_PALETTE ) {
-            glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, texture->width, texture->height, 0, GL_BGR, GL_UNSIGNED_BYTE, FreeImage_GetBits( bitmap ));
-        }
-        else if( color_type == FIC_RGBALPHA ) {
-            glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, FreeImage_GetBits( bitmap ));
-        }
-        else {
-            FreeImage_Unload( bitmap );
-            throw runtime_error( "Unhandled case of image type" );
-        }
+        image->clear();
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glGenerateMipmap(GL_TEXTURE_2D);
-        
-        FreeImage_Unload( bitmap );
         
         return texture;
     }

@@ -16,10 +16,14 @@
 namespace three {
     class TextureUtils{
     public:
-        static FIBITMAP* loadImage( const std::string path, const std::string filename );
+        static ptr<fipImage> loadImage( const std::string path, const std::string filename );
         static ptr<Texture> loadImageAsTexture( const std::string path, const std::string filename );
         static ptr<Texture> loadEmptyWhiteTexture();
-        static ptr<NormalTexture> loadAsNormalMap( const std::string path, const std::string filename );
+        static ptr<SpecularMap> loadAsSpecularMap( const std::string path, const std::string filename );
+        static ptr<NormalMap> loadAsNormalMap( const std::string path, const std::string filename );
+        static ptr<EnvMap> loadAsEnvMap( const std::string path,
+                                         const std::string neg_x, const std::string neg_y, const std::string neg_z,
+                                         const std::string pos_x, const std::string pos_y, const std::string pos_z );
     };
 }
 
