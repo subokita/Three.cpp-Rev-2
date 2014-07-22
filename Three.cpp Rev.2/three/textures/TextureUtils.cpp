@@ -31,26 +31,29 @@ namespace three {
                                             const string neg_x, const string neg_y, const string neg_z,
                                             const string pos_x, const string pos_y, const string pos_z ) {
         
-        ptr<EnvMap> map = make_shared<EnvMap>();
+        ptr<EnvMap> map = EnvMap::create();
         
         glGenTextures(1, &map->textureID);
         glBindTexture( GL_TEXTURE_CUBE_MAP, map->textureID );
         
-        const vector<std::string> filenames = {
+        const std::string filenames[6] = {
             neg_x, neg_y, neg_z, pos_x, pos_y, pos_z
         };
         
-        const static vector<GLenum> targets = {
-            GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
-            GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
-            GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
+        const static GLenum targets[6] = {
             GL_TEXTURE_CUBE_MAP_POSITIVE_X,
             GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+            GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
+            GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+            GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
             GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
         };
         
         for ( int i = 0; i < 6; i++ ) {
             ptr<fipImage> image = loadImage(path, filenames[i]);
+            
+            image->flipVertical();
+            image->flipHorizontal();
             
             map->width  = image->getWidth();
             map->height = image->getHeight();
@@ -61,18 +64,13 @@ namespace three {
             image = nullptr;
         }
         
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         
         return map;
     }
     
     ptr<SpecularMap> TextureUtils::loadAsSpecularMap( const string path, const string filename ) {
         ptr<fipImage> image = loadImage(path, filename);
-        ptr<SpecularMap> map = make_shared<SpecularMap>();
+        ptr<SpecularMap> map = SpecularMap::create();
         
         map->width  = image->getWidth();
         map->height = image->getHeight();
@@ -84,17 +82,14 @@ namespace three {
         vector<float> speculars(size);
         BYTE* data = image->accessPixels();
         
-        for( int i = 0; i < size; i++ )
+        for( int i = 0; i < size; i++ ){
             speculars[i] = static_cast<float>(data[i]) / 255.0;
+        }
         
         glGenTextures(1, &map->textureID);
         glBindTexture( GL_TEXTURE_2D, map->textureID );
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, map->width, map->height, 0, GL_RED, GL_FLOAT, &speculars[0]);
         
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glGenerateMipmap(GL_TEXTURE_2D);
         
         image->clear();
@@ -105,7 +100,7 @@ namespace three {
     
     ptr<NormalMap> TextureUtils::loadAsNormalMap( const string path, const string filename ) {
         ptr<fipImage> image = loadImage(path, filename);
-        ptr<NormalMap> map = make_shared<NormalMap>();
+        ptr<NormalMap> map = NormalMap::create();
         
         map->width  = image->getWidth();
         map->height = image->getHeight();
@@ -127,10 +122,6 @@ namespace three {
         glBindTexture( GL_TEXTURE_2D, map->textureID );
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, map->width, map->height, 0, GL_BGR, GL_FLOAT, &normals[0]);
         
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glGenerateMipmap(GL_TEXTURE_2D);
         
         image->clear();
@@ -139,10 +130,10 @@ namespace three {
         return map;
     }
     
-    ptr<Texture> TextureUtils::loadImageAsTexture( const string path, const string filename ) {
+    ptr<Texture> TextureUtils::loadAsTexture( const string path, const string filename ) {
         ptr<fipImage> image = loadImage(path, filename);
         
-        ptr<Texture> texture = make_shared<Texture>();
+        ptr<Texture> texture = Texture::create();
         texture->width  = image->getWidth();
         texture->height = image->getHeight();
         
@@ -166,10 +157,6 @@ namespace three {
         
         image->clear();
         
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glGenerateMipmap(GL_TEXTURE_2D);
         
         return texture;
@@ -177,7 +164,7 @@ namespace three {
     
     
     ptr<Texture> TextureUtils::loadEmptyWhiteTexture() {
-        ptr<Texture> texture = make_shared<Texture>();
+        ptr<Texture> texture = Texture::create();
         texture->width  = 1;
         texture->height = 1;
 
@@ -187,10 +174,6 @@ namespace three {
         vector<GLubyte> empty_data(3, 255);
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, texture->width, texture->height, 0, GL_BGR, GL_UNSIGNED_BYTE, &empty_data[0]);
         
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glGenerateMipmap(GL_TEXTURE_2D);
         
         return texture;

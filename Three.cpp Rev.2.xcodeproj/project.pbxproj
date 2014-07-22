@@ -9,10 +9,17 @@
 /* Begin PBXBuildFile section */
 		A81C53C119706B1400EDCA57 /* HemisphereLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A81C53BF19706B1400EDCA57 /* HemisphereLight.cpp */; };
 		A81C53C41970792F00EDCA57 /* SpotLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A81C53C21970792F00EDCA57 /* SpotLight.cpp */; };
-		A825E618196D6D290003C5C7 /* MeshPhongMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A825E616196D6D290003C5C7 /* MeshPhongMaterial.cpp */; };
+		A825E618196D6D290003C5C7 /* PhongMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A825E616196D6D290003C5C7 /* PhongMaterial.cpp */; };
 		A825E61B196D71F20003C5C7 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A825E619196D71F20003C5C7 /* Mesh.cpp */; };
 		A848B2E2197CD9A10042B91B /* SpecularMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A848B2E0197CD9A10042B91B /* SpecularMap.cpp */; };
 		A848B2E5197CFB2C0042B91B /* EnvMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A848B2E3197CFB2C0042B91B /* EnvMap.cpp */; };
+		A84D131B197E642500BC5A03 /* MeshCubeMapMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A84D1319197E642500BC5A03 /* MeshCubeMapMaterial.cpp */; };
+		A84D131E197E697900BC5A03 /* HasShaderUniforms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A84D131C197E697900BC5A03 /* HasShaderUniforms.cpp */; };
+		A84D1376197E8E7300BC5A03 /* RenderTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A84D1374197E8E7300BC5A03 /* RenderTarget.cpp */; };
+		A84D137A197EB35100BC5A03 /* Ex_001_SimplePrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A84D1378197EB35100BC5A03 /* Ex_001_SimplePrimitives.cpp */; };
+		A84D137D197EB36000BC5A03 /* Example.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A84D137B197EB36000BC5A03 /* Example.cpp */; };
+		A84D1381197EBDFA00BC5A03 /* Ex_002_TextureSpecularNormalMappings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A84D137F197EBDFA00BC5A03 /* Ex_002_TextureSpecularNormalMappings.cpp */; };
+		A84D1384197EC7F900BC5A03 /* Ex_003_EnvironmentMapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A84D1382197EC7F900BC5A03 /* Ex_003_EnvironmentMapping.cpp */; };
 		A850585219756B0500866386 /* Frustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A850585019756B0500866386 /* Frustum.cpp */; };
 		A882D375196D903D0051958C /* FogExp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A882D373196D903D0051958C /* FogExp2.cpp */; };
 		A882D378196D9FB40051958C /* DirectionalLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A882D376196D9FB40051958C /* DirectionalLight.cpp */; };
@@ -79,14 +86,29 @@
 		A81C53C019706B1400EDCA57 /* HemisphereLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HemisphereLight.h; sourceTree = "<group>"; };
 		A81C53C21970792F00EDCA57 /* SpotLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpotLight.cpp; sourceTree = "<group>"; };
 		A81C53C31970792F00EDCA57 /* SpotLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotLight.h; sourceTree = "<group>"; };
-		A825E616196D6D290003C5C7 /* MeshPhongMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeshPhongMaterial.cpp; sourceTree = "<group>"; };
-		A825E617196D6D290003C5C7 /* MeshPhongMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshPhongMaterial.h; sourceTree = "<group>"; };
+		A825E616196D6D290003C5C7 /* PhongMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhongMaterial.cpp; sourceTree = "<group>"; };
+		A825E617196D6D290003C5C7 /* PhongMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhongMaterial.h; sourceTree = "<group>"; };
 		A825E619196D71F20003C5C7 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
 		A825E61A196D71F20003C5C7 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
 		A848B2E0197CD9A10042B91B /* SpecularMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpecularMap.cpp; sourceTree = "<group>"; };
 		A848B2E1197CD9A10042B91B /* SpecularMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecularMap.h; sourceTree = "<group>"; };
 		A848B2E3197CFB2C0042B91B /* EnvMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnvMap.cpp; sourceTree = "<group>"; };
 		A848B2E4197CFB2C0042B91B /* EnvMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnvMap.h; sourceTree = "<group>"; };
+		A84D1319197E642500BC5A03 /* MeshCubeMapMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeshCubeMapMaterial.cpp; sourceTree = "<group>"; };
+		A84D131A197E642500BC5A03 /* MeshCubeMapMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshCubeMapMaterial.h; sourceTree = "<group>"; };
+		A84D131C197E697900BC5A03 /* HasShaderUniforms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HasShaderUniforms.cpp; sourceTree = "<group>"; };
+		A84D131D197E697900BC5A03 /* HasShaderUniforms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HasShaderUniforms.h; sourceTree = "<group>"; };
+		A84D1374197E8E7300BC5A03 /* RenderTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderTarget.cpp; sourceTree = "<group>"; };
+		A84D1375197E8E7300BC5A03 /* RenderTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderTarget.h; sourceTree = "<group>"; };
+		A84D1378197EB35100BC5A03 /* Ex_001_SimplePrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ex_001_SimplePrimitives.cpp; sourceTree = "<group>"; };
+		A84D1379197EB35100BC5A03 /* Ex_001_SimplePrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ex_001_SimplePrimitives.h; sourceTree = "<group>"; };
+		A84D137B197EB36000BC5A03 /* Example.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Example.cpp; sourceTree = "<group>"; };
+		A84D137C197EB36000BC5A03 /* Example.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example.h; sourceTree = "<group>"; };
+		A84D137E197EBA3500BC5A03 /* examples_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = examples_header.h; sourceTree = "<group>"; };
+		A84D137F197EBDFA00BC5A03 /* Ex_002_TextureSpecularNormalMappings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ex_002_TextureSpecularNormalMappings.cpp; sourceTree = "<group>"; };
+		A84D1380197EBDFA00BC5A03 /* Ex_002_TextureSpecularNormalMappings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ex_002_TextureSpecularNormalMappings.h; sourceTree = "<group>"; };
+		A84D1382197EC7F900BC5A03 /* Ex_003_EnvironmentMapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ex_003_EnvironmentMapping.cpp; sourceTree = "<group>"; };
+		A84D1383197EC7F900BC5A03 /* Ex_003_EnvironmentMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ex_003_EnvironmentMapping.h; sourceTree = "<group>"; };
 		A850585019756B0500866386 /* Frustum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Frustum.cpp; sourceTree = "<group>"; };
 		A850585119756B0500866386 /* Frustum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Frustum.h; sourceTree = "<group>"; };
 		A882D373196D903D0051958C /* FogExp2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FogExp2.cpp; sourceTree = "<group>"; };
@@ -188,6 +210,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A84D1377197EB33F00BC5A03 /* examples */ = {
+			isa = PBXGroup;
+			children = (
+				A84D137E197EBA3500BC5A03 /* examples_header.h */,
+				A84D137B197EB36000BC5A03 /* Example.cpp */,
+				A84D137C197EB36000BC5A03 /* Example.h */,
+				A84D1378197EB35100BC5A03 /* Ex_001_SimplePrimitives.cpp */,
+				A84D1379197EB35100BC5A03 /* Ex_001_SimplePrimitives.h */,
+				A84D137F197EBDFA00BC5A03 /* Ex_002_TextureSpecularNormalMappings.cpp */,
+				A84D1380197EBDFA00BC5A03 /* Ex_002_TextureSpecularNormalMappings.h */,
+				A84D1382197EC7F900BC5A03 /* Ex_003_EnvironmentMapping.cpp */,
+				A84D1383197EC7F900BC5A03 /* Ex_003_EnvironmentMapping.h */,
+			);
+			path = examples;
+			sourceTree = "<group>";
+		};
 		A85058531975B02900866386 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -271,6 +309,7 @@
 		A8F4C3DD196A687600D191DC /* Three.cpp Rev.2 */ = {
 			isa = PBXGroup;
 			children = (
+				A84D1377197EB33F00BC5A03 /* examples */,
 				A88AFA03196D180E00601287 /* shaders */,
 				A8F4C3EE196A692800D191DC /* three */,
 				A8F4C3DE196A687600D191DC /* main.cpp */,
@@ -309,6 +348,8 @@
 				A8F4C3F3196A810400D191DC /* shaders */,
 				A8F4C3F0196A693000D191DC /* Renderer.cpp */,
 				A8F4C3F1196A693000D191DC /* Renderer.h */,
+				A84D1374197E8E7300BC5A03 /* RenderTarget.cpp */,
+				A84D1375197E8E7300BC5A03 /* RenderTarget.h */,
 			);
 			path = renderers;
 			sourceTree = "<group>";
@@ -363,6 +404,8 @@
 			children = (
 				A8AC4AFB19764C4500D4449B /* HasID.cpp */,
 				A8AC4AFC19764C4500D4449B /* HasID.h */,
+				A84D131C197E697900BC5A03 /* HasShaderUniforms.cpp */,
+				A84D131D197E697900BC5A03 /* HasShaderUniforms.h */,
 				A8A33FB01973F78D00037E90 /* Event.cpp */,
 				A8A33FB11973F78D00037E90 /* Event.h */,
 				A8A33FB21973F78D00037E90 /* EventDispatcher.cpp */,
@@ -431,8 +474,10 @@
 			children = (
 				A8F4C42F196AF9DC00D191DC /* Material.cpp */,
 				A8F4C430196AF9DC00D191DC /* Material.h */,
-				A825E616196D6D290003C5C7 /* MeshPhongMaterial.cpp */,
-				A825E617196D6D290003C5C7 /* MeshPhongMaterial.h */,
+				A84D1319197E642500BC5A03 /* MeshCubeMapMaterial.cpp */,
+				A84D131A197E642500BC5A03 /* MeshCubeMapMaterial.h */,
+				A825E616196D6D290003C5C7 /* PhongMaterial.cpp */,
+				A825E617196D6D290003C5C7 /* PhongMaterial.h */,
 			);
 			path = materials;
 			sourceTree = "<group>";
@@ -489,6 +534,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8B372ED197BEA43009B168D /* ShaderLib.cpp in Sources */,
+				A84D131B197E642500BC5A03 /* MeshCubeMapMaterial.cpp in Sources */,
 				A88AF9F1196BD04E00601287 /* Constants.cpp in Sources */,
 				A8AC4AFA19764BCF00D4449B /* TextureUtils.cpp in Sources */,
 				A8A33FC119740D9C00037E90 /* Plane.cpp in Sources */,
@@ -496,13 +542,17 @@
 				A8DC9EC419794618004C75FB /* NormalMap.cpp in Sources */,
 				A8F4C431196AF9DC00D191DC /* Material.cpp in Sources */,
 				A81C53C41970792F00EDCA57 /* SpotLight.cpp in Sources */,
+				A84D137D197EB36000BC5A03 /* Example.cpp in Sources */,
 				A848B2E2197CD9A10042B91B /* SpecularMap.cpp in Sources */,
 				A8AC4AF71976456F00D4449B /* Texture.cpp in Sources */,
 				A8F4C3F2196A693000D191DC /* Renderer.cpp in Sources */,
+				A84D131E197E697900BC5A03 /* HasShaderUniforms.cpp in Sources */,
 				A8F4C414196AA06E00D191DC /* Object3D.cpp in Sources */,
 				A848B2E5197CFB2C0042B91B /* EnvMap.cpp in Sources */,
 				A81C53C119706B1400EDCA57 /* HemisphereLight.cpp in Sources */,
-				A825E618196D6D290003C5C7 /* MeshPhongMaterial.cpp in Sources */,
+				A825E618196D6D290003C5C7 /* PhongMaterial.cpp in Sources */,
+				A84D1381197EBDFA00BC5A03 /* Ex_002_TextureSpecularNormalMappings.cpp in Sources */,
+				A84D1376197E8E7300BC5A03 /* RenderTarget.cpp in Sources */,
 				A88AF9FE196D0CCA00601287 /* IFog.cpp in Sources */,
 				A8A33FB8197408A100037E90 /* Sphere.cpp in Sources */,
 				A8AC4AFD19764C4500D4449B /* HasID.cpp in Sources */,
@@ -512,9 +562,11 @@
 				A8F4C42D196AE05D00D191DC /* Math.cpp in Sources */,
 				A8DA557D1976E689000CC869 /* RenderPlugin.cpp in Sources */,
 				A8DC9EC7197994DD004C75FB /* CylinderGeometry.cpp in Sources */,
+				A84D1384197EC7F900BC5A03 /* Ex_003_EnvironmentMapping.cpp in Sources */,
 				A8A33FAC1973D8F900037E90 /* Arcball.cpp in Sources */,
 				A8F4C413196AA06E00D191DC /* Geometry.cpp in Sources */,
 				A88AF9F4196C336A00601287 /* Face3.cpp in Sources */,
+				A84D137A197EB35100BC5A03 /* Ex_001_SimplePrimitives.cpp in Sources */,
 				A88AF9F8196C650900601287 /* Light.cpp in Sources */,
 				A8F4C423196AB09B00D191DC /* Camera.cpp in Sources */,
 				A8F4C434196B069C00D191DC /* Color.cpp in Sources */,

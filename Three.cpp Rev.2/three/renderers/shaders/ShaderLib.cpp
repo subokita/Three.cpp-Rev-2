@@ -14,8 +14,11 @@ using namespace std;
 
 namespace three {
     ptr<ShaderLib> ShaderLib::create( ptr<Mesh> mesh ) {
-        if( instance_of(mesh->material, MeshPhongMaterial) ) {
+        if( instance_of(mesh->material, PhongMaterial) ) {
             return ShaderLib_PHONG->clone();
+        }
+        else if ( instance_of(mesh->material, MeshCubeMapMaterial ) ) {
+            return ShaderLib_CUBEMAP->clone();
         }
         return nullptr;
     }
@@ -104,33 +107,25 @@ namespace three {
         config.reset();
         
         if( mesh->texture != nullptr ) {
-            if( instance_of(mesh->texture, EnvMap)) {
-                this->defines.push_back( "#define USE_CUBEMAP" );
-                config[1] = 1;
-            }
-            else {
-                this->defines.push_back( "#define USE_MAP" );
-                config[0] = 1;
-            }
+            this->defines.push_back( "#define USE_MAP" );
+            config[0] = 1;
         }
         
         
         if( mesh->normalMap != nullptr ) {
             this->defines.push_back( "#define USE_NORMALMAP" );
-            config[2] = 1;
+            config[1] = 1;
         }
         
         
         if( mesh->specularMap!= nullptr ) {
             this->defines.push_back( "#define USE_SPECULARMAP" );
-            config[3] = 1;
+            config[2] = 1;
         }
-        
-        
         
         if( mesh->envMap != nullptr ) {
             this->defines.push_back( "#define USE_ENVMAP" );
-            config[4] = 1;
+            config[3] = 1;
         }
         
         
@@ -138,12 +133,17 @@ namespace three {
             ss.str("");
             ss << "#define ALPHATEST " << mesh->material->alphaTest ;
             this->defines.push_back( ss.str() );
-            config[5] = 1;
+            config[4] = 1;
         }
         
         
         if( mesh->material->wrapAround ) {
             this->defines.push_back( "#define WRAP_AROUND" );
+            config[5] = 1;
+        }
+        
+        if( mesh->material->side == three::DoubleSide ) {
+            this->defines.push_back( "#define DOUBLE_SIDED" );
             config[6] = 1;
         }
         
@@ -178,7 +178,8 @@ namespace three {
 
         if( instance_of(object, Mesh ) ) {
             ptr<Mesh> mesh = downcast(object, Mesh) ;
-            mesh->draw(shader, gamma_input);
+            mesh->setUniforms(shader, gamma_input );
+            mesh->draw();
         }
     }
     

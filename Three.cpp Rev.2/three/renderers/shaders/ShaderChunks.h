@@ -19,6 +19,24 @@ namespace three {
     
     namespace Chunks {
 
+        static const string cubeMapVertexParams = Utils::join({
+            "out vec3 vertex_pos_w;",
+        });
+        
+        static const string cubeMapFragmentParams = Utils::join({
+            "in vec3 vertex_pos_w;",
+            "uniform samplerCube env_map;",
+        });
+        
+        static const string cubeMapVertex = Utils::join({
+            "vertex_pos_w      = vec3( model_mat * vec4(vertex_pos_m, 1.0) );",
+            "gl_Position       = projection_mat * model_view_mat * vec4(vertex_pos_m, 1.0);",
+        }, "\t");
+        
+        static const string cubeMapFragment = Utils::join({
+            "frag_color = texture( env_map, vec3( vertex_pos_w.x, vertex_pos_w.yz ) );",
+        }, "\t");
+        
         static const string standardVertexParams = Utils::join({
             "layout (location = 0) in vec3 vertex_pos_m;",
             "layout (location = 1) in vec3 vertex_normal_m;",
@@ -34,6 +52,8 @@ namespace three {
         
         static const string standardFragmentParams = Utils::join({
             "out vec4 frag_color;",
+            
+            "uniform vec3 camera_pos_w;",
         });
         
         static const string specularMapFragmentParams = Utils::join({
@@ -67,9 +87,11 @@ namespace three {
         
         static const string envMapVertex = Utils::join({
             "#if defined( USE_ENVMAP ) && !defined( USE_BUMPMAP ) && !defined( USE_NORMALMAP )",
+            
                 "vec3 world_normal = mat3(model_mat[0].xyz, model_mat[1].xyz, model_mat[2].xyz) * vertex_normal_m;",
                 "world_normal = normalize( world_normal );",
                 "vec3 camera_to_vert = normalize( vertex_pos_w.xyz - camera_pos_w );",
+            
                 "if( use_refraction ) {",
                     "reflect_c = refract(camera_to_vert, world_normal, refraction_ratio );",
                 "}",
@@ -84,14 +106,17 @@ namespace three {
                 "vec3 reflect_vec;",
             
                 "#if defined( USE_BUMPMAP ) || defined( USE_NORMALMAP ) ",
+            
                     "vec3 camera_to_vert = normalize( vertex_pos_w - camera_pos_w );",
                     "vec3 world_normal   = normalize( vec3( vec4(norm_normal_c, 0.0) * view_mat ) );",
+            
                     "if ( use_refraction ) {",
                         "reflect_vec = refract(camera_to_vert, world_normal, refraction_ratio );",
                     "}",
                     "else {",
                         "reflect_vec = reflect(camera_to_vert, world_normal );",
                     "}",
+            
                 "#else",
                     "reflect_vec = reflect_c;",
                 "#endif",
@@ -100,7 +125,7 @@ namespace three {
                     "float flip_normal = (-1.0 + 2.0 * float( gl_FrontFacing ) );",
                     "vec4 cube_color = texture( env_map, flip_normal * vec3( flip_env_map * reflect_vec.x, reflect_vec.yz ) );",
                 "#else",
-                    "vec4 cube_color = texture( env_map, vec3( flip_env_map * reflect_vec.x, reflect_vec.yz ) );",
+                    "vec4 cube_color = texture( env_map, flip_env_map * reflect_vec );",
                 "#endif",
 
                 "#ifdef GAMMA_INPUT",
@@ -154,10 +179,6 @@ namespace three {
             "#ifdef USE_MAP",
                 "uniform sampler2D map;",
             "#endif",
-            "#ifdef USE_CUBEMAP",
-                "out vec3 vertex_ray;",
-                "uniform samplerCube map;",
-            "#endif",
         });
         
         static const string textureFragmentParams = Utils::join({
@@ -167,20 +188,12 @@ namespace three {
             "#ifdef USE_MAP",
                 "uniform sampler2D map;",
             "#endif",
-            "#ifdef USE_CUBEMAP",
-                "in vec3 vertex_ray;",
-                "uniform samplerCube map;",
-            "#endif",
         });
         
         
         static const string textureVertex = Utils::join({
             "#if defined( USE_MAP ) || defined( USE_NORMALMAP ) || defined( USE_SPECULARMAP )",
                 "uv = vertex_uv_m;",
-            "#endif",
-            
-            "#ifdef USE_CUBEMAP",
-                "vertex_ray = normalize(-vertex_pos_m);",
             "#endif",
         });
         
@@ -192,15 +205,6 @@ namespace three {
                     "texel_color.xyz *= texel_color.xyz;",
                 "#endif",
             
-                "frag_color = frag_color * texel_color;",
-            "#endif",
-            "#ifdef USE_CUBEMAP",
-                "vec4 texel_color = texture(map, vertex_ray);",
-                
-                "#ifdef GAMMA_INPUT",
-                    "texel_color.xyz *= texel_color.xyz;",
-                "#endif",
-                
                 "frag_color = frag_color * texel_color;",
             "#endif",
         });

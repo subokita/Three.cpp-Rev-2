@@ -45,7 +45,8 @@ namespace three {
     
     /* ./three/materials */
     class Material;
-    class MeshPhongMaterial;
+    class MeshCubeMapMaterial;
+    class PhongMaterial;
     
     /* ./three/maths */
     class Box3;
@@ -74,6 +75,7 @@ namespace three {
     
     /* ./three/renderers */
     class Renderer;
+    class RenderTarget;
     
     /* ./three/renderers/scenes */
     class IFog;

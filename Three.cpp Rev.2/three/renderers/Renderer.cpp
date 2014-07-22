@@ -24,7 +24,8 @@ namespace three {
         gammaInput   ( false ),
         gammaOutput  ( false ),
         clearColor   ( 0x000000 ),
-        clearAlpha   ( 1.0 )
+        clearAlpha   ( 1.0 ),
+        renderTarget ( RenderTarget::create( GL_FRAMEBUFFER, 0) )
     {}
     
     Renderer::~Renderer() {
@@ -32,11 +33,11 @@ namespace three {
             glDeleteVertexArrays(1, &vertexArrayId);
         
         glfwDestroyWindow( window );
+        glfwTerminate();
+        
         window   = nullptr;
         instance = nullptr;
-        glfwTerminate();
     }
-    
     
     void Renderer::init( std::string window_title, GLuint window_width, GLuint window_height ) {
         width   = window_width;
@@ -45,7 +46,6 @@ namespace three {
         
         if( !glfwInit() )
             throw std::runtime_error( "Unable to init GLFW" );
-        
         
         /* Tell GLFW to use OpenGL 4.1 */
         glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
@@ -65,10 +65,10 @@ namespace three {
         glGenVertexArrays(1, &vertexArrayId );
         glBindVertexArray(vertexArrayId);
         
-        initCallbacks();
-        
-        instance = this;
         arcball = Arcball::create(width, height, 2.0f);
+        
+        initCallbacks();
+        instance = this;
     }
     
     
@@ -81,8 +81,6 @@ namespace three {
         glDepthFunc( GL_LEQUAL );
         
         glFrontFace( GL_CCW );
-        glCullFace( GL_BACK );
-        glEnable( GL_CULL_FACE );
         
         glEnable( GL_BLEND );
         glBlendEquation( GL_FUNC_ADD );
@@ -119,6 +117,10 @@ namespace three {
         scrollCallbackHandler = []( GLFWwindow *window, double x, double y ) {
             glm::vec3 pos = instance->camera->position * instance->camera->quaternion * instance->camera->scale;
             glm::vec3 dir = glm::normalize(instance->camera->target + pos) * static_cast<float>(y);
+            
+            if( glm::length((pos - dir)) == 0.0 )
+                return;
+            
             instance->camera->position = (pos - dir);
         };
         
@@ -140,8 +142,11 @@ namespace three {
     
     
     void Renderer::render(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera) {
+        if( instance == nullptr )
+            throw runtime_error( "Unable to start Renderer, please invoke init() first" );
+        
         if( scene == nullptr || camera == nullptr )
-            throw runtime_error( "Unable to render scene without a valid scene and camera" );
+            throw runtime_error( "Unable to render scene with a null scene or camera" );
         
         this->scene = scene;
         this->camera = camera;
@@ -173,6 +178,8 @@ namespace three {
             camera->updateMatrix();
             
             renderPlugins( preRenderPlugins, scene, camera );
+            
+            renderTarget->bind();
             
             for( auto object: descendants ){
                 object->updateMatrixWorld(false);

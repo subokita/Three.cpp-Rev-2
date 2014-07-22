@@ -21,6 +21,7 @@
 
 #include "three.h"
 
+
 using namespace std;
 
 namespace three {
@@ -107,6 +108,7 @@ namespace three {
         }
         
         programId = glCreateProgram();
+        
         glAttachShader( programId, vertexShaderId );
         glAttachShader( programId, fragmentShaderId );
         glLinkProgram( programId );
@@ -148,26 +150,38 @@ namespace three {
         return location;
     }
     
-    void Shader::setUniform( const char * struct_name, const char * variable, GLfloat v0 ) {
+    bool Shader::setUniform( const char * struct_name, const char * variable, GLfloat v0 ) {
         GLint location = getStructLocation( struct_name, variable );
+        if( location == -1 )
+            return false;
+        
         glUniform1f( location, v0 );
+        return true;
     }
     
-    void Shader::setUniform( const char * struct_name, const char * variable, glm::vec3 vector ) {
+    bool Shader::setUniform( const char * struct_name, const char * variable, glm::vec3 vector ) {
         GLint location = getStructLocation( struct_name, variable );
+        if( location == -1 )
+            return false;
+
         glUniform3f( location, vector.x, vector.y, vector.z );
+        return true;
     }
     
-    void Shader::setUniform( const char * struct_name, const char * variable, glm::vec4 vector ) {
+    bool Shader::setUniform( const char * struct_name, const char * variable, glm::vec4 vector ) {
         GLint location = getStructLocation( struct_name, variable );
+        if( location == -1 )
+            return false;
+
         glUniform4f( location, vector.x, vector.y, vector.z, vector.w );
+        return true;
     }
     
     
-    void Shader::setUniform( const char * uniform_name, vector<Color>& colors, vector<float>& intensities, bool gamma_input ) {
+    bool Shader::setUniform( const char * uniform_name, vector<Color>& colors, vector<float>& intensities, bool gamma_input ) {
         if( uniforms.count( uniform_name ) == 0  ) {
-            cerr << uniform_name << " was not generated previously" << endl;
-            throw -1;
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
         }
         
         vector<glm::vec3> vec(colors.size());
@@ -180,77 +194,87 @@ namespace three {
                 vec[i] = colors[i].rep * intensities[i];
         }
         setUniform( uniform_name, vec );
+        
+        return true;
     }
     
-    void Shader::setUniform( const char * uniform_name, std::vector<float>& vector ) {
+    bool Shader::setUniform( const char * uniform_name, std::vector<float>& vector ) {
         if( uniforms.count( uniform_name ) == 0  ) {
-            cerr << uniform_name << " was not generated previously" << endl;
-            throw -1;
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
         }
         glUniform1fv( uniforms[uniform_name], static_cast<GLsizei>(vector.size()), &vector[0] );
+        return true;
     }
     
-    void Shader::setUniform( const char * uniform_name, std::vector<glm::vec3>& vector ) {
+    bool Shader::setUniform( const char * uniform_name, std::vector<glm::vec3>& vector ) {
         if( uniforms.count( uniform_name ) == 0  ) {
-            cerr << uniform_name << " was not generated previously" << endl;
-            throw -1;
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
         }
         glUniform3fv( uniforms[uniform_name], static_cast<GLsizei>(vector.size()), &vector[0][0] );
+        return true;
     }
     
-    void Shader::setUniform( const char * uniform_name, glm::vec4 vector ) {
+    bool Shader::setUniform( const char * uniform_name, glm::vec4 vector ) {
         if( uniforms.count( uniform_name ) == 0  ) {
-            cerr << uniform_name << " was not generated previously" << endl;
-            throw -1;
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
         }
         glUniform4f( uniforms[uniform_name], vector.x, vector.y, vector.z, vector.w );
+        return true;
     }
     
-    void Shader::setUniform( const char * uniform_name, Color color, float intensity, bool gamma_input ) {
+    bool Shader::setUniform( const char * uniform_name, Color color, float intensity, bool gamma_input ) {
         if( !gamma_input )
-            setUniform( uniform_name, color.rep );
+            return setUniform( uniform_name, color.rep );
         else
-            setUniform( uniform_name, Color::copyGammaToLinear(color).rep * intensity * intensity );
+            return setUniform( uniform_name, Color::copyGammaToLinear(color).rep * intensity * intensity );
     }
     
-    void Shader::setUniform( const char * uniform_name, glm::vec3 vector ) {
+    bool Shader::setUniform( const char * uniform_name, glm::vec3 vector ) {
         if( uniforms.count( uniform_name ) == 0  ) {
-            cerr << uniform_name << " was not generated previously" << endl;
-            throw -1;
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
         }
         glUniform3f( uniforms[uniform_name], vector.x, vector.y, vector.z );
+        return true;
     }
     
-    void Shader::setUniform( const char * uniform_name, GLint v0 ) {
-        if( uniforms.count( uniform_name ) == 0 ) {
-            cerr << uniform_name << " was not generated previously" << endl;
-            throw -1;
+    bool Shader::setUniform( const char * uniform_name, GLint v0 ) {
+        if( uniforms.count( uniform_name ) == 0  ) {
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
         }
         glUniform1i( uniforms[uniform_name], v0 );
+        return true;
     }
     
-    void Shader::setUniform( const char * uniform_name, GLfloat v0 ) {
-        if( uniforms.count( uniform_name ) == 0 ) {
-            cerr << uniform_name << " was not generated previously" << endl;
-            throw -1;
+    bool Shader::setUniform( const char * uniform_name, GLfloat v0 ) {
+        if( uniforms.count( uniform_name ) == 0  ) {
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
         }
         glUniform1f( uniforms[uniform_name], v0 );
+        return true;
     }
     
-    void Shader::setUniform( const char * uniform_name, glm::mat3 matrix ) {
-        if( uniforms.count( uniform_name ) == 0 ) {
-            cerr << uniform_name << " was not generated previously" << endl;
-            throw -1;
+    bool Shader::setUniform( const char * uniform_name, glm::mat3 matrix ) {
+        if( uniforms.count( uniform_name ) == 0  ) {
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
         }
         glUniformMatrix3fv( uniforms[uniform_name], 1, GL_FALSE, glm::value_ptr( matrix ));
+        return true;
     }
     
-    void Shader::setUniform( const char * uniform_name, glm::mat4 matrix ) {
-        if( uniforms.count( uniform_name ) == 0 ) {
-            cerr << uniform_name << " was not generated previously" << endl;
-            throw -1;
+    bool Shader::setUniform( const char * uniform_name, glm::mat4 matrix ) {
+        if( uniforms.count( uniform_name ) == 0  ) {
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
         }
         glUniformMatrix4fv( uniforms[uniform_name], 1, GL_FALSE, glm::value_ptr(matrix));
+        return true;
     }
     
     

@@ -58,6 +58,7 @@ namespace three {
         bool equals( Color& rhs );
         Color clone() const;
         
+    public:
         glm::vec3 rep;
         
         friend std::ostream &operator <<( std::ostream& os, const Color& color ) {

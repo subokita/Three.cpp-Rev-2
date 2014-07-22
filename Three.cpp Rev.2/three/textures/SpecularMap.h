@@ -16,8 +16,12 @@
 namespace three {
     class SpecularMap: public Texture {
     public:
+        static ptr<SpecularMap> create();
+        
         SpecularMap();
         ~SpecularMap();
+        
+        virtual void setUniforms(ptr<Shader> shader, bool gamma) override;
     };
 }
 

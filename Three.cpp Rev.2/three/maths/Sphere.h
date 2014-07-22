@@ -28,7 +28,6 @@ namespace three {
         Sphere& setFrom( std::vector<glm::vec3>& points, glm::vec3 center );
         Sphere& setFrom( ptr<Object3D> obj );
         
-        
         bool empty();
         bool contains( glm::vec3 point );
         float distanceTo( glm::vec3 point );

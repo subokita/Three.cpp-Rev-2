@@ -7,8 +7,34 @@
 //
 
 #include "EnvMap.h"
+#include "three.h"
+
+using namespace std;
 
 namespace three {
-    EnvMap::EnvMap(){}
-    EnvMap::~EnvMap(){}
+    ptr<EnvMap> EnvMap::create() {
+        return make_shared<EnvMap>();
+    }
+    
+    EnvMap::EnvMap():
+        Texture( GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR )
+    {}
+    
+    EnvMap::~EnvMap(){
+        if( this->textureID != 0 )
+            glDeleteTextures(1, &this->textureID );
+    }
+    
+    
+    void EnvMap::setUniforms(ptr<Shader> shader, bool gamma) {
+        glActiveTexture( GL_TEXTURE3 );
+        glBindTexture( GL_TEXTURE_CUBE_MAP, this->textureID );
+        shader->setUniform( "env_map", 3 );
+        
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, wrapR );
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, wrapS );
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, wrapT );
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, magFilter);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, minFilter);
+    }
 }

@@ -27,13 +27,13 @@ namespace three {
         
         void addVertexNormals( std::initializer_list<glm::vec3> vertex_normals );
         void addVertexUVs( std::initializer_list<glm::vec2> vertex_uvs );
+        void addVertexColors( std::initializer_list<Color> vertex_colors );
         
     protected:
         Face3();
         Face3( int a, int b, int c );
         Face3( int a, int b, int c, glm::vec3 normal, Color color, int material_index );
         
-
         
     public:
         /* Data members */

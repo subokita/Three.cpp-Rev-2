@@ -48,6 +48,11 @@ namespace  three {
     Face3::~Face3(){}
     
     
+    void Face3::addVertexColors( std::initializer_list<Color> vertex_colors ) {
+        for( Color color: vertex_colors )
+            this->vertexColors.push_back( color );
+    }
+    
     void Face3::addVertexNormals( std::initializer_list<glm::vec3> vertex_normals ) {
         for( glm::vec3 normal: vertex_normals )
             this->vertexNormals.push_back( normal );

@@ -37,7 +37,8 @@
 
 /* ./three/materials */
 #include "Material.h"
-#include "MeshPhongMaterial.h"
+#include "MeshCubeMapMaterial.h"
+#include "PhongMaterial.h"
 
 /* ./three/maths */
 #include "Box3.h"
@@ -66,6 +67,7 @@
 
 /* ./three/renderers */
 #include "Renderer.h"
+#include "RenderTarget.h"
 
 /* ./three/textures */
 #include "Texture.h"

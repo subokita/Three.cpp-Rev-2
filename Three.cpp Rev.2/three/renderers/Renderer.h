@@ -23,7 +23,7 @@
 #include "Arcball.h"
 
 namespace three {
-    class Renderer {
+    class Renderer : public enable_shared_from_this<Renderer> {
     public:
         Renderer();
         virtual ~Renderer();
@@ -63,6 +63,7 @@ namespace three {
 
         
     protected:
+        ptr<RenderTarget> renderTarget;
         ptr<Arcball> arcball;
         ptr<Scene> scene;
         ptr<Camera> camera;
@@ -72,10 +73,11 @@ namespace three {
         GLuint vertexArrayId;
         
         GLFWwindow* window;
+        
         std::function<void()> postRenderCallback = [](){};
+        std::function<void(int, const char*)> errorCallbackHandler;
         std::function<void(GLFWwindow*, int, int)> frameBufferSizeHandler;
         std::function<void(GLFWwindow*, int, int, int, int)> keyCallbackHandler;
-        std::function<void(int, const char*)> errorCallbackHandler;
         std::function<void(GLFWwindow*, double, double)> scrollCallbackHandler;
         std::function<void(GLFWwindow*, int, int, int)> mouseButtonCallbackHandler;
         std::function<void(GLFWwindow*, double, double)> cursorCallbackHandler;

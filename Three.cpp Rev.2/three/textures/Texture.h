@@ -14,15 +14,19 @@
 #include "internal_headers.h"
 #include "EventDispatcher.h"
 #include "HasID.h"
+#include "HasShaderUniforms.h"
 
 namespace three {
     static unsigned int textureIDCount = 0;
-    static ptr<Texture> emptyWhiteTexture; /* Initialized in renderer */
     
-    class Texture : public HasID, public EventDispatcher {
+    class Texture : public HasID, public HasShaderUniforms, public EventDispatcher {
     public:
+        static ptr<Texture> create();
         Texture();
+        Texture(GLuint wrap_s, GLuint wrap_t, GLuint wrap_r, GLuint mag_filter, GLuint min_filter);
         ~Texture();
+        
+        virtual void setUniforms(ptr<Shader> shader, bool gamma) override;
         
         unsigned int width;
         unsigned int height;
@@ -30,6 +34,7 @@ namespace three {
         GLuint textureID;
         GLuint wrapS;
         GLuint wrapT;
+        GLuint wrapR;
         GLuint magFilter;
         GLuint minFilter;
         int anisotropy;

@@ -10,23 +10,28 @@
 #include <vector>
 #include <string>
 #include "three/three.h"
+#include "examples/examples_header.h"
 
 using namespace std;
 using namespace three;
 
-unsigned int sphere_id;
-unsigned int cube_id;
-unsigned int bounding_box_id;
 
 ptr<Object3D> createCompositeObject();
+ptr<Mesh> sphere, cube, cylinder;
 
 const string path = "/Users/saburookita/Personal Projects/Three.cpp Rev.2/examples/assets/";
 
-
 int main(int argc, const char * argv[])
 {
+//    Ex_001_SimplePrimitives::create()->run();
+//    Ex_002_TextureSpecularNormalMappings::create()->run();
+    Ex_003_EnvironmentMapping::create()->run();
+    
+    return 1;
+    
     Renderer renderer;
-    renderer.init( "", 1600 * 3 / 4, 900 * 3 / 4 );    
+    renderer.init( "", 1600 * 3 / 4, 900 * 3 / 4 );
+    
     /* Create scene */
     auto scene = Scene::create();
     scene->fog = Fog::create( 0x72645b / 2, 2.0, 100.0 );
@@ -43,15 +48,20 @@ int main(int argc, const char * argv[])
     
     /* Create ground plane */
 //    auto plane_mesh = Mesh::create( PlaneGeometry::create(20.0f, 1),
-//                                    MeshPhongMaterial::create(0xFFFFFF, 0x666666, 0x000000, 0x101010 ) );
+//                                    PhongMaterial::create(0x333333, 0x000000, 0x333333, 0x101010 ) );
 //    plane_mesh->rotateX(-90.0);
 //    scene->add( plane_mesh );
     
-    auto env = Mesh::create( CubeGeometry::create(20.0f),
-                             MeshPhongMaterial::create(0xFFFFFF, 0x000000, 0x999999, 0x101010 ) );
-    env->texture = TextureUtils::loadAsEnvMap( path + "cube/Park3Med", "nx.jpg", "ny.jpg", "nz.jpg",
-                                              "px.jpg", "py.jpg", "pz.jpg");
+    auto env = Mesh::create( CubeGeometry::create(20.0f), MeshCubeMapMaterial::create() );
+    env->texture = TextureUtils::loadAsEnvMap( path + "cube/pisa",
+                                              "nx.png", "ny.png", "nz.png",
+                                              "px.png", "py.png", "pz.png");
+    
     scene->add( env );
+    
+    sphere->envMap      = downcast(env->texture, EnvMap);
+    cube->envMap        = downcast(env->texture, EnvMap);
+    cylinder->envMap    = downcast(env->texture, EnvMap);
     
     
     /* Create directional light */
@@ -60,7 +70,7 @@ int main(int argc, const char * argv[])
     
     
     /* Create an ambient light */
-    scene->add( AmbientLight::create(0x101010));
+    scene->add( AmbientLight::create(0x777777));
     
     /* Create a post render callback function that allow us to rotate the light and objects */
     float light_rotation_1 = 0.0;
@@ -87,18 +97,9 @@ int main(int argc, const char * argv[])
                     return;
                     
                 case GLFW_KEY_W: { /* Toggle wireframe */
-                    ptr<Mesh> sphere = downcast(composite->getObjectByID(sphere_id, true), Mesh);
-                    sphere->material->wireframe = !sphere->material->wireframe;
-                    
-                    ptr<Mesh> cube = downcast(composite->getObjectByID(cube_id, true), Mesh);
-                    cube->material->wireframe = !cube->material->wireframe;
-                    
-                    break;
-                }
-                    
-                case GLFW_KEY_B: { /* Toggle bounding box visibility */
-                    ptr<Mesh> bounding = downcast(composite->getObjectByID(bounding_box_id, true), Mesh);
-                    bounding->visible = !bounding->visible;
+                    sphere->material->wireframe     = !sphere->material->wireframe;
+                    cube->material->wireframe       = !cube->material->wireframe;
+                    cylinder->material->wireframe   = !cylinder->material->wireframe;
                     break;
                 }
                     
@@ -130,49 +131,35 @@ ptr<Object3D> createCompositeObject() {
     composite->name = "composite";
     
     /* Main part is a sphere */
-    auto sphere = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
-                                MeshPhongMaterial::create( 0xFFFFFF, 0x101010, 0x000000, 0x111111, 130.0, false ) );
-    sphere->texture     = TextureUtils::loadImageAsTexture( path + "planets", "earth_atmos_2048.jpg");
-    sphere->normalMap   = TextureUtils::loadAsNormalMap   ( path + "planets", "earth_normal_2048.jpg" );
-    sphere->specularMap = TextureUtils::loadAsSpecularMap ( path + "planets", "earth_specular_2048.jpg" );
+    sphere = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
+                           PhongMaterial::create( 0x888888, 0xFFFFFF, 0x333333, 0x222222, 130.0, true ) );
+    
+    sphere->texture     = TextureUtils::loadAsTexture    ( path + "planets", "earth_atmos_2048.jpg");
+    sphere->normalMap   = TextureUtils::loadAsNormalMap  ( path + "planets", "earth_normal_2048.jpg" );
+    sphere->specularMap = TextureUtils::loadAsSpecularMap( path + "planets", "earth_specular_2048.jpg" );
     composite->add( sphere );
     
     /* But a cube is attached to the sphere (not to composite directly), thus transformation is relative to sphere */
-    auto cube = Mesh::create( CubeGeometry::create( 1.0f ),
-                              MeshPhongMaterial::create( 0xFFFFFF, 0x101010, 0x000000, 0x111111, 50.0, false ) );
+    cube = Mesh::create( CubeGeometry::create( 1.0f ),
+                         PhongMaterial::create( 0xFFFFFF, 0xFFFFFF, 0x000000, 0x111111, 50.0, false ) );
     cube->translate( 2.0, 0.0, 0.0 );
     sphere->add( cube );
 
     /* Try to add a texture on to it */
-    cube->texture   = TextureUtils::loadImageAsTexture( path, "four_shapes_color.tga" );
-    cube->normalMap = TextureUtils::loadAsNormalMap( path, "four_shapes_normal.tga" );
+    cube->normalMap = TextureUtils::loadAsNormalMap ( path, "four_shapes_normal.tga" );
     
     
-    auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 1.0, 30, 5),
-                                  MeshPhongMaterial::create( 0xFFFFFF, 0x101010, 0x000000, 0x111111, 50.0, false ) );
+    cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.3, 1.0, 30, 5, true),
+                             PhongMaterial::create( 0xFFFFFF, 0x101010, 0x000000, 0x111111, 50.0, false ) );
+    
     cylinder->translate( -2.0, 0.0, 0.0 );
-    cylinder->texture   = TextureUtils::loadImageAsTexture( path, "rock_color.tga" );
-    cylinder->normalMap = TextureUtils::loadAsNormalMap( path, "rock_normal.tga" );
+    cylinder->material->side = three::DoubleSide;
+    cylinder->texture   = TextureUtils::loadAsTexture   ( path, "rock_color.tga" );
+    cylinder->normalMap = TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" );
     sphere->add( cylinder );
     
-    
-    /* Just for testing, add the bounding box to the composite object, it should cover both sphere and cube */
-    auto bound_geom = composite->computeBoundingBox();
-    auto bound_mat  = MeshPhongMaterial::create();
-    bound_mat->wireframe = true;
-    
-    auto bound_mesh = Mesh::create( CubeGeometry::create(1.0f), bound_mat );
-    bound_mesh->translate( bound_geom->center() - composite->position ) ;
-    bound_mesh->scale     = bound_geom->size();
-    bound_mesh->visible   = true;
-
-    
-    composite->add( bound_mesh );
     composite->translate(0.0f, 1.5f, 0.0f);
     
-    sphere_id       = sphere->id;
-    cube_id         = cube->id;
-    bounding_box_id = bound_mesh->id;
     
     return composite;
 }

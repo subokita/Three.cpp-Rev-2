@@ -76,6 +76,33 @@ namespace three {
         std::string fragmentCode;
     };
     
+    static const ptr<ShaderLib> ShaderLib_CUBEMAP = ShaderLib::create(
+      "cubemap",
+      {},
+      {},
+      Utils::join({
+        Chunks::standardVertexParams,
+        Chunks::cubeMapVertexParams,
+      }),
+                                                                      
+      Utils::join({
+        "void main() {",
+            Chunks::cubeMapVertex,
+        "}",
+      }),
+                                                                      
+      Utils::join({
+        Chunks::standardFragmentParams,
+        Chunks::cubeMapFragmentParams,
+      }),
+                                                                      
+      Utils::join({
+        "void main() {",
+            Chunks::cubeMapFragment,
+        "}",
+      })
+    );
+    
     static const ptr<ShaderLib> ShaderLib_PHONG = ShaderLib::create(
             "phong",
             {"precision highp float;", "precision highp int;"},

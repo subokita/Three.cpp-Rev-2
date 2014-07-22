@@ -15,10 +15,15 @@ using namespace std;
 namespace three {
     Geometry::Geometry() :
         noOfElements(0),
-        glBuffersInitialized(false)
-    {}
+        glBuffersInitialized(false),
+        bufferIDs( vector<GLuint>(4, 0) )
+    {
+    }
     
-    Geometry::~Geometry() {}
+    Geometry::~Geometry() {
+        if( glBuffersInitialized )
+            glDeleteBuffers(4, &bufferIDs[0] );
+    }
     
     void Geometry::computeFaceNormals() {
         for( ptr<Face3> face: faces ) {
@@ -293,9 +298,15 @@ namespace three {
             uvs[face->c] = face->uvs[2];
         }
         
-        //FIXME: Indexed VBO messes the uv for texture
-
-        glGenBuffers( 4, bufferIDs );
+        for( auto& vert: vertices)
+            vert = vert * quaternion;
+        
+        for( auto& normal: normals)
+            normal = normal * quaternion;
+        
+        
+        //FIXME: Indexed VBO messes the uv for textures
+        glGenBuffers( 4, &bufferIDs[0] );
         glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[0] );
         glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec3 ) * vertices.size(), &vertices[0], GL_STATIC_DRAW );
         

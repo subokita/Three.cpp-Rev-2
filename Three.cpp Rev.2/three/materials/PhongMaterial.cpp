@@ -1,27 +1,29 @@
 //
-//  MeshPhongMaterial.cpp
+//  PhongMaterial.cpp
 //  Three.cpp Rev.2
 //
 //  Created by Saburo Okita on 09/07/14.
 //  Copyright (c) 2014 Saburo Okita. All rights reserved.
 //
 
-#include "MeshPhongMaterial.h"
+#include "PhongMaterial.h"
+#include "three.h"
+#include "Shader.h"
 
 using namespace std;
 
 namespace three {
-    ptr<MeshPhongMaterial> MeshPhongMaterial::create( Color color, Color ambient, Color emissive, Color specular,
+    ptr<PhongMaterial> PhongMaterial::create( Color color, Color ambient, Color emissive, Color specular,
                                                       float shininess, bool metal ) {
-        return make_shared<MeshPhongMaterial>(MeshPhongMaterial( color, ambient, emissive, specular, shininess, metal ));
+        return make_shared<PhongMaterial>(PhongMaterial( color, ambient, emissive, specular, shininess, metal ));
     }
     
-    MeshPhongMaterial::MeshPhongMaterial():
+    PhongMaterial::PhongMaterial():
         Material          (),
-        color             ( Color(0xFFFFFF) ),
-        ambient           ( Color(0xFFFFFF) ),
-        emissive          ( Color(0x000000) ),
-        specular          ( Color(0x111111) ),
+        color             ( 0xFFFFFF ),
+        ambient           ( 0xFFFFFF ),
+        emissive          ( 0x000000 ),
+        specular          ( 0x111111 ),
         shininess         ( 30.0 ),
         metal             ( false ),
         wrapAround        ( false ),
@@ -40,7 +42,7 @@ namespace three {
     {}
     
     
-    MeshPhongMaterial::MeshPhongMaterial( Color color, Color ambient, Color emissive, Color specular, float shininess, bool metal ):
+    PhongMaterial::PhongMaterial( Color color, Color ambient, Color emissive, Color specular, float shininess, bool metal ):
         Material          (),
         color             (color),
         ambient           (ambient),
@@ -65,5 +67,22 @@ namespace three {
     }
     
     
-    MeshPhongMaterial::~MeshPhongMaterial(){}
+    PhongMaterial::~PhongMaterial(){}
+    
+    
+    void PhongMaterial::setUniforms( ptr<Shader> shader, bool gamma ) {
+        shader->setUniform( "opacity",   this->opacity );
+        shader->setUniform( "emissive",  this->emissive, 1.0, gamma );
+        shader->setUniform( "ambient",   this->ambient, 1.0, gamma );
+        shader->setUniform( "diffuse",   this->color, 1.0, gamma );
+        shader->setUniform( "specular",  this->specular, 1.0, gamma );
+        shader->setUniform( "shininess", this->shininess );
+        
+        /*ENV MAP related*/
+        shader->setUniform( "combine",          this->combine );
+        shader->setUniform( "reflectivity",     (GLfloat) 1.0 ); //phong_material->reflectivity );
+        shader->setUniform( "refraction_ratio", (GLfloat) 0.0 ); //phong_material->refractionRatio );
+        shader->setUniform( "flip_env_map",     (GLfloat) -1.0 );
+        shader->setUniform( "use_refraction",   false );
+    }
 }

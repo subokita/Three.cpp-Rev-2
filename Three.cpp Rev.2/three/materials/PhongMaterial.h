@@ -1,23 +1,24 @@
 //
-//  MeshPhongMaterial.h
+//  PhongMaterial.h
 //  Three.cpp Rev.2
 //
 //  Created by Saburo Okita on 09/07/14.
 //  Copyright (c) 2014 Saburo Okita. All rights reserved.
 //
 
-#ifndef __Three_cpp_Rev_2__MeshPhongMaterial__
-#define __Three_cpp_Rev_2__MeshPhongMaterial__
+#ifndef __Three_cpp_Rev_2__PhongMaterial__
+#define __Three_cpp_Rev_2__PhongMaterial__
 
 #include <iostream>
+#include "internal_headers.h"
 #include "Material.h"
 #include "Color.h"
 #include "Constants.h"
 
 namespace three {
-    class MeshPhongMaterial: public Material {
+    class PhongMaterial: public Material {
     public:
-        static ptr<MeshPhongMaterial> create(
+        static ptr<PhongMaterial> create(
              Color color        = 0xFFFFFF,
              Color ambient      = 0xFFFFFF,
              Color emissive     = 0x000000,
@@ -27,9 +28,11 @@ namespace three {
          );
         
         
-        MeshPhongMaterial();
-        MeshPhongMaterial( Color color, Color ambient, Color emissive, Color specular, float shininess, bool metal );
-        ~MeshPhongMaterial();
+        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
+        
+        PhongMaterial();
+        PhongMaterial( Color color, Color ambient, Color emissive, Color specular, float shininess, bool metal );
+        ~PhongMaterial();
         
     public:
         
@@ -63,4 +66,4 @@ namespace three {
 }
 
 
-#endif /* defined(__Three_cpp_Rev_2__MeshPhongMaterial__) */
+#endif /* defined(__Three_cpp_Rev_2__PhongMaterial__) */

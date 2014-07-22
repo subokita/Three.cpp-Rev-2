@@ -11,16 +11,18 @@
 
 #include <iostream>
 #include <glm/glm.hpp>
+
+#include "internal_headers.h"
 #include "HasID.h"
 #include "Math.h"
-
+#include "HasShaderUniforms.h"
 
 using namespace std;
 
 namespace three {
     static int MaterialIDCount = 0;
     
-    class Material : public HasID {
+    class Material : public HasID, public HasShaderUniforms {
     public:
         Material();
         virtual ~Material();

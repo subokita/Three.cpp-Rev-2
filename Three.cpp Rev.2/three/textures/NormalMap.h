@@ -16,8 +16,12 @@
 namespace three {
     class NormalMap : public Texture {
     public:
+        static ptr<NormalMap> create();
+        
         NormalMap();
         ~NormalMap();
+        
+        virtual void setUniforms(ptr<Shader> shader, bool gamma) override;
     };
 }
 

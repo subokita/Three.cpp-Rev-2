@@ -41,7 +41,7 @@ namespace three {
         bool glBuffersInitialized;
         
     protected:
-        GLuint bufferIDs[4];
+        std::vector<GLuint> bufferIDs;
         std::vector<glm::vec3> vertices;
         std::vector<ptr<Face3>> faces;
         int noOfElements;

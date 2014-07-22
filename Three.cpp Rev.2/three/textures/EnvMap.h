@@ -17,8 +17,11 @@
 namespace three {
     class EnvMap: public Texture {
     public:
+        static ptr<EnvMap> create();
+        
         EnvMap();
         ~EnvMap();
+        virtual void setUniforms(ptr<Shader> shader, bool gamma) override;
     };
 }
 
