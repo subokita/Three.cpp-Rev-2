@@ -53,6 +53,7 @@ namespace three {
 //        glm::vec2   normalScale;
 //        Texture     specularMap;
 //        Texture     envMap;
+        bool        useRefraction;
         int         combine;
         float       reflectivity;
         float       refractionRatio;

@@ -55,9 +55,11 @@ namespace three  {
         cube->translate(2.0f, 0.0f, 0.0f);
         
         
-        auto cube_2 = Mesh::create( CubeGeometry::create( 1.0f ),
-                                 PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
+        auto cube_2_material = PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false );
+        cube_2_material->useRefraction = true;
+        cube_2_material->refractionRatio = 0.5;
         
+        auto cube_2 = Mesh::create( CubeGeometry::create( 1.0f ), cube_2_material);
         cube_2->translate(2.0f, 1.66f, 0.0f);
         cube_2->rotateZ(45.0);
         cube_2->rotateX(45.0);

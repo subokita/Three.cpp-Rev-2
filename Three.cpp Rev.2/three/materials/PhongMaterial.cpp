@@ -80,9 +80,9 @@ namespace three {
         
         /*ENV MAP related*/
         shader->setUniform( "combine",          this->combine );
-        shader->setUniform( "reflectivity",     (GLfloat) 1.0 ); //phong_material->reflectivity );
-        shader->setUniform( "refraction_ratio", (GLfloat) 0.0 ); //phong_material->refractionRatio );
+        shader->setUniform( "reflectivity",     this->reflectivity );
+        shader->setUniform( "refraction_ratio", this->refractionRatio );
         shader->setUniform( "flip_env_map",     (GLfloat) -1.0 );
-        shader->setUniform( "use_refraction",   false );
+        shader->setUniform( "use_refraction",   useRefraction );
     }
 }
