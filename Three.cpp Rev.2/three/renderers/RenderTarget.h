@@ -14,7 +14,6 @@
 
 namespace three {
     class RenderTarget {
-        friend class Renderer;
         
     public:
         static ptr<RenderTarget> create( GLenum target, GLuint framebuffer );
@@ -22,10 +21,18 @@ namespace three {
         ~RenderTarget();
         
         void bind();
+        void generateFrameBuffer();
         
-    protected:
+    public:
         GLenum target;
         GLuint framebuffer;
+        
+        GLuint width;
+        GLuint height;
+        FILTER minFilter;
+        FILTER magFilter;
+        PIXEL_FORMAT format;
+        
     };
 }
 

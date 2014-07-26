@@ -17,7 +17,9 @@ namespace three {
         return make_shared<NormalMap>();
     }
     
-    NormalMap::NormalMap(){}
+    NormalMap::NormalMap():
+        normalScale(glm::vec2(1.0, 1.0))
+    {}
     
     NormalMap::~NormalMap(){
         if( this->textureID != 0 )
@@ -26,6 +28,9 @@ namespace three {
     
     
     void NormalMap::setUniforms(ptr<Shader> shader, bool gamma) {
+        /* NORMAL MAP related */
+        shader->setUniform( "normal_scale", this->normalScale );
+        
         glActiveTexture( GL_TEXTURE1 );
         glBindTexture( GL_TEXTURE_2D, this->textureID );
         shader->setUniform("normal_map", 1);

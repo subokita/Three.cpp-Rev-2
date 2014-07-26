@@ -25,7 +25,6 @@ namespace three {
         
     public:
         ~Geometry();
-        void initGLBuffers();
         
     protected:
         virtual void init() = 0;
@@ -35,13 +34,10 @@ namespace three {
         void computeFaceNormals();
         void computeVertexNormalsForNonMergedFaces();
         void computeVertexNormals( bool area_weighted );
-        void computeTangents();
         
     public:
-        bool glBuffersInitialized;
         
     protected:
-        std::vector<GLuint> bufferIDs;
         std::vector<glm::vec3> vertices;
         std::vector<ptr<Face3>> faces;
         int noOfElements;

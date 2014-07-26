@@ -15,7 +15,14 @@
 namespace three {
     class RenderPlugin {
     public:
-        virtual void render( ptr<Scene>, ptr<Camera> );
+        RenderPlugin();
+        ~RenderPlugin();
+        virtual void setState(ptr<Scene>, ptr<Camera>) = 0;
+        virtual void init( ptr<Scene>, ptr<Camera> ) = 0;
+        virtual void render( ptr<Scene>, ptr<Arcball> arcball, ptr<Camera> ) = 0;
+        
+    public:
+        std::vector<ptr<Object3D>> descendants;
     };
 }
 

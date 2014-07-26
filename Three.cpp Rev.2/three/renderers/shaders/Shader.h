@@ -47,6 +47,7 @@ namespace three {
         bool setUniform( const char * uniform_name, std::vector<float>& vector );
         bool setUniform( const char * uniform_name, glm::mat3 matrix );
         bool setUniform( const char * uniform_name, glm::mat4 matrix );
+        bool setUniform( const char * uniform_name, glm::vec2 vector );
         bool setUniform( const char * uniform_name, glm::vec3 vector );
         bool setUniform( const char * uniform_name, glm::vec4 vector );
         bool setUniform( const char * uniform_name, std::vector<glm::vec3>& vector );

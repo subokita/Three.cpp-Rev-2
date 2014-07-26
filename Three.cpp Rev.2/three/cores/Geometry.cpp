@@ -14,15 +14,11 @@ using namespace std;
 
 namespace three {
     Geometry::Geometry() :
-        noOfElements(0),
-        glBuffersInitialized(false),
-        bufferIDs( vector<GLuint>(4, 0) )
+        noOfElements(0)
     {
     }
     
     Geometry::~Geometry() {
-        if( glBuffersInitialized )
-            glDeleteBuffers(4, &bufferIDs[0] );
     }
     
     void Geometry::computeFaceNormals() {
@@ -32,118 +28,6 @@ namespace three {
             glm::vec3 c = this->vertices[face->c];
             face->normal = glm::normalize( glm::cross(c - b, a - b) );
         }
-    }
-    
-    
-    void Geometry::computeTangents() {
-        
-        vector<glm::vec3> tan_1( vertices.size() );
-        vector<glm::vec3> tan_2( vertices.size() );
-        
-//	computeTangents: function () {
-//        
-//		// based on http://www.terathon.com/code/tangent.html
-//		// tangents go to vertices
-//        
-//		var f, fl, v, vl, i, il, vertexIndex,
-//        face, uv, vA, vB, vC, uvA, uvB, uvC,
-//        x1, x2, y1, y2, z1, z2,
-//        s1, s2, t1, t2, r, t, test,
-//        tan1 = [], tan2 = [],
-//        sdir = new THREE.Vector3(), tdir = new THREE.Vector3(),
-//        tmp = new THREE.Vector3(), tmp2 = new THREE.Vector3(),
-//        n = new THREE.Vector3(), w;
-//        
-//		for ( v = 0, vl = this.vertices.length; v < vl; v ++ ) {
-//            
-//			tan1[ v ] = new THREE.Vector3();
-//			tan2[ v ] = new THREE.Vector3();
-//            
-//		}
-//        
-//		function handleTriangle( context, a, b, c, ua, ub, uc ) {
-//            
-//			vA = context.vertices[ a ];
-//			vB = context.vertices[ b ];
-//			vC = context.vertices[ c ];
-//            
-//			uvA = uv[ ua ];
-//			uvB = uv[ ub ];
-//			uvC = uv[ uc ];
-//            
-//			x1 = vB.x - vA.x;
-//			x2 = vC.x - vA.x;
-//			y1 = vB.y - vA.y;
-//			y2 = vC.y - vA.y;
-//			z1 = vB.z - vA.z;
-//			z2 = vC.z - vA.z;
-//            
-//			s1 = uvB.x - uvA.x;
-//			s2 = uvC.x - uvA.x;
-//			t1 = uvB.y - uvA.y;
-//			t2 = uvC.y - uvA.y;
-//            
-//			r = 1.0 / ( s1 * t2 - s2 * t1 );
-//			sdir.set( ( t2 * x1 - t1 * x2 ) * r,
-//                     ( t2 * y1 - t1 * y2 ) * r,
-//                     ( t2 * z1 - t1 * z2 ) * r );
-//			tdir.set( ( s1 * x2 - s2 * x1 ) * r,
-//                     ( s1 * y2 - s2 * y1 ) * r,
-//                     ( s1 * z2 - s2 * z1 ) * r );
-//            
-//			tan1[ a ].add( sdir );
-//			tan1[ b ].add( sdir );
-//			tan1[ c ].add( sdir );
-//            
-//			tan2[ a ].add( tdir );
-//			tan2[ b ].add( tdir );
-//			tan2[ c ].add( tdir );
-//            
-//		}
-//        
-//		for ( f = 0, fl = this.faces.length; f < fl; f ++ ) {
-//            
-//			face = this.faces[ f ];
-//			uv = this.faceVertexUvs[ 0 ][ f ]; // use UV layer 0 for tangents
-//            
-//			handleTriangle( this, face.a, face.b, face.c, 0, 1, 2 );
-//            
-//		}
-//        
-//		var faceIndex = [ 'a', 'b', 'c', 'd' ];
-//        
-//		for ( f = 0, fl = this.faces.length; f < fl; f ++ ) {
-//            
-//			face = this.faces[ f ];
-//            
-//			for ( i = 0; i < Math.min( face.vertexNormals.length, 3 ); i++ ) {
-//                
-//				n.copy( face.vertexNormals[ i ] );
-//                
-//				vertexIndex = face[ faceIndex[ i ] ];
-//                
-//				t = tan1[ vertexIndex ];
-//                
-//				// Gram-Schmidt orthogonalize
-//                
-//				tmp.copy( t );
-//				tmp.sub( n.multiplyScalar( n.dot( t ) ) ).normalize();
-//                
-//				// Calculate handedness
-//                
-//				tmp2.crossVectors( face.vertexNormals[ i ], t );
-//				test = tmp2.dot( tan2[ vertexIndex ] );
-//				w = (test < 0.0) ? -1.0 : 1.0;
-//                
-//				face.vertexTangents[ i ] = new THREE.Vector4( tmp.x, tmp.y, tmp.z, w );
-//                
-//			}
-//            
-//		}
-//        
-//		this.hasTangents = true;
-//        
-//	},
     }
     
     
@@ -276,52 +160,4 @@ namespace three {
             face->vertexNormals[2] = glm::normalize(face->vertexNormals[2] );
         }
     }
-    
-    void Geometry::initGLBuffers() {
-        noOfElements = static_cast<int>(faces.size() * 3);
-        
-        std::vector<unsigned short> index;
-        std::vector<glm::vec3> normals( vertices.size() );
-        std::vector<glm::vec2> uvs( vertices.size() );
-        
-        for( ptr<Face3> face: faces ) {
-            index.push_back( face->a );
-            index.push_back( face->b );
-            index.push_back( face->c );
-            
-            normals[face->a] = face->vertexNormals[0];
-            normals[face->b] = face->vertexNormals[1];
-            normals[face->c] = face->vertexNormals[2];
-            
-            uvs[face->a] = face->uvs[0];
-            uvs[face->b] = face->uvs[1];
-            uvs[face->c] = face->uvs[2];
-        }
-        
-        for( auto& vert: vertices)
-            vert = vert * quaternion;
-        
-        for( auto& normal: normals)
-            normal = normal * quaternion;
-        
-        
-        //FIXME: Indexed VBO messes the uv for textures
-        glGenBuffers( 4, &bufferIDs[0] );
-        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[0] );
-        glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec3 ) * vertices.size(), &vertices[0], GL_STATIC_DRAW );
-        
-        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[1] );
-        glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec3 ) * normals.size(), &normals[0], GL_STATIC_DRAW );
-        
-        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, bufferIDs[2] );
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( unsigned short ) * faces.size() * 3, &index[0], GL_STATIC_DRAW );
-        
-        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[3] );
-        glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec2 ) * uvs.size(), &uvs[0], GL_STATIC_DRAW );
-        
-        glBuffersInitialized = true;
-        
-        vertices.clear();
-    }
-    
 }

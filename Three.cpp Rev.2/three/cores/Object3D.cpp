@@ -13,6 +13,10 @@ using namespace std;
 
 namespace three {
     
+    ptr<Object3D> Object3D::create() {
+        return make_shared<Object3D>();
+    }
+    
     Object3D::Object3D():
         HasID        ( Object3DIDCount++ ),
         visible      ( true ),

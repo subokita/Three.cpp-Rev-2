@@ -40,7 +40,7 @@ namespace three  {
         
         auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.3, 1.0, 30, 5, true),
                                       PhongMaterial::create( 0xCCCC00, 0x0, 0x0, 0x111111, 150.0, false ) );
-        cylinder->material->side = three::DoubleSide;
+        cylinder->material->side = SIDE::DOUBLE_SIDE;
         cylinder->translate(-2.0f, 0.0f, 0.0f);
 
         scene->add( sphere );

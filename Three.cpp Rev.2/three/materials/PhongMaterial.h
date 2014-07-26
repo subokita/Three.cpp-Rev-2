@@ -45,21 +45,14 @@ namespace three {
         bool        metal;
         bool        wrapAround;
         glm::vec3   wrapRGB;
-//        Texture     map;
-//        Texture     lightMap;
-//        Texture     bumpMap;
-//        float       bumpScale;
-//        Texture     NormalMap;
-//        glm::vec2   normalScale;
-//        Texture     specularMap;
-//        Texture     envMap;
         bool        useRefraction;
-        int         combine;
+        
+        TEXTURE_OPERATION combine;
+        
         float       reflectivity;
         float       refractionRatio;
         bool        fog;
-        int         shading;
-        int         vertexColors;
+        COLOR_MODE  vertexColors;
         bool        skinning;
         bool        morphTargets;
         bool        morphNormals;

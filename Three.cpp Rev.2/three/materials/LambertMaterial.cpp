@@ -1,31 +1,26 @@
 //
-//  PhongMaterial.cpp
+//  LambertMaterial.cpp
 //  Three.cpp Rev.2
 //
-//  Created by Saburo Okita on 09/07/14.
+//  Created by Saburo Okita on 23/07/14.
 //  Copyright (c) 2014 Saburo Okita. All rights reserved.
 //
 
-#include "PhongMaterial.h"
+#include "LambertMaterial.h"
 #include "three.h"
-#include "Shader.h"
 
 using namespace std;
 
 namespace three {
-    ptr<PhongMaterial> PhongMaterial::create( Color color, Color ambient, Color emissive, Color specular,
-                                                      float shininess, bool metal ) {
-        return make_shared<PhongMaterial>(PhongMaterial( color, ambient, emissive, specular, shininess, metal ));
+    ptr<LambertMaterial> LambertMaterial::create( Color diffuse, Color ambient, Color emissive ){
+        return make_shared<LambertMaterial>(LambertMaterial(diffuse, ambient, emissive));
     }
     
-    PhongMaterial::PhongMaterial():
+    LambertMaterial::LambertMaterial():
         Material          (),
         color             ( 0xFFFFFF ),
         ambient           ( 0xFFFFFF ),
         emissive          ( 0x000000 ),
-        specular          ( 0x111111 ),
-        shininess         ( 30.0 ),
-        metal             ( false ),
         wrapAround        ( false ),
         wrapRGB           ( glm::vec3(1.0, 1.0, 1.0) ),
         combine           ( TEXTURE_OPERATION::MULTIPLY ),
@@ -40,18 +35,13 @@ namespace three {
     {}
     
     
-    PhongMaterial::PhongMaterial( Color color, Color ambient, Color emissive, Color specular, float shininess, bool metal ):
+    LambertMaterial::LambertMaterial( Color diffuse, Color ambient, Color emissive ):
         Material          (),
-        color             (color),
-        ambient           (ambient),
-        emissive          (emissive),
-        specular          (specular),
-        shininess         (shininess),
-        metal             (metal),
+        color             ( diffuse ),
+        ambient           ( ambient ),
+        emissive          ( emissive ),
         wrapAround        ( false ),
-        wrapRGB           ( glm::vec3(1.0) ),
-//        bumpScale         ( 1.0 ),
-//        normalScale       ( glm::vec2(1.0, 1.0) ),
+        wrapRGB           ( glm::vec3(1.0, 1.0, 1.0) ),
         combine           ( TEXTURE_OPERATION::MULTIPLY ),
         reflectivity      ( 1.0 ),
         refractionRatio   ( 0.98 ),
@@ -61,21 +51,16 @@ namespace three {
         skinning          ( false  ),
         morphTargets      ( false ),
         morphNormals      ( false )
-    {
-    }
+    {}
     
+    LambertMaterial::~LambertMaterial(){}
     
-    PhongMaterial::~PhongMaterial(){}
-    
-    
-    void PhongMaterial::setUniforms( ptr<Shader> shader, bool gamma ) {
+    void LambertMaterial::setUniforms( ptr<Shader> shader, bool gamma ) {
+        
         shader->setUniform( "opacity",   this->opacity );
         shader->setUniform( "emissive",  this->emissive, 1.0, gamma );
         shader->setUniform( "ambient",   this->ambient, 1.0, gamma );
         shader->setUniform( "diffuse",   this->color, 1.0, gamma );
-        shader->setUniform( "specular",  this->specular, 1.0, gamma );
-        shader->setUniform( "shininess", this->shininess );
-        
         
         /*ENV MAP related*/
         shader->setUniform( "combine",          enum_to_int(this->combine) );
@@ -83,6 +68,5 @@ namespace three {
         shader->setUniform( "refraction_ratio", this->refractionRatio );
         shader->setUniform( "flip_env_map",     (GLfloat) -1.0 );
         shader->setUniform( "use_refraction",   useRefraction );
-        
     }
 }

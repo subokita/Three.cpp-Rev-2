@@ -19,7 +19,8 @@ namespace three {
         stringstream ss;
         int tab_counter = 0;
         for( string str: vec ) {
-            if( str.find("#endif") != -1 || str.find("#else") != -1 )
+            
+            if( str.find("#endif") != -1 || str.find("#else") != -1 || str.find("}") != -1  )
                 tab_counter--;
             
             for( int i = 0; i < tab_counter; i++ )
@@ -27,7 +28,7 @@ namespace three {
             
             ss << str << "\n";
             
-            if( str.find("#if") != -1 || str.find("#else") != -1 )
+            if( str.find("#if") != -1 || str.find("#else") != -1 || str.find("{") != -1  )
                 tab_counter++;
             
         }

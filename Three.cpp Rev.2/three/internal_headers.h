@@ -36,16 +36,20 @@ namespace three {
     class Arcball;
     
     /* ./three/lights */
+    class CastsShadow;
     class Light;
     class AmbientLight;
     class DirectionalLight;
     class PointLight;
     class HemisphereLight;
     class SpotLight;
+    class VirtualLight;
     
     /* ./three/materials */
     class Material;
     class MeshCubeMapMaterial;
+    class BasicMaterial;
+    class LambertMaterial;
     class PhongMaterial;
     
     /* ./three/maths */
@@ -55,7 +59,9 @@ namespace three {
     class Line3;
     class Math;
     class Plane;
+    class Ray;
     class Sphere;
+    class Triangle;
 
     
     /* ./three/objects */
@@ -63,6 +69,7 @@ namespace three {
     
     /* ./three/plugins */
     class RenderPlugin;
+    class ShadowMapPlugin;
     
     /* ./three/others */
     class Utils;

@@ -54,7 +54,7 @@ namespace three {
         /* An open cylinder with double sided rendering */
         auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.3, 1.0, 30, 5, true),
                                      PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
-        cylinder->material->side = three::DoubleSide;
+        cylinder->material->side = SIDE::DOUBLE_SIDE;
         
         cylinder->texture   = TextureUtils::loadAsTexture   ( path, "rock_color.tga" );
         cylinder->normalMap = TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" );

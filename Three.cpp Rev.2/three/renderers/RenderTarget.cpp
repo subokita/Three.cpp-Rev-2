@@ -22,7 +22,15 @@ namespace three {
         framebuffer ( framebuffer )
     {}
     
-    RenderTarget::~RenderTarget(){}
+    RenderTarget::~RenderTarget(){
+        if( framebuffer > 0 )
+            glDeleteFramebuffers(1, &framebuffer);
+    }
+    
+    
+    void RenderTarget::generateFrameBuffer() {
+        glGenFramebuffers(1, &framebuffer);
+    }
     
     void RenderTarget::bind() {
         glBindFramebuffer(target, framebuffer);

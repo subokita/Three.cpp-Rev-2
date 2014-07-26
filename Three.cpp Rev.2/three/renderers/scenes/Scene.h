@@ -25,19 +25,22 @@ namespace three {
     public:
         static ptr<Scene> create();
         ~Scene();
-        Scene& add( ptr<Object3D> object );
-        Scene& add( ptr<Mesh> object );
-        Scene& addLight( ptr<Light> light );
+        void add( ptr<Object3D> object );
+        void add( ptr<Mesh> object );
+        void addLight( ptr<Light> light );
         
+        
+    protected:
+        Scene();
+        
+    public:
+        bool autoUpdate;
         ptr<IFog> fog;
         ptr<AmbientLight> ambientLight;
         std::vector<ptr<DirectionalLight>> directionalLights;
         std::vector<ptr<HemisphereLight>> hemisphereLights;
         std::vector<ptr<PointLight>> pointLights;
         std::vector<ptr<SpotLight>> spotLights;
-        
-    protected:
-        Scene();
     };
 }
 

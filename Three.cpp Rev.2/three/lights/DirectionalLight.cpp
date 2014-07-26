@@ -11,6 +11,10 @@
 using namespace std;
 namespace three {
     
+    ptr<DirectionalLight> DirectionalLight::create() {
+        return make_shared<DirectionalLight>();
+    }
+    
     ptr<DirectionalLight> DirectionalLight::create( Color color, float intensity, glm::vec3 position ){
         return make_shared<DirectionalLight>(DirectionalLight(color, intensity, position));
     }

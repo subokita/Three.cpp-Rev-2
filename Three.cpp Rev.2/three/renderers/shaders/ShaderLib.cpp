@@ -14,12 +14,18 @@ using namespace std;
 
 namespace three {
     ptr<ShaderLib> ShaderLib::create( ptr<Mesh> mesh ) {
-        if( instance_of(mesh->material, PhongMaterial) ) {
-            return ShaderLib_PHONG->clone();
-        }
-        else if ( instance_of(mesh->material, MeshCubeMapMaterial ) ) {
-            return ShaderLib_CUBEMAP->clone();
-        }
+        if( instance_of(mesh->material, PhongMaterial) )
+            return SHADERLIB_PHONG->clone();
+        
+        else if ( instance_of(mesh->material, MeshCubeMapMaterial ) )
+            return SHADERLIB_CUBEMAP->clone();
+        
+        else if ( instance_of(mesh->material, BasicMaterial ) )
+            return SHADERLIB_BASIC->clone();
+        
+        else if ( instance_of(mesh->material, LambertMaterial))
+            return SHADERLIB_LAMBERT->clone();
+        
         return nullptr;
     }
     
@@ -111,12 +117,10 @@ namespace three {
             config[0] = 1;
         }
         
-        
         if( mesh->normalMap != nullptr ) {
             this->defines.push_back( "#define USE_NORMALMAP" );
             config[1] = 1;
         }
-        
         
         if( mesh->specularMap!= nullptr ) {
             this->defines.push_back( "#define USE_SPECULARMAP" );
@@ -142,7 +146,7 @@ namespace three {
             config[5] = 1;
         }
         
-        if( mesh->material->side == three::DoubleSide ) {
+        if( mesh->material->side == SIDE::DOUBLE_SIDE ) {
             this->defines.push_back( "#define DOUBLE_SIDED" );
             config[6] = 1;
         }
@@ -168,7 +172,7 @@ namespace three {
         shader->setUniform( "projection_mat",   camera->projection );
         shader->setUniform( "view_mat",         camera->matrix * arcball->createViewRotationMatrix() );
         shader->setUniform( "camera_pos_w",     camera->position );
-
+        
         if( !object->visible )
             return;
         

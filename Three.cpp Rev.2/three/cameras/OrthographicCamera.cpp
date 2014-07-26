@@ -22,7 +22,9 @@ namespace three{
         Camera(),
         near( 0.1 ),
         far ( 2000.0 )
-    {}
+    {
+        updateProjectionMatrix();
+    }
     
     OrthographicCamera::OrthographicCamera(float left, float right, float top, float bottom, float near, float far ) :
         Camera(),
@@ -32,7 +34,9 @@ namespace three{
         bottom( bottom ),
         near  ( near ),
         far   ( far )
-    {}
+    {
+        updateProjectionMatrix();
+    }
     
     void OrthographicCamera::updateProjectionMatrix() {
         projection = glm::ortho(left, right, bottom, top, near, far);

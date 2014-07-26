@@ -159,6 +159,7 @@ namespace three {
         return true;
     }
     
+    
     bool Shader::setUniform( const char * struct_name, const char * variable, glm::vec3 vector ) {
         GLint location = getStructLocation( struct_name, variable );
         if( location == -1 )
@@ -225,11 +226,22 @@ namespace three {
         return true;
     }
     
+    
+    
     bool Shader::setUniform( const char * uniform_name, Color color, float intensity, bool gamma_input ) {
         if( !gamma_input )
             return setUniform( uniform_name, color.rep );
         else
             return setUniform( uniform_name, Color::copyGammaToLinear(color).rep * intensity * intensity );
+    }
+    
+    bool Shader::setUniform( const char * uniform_name, glm::vec2 vector ) {
+        if( uniforms.count( uniform_name ) == 0  ) {
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
+        }
+        glUniform2f( uniforms[uniform_name], vector.x, vector.y );
+        return true;
     }
     
     bool Shader::setUniform( const char * uniform_name, glm::vec3 vector ) {
@@ -240,6 +252,7 @@ namespace three {
         glUniform3f( uniforms[uniform_name], vector.x, vector.y, vector.z );
         return true;
     }
+    
     
     bool Shader::setUniform( const char * uniform_name, GLint v0 ) {
         if( uniforms.count( uniform_name ) == 0  ) {

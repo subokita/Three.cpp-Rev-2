@@ -43,9 +43,6 @@ namespace three {
         void renderPlugins( std::vector<ptr<RenderPlugin>>& plugins, ptr<Scene> scene, ptr<Camera> camera );
         
     public:
-        std::map<std::string, ptr<ShaderLib>> shaders;
-        std::vector<ptr<RenderPlugin>> preRenderPlugins;
-        std::vector<ptr<RenderPlugin>> postRenderPlugins;
         bool gammaInput;
         bool gammaOutput;
         Color clearColor;
@@ -73,6 +70,11 @@ namespace three {
         GLuint vertexArrayId;
         
         GLFWwindow* window;
+        
+        
+        std::map<std::string, ptr<ShaderLib>> shaders;
+        std::vector<ptr<RenderPlugin>> preRenderPlugins;
+        std::vector<ptr<RenderPlugin>> postRenderPlugins;
         
         std::function<void()> postRenderCallback = [](){};
         std::function<void(int, const char*)> errorCallbackHandler;

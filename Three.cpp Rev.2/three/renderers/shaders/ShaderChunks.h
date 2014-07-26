@@ -56,6 +56,26 @@ namespace three {
             "uniform vec3 camera_pos_w;",
         });
         
+        
+        static const string depthRGBAFragmentParams = Utils::join({
+            "uniform mat4 view_mat;",
+            "vec4 packDepth(const in float depth) {",
+                "const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );",
+                "const vec4 bit_mask  = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );",
+                "vec4 res = mod( depth * bit_shift * vec4( 255 ), vec4( 256 ) ) / vec4( 255 );",
+                "res -= res.xxyz * bit_mask;",
+                "return res;",
+            "}",
+        });
+        
+        static const string depthRGBAVertex = Utils::join({
+            "gl_Position   = projection_mat * model_view_mat * vec4(vertex_pos_m, 1.0);",
+        }, "\t");
+        
+        static const string depthRGBAFragment = Utils::join({
+            "frag_color = packDepth( gl_FragCoord.z );",
+        }, "\t");
+        
         static const string specularMapFragmentParams = Utils::join({
             "#ifdef USE_SPECULARMAP",
                 "uniform sampler2D specular_map;",
@@ -88,15 +108,14 @@ namespace three {
         static const string envMapVertex = Utils::join({
             "#if defined( USE_ENVMAP ) && !defined( USE_BUMPMAP ) && !defined( USE_NORMALMAP )",
             
-                "vec3 world_normal = mat3(model_mat[0].xyz, model_mat[1].xyz, model_mat[2].xyz) * vertex_normal_m;",
-                "world_normal = normalize( world_normal );",
-                "vec3 camera_to_vert = normalize( vertex_pos_w.xyz - camera_pos_w );",
+                "vec3 vertex_normal_w = normalize((model_mat * vec4(vertex_normal_m, 0.0)).xyz);",
+                "vec3 camera_to_vert = normalize( (vertex_pos_w - camera_pos_w) );",
             
                 "if( use_refraction ) {",
-                    "reflect_c = refract(camera_to_vert, world_normal, refraction_ratio );",
+                    "reflect_c = refract(camera_to_vert, vertex_normal_w, refraction_ratio );",
                 "}",
                 "else {",
-                    "reflect_c = reflect(camera_to_vert, world_normal );",
+                    "reflect_c = reflect(camera_to_vert, vertex_normal_w );",
                 "}",
             "#endif",
         });
@@ -141,7 +160,6 @@ namespace three {
                 "else {",
                     "frag_color.xyz = mix( frag_color.xyz, frag_color.xyz * cube_color.xyz, specular_strength * reflectivity );",
                 "}",
-            
             "#endif",
         });
 
@@ -149,17 +167,20 @@ namespace three {
         static const string normalMapFragmentParams = Utils::join({
             "#ifdef USE_NORMALMAP",
                 "uniform sampler2D normal_map;",
+                "uniform vec2 normal_scale;",
             
                 "vec3 perturbNormal2Arb( vec3 eye_pos, vec3 surf_norm ) {",
                     "vec3 q0    = dFdx( eye_pos.xyz );",
                     "vec3 q1    = dFdy( eye_pos.xyz );",
                     "vec2 st0   = dFdx( uv.st );",
                     "vec2 st1   = dFdy( uv.st );",
+            
                     "vec3 S     = normalize(  q0 * st1.t - q1 * st0.t );",
                     "vec3 T     = normalize( -q0 * st1.s + q1 * st0.s );",
                     "vec3 N     = normalize( surf_norm );",
+            
                     "vec3 mapN  = texture( normal_map, uv ).xyz * 2.0 - 1.0;",
-                    "mapN.xy    = 1.0 * mapN.xy;",
+                    "mapN.xy    = normal_scale * mapN.xy;",
                     "mat3 tsn   = mat3( S, T, N );",
                     "return normalize( tsn * mapN );",
                 "}",
@@ -212,6 +233,274 @@ namespace three {
         static const string alphaTestFragment = Utils::join({
             "#ifdef ALPHATEST",
                 "if( frag_color.a < ALPHATEST ) discard;",
+            "#endif",
+        });
+        
+        
+        static const string basicVertexParams = Utils::join({
+            "out vec3 normal_c;",
+            "out vec3 eye_direction_c;",
+            "out vec3 vertex_pos_w;",
+        });
+        
+        static const string basicVertex = Utils::join({
+            "eye_direction_c   = vec3(0.0) - ( model_view_mat * vec4(vertex_pos_m, 1.0) ).xyz;",
+            "normal_c          = normalize(normal_mat * vec3(vertex_normal_m));",
+            "vertex_pos_w      = vec3( model_mat * vec4(vertex_pos_m, 1.0) );",
+            "gl_Position       = projection_mat * model_view_mat * vec4(vertex_pos_m, 1.0);",
+        }, "\t" );
+        
+        
+        static const string basicFragmentParams = Utils::join({
+            "uniform mat4 view_mat;",
+            
+            "uniform float opacity;",
+            "uniform vec3 diffuse;",
+            
+            "in vec3 normal_c;",
+            "in vec3 eye_direction_c;",
+            "in vec3 vertex_pos_w;",
+        });
+        
+        
+        static const string basicFragment_1 = Utils::join({
+            "frag_color = vec4( diffuse, opacity );",
+            "vec3 norm_normal_c        = normalize( normal_c );",
+            "float specular_strength   = 1.0;",
+        }, "\t");
+        
+        static const string basicFragment_2 = Utils::join({
+            "#ifdef GAMMA_OUTPUT",
+                "frag_color.xyz = sqrt(frag_color.xyz);",
+            "#endif",
+        }, "\t" );
+        
+        
+        static const string lambertVertexParams = Utils::join({
+            "out vec3 light_front_color;",
+            
+            "#ifdef DOUBLE_SIDED",
+                "out vec3 light_back_color;",
+            "#endif",
+            
+            "uniform vec3 ambient;",
+            "uniform vec3 diffuse;",
+            "uniform vec3 emissive;",
+            "uniform vec3 ambient_light_color;",
+            
+            "#ifdef WRAP_AROUND",
+                "out vec3 wrapRGB;",
+            "#endif",
+            
+            "out vec3 normal_c;",
+            "out vec3 eye_direction_c;",
+            "out vec3 vertex_pos_w;",
+        });
+        
+
+        static const string lambertVertex_1 = Utils::join({
+            "eye_direction_c   = vec3(0.0) - ( model_view_mat * vec4(vertex_pos_m, 1.0) ).xyz;",
+            "normal_c          = normalize(normal_mat * vec3(vertex_normal_m));",
+            "vertex_pos_w      = vec3( model_mat * vec4(vertex_pos_m, 1.0) );",
+            "gl_Position       = projection_mat * model_view_mat * vec4(vertex_pos_m, 1.0);",
+            
+            "vec3 vertex_pos_c  = (model_view_mat * vec4(vertex_pos_m, 1.0)).xyz;",
+            "vec3 norm_normal_c = normalize( normal_c );",
+        });
+        
+        
+        static const string lambertVertex_2 = Utils::join({
+            "light_front_color = vec3( 0.0 );",
+            "#ifdef DOUBLE_SIDED",
+                "light_back_color = vec3( 0.0 );",
+            "#endif",
+        });
+        
+        
+        static const string lambertVertex_3 = Utils::join({
+            "light_front_color = light_front_color * diffuse + ambient * ambient_light_color + emissive;",
+            "#ifdef DOUBLE_SIDED",
+                "light_back_color = light_back_color * diffuse + ambient * ambient_light_color + emissive;",
+            "#endif",
+        });
+        
+        
+        static const string lambertFragmentParams = Utils::join({
+            "uniform mat4 view_mat;",
+            "uniform float opacity;",
+            
+            "in vec3 light_front_color;",
+            
+            "#ifdef DOUBLE_SIDED",
+                "in vec3 light_back_color;",
+            "#endif",
+        });
+        
+        static const string lambertFragment_1 = Utils::join({
+            "frag_color = vec4( vec3( 1.0 ), opacity );",
+            "float specular_strength = 1.0;",
+        }, "\t");
+        
+        
+        static const string lambertFragment_2 = Utils::join({
+            "#ifdef DOUBLE_SIDED",
+                "if( gl_FrontFacing )",
+                    "frag_color.xyz *= light_front_color;",
+                "else",
+                    "frag_color.xyz *= light_back_color;",
+            "#else",
+                "frag_color.xyz *= light_front_color;",
+            "#endif",
+        }, "\t");
+        
+        
+        static const string lambertFragment_3 = Utils::join({
+            "#ifdef GAMMA_OUTPUT",
+                "frag_color.xyz = sqrt(frag_color.xyz);",
+            "#endif",
+        }, "\t" );
+        
+        static const string lambertDirectionalLightsVertex = Utils::join({
+            "#if MAX_DIR_LIGHTS > 0",
+            
+                "for( int i = 0; i < MAX_DIR_LIGHTS; i ++ ) {",
+                    "vec4 light_direction_c = view_mat * vec4( directional_light_direction[ i ], 0.0 );",
+                    
+                    /* Calculating the diffuse component */
+                    "vec3 l = normalize( light_direction_c.xyz );",
+                    "float cos_theta = dot( norm_normal_c, l );",
+                    "vec3 weight = vec3( max( cos_theta, 0.0 ) );",
+                
+                    "#ifdef DOUBLE_SIDED",
+                        "vec3 weight_back = vec3( max( -cos_theta, 0.0 ) );",
+                
+                        "#ifdef WRAP_AROUND",
+                            "vec3 weight_half_back = vec3( max( -0.5 * cos_theta + 0.5, 0.0 ) );",
+                        "#endif",
+                    "#endif",
+                
+                    "#ifdef WRAP_AROUND",
+                        "vec3 weight_half = vec3( max( 0.5 * cos_theta + 0.5, 0.0 ) );",
+                        "weight = mix( weight, weight_half, wrapRGB);",
+                
+                        "#ifdef DOUBLE_SIDED",
+                            "weight_back = mix( weight_back, weight_half_back, wrapRGB );",
+                        "#endif",
+                    "#endif",
+                
+                    "light_front_color += directional_light_color[i] * weight;",
+                    "#ifdef DOUBLE_SIDED",
+                        "light_back_color += directional_light_color[i] * weight_back;",
+                    "#endif",
+                "}",
+            
+            "#endif",
+        }, "\t");
+
+        
+        static const string lambertPointLightsVertex = Utils::join({
+            "#if MAX_POINT_LIGHTS > 0",
+                "for( int i = 0; i < MAX_POINT_LIGHTS; i ++ ) {",
+                    "vec4 light_position_c = view_mat * vec4( point_light_position[i], 1.0 );",
+                    "vec3 l = light_position_c.xyz - vertex_pos_c;",
+                    "float light_distance = 1.0;",
+                    "if( point_light_distance[i] > 0.0 )",
+                    "   light_distance = 1.0 - min( (length(l) / point_light_distance[i]), 1.0 );",
+
+                    /* Calculate diffuse component */
+                    "l = normalize( l );",
+                    "float cos_theta = dot( norm_normal_c, l );",
+            
+                    "vec3 weight = vec3( max( cos_theta, 0.0 ) );",
+                    "#ifdef DOUBLE_SIDED",
+                        "vec3 weight_back = vec3( max( -cos_theta, 0.0 ) );",
+                        "#ifdef WRAP_AROUND",
+                            "vec3 weight_half_back = vec3( max( -0.5 * cos_theta + 0.5, 0.0 ) );",
+                        "#endif",
+                    "#endif",
+            
+                    "#ifdef WRAP_AROUND",
+                        "vec3 weight_half = vec3( max( 0.5 * cos_theta + 0.5, 0.0 ) );",
+                        "weight = mix( weight, weight_half, wrapRGB );",
+            
+                        "#ifdef DOUBLE_SIDED",
+                            "weight_back = miax( weight_back, weight_half_back, wrapRGB);",
+                        "#endif",
+                    "#endif",
+            
+                    "light_front_color += point_light_color[i] * weight * light_distance;",
+                    "#ifdef DOUBLE_SIDED",
+                        "light_back_color += point_light_color[i] * weight_back * light_distance;",
+                    "#endif",
+                "}",
+            "#endif",
+
+        }, "\t");
+        
+        static const string lambertHemisphereLightsVertex = Utils::join({
+            "#if MAX_HEMI_LIGHTS > 0",
+
+                "for( int i = 0; i < MAX_HEMI_LIGHTS; i ++ ) {",
+                    "vec4 light_direction_c = view_mat * vec4( hemisphere_light_direction[i], 0.0 );",
+                    "vec3 l = normalize( light_direction_c.xyz );",
+                    "float cos_theta = dot( norm_normal_c, l);",
+            
+                    "float weight = 0.5 * cos_theta + 0.5;",
+                    "light_front_color += mix( hemisphere_light_ground_color[i], hemisphere_light_sky_color[i], weight );",
+            
+                    "#ifdef DOUBLE_SIDED",
+                        "weight_back = -0.5 * cos_theta + 0.5;",
+                        "light_back_color += mix( hemisphere_light_ground_color[i], hemisphere_light_sky_color[i], weight_back );",
+                    "#endif",
+                "}",
+            
+            "#endif",
+        });
+        
+        static const string lambertSpotLightsVertex = Utils::join({
+            "#if MAX_SPOT_LIGHTS > 0",
+            
+                "for( int i = 0; i < MAX_SPOT_LIGHTS; i ++ ) {",
+                    "vec4 light_position = view_mat * vec4( spot_light_position[i], 1.0);",
+                    "vec3 l = light_position.xyz - vertex_pos_c;",
+            
+                    "float spot_effect = dot( spot_light_direction[i], normalize( spot_light_position[i] - vertex_pos_w ) );",
+            
+                    "if( spot_effect > spot_light_angle_cos[i] ) {",
+                        "spot_effect = max( pow( spot_effect, spot_light_exponent[i] ), 0.0 );",
+                        "float cos_theta = dot( norm_normal_c, l );",
+            
+                        "float light_distance = 1.0;",
+                        "if( spot_light_distance[i] > 0.0 )",
+                        "    light_distance = 1.0 - min( length(l) / spot_light_distance[i], 1.0);",
+                        "l = normalize( l ) ;",
+            
+                        "vec3 weight = vec3( max( cos_theta, 0.0 ) );",
+                        "#ifdef DOUBLE_SIDED",
+                            "vec3 weight_back = vec3( max( -cos_theta, 0.0 ) );",
+
+                            "#ifdef WRAP_AROUND",
+                                "vec3 weight_half_back = vec3( max( -0.5 * cos_theta + 0.5, 0.0) );",
+                            "#endif",
+                        "#endif",
+            
+                        "#ifdef WRAP_AROUND",
+                            "vec3 weight_half = vec3( max( 0.5 * cos_theta + 0.5, 0.0 ) );",
+                            "weight = mix( weight, weight_half, wrapRGB );",
+            
+                            "#ifdef DOUBLE_SIDED",
+                                "weight_back = mix( weight_back, weight_half_back, wrapRGB );",
+                            "#endif",
+                        "#endif",
+            
+                        "light_front_color += spot_light_color[i] * weight * light_distance * spot_effect;",
+                        "#ifdef DOUBLE_SIDED",
+                            "light_back_color += spot_light_color[i] * weight_back * light_distance * spot_effect;",
+                        "#endif",
+                    "}",
+            
+                "}",
+            
             "#endif",
         });
         
@@ -282,7 +571,7 @@ namespace three {
             "#endif",
         }, "\t" );
 
-        static const string pointLightsFragmentParams = Utils::join({
+        static const string pointLightsParams = Utils::join({
             "#if MAX_POINT_LIGHTS > 0",
                 "uniform vec3 point_light_color     [MAX_POINT_LIGHTS];",
                 "uniform vec3 point_light_position  [MAX_POINT_LIGHTS];",
@@ -291,7 +580,7 @@ namespace three {
         });
         
         
-        static const string pointLightsFragment = Utils::join({
+        static const string phongPointLightsFragment = Utils::join({
             "#if MAX_POINT_LIGHTS > 0",
             
                 "vec3 point_diffuse  = vec3( 0.0 );",
@@ -331,14 +620,14 @@ namespace three {
             "#endif",
         }, "\t");
         
-        static const string directionalLightsFragmentParams = Utils::join({
+        static const string directionalLightsParams = Utils::join({
             "#if MAX_DIR_LIGHTS > 0",
                 "uniform vec3 directional_light_color    [MAX_DIR_LIGHTS];",
                 "uniform vec3 directional_light_direction[MAX_DIR_LIGHTS];",
             "#endif",
         });
         
-        static const string directionalLightsFragment = Utils::join({
+        static const string phongDirectionalLightsFragment = Utils::join({
             "#if MAX_DIR_LIGHTS > 0",
             
             "vec3 dir_diffuse  = vec3( 0.0 );",
@@ -376,7 +665,7 @@ namespace three {
         }, "\t");
         
         
-        static const string hemisphereLightsFragmentParams = Utils::join({
+        static const string hemisphereLightsParams = Utils::join({
             "#if MAX_HEMI_LIGHTS > 0",
                 "uniform vec3 hemisphere_light_sky_color    [MAX_HEMI_LIGHTS];",
                 "uniform vec3 hemisphere_light_ground_color [MAX_HEMI_LIGHTS];",
@@ -385,7 +674,7 @@ namespace three {
         });
         
         
-        static const string hemisphereLightsFragment = Utils::join({
+        static const string phongHemisphereLightsFragment = Utils::join({
             "#if MAX_HEMI_LIGHTS > 0",
                 
                 "vec3 hemi_diffuse  = vec3( 0.0 );",
@@ -421,7 +710,7 @@ namespace three {
         }, "\t");
         
         
-        static const string spotLightsFragmentParams = Utils::join({
+        static const string spotLightsParams = Utils::join({
             "#if MAX_SPOT_LIGHTS > 0",
                 "uniform vec3 spot_light_color     [MAX_SPOT_LIGHTS];",
                 "uniform vec3 spot_light_position  [MAX_SPOT_LIGHTS];",
@@ -433,7 +722,7 @@ namespace three {
         });
         
         
-        static const string spotLightsFragment = Utils::join({
+        static const string phongSpotLightsFragment = Utils::join({
             "#if MAX_SPOT_LIGHTS > 0",
                 "vec3 spot_diffuse  = vec3( 0.0 );",
                 "vec3 spot_specular = vec3( 0.0 );",

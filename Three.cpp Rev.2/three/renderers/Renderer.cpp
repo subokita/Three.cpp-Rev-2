@@ -67,8 +67,10 @@ namespace three {
         
         arcball = Arcball::create(width, height, 2.0f);
         
+        
         initCallbacks();
         instance = this;
+        
     }
     
     
@@ -115,13 +117,13 @@ namespace three {
         };
         
         scrollCallbackHandler = []( GLFWwindow *window, double x, double y ) {
-            glm::vec3 pos = instance->camera->position * instance->camera->quaternion * instance->camera->scale;
-            glm::vec3 dir = glm::normalize(instance->camera->target + pos) * static_cast<float>(y);
-            
-            if( glm::length((pos - dir)) == 0.0 )
-                return;
-            
-            instance->camera->position = (pos - dir);
+//            glm::vec3 pos = instance->camera->position * instance->camera->quaternion * instance->camera->scale;
+//            glm::vec3 dir = glm::normalize(instance->camera->target + pos) * static_cast<float>(y);
+//            
+//            if( glm::length((pos - dir)) == 0.0 )
+//                return;
+//            
+//            instance->camera->position = (pos - dir);
         };
         
         cursorCallbackHandler = []( GLFWwindow *window, double x, double y ) {
@@ -157,8 +159,8 @@ namespace three {
             if( instance_of(object, Mesh)) {
                 ptr<Mesh> mesh = downcast(object, Mesh);
                 
-                if( mesh->geometry != nullptr && !mesh->geometry->glBuffersInitialized )
-                    mesh->geometry->initGLBuffers();
+                if( mesh->geometry != nullptr && !mesh->glBuffersInitialized )
+                    mesh->initGLBuffers();
                 
                 ptr<ShaderLib> shader = ShaderLib::create(mesh);
                 shader->addDefinitions( scene, mesh, gammaInput, gammaOutput );
@@ -171,13 +173,21 @@ namespace three {
             }
         }
         
+//        this->preRenderPlugins.push_back( ShadowMapPlugin::create() );
+        
+        for( ptr<RenderPlugin> pre_render_plugin: preRenderPlugins )
+            pre_render_plugin->init(scene, camera);
+
+        
         while( !glfwWindowShouldClose( window )) {
+            
             glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
             
             setDefaultGLState();
             camera->updateMatrix();
             
             renderPlugins( preRenderPlugins, scene, camera );
+            
             
             renderTarget->bind();
             
@@ -218,7 +228,8 @@ namespace three {
             return;
         
         for( ptr<RenderPlugin> plugin: plugins ) {
-            plugin->render( scene, camera );
+            plugin->setState( scene, camera );
+            plugin->render( scene, arcball, camera );
         }
     }
     

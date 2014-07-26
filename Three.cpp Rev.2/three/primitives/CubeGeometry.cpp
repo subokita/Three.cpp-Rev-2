@@ -133,15 +133,15 @@ namespace three {
                 
 				ptr<Face3> face = Face3::create( a + offset, b + offset, d + offset );
 				face->normal = normal;
+                face->materialIndex = material_index;
                 face->addVertexNormals( {normal, normal, normal});
-				face->materialIndex = material_index;
                 face->addVertexUVs({uva, uvb, uvd});
 				faces.push_back( face );
                 
 				face = Face3::create( b + offset, c + offset, d + offset );
 				face->normal = normal ;
+                face->materialIndex = material_index;
                 face->addVertexNormals( {normal, normal, normal});
-				face->materialIndex = material_index;
                 face->addVertexUVs({uvb, uvc, uvd});
 				faces.push_back( face );
 			}

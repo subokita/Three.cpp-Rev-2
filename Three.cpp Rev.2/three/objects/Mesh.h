@@ -25,15 +25,19 @@ namespace three {
         static ptr<Mesh> create();
         static ptr<Mesh> create(ptr<Geometry> geometry, ptr<Material> material);
         
-        void draw();
-        ~Mesh();
-
         Mesh();
         Mesh( ptr<Geometry> geometry, ptr<Material> material );
+        ~Mesh();
         
+        void initGLBuffers();
+        void draw();
+
         virtual void setUniforms(ptr<Shader> shader, bool gamma ) override;
         
     public:
+        std::vector<GLuint> bufferIDs;
+        bool glBuffersInitialized;
+        
         ptr<Texture> texture;
         ptr<NormalMap> normalMap;
         ptr<SpecularMap> specularMap;

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Saburo Okita. All rights reserved.
 //
 
-#ifndef __Three_cpp_Rev_2__ShaderLib__
-#define __Three_cpp_Rev_2__ShaderLib__
+#ifndef __Three_cpp_Rev_2__SHADERLIB__
+#define __Three_cpp_Rev_2__SHADERLIB__
 
 #include <iostream>
 #include "internal_headers.h"
@@ -76,7 +76,134 @@ namespace three {
         std::string fragmentCode;
     };
     
-    static const ptr<ShaderLib> ShaderLib_CUBEMAP = ShaderLib::create(
+    static const ptr<ShaderLib> SHADERLIB_DEPTH_RGBA = ShaderLib::create(
+        "depthRGBA",
+         {"precision highp float;", "precision highp int;"},
+         {},
+         Utils::join({
+            Chunks::standardVertexParams,
+         }),
+         Utils::join({
+            "void main(){",
+                Chunks::depthRGBAVertex,
+            "}",
+         }),
+                                                                         
+         Utils::join({
+            Chunks::standardFragmentParams,
+            Chunks::depthRGBAFragmentParams,
+         }),
+         Utils::join({
+            "void main(){",
+                Chunks::depthRGBAFragment,
+            "}",
+         })
+    );
+    
+    
+    static const ptr<ShaderLib> SHADERLIB_LAMBERT = ShaderLib::create(
+      "lambert",
+                                                                      
+      {"precision highp float;", "precision highp int;"},
+      {"#define LAMBERT"},
+                                                                      
+      Utils::join({
+         Chunks::standardVertexParams,
+         Chunks::lambertVertexParams,
+         Chunks::pointLightsParams,
+         Chunks::directionalLightsParams,
+         Chunks::hemisphereLightsParams,
+         Chunks::spotLightsParams,
+         Chunks::textureVertexParams,
+         Chunks::envMapVertexParams,
+      }),
+      Utils::join({
+        "void main(){",
+             Chunks::lambertVertex_1,
+             Chunks::textureVertex,
+             Chunks::envMapVertex,
+             Chunks::lambertVertex_2,
+        
+             Chunks::lambertPointLightsVertex,
+             Chunks::lambertDirectionalLightsVertex,
+             Chunks::lambertHemisphereLightsVertex,
+             Chunks::lambertSpotLightsVertex,
+        
+             Chunks::lambertVertex_3,
+        "}",
+      }),
+                                                                      
+      Utils::join({
+         Chunks::standardFragmentParams,
+         Chunks::lambertFragmentParams,
+         Chunks::textureFragmentParams,
+         Chunks::fogFragmentParams,
+         Chunks::specularMapFragmentParams,
+         Chunks::envMapFragmentParams,
+      }),
+      Utils::join({
+        "void main(){",
+            Chunks::lambertFragment_1,
+            Chunks::textureFragment,
+            Chunks::alphaTestFragment,
+            Chunks::specularMapFragment,
+            Chunks::lambertFragment_2,
+            Chunks::envMapFragment,
+            Chunks::lambertFragment_3,
+            Chunks::fogFragment,
+        "}",
+      })
+    );
+    
+    static const ptr<ShaderLib> SHADERLIB_BASIC = ShaderLib::create(
+        "basic",
+        {},
+        {},
+                                                                    
+        Utils::join({
+            Chunks::standardVertexParams,
+            Chunks::basicVertexParams,
+            Chunks::textureVertexParams,
+            Chunks::envMapVertexParams,
+        }),
+        
+        Utils::join({
+            "void main(){",
+                Chunks::textureVertex,
+                Chunks::basicVertex,
+                Chunks::envMapVertex,
+            "}",
+        }),
+                                                                    
+        Utils::join({
+            Chunks::standardFragmentParams,
+            Chunks::basicFragmentParams,
+            Chunks::directionalLightsParams,
+            Chunks::pointLightsParams,
+            Chunks::hemisphereLightsParams,
+            Chunks::spotLightsParams,
+            Chunks::fogFragmentParams,
+            Chunks::textureFragmentParams,
+            Chunks::normalMapFragmentParams,
+            Chunks::specularMapFragmentParams,
+            Chunks::envMapFragmentParams,
+        }),
+                                                                    
+        Utils::join({
+            "void main() {",
+                Chunks::basicFragment_1,
+                Chunks::textureFragment,
+                Chunks::alphaTestFragment,
+                Chunks::specularMapFragment,
+                Chunks::normalMapFragment,
+                Chunks::envMapFragment,
+                Chunks::basicFragment_2,
+                Chunks::fogFragment,
+            "}",
+        })
+    );
+    
+    static const ptr<ShaderLib> SHADERLIB_CUBEMAP = ShaderLib::create(
       "cubemap",
       {},
       {},
@@ -103,53 +230,54 @@ namespace three {
       })
     );
     
-    static const ptr<ShaderLib> ShaderLib_PHONG = ShaderLib::create(
-            "phong",
-            {"precision highp float;", "precision highp int;"},
-            {},
-            Utils::join({
-                Chunks::standardVertexParams,
-                Chunks::phongVertexParams,
-                Chunks::textureVertexParams,
-                Chunks::envMapVertexParams,
-            }),
-            Utils::join({
-                "void main() {",
-                    Chunks::textureVertex,
-                    Chunks::phongVertex,
-                    Chunks::envMapVertex,
-                "}",
-            }),
-            Utils::join({
-                Chunks::standardFragmentParams,
-                Chunks::phongFragmentParams,
-                Chunks::directionalLightsFragmentParams,
-                Chunks::pointLightsFragmentParams,
-                Chunks::hemisphereLightsFragmentParams,
-                Chunks::spotLightsFragmentParams,
-                Chunks::fogFragmentParams,
-                Chunks::textureFragmentParams,
-                Chunks::normalMapFragmentParams,
-                Chunks::specularMapFragmentParams,
-                Chunks::envMapFragmentParams,
-            }),
-            Utils::join({
-                "void main() {",
-                    Chunks::phongFragment_1,
-                    Chunks::specularMapFragment,
-                    Chunks::normalMapFragment,
-                    Chunks::textureFragment,
-                    Chunks::pointLightsFragment,
-                    Chunks::directionalLightsFragment,
-                    Chunks::hemisphereLightsFragment,
-                    Chunks::spotLightsFragment,
-                    Chunks::phongFragment_2,
-                    Chunks::envMapFragment,
-                    Chunks::phongFragment_3,
-                    Chunks::fogFragment,
-                "}",
-            })
+    static const ptr<ShaderLib> SHADERLIB_PHONG = ShaderLib::create(
+        "phong",
+        {"precision highp float;", "precision highp int;"},
+        {"#define PHONG"},
+        Utils::join({
+            Chunks::standardVertexParams,
+            Chunks::phongVertexParams,
+            Chunks::textureVertexParams,
+            Chunks::envMapVertexParams,
+        }),
+        Utils::join({
+            "void main() {",
+                Chunks::textureVertex,
+                Chunks::phongVertex,
+                Chunks::envMapVertex,
+            "}",
+        }),
+        Utils::join({
+            Chunks::standardFragmentParams,
+            Chunks::phongFragmentParams,
+            Chunks::directionalLightsParams,
+            Chunks::pointLightsParams,
+            Chunks::hemisphereLightsParams,
+            Chunks::spotLightsParams,
+            Chunks::fogFragmentParams,
+            Chunks::textureFragmentParams,
+            Chunks::normalMapFragmentParams,
+            Chunks::specularMapFragmentParams,
+            Chunks::envMapFragmentParams,
+        }),
+        Utils::join({
+            "void main() {",
+                Chunks::phongFragment_1,
+                Chunks::textureFragment,
+                Chunks::alphaTestFragment,
+                Chunks::specularMapFragment,
+                Chunks::normalMapFragment,
+                Chunks::phongPointLightsFragment,
+                Chunks::phongDirectionalLightsFragment,
+                Chunks::phongHemisphereLightsFragment,
+                Chunks::phongSpotLightsFragment,
+                Chunks::phongFragment_2,
+                Chunks::envMapFragment,
+                Chunks::phongFragment_3,
+                Chunks::fogFragment,
+            "}",
+        })
     );
 }
 
-#endif /* defined(__Three_cpp_Rev_2__ShaderLib__) */
+#endif /* defined(__Three_cpp_Rev_2__SHADERLIB__) */

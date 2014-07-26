@@ -15,11 +15,13 @@ namespace three {
     {
         // FIXME: should be in initializer list
         
-        side                = three::FrontSide;
+        side                = SIDE::FRONT_SIDE;
+        shading             = SHADING::SMOOTH_SHADING;
+        
         opacity             = 1.0;
         transparent         = false;
         
-        blending            = three::NormalBlending;
+        blending            = BLENDING_MODE::NORMAL;
         blendSrc            = three::SrcAlphaFactor;
         blendDst            = three::OneMinusSrcAlphaFactor;
         blendEquation       = three::AddEquation;

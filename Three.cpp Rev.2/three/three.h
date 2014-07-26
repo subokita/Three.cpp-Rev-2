@@ -33,11 +33,14 @@
 #include "PointLight.h"
 #include "HemisphereLight.h"
 #include "SpotLight.h"
-
+#include "CastsShadow.h"
+#include "VirtualLight.h"
 
 /* ./three/materials */
 #include "Material.h"
 #include "MeshCubeMapMaterial.h"
+#include "BasicMaterial.h"
+#include "LambertMaterial.h"
 #include "PhongMaterial.h"
 
 /* ./three/maths */
@@ -47,7 +50,9 @@
 #include "Line3.h"
 #include "Math.h"
 #include "Plane.h"
+#include "Ray.h"
 #include "Sphere.h"
+#include "Triangle.h"
 
 /* ./three/objects */
 #include "Mesh.h"
@@ -57,7 +62,7 @@
 
 /* ./three/plugins */
 #include "RenderPlugin.h"
-
+#include "ShadowMapPlugin.h"
 
 /* ./three/primitives */
 #include "CubeGeometry.h"

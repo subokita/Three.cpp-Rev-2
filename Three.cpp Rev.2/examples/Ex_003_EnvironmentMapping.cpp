@@ -21,14 +21,14 @@ namespace three  {
         const string path = "/Users/saburookita/Personal Projects/Three.cpp Rev.2/examples/assets/";
         
         Renderer renderer;
-        renderer.init( "Ex 003: Environment Mappings, Cube Maps", 1600 * 3 / 4, 900 * 3 / 4 );
+        renderer.init( "Ex 003: Environment Mappings, Cube Maps", 1600 * 2 / 4, 900 * 2 / 4 );
         
         /* Create scene */
         auto scene = Scene::create();
         scene->fog = Fog::create( 0x72645b / 2, 2.0, 15.0 );
         
         /* Create camera */
-        auto camera = PerspectiveCamera::create( 60.0, renderer.aspectRatio, 0.001, 100.0 );
+        auto camera = PerspectiveCamera::create( 50.0, renderer.aspectRatio, 0.001, 100.0 );
         camera->position = glm::vec3(0.0, 1.0, 5.5);
         camera->lookAt( 0.0, 1.0, 0.0 );
         
@@ -45,7 +45,6 @@ namespace three  {
                                      PhongMaterial::create( 0xDD00DD, 0x0, 0x0, 0x222222, 130.0, true ) );
         sphere_2->normalMap   = TextureUtils::loadAsNormalMap  ( path, "tutorial_normals07.gif" );
         sphere_2->translate( 0.0f, 1.66f, 0.0f );
-
         
         /* Cube with texture and normal map */
         auto cube = Mesh::create( CubeGeometry::create( 1.0f ),
@@ -67,7 +66,7 @@ namespace three  {
         /* An open cylinder with double sided rendering */
         auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 1.0, 30, 5, true),
                                      PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
-        cylinder->material->side = three::DoubleSide;
+        cylinder->material->side = SIDE::DOUBLE_SIDE;
         
         cylinder->texture   = TextureUtils::loadAsTexture   ( path, "rock_color.tga" );
         cylinder->normalMap = TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" );
@@ -78,7 +77,7 @@ namespace three  {
         
         auto cylinder_2 = Mesh::create( cylinder_geometry,
                                         PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
-        cylinder_2->material->side = three::DoubleSide;
+        cylinder_2->material->side = SIDE::DOUBLE_SIDE;
         cylinder_2->normalMap = TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" );
         cylinder_2->translate(-2.0f, 1.66f, 0.0f);
         
@@ -101,7 +100,8 @@ namespace three  {
         sphere_2->envMap    = downcast(env->texture, EnvMap);
         cube->envMap        = downcast(env->texture, EnvMap);
         cube_2->envMap      = downcast(env->texture, EnvMap);
-        cylinder_2->envMap    = downcast(env->texture, EnvMap);
+        cylinder_2->envMap  = downcast(env->texture, EnvMap);
+        
         
         /* Create directional light */
         auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3(3.0, 1.0, 3.0) );

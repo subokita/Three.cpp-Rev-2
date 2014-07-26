@@ -24,11 +24,15 @@ namespace three {
     {}
     
     Mesh::Mesh( ptr<Geometry> geometry, ptr<Material> material ) :
-        geometry( geometry ),
-        material( material )
+        geometry            ( geometry ),
+        material            ( material ),
+        glBuffersInitialized(false),
+        bufferIDs           ( vector<GLuint>(4, 0) )
     {}
     
     Mesh::~Mesh() {
+        if( glBuffersInitialized )
+            glDeleteBuffers(4, &bufferIDs[0] );
     }
     
     
@@ -55,12 +59,60 @@ namespace three {
         material->setUniforms( shader, gamma );
     }
     
+    void Mesh::initGLBuffers() {
+    
+        geometry->noOfElements = static_cast<int>( geometry->faces.size() * 3);
+        
+        std::vector<unsigned short> index;
+        std::vector<glm::vec3> normals( geometry->vertices.size() );
+        std::vector<glm::vec2> uvs( geometry->vertices.size() );
+    
+        for( ptr<Face3> face: geometry->faces ) {
+            index.push_back( face->a );
+            index.push_back( face->b );
+            index.push_back( face->c );
+            
+            normals[face->a] = face->vertexNormals[0];
+            normals[face->b] = face->vertexNormals[1];
+            normals[face->c] = face->vertexNormals[2];
+            
+            uvs[face->a] = face->uvs[0];
+            uvs[face->b] = face->uvs[1];
+            uvs[face->c] = face->uvs[2];
+        }
+       
+        for( auto& vert: geometry->vertices)
+            vert = vert * geometry->quaternion;
+        
+        for( auto& normal: normals)
+            normal = normal * geometry->quaternion;
+        
+        
+        //FIXME: Indexed VBO messes the uv for textures
+        glGenBuffers( 4, &bufferIDs[0] );
+        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[0] );
+        glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec3 ) * geometry->vertices.size(), &geometry->vertices[0], GL_STATIC_DRAW );
+        
+        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[1] );
+        glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec3 ) * normals.size(), &normals[0], GL_STATIC_DRAW );
+        
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, bufferIDs[2] );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( unsigned short ) * geometry->faces.size() * 3, &index[0], GL_STATIC_DRAW );
+        
+        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[3] );
+        glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec2 ) * uvs.size(), &uvs[0], GL_STATIC_DRAW );
+        
+        glBuffersInitialized = true;
+        
+        geometry->vertices.clear();
+    }
+    
     void Mesh::draw() {
         
         glPolygonMode( GL_FRONT_AND_BACK, material->wireframe ? GL_LINE : GL_FILL );
         glLineWidth( material->wireframeLinewidth );
         
-        if( material->side == three::DoubleSide )  {
+        if( material->side == SIDE::DOUBLE_SIDE )  {
             glDisable( GL_CULL_FACE );
         }
         else {
@@ -70,21 +122,21 @@ namespace three {
         
         /* Vertices */
         glEnableVertexAttribArray( 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, geometry->bufferIDs[0] );
+        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[0] );
         glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0 );
         
         /* Normals */
         glEnableVertexAttribArray( 1 );
-        glBindBuffer( GL_ARRAY_BUFFER, geometry->bufferIDs[1] );
+        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[1] );
         glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0 );
         
         /* UVs */
         glEnableVertexAttribArray( 2 );
-        glBindBuffer( GL_ARRAY_BUFFER, geometry->bufferIDs[3] );
+        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[3] );
         glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 0, (void*) 0 );
         
         /* Indices */
-        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, geometry->bufferIDs[2] );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, bufferIDs[2] );
         glDrawElements( GL_TRIANGLES, geometry->noOfElements, GL_UNSIGNED_SHORT, (void*) 0);
         
         glDisableVertexAttribArray( 0 );

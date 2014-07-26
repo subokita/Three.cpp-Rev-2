@@ -12,8 +12,9 @@
 using namespace std;
 
 namespace three {
-    Scene::Scene() {
-        
+    Scene::Scene() :
+        autoUpdate( true )
+    {
     }
     
     Scene::~Scene() {
@@ -24,7 +25,7 @@ namespace three {
         return shared_ptr<Scene>( new Scene() );
     }
     
-    Scene& Scene::addLight( ptr<Light> light ) {
+    void Scene::addLight( ptr<Light> light ) {
 
         if( instance_of(light, AmbientLight) ) {
             this->ambientLight = downcast(light, AmbientLight);
@@ -41,21 +42,16 @@ namespace three {
         else if( instance_of(light, SpotLight) ) {
             spotLights.push_back( downcast(light, SpotLight) );
         }
-        
-        return *this;
     }
     
-    Scene& Scene::add( ptr<Object3D> object ) {
+    void Scene::add( ptr<Object3D> object ) {
         if( instance_of(object, Light) )
             this->addLight( downcast(object, Light) );
         else
             Object3D::add( object );
-        
-        return *this;
     }
     
-    Scene& Scene::add( ptr<Mesh> object ) {
+    void Scene::add( ptr<Mesh> object ) {
         Object3D::add( object );
-        return *this;
     }
 }

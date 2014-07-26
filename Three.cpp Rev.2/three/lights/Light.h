@@ -10,12 +10,15 @@
 #define __Three_cpp_Rev_2__Light__
 
 #include <iostream>
-#include "Constants.h"
+#include "internal_headers.h"
+
 #include "Color.h"
 #include "Object3D.h"
+#include "RenderTarget.h"
+#include "CastsShadow.h"
 
 namespace three {
-    class Light : public Object3D{
+    class Light : public Object3D, public CastsShadow{
     public:
         /** Constructors **/
         Light();
@@ -23,13 +26,9 @@ namespace three {
         virtual ~Light();
         
     public:
-        /* Data members */
         Color color;
         float intensity;
         ptr<Object3D> target;
-        
-        // FIXME: Is it Light or Object3D?
-        std::vector<ptr<Light>> shadowCascadeArray;
         
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const Light& obj ) {

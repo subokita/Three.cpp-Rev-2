@@ -26,6 +26,8 @@ namespace three {
     
     class Object3D : public HasID, public EventDispatcher, public std::enable_shared_from_this<Object3D> {
     public:
+        static ptr<Object3D> create();
+        
         Object3D();
         virtual ~Object3D();
         
@@ -63,7 +65,6 @@ namespace three {
         ptr<Object3D> parent;
         std::map<int, ptr<Object3D>> children;
         
-        glm::vec3 target;
         glm::quat quaternion;
         glm::vec3 scale;
         glm::vec3 position;

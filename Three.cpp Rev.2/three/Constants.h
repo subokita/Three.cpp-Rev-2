@@ -16,6 +16,8 @@
 
 #define instance_of(var, type) ( std::dynamic_pointer_cast<type>(var) != nullptr )
 #define downcast(var, type) std::dynamic_pointer_cast<type>(var)
+#define toggle( var ) ( var = !var )
+#define enum_to_int( val ) (static_cast<GLint>(val))
 
 /* Use alias declaration instead of macro definitions */
 template<typename T>
@@ -23,9 +25,6 @@ using ptr = std::shared_ptr<T>;
 
 template<typename T>
 using vector2D = std::vector<std::vector<T>>;
-
-
-
 
 static const float MAX_FLOAT = std::numeric_limits<float>::max();
 static const float MIN_FLOAT = std::numeric_limits<float>::min();
@@ -35,43 +34,51 @@ static const glm::vec3 NULL_VEC3 = glm::vec3( MIN_FLOAT, MIN_FLOAT, MIN_FLOAT );
 // FIXME: should use enums
 namespace three {
     
-    /* CULL STATE */
-    static const int CullFaceNone        = 0;
-    static const int CullFaceBack        = 1;
-    static const int CullFaceFront       = 2;
-    static const int CullFaceFrontBack   = 3;
+    enum class CULL {
+        NONE            = 0,
+        BACK            = 1,
+        FRONT           = 2,
+        FRONT_AND_BACK  = 3
+    };
     
-    /* WINDINGS */
-    static const int FrontFaceDirectionCW    = 0;
-    static const int FrontFaceDirectionCCW   = 1;
+    enum class FRONT_FACE {
+        CW  = 0,
+        CCW = 1,
+    };
     
-    /* SHADOW MAP */
-    static const int BasicShadowMap      = 0;
-    static const int PCFShadowMap        = 1;
-    static const int PCFSoftShadowMap    = 2;
+    enum class SHADOW_MAP {
+        BASIC       = 0,
+        PCF         = 1,
+        PCF_SOFT    = 2,
+    };
     
-    /* SIDES */
-    static const int FrontSide   = 0;
-    static const int BackSide    = 1;
-    static const int DoubleSide  = 2;
+    enum class SIDE {
+        FRONT_SIDE  = 0,
+        BACK_SIDE   = 1,
+        DOUBLE_SIDE = 2,
+    };
     
-    /* SHADINGS */
-    static const int NoShading     = 0;
-    static const int FlatShading   = 1;
-    static const int SmoothShading = 2;
+    enum class SHADING {
+        NO_SHADING      = 0,
+        FLAT_SHADING    = 1,
+        SMOOTH_SHADING  = 2,
+    };
     
-    /* COLORS */
-    static const int NoColors     = 0;
-    static const int FaceColors   = 1;
-    static const int VertexColors = 2;
+    enum class COLOR_MODE {
+        NONE    = 0,
+        FACE    = 1,
+        VERTEX  = 2,
+    };
     
-    /* BLENDING MODES */
-    static const int NoBlending          = 0;
-    static const int NormalBlending      = 1;
-    static const int AdditiveBlending    = 2;
-    static const int SubtractiveBlending = 3;
-    static const int MultiplyBlending    = 4;
-    static const int CustomBlending      = 5;
+    enum class BLENDING_MODE {
+        NONE        = 0,
+        NORMAL      = 1,
+        ADDITIVE    = 2,
+        SUBTRACTIVE = 3,
+        MULTIPLY    = 4,
+        CUSTOM      = 5
+    };
+    
     
     /* CUSTOM BLENDING EQUATIONS */
     static const int AddEquation             = 100;
@@ -98,9 +105,12 @@ namespace three {
     static const int SrcAlphaSaturateFactor   = 210;
     
     // TEXTURE CONSTANTS
-    static const int MultiplyOperation = 0;
-    static const int MixOperation      = 1;
-    static const int AddOperation      = 2;
+    enum class TEXTURE_OPERATION {
+        MULTIPLY = 0,
+        MIX      = 1,
+        ADD      = 2,
+    };
+    
     
     // Wrapping modes
     static const int RepeatWrapping         = 1000;
@@ -108,12 +118,14 @@ namespace three {
     static const int MirroredRepeatWrapping = 1002;
     
     // Filters
-    static const int NearestFilter              = 1003;
-    static const int NearestMipMapNearestFilter = 1004;
-    static const int NearestMipMapLinearFilter  = 1005;
-    static const int LinearFilter               = 1006;
-    static const int LinearMipMapNearestFilter  = 1007;
-    static const int LinearMipMapLinearFilter   = 1008;
+    enum class FILTER {
+        NEAREST_FILTER          = 1003,
+        NEAREST_MIPMAP_NEAREST  = 1004,
+        NEAREST_MIPMAP_LINEAR   = 1005,
+        LINEAR                  = 1006,
+        LINEAR_MIPMAP_NEAREST   = 1007,
+        LINEAR_MIPMAP_LINEAR    = 1008,
+    };
     
     // Data types
     static const int UnsignedByteType  = 1009;
@@ -130,12 +142,14 @@ namespace three {
     static const int UnsignedShort5551Type = 1017;
     static const int UnsignedShort565Type  = 1018;
     
-    // Pixel formats
-    static const int AlphaFormat          = 1019;
-    static const int RGBFormat            = 1020;
-    static const int RGBAFormat           = 1021;
-    static const int LuminanceFormat      = 1022;
-    static const int LuminanceAlphaFormat = 1023;
+    enum class PIXEL_FORMAT {
+        ALPHA           = 1019,
+        RGB             = 1020,
+        RGBA            = 1021,
+        LUMINANCE       = 1022,
+        LUMINANCE_ALPHA = 1023,
+    };
+    
     
     // Compressed texture formats
     static const int RGB_S3TC_DXT1_Format  = 2001;
