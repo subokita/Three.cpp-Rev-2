@@ -18,7 +18,54 @@ namespace three {
     using namespace std;
     
     namespace Chunks {
-
+        static const string simplePassVertexParams = Utils::join({
+            "layout (location = 0) in vec3 vertex_pos_m;",
+            "out vec2 uv;",
+        });
+        static const string simplePassFragmentParams = Utils::join({
+            "out vec4 color;",
+            "uniform sampler2D texture_sampler;",
+            "in vec2 uv;",
+            
+            "float unpackDepth( const in vec4 rgba_depth ) {",
+                "const vec4 bit_shift = vec4( 1.0 / ( 256.0 * 256.0 * 256.0 ), 1.0 / ( 256.0 * 256.0 ), 1.0 / 256.0, 1.0 );",
+                "float depth = dot( rgba_depth, bit_shift );",
+                "return depth;",
+            "}",
+        });
+        
+        static const string simplePassVertex = Utils::join({
+            "gl_Position = vec4(vertex_pos_m, 1.0);",
+            "uv = (vertex_pos_m.xy + vec2(1.0, 1.0)) / 2.0;",
+        }, "\t");
+        
+        static const string simplePassFragment = Utils::join({
+            "float unpacked = unpackDepth( texture( texture_sampler, uv ) );",
+            "color = vec4(unpacked, unpacked, unpacked, 1.0);",
+        }, "\t");
+        
+        
+        static const string depthRGBAFragmentParams = Utils::join({
+            "layout (location = 0 ) out vec4 fragment_depth;",
+            "uniform mat4 view_mat;",
+            "vec4 packDepth(const in float depth) {",
+                "const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );",
+                "const vec4 bit_mask  = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );",
+                "vec4 res = mod( depth * bit_shift * vec4( 255 ), vec4( 256 ) ) / vec4( 255 );",
+                "res -= res.xxyz * bit_mask;",
+            "return res;",
+            "}",
+        });
+        
+        static const string depthRGBAVertex = Utils::join({
+            "gl_Position   = projection_mat * model_view_mat * vec4(vertex_pos_m, 1.0);",
+        }, "\t");
+        
+        static const string depthRGBAFragment = Utils::join({
+            "fragment_depth = packDepth(gl_FragCoord.z);",
+//            "fragment_depth = vec4(gl_FragCoord.z, gl_FragCoord.z, gl_FragCoord.z, 1.0);",
+        }, "\t");
+        
         static const string cubeMapVertexParams = Utils::join({
             "out vec3 vertex_pos_w;",
         });
@@ -57,24 +104,119 @@ namespace three {
         });
         
         
-        static const string depthRGBAFragmentParams = Utils::join({
-            "uniform mat4 view_mat;",
-            "vec4 packDepth(const in float depth) {",
-                "const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );",
-                "const vec4 bit_mask  = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );",
-                "vec4 res = mod( depth * bit_shift * vec4( 255 ), vec4( 256 ) ) / vec4( 255 );",
-                "res -= res.xxyz * bit_mask;",
-                "return res;",
-            "}",
+        static const string shadowVertexParams = Utils::join({
+            "#ifdef USE_SHADOWMAP",
+                "out vec4 shadow_coord_c;",
+                "uniform mat4 shadow_mat;",
+            "#endif",
         });
         
-        static const string depthRGBAVertex = Utils::join({
-            "gl_Position   = projection_mat * model_view_mat * vec4(vertex_pos_m, 1.0);",
-        }, "\t");
+        static const string shadowFragmentParams = Utils::join({
+            "#ifdef USE_SHADOWMAP",
+                "in vec4 shadow_coord_c;",
+                "uniform float shadow_bias;",
+                "uniform float shadow_darkness;",
+                "uniform sampler2D shadow_map;",
+                "uniform vec2 shadow_map_size;",
+            
+                "float unpackDepth( const in vec4 rgba_depth ) {",
+                    "const vec4 bit_shift = vec4( 1.0 / ( 256.0 * 256.0 * 256.0 ), 1.0 / ( 256.0 * 256.0 ), 1.0 / 256.0, 1.0 );",
+                    "float depth = dot( rgba_depth, bit_shift );",
+                    "return depth;",
+                "}",
+            "#endif",
+        });
         
-        static const string depthRGBAFragment = Utils::join({
-            "frag_color = packDepth( gl_FragCoord.z );",
-        }, "\t");
+        
+        static const string shadowVertex = Utils::join({
+            "#ifdef USE_SHADOWMAP",
+                "shadow_coord_c = shadow_mat * vec4(vertex_pos_w, 1.0);",
+            "#endif",
+        });
+        
+        static const string shadowFragment = Utils::join({
+            "#ifdef USE_SHADOWMAP",
+                "vec3 frustum_colors[3];",
+                "frustum_colors[0] = vec3(1.0, 0.5, 0.0);",
+                "frustum_colors[1] = vec3(0.0, 1.0, 0.8);",
+                "frustum_colors[2] = vec3(0.0, 0.5, 1.0);",
+            
+            
+                "float f_depth;",
+                "vec3 shadow_color = vec3(1.0);",
+            
+                "vec3 shadow_coord = shadow_coord_c.xyz / shadow_coord_c.w;",
+                "bvec4 in_frustum_vec = bvec4(shadow_coord.x >= 0.0, shadow_coord.x <= 1.0, shadow_coord.y >= 0.0, shadow_coord.y <= 1.0 );",
+                "bool in_frustum = all( in_frustum_vec );",
+                "bvec2 frustum_test_vec = bvec2( in_frustum, shadow_coord.z <= 1.0 );",
+                "bool frustum_test = all( frustum_test_vec );",
+            
+                "if( frustum_test ) {",
+                    "shadow_coord.z += shadow_bias;",
+                    "#ifdef SHADOW_TYPE_PCF_SOFT",
+                        "float shadow = 0.0;",
+                        "const float shadow_delta = 1.0 / 9.0;",
+                        "float x_offset = 1.0 / shadow_map_size.x;",
+                        "float y_offset = 1.0 / shadow_map_size.y;",
+                        "float dx0 = -1.0 * x_offset;",
+                        "float dy0 = -1.0 * y_offset;",
+                        "float dx1 =  1.0 * x_offset;",
+                        "float dy1 =  1.0 * y_offset;",
+                        "mat3 shadow_kernel;",
+                        "mat3 depth_kernel;",
+                
+                        "depth_kernel[0][0] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx0, dx0) ));",
+                        "depth_kernel[0][1] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx0, 0.0) ));",
+                        "depth_kernel[0][2] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx0, dy1) ));",
+                        
+                        "depth_kernel[1][0] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(0.0, dy0) ));",
+                        "depth_kernel[1][1] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(0.0, 0.0) ));",
+                        "depth_kernel[1][2] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx0, dy1) ));",
+                        
+                        "depth_kernel[2][0] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx1, dy0) ));",
+                        "depth_kernel[2][1] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx1, 0.0) ));",
+                        "depth_kernel[2][2] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx1, dy1) ));",
+                
+                        "vec3 shadow_z = vec3(shadow_coord.z);",
+                        "shadow_kernel[0] = vec3( lessThan(depth_kernel[0], shadow_z) );",
+                        "shadow_kernel[0] *= vec3(0.25);",
+                
+                        "shadow_kernel[1] = vec3( lessThan(depth_kernel[1], shadow_z) );",
+                        "shadow_kernel[1] *= vec3(0.25);",
+                
+                        "shadow_kernel[2] = vec3( lessThan(depth_kernel[2], shadow_z) );",
+                        "shadow_kernel[2] *= vec3(0.25);",
+                
+                        "vec2 fraction_coord = 1.0 - fract(shadow_coord.xy * shadow_map_size.xy );",
+                        "shadow_kernel[0] = mix( shadow_kernel[1], shadow_kernel[0], fraction_coord.x );",
+                        "shadow_kernel[1] = mix( shadow_kernel[2], shadow_kernel[1], fraction_coord.x );",
+                
+                        "vec4 shadow_values;",
+                        "shadow_values.x = mix( shadow_kernel[0][1], shadow_kernel[0][0], fraction_coord.y );",
+                        "shadow_values.y = mix( shadow_kernel[0][2], shadow_kernel[0][1], fraction_coord.y );",
+                        "shadow_values.z = mix( shadow_kernel[1][1], shadow_kernel[1][0], fraction_coord.y );",
+                        "shadow_values.w = mix( shadow_kernel[1][2], shadow_kernel[1][1], fraction_coord.y );",
+                
+                        "shadow = dot(shadow_values, vec4(1.0));",
+                        "shadow_color = shadow_color * vec3( (1.0 - shadow_darkness * shadow) );",
+                    "#else",
+                        "vec4 rgba_depth = texture( shadow_map, shadow_coord.xy );",
+                        "f_depth = unpackDepth( rgba_depth );",
+                        "if( f_depth < shadow_coord.z ) {",
+                            "shadow_color = shadow_color * vec3( 1.0 - shadow_darkness );",
+                        "}",
+                    "#endif",
+                "}",
+            
+                "#ifdef GAMMA_OUTPUT",
+                    "shadow_color *= shadow_color;",
+                "#endif",
+            
+                "frag_color.xyz = frag_color.xyz * shadow_color;",
+            "#endif",
+        });
+        
+        
         
         static const string specularMapFragmentParams = Utils::join({
             "#ifdef USE_SPECULARMAP",
@@ -275,6 +417,10 @@ namespace three {
             "#endif",
         }, "\t" );
         
+        
+        static const string basicFragment_3 = Utils::join({
+            "frag_color.xyz = vec3(1.0);",
+        }, "\t" );
         
         static const string lambertVertexParams = Utils::join({
             "out vec3 light_front_color;",

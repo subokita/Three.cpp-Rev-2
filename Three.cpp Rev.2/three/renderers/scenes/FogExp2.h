@@ -11,12 +11,15 @@
 
 #include <iostream>
 #include "IFog.h"
+#include "HasShaderUniforms.h"
 
 namespace three {
     class FogExp2 : public IFog {
     public:
         static ptr<FogExp2> create();
         static ptr<FogExp2> create( Color color, float distance );
+        
+        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
         
         FogExp2();
         FogExp2( Color color, float distance );

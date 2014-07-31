@@ -35,6 +35,8 @@ namespace three {
         
         bool empty();
         
+        ptr<Shader> getShader();
+        
         std::string getID();
         std::string getVertexParams();
         std::string getFragmentParams();
@@ -51,14 +53,7 @@ namespace three {
         
         void draw( ptr<Camera> camera, ptr<Arcball> arcball, ptr<Object3D> object, bool gamma_input );
         
-        void setFog              ( ptr<IFog> ifog, bool gamma_input );
-        void setAmbientLights    ( ptr<AmbientLight> lights, bool gamma_input );
-        void setHemisphereLights ( std::vector<ptr<HemisphereLight>>& lights, bool gamma_input );
-        void setDirectionalLights( std::vector<ptr<DirectionalLight>>& lights, bool gamma_input );
-        void setPointLights      ( std::vector<ptr<PointLight>>& lights, bool gamma_input );
-        void setSpotLights       ( std::vector<ptr<SpotLight>>& lights, bool gamma_input );
-        
-    protected:
+    public:
         ShaderLib( std::string name, std::vector<std::string> precisions, std::vector<std::string> defines,
                    std::string vertex_params, std::string vertex_code,
                    std::string fragment_params, std::string fragment_code );
@@ -76,6 +71,29 @@ namespace three {
         std::string fragmentCode;
     };
     
+    static const ptr<ShaderLib> SHADERLIB_SIMPLE_PASS = ShaderLib::create(
+        "depthRGBA",
+        {"precision highp float;", "precision highp int;"},
+        {},
+        Utils::join({
+            Chunks::simplePassVertexParams,
+        }),
+        Utils::join({
+            "void main(){",
+            Chunks::simplePassVertex,
+            "}",
+        }),
+        
+        Utils::join({
+            Chunks::simplePassFragmentParams,
+        }),
+        Utils::join({
+            "void main(){",
+            Chunks::simplePassFragment,
+            "}",
+        })
+    );
+    
     static const ptr<ShaderLib> SHADERLIB_DEPTH_RGBA = ShaderLib::create(
         "depthRGBA",
          {"precision highp float;", "precision highp int;"},
@@ -90,7 +108,6 @@ namespace three {
          }),
                                                                          
          Utils::join({
-            Chunks::standardFragmentParams,
             Chunks::depthRGBAFragmentParams,
          }),
          Utils::join({
@@ -239,12 +256,14 @@ namespace three {
             Chunks::phongVertexParams,
             Chunks::textureVertexParams,
             Chunks::envMapVertexParams,
+            Chunks::shadowVertexParams,
         }),
         Utils::join({
             "void main() {",
                 Chunks::textureVertex,
                 Chunks::phongVertex,
                 Chunks::envMapVertex,
+                Chunks::shadowVertex,
             "}",
         }),
         Utils::join({
@@ -259,6 +278,7 @@ namespace three {
             Chunks::normalMapFragmentParams,
             Chunks::specularMapFragmentParams,
             Chunks::envMapFragmentParams,
+            Chunks::shadowFragmentParams,
         }),
         Utils::join({
             "void main() {",
@@ -273,6 +293,7 @@ namespace three {
                 Chunks::phongSpotLightsFragment,
                 Chunks::phongFragment_2,
                 Chunks::envMapFragment,
+                Chunks::shadowFragment,
                 Chunks::phongFragment_3,
                 Chunks::fogFragment,
             "}",

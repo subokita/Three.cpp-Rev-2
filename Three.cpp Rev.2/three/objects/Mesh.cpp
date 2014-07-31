@@ -81,11 +81,11 @@ namespace three {
             uvs[face->c] = face->uvs[2];
         }
        
-        for( auto& vert: geometry->vertices)
-            vert = vert * geometry->quaternion;
-        
-        for( auto& normal: normals)
-            normal = normal * geometry->quaternion;
+//        for( auto& vert: geometry->vertices)
+//            vert = vert * geometry->quaternion;
+//        
+//        for( auto& normal: normals)
+//            normal = normal * geometry->quaternion;
         
         
         //FIXME: Indexed VBO messes the uv for textures

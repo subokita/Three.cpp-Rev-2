@@ -12,7 +12,9 @@ using namespace std;
 
 namespace three {
     
-    CastsShadow::CastsShadow() 
+    CastsShadow::CastsShadow() :
+        shadowBias(-0.0001),
+        shadowDarkness(0.55)
     {
     }
     

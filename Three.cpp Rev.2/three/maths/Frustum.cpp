@@ -25,7 +25,7 @@ namespace three {
     
     Frustum::~Frustum(){}
     
-    Frustum& Frustum::setFrom( glm::mat4 m ){
+    Frustum& Frustum::setFrom( glm::mat4& m ){
         planes[0]->set( m[0][3] - m[0][0], m[1][3] - m[1][0], m[2][3] - m[2][0], m[3][3] - m[3][0]).normalize();
         planes[1]->set( m[0][3] + m[0][0], m[1][3] + m[1][0], m[2][3] + m[2][0], m[3][3] + m[3][0]).normalize();
         

@@ -33,21 +33,33 @@ int main(int argc, const char * argv[])
     
     /* Create camera */
     auto camera = PerspectiveCamera::create( 50.0, renderer.aspectRatio, 0.001, 100.0 );
-    camera->position = glm::vec3(0.0, 0.0, 5.5);
+    camera->position = glm::vec3(0.0, 1.5, 5.5);
     camera->lookAt( 0.0, 0.0, 0.0 );
     
     
     auto sphere_1 = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
                                   PhongMaterial::create(0x777777, 0x777777, 0x0, 0x999999, 30) );
-    sphere_1->translate(-1.0, -.0, 0.0);
+    sphere_1->translate(-1.0, 0.0, 0.0);
+    sphere_1->castShadow = true;
+    sphere_1->receiveShadow = true;
     
     auto cube_2 = Mesh::create( CubeGeometry::create(1.0),
                                 PhongMaterial::create(0x777777, 0x777777, 0x0, 0x999999, 30) );
     cube_2->translate(+1.0, 0.0, 0.0);
+    cube_2->castShadow = true;
+    cube_2->receiveShadow = true;
     
     scene->add( sphere_1 );
     scene->add( cube_2 );
+
     
+    auto plane = Mesh::create( PlaneGeometry::create(20.0f),
+                               PhongMaterial::create(0x777777, 0x777777, 0x0, 0x999999, 30) );
+    plane->name = "plane";
+    plane->rotateX(-90.0f);
+    plane->translate(0.0, -1.0, 0.0);
+    plane->receiveShadow = true;
+    scene->add( plane );
     
     auto env = Mesh::create( CubeGeometry::create(20.0f), MeshCubeMapMaterial::create() );
     env->texture = TextureUtils::loadAsEnvMap( path + "cube/pisa",
@@ -56,13 +68,15 @@ int main(int argc, const char * argv[])
     
     sphere_1->envMap = downcast(env->texture, EnvMap);
     cube_2->envMap   = downcast(env->texture, EnvMap);
-    scene->add( env );
+//    scene->add( env );
     
     
     
     /* Create directional light */
     auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3(3.0, 1.0, 3.0) );
+    dir_light->castShadow = true;
     scene->add( dir_light );
+    
     
     /* Create an ambient light */
     scene->add( AmbientLight::create(0x777777));
@@ -71,8 +85,8 @@ int main(int argc, const char * argv[])
     bool rotate_objects = false;
     float light_rotation_1 = 0.0;
     renderer.setPostRenderCallbackHandler( [&](){
-        dir_light->position.x = 2.0 * cosf( light_rotation_1 );
-        dir_light->position.z = 2.0 * sinf( light_rotation_1 );
+        dir_light->position.x = 3.0 * cosf( light_rotation_1 );
+        dir_light->position.z = 3.0 * sinf( light_rotation_1 );
         
         light_rotation_1 += 0.01;
         

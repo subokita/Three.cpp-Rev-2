@@ -12,16 +12,18 @@
 #include <iostream>
 #include "Object3D.h"
 #include "Mesh.h"
-#include "Light.h"
 #include "AmbientLight.h"
-#include "PointLight.h"
-#include "DirectionalLight.h"
-#include "HemisphereLight.h"
-#include "SpotLight.h"
 #include "IFog.h"
+#include "HasShaderUniforms.h"
+
+#include "internal_headers.h"
+#include "DirectionalLightsArray.h"
+#include "HemisphereLightsArray.h"
+#include "PointLightsArray.h"
+#include "SpotLightsArray.h"
 
 namespace three {
-    class Scene : public Object3D {
+    class Scene : public Object3D, public HasShaderUniforms {
     public:
         static ptr<Scene> create();
         ~Scene();
@@ -29,6 +31,9 @@ namespace three {
         void add( ptr<Mesh> object );
         void addLight( ptr<Light> light );
         
+        unsigned int getShadowCasterCount();
+        void update();
+        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
         
     protected:
         Scene();
@@ -37,10 +42,10 @@ namespace three {
         bool autoUpdate;
         ptr<IFog> fog;
         ptr<AmbientLight> ambientLight;
-        std::vector<ptr<DirectionalLight>> directionalLights;
-        std::vector<ptr<HemisphereLight>> hemisphereLights;
-        std::vector<ptr<PointLight>> pointLights;
-        std::vector<ptr<SpotLight>> spotLights;
+        DirectionalLightsArray directionalLights;
+        HemisphereLightsArray hemisphereLights;
+        PointLightsArray pointLights;
+        SpotLightsArray spotLights;
     };
 }
 

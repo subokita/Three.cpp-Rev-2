@@ -64,7 +64,7 @@ namespace three {
             os << "\tside               : " << &obj.side                << std::endl;
             os << "\topacity            : " << obj.opacity             << std::endl;
             os << "\ttransparent        : " << obj.transparent         << std::endl;
-            os << "\tblending           : " << enum_to_int(obj.blending) << std::endl;
+            os << "\tblending           : " << static_cast<int>(obj.blending) << std::endl;
             os << "\tblendSrc           : " << obj.blendSrc            << std::endl;
             os << "\tblendDst           : " << obj.blendDst            << std::endl;
             os << "\tblendEquation      : " << obj.blendEquation       << std::endl;

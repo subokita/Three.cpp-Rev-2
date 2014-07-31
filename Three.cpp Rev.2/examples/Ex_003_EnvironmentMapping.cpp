@@ -60,8 +60,8 @@ namespace three  {
         
         auto cube_2 = Mesh::create( CubeGeometry::create( 1.0f ), cube_2_material);
         cube_2->translate(2.0f, 1.66f, 0.0f);
-        cube_2->rotateZ(45.0);
-        cube_2->rotateX(45.0);
+        cube_2->geometry->rotateZ(45.0);
+        cube_2->geometry->rotateX(-45.0);
         
         /* An open cylinder with double sided rendering */
         auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 1.0, 30, 5, true),
@@ -100,6 +100,7 @@ namespace three  {
         sphere_2->envMap    = downcast(env->texture, EnvMap);
         cube->envMap        = downcast(env->texture, EnvMap);
         cube_2->envMap      = downcast(env->texture, EnvMap);
+        cylinder->envMap    = downcast(env->texture, EnvMap);
         cylinder_2->envMap  = downcast(env->texture, EnvMap);
         
         
@@ -138,6 +139,15 @@ namespace three  {
                     case GLFW_KEY_ESCAPE: case GLFW_KEY_Q:
                         glfwSetWindowShouldClose( window, GL_TRUE );
                         return;
+                        
+                    case GLFW_KEY_W:
+                        toggle(sphere->material->wireframe);
+                        toggle(sphere_2->material->wireframe);
+                        toggle(cube->material->wireframe);
+                        toggle(cube_2->material->wireframe);
+                        toggle(cylinder->material->wireframe);
+                        toggle(cylinder_2->material->wireframe);
+                        break;
                         
                     case GLFW_KEY_R: /* Toggle rotation */
                         rotate_objects = !rotate_objects;

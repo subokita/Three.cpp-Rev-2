@@ -21,7 +21,7 @@ namespace three {
         Frustum();
         ~Frustum();
         
-        Frustum& setFrom( glm::mat4 matrix );
+        Frustum& setFrom( glm::mat4& matrix );
         bool intersects( ptr<Object3D> object );
         bool intersects( ptr<Sphere> sphere );
         bool intersects( ptr<Box3> box );

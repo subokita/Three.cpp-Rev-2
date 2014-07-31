@@ -63,10 +63,10 @@ namespace three {
         shader->setUniform( "diffuse",   this->color, 1.0, gamma );
         
         /*ENV MAP related*/
-        shader->setUniform( "combine",          enum_to_int(this->combine) );
+        shader->setUniform( "combine",          static_cast<int>(this->combine) );
         shader->setUniform( "reflectivity",     this->reflectivity );
         shader->setUniform( "refraction_ratio", this->refractionRatio );
-        shader->setUniform( "flip_env_map",     (GLfloat) -1.0 );
+        shader->setUniform( "flip_env_map",     (GLfloat) 1.0 );
         shader->setUniform( "use_refraction",   useRefraction );
     }
 }

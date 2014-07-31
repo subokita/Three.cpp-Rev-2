@@ -36,11 +36,11 @@ namespace three {
         static bool isPowerOfTwo( int value );
         
         static float hueToRGB( float p, float q, float t );
-        static glm::mat4x4 composeMatrix( glm::vec3& position, glm::quat& quaternion, glm::vec3& scale );
-        static void decomposeMatrix( glm::mat4x4& mat, glm::vec3& position, glm::quat& quaternion, glm::vec3& scale );
+        static glm::mat4x4 composeMatrix( glm::vec3 position, glm::quat quaternion, glm::vec3 scale );
+        static void decomposeMatrix( glm::mat4& mat, glm::vec3& position, glm::quat& quaternion, glm::vec3& scale );
         
-//        static glm::vec3 applyQuaternion( glm::vec3& vec, Quaternion& q );
         static glm::vec3 applyQuaternion( glm::vec3& vec, glm::quat& q );
+        static glm::mat4 lookAt( glm::vec3 eye, glm::vec3 target, glm::vec3 up );
     };
 }
 

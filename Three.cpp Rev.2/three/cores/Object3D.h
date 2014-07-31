@@ -43,7 +43,7 @@ namespace three {
         void rotate( const glm::vec3 axis, const float angle );
         
         void updateMatrix();
-        void updateMatrixWorld(bool force);
+        virtual void updateMatrixWorld(bool force);
         void add( ptr<Object3D> object );
         void remove( ptr<Object3D> object );
         
@@ -51,6 +51,7 @@ namespace three {
         ptr<Object3D> getObjectByID( const unsigned int id, bool recursive );
         
         std::vector<ptr<Object3D>> getDescendants();
+        void setTarget( glm::vec3 target_pos );
         
         
     public:
@@ -65,6 +66,7 @@ namespace three {
         ptr<Object3D> parent;
         std::map<int, ptr<Object3D>> children;
         
+        ptr<Object3D> target;
         glm::quat quaternion;
         glm::vec3 scale;
         glm::vec3 position;

@@ -30,6 +30,8 @@ namespace three {
     class Face3;
     class Geometry;
     class Object3D;
+    class Gyroscope;
+    class Projector;
     
     
     /* ./three/controls/ */
@@ -44,6 +46,10 @@ namespace three {
     class HemisphereLight;
     class SpotLight;
     class VirtualLight;
+    class DirectionalLightsArray;
+    class HemisphereLightsArray;
+    class PointLightsArray;
+    class SpotLightsArray;
     
     /* ./three/materials */
     class Material;
@@ -100,7 +106,7 @@ namespace three {
     class NormalMap;
     class SpecularMap;
     class EnvMap;
-    
+    class ShadowTexture;
     
 };
 

@@ -21,16 +21,21 @@ namespace three {
     
     class Texture : public HasID, public HasShaderUniforms, public EventDispatcher {
     public:
-        static ptr<Texture> create();
-        Texture();
-        Texture(GLuint wrap_s, GLuint wrap_t, GLuint wrap_r, GLuint mag_filter, GLuint min_filter);
+        static ptr<Texture> create(TEXTURE_TYPE type = TEXTURE_TYPE::TEXTURE_2D);
+        Texture(TEXTURE_TYPE type);
+        Texture(TEXTURE_TYPE type, GLuint wrap_s, GLuint wrap_t, GLuint wrap_r, GLuint mag_filter, GLuint min_filter);
         ~Texture();
+        
+        const GLuint genTexture();
+        void bind();
         
         virtual void setUniforms(ptr<Shader> shader, bool gamma) override;
         
+    public:
         unsigned int width;
         unsigned int height;
         
+        TEXTURE_TYPE type;
         GLuint textureID;
         GLuint wrapS;
         GLuint wrapT;
@@ -39,7 +44,7 @@ namespace three {
         GLuint minFilter;
         int anisotropy;
         GLuint format;
-        GLuint type;
+//        GLuint type;
         
         glm::vec2 offset;
         glm::vec2 repeat;

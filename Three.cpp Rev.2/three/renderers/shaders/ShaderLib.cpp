@@ -70,6 +70,9 @@ namespace three {
         return make_shared<ShaderLib>(ShaderLib(*this));
     }
     
+    ptr<Shader> ShaderLib::getShader() {
+        return shader;
+    }
     
     void ShaderLib::addDefinitions(ptr<Scene> scene, ptr<Mesh> mesh, bool gamma_input, bool gamma_output) {
         if( scene->fog != nullptr ) {
@@ -87,27 +90,19 @@ namespace three {
         
         stringstream ss;
         ss.str("");
-        ss << "#define MAX_DIR_LIGHTS " << static_cast<int>(count_if( scene->directionalLights.begin(), scene->directionalLights.end(), [](ptr<DirectionalLight> light){
-            return light->visible;
-        }));
+        ss << "#define MAX_DIR_LIGHTS " << scene->directionalLights.getSize();
         this->defines.push_back( ss.str() );
         
         ss.str("");
-        ss << "#define MAX_POINT_LIGHTS " << static_cast<int>(count_if( scene->pointLights.begin(), scene->pointLights.end(), [](ptr<PointLight> light){
-            return light->visible;
-        }));
+        ss << "#define MAX_POINT_LIGHTS " << scene->pointLights.getSize();
         this->defines.push_back( ss.str() );
         
         ss.str("");
-        ss << "#define MAX_HEMI_LIGHTS " << static_cast<int>(count_if( scene->hemisphereLights.begin(), scene->hemisphereLights.end(), [](ptr<HemisphereLight> light){
-            return light->visible;
-        }));
+        ss << "#define MAX_HEMI_LIGHTS " << scene->hemisphereLights.getSize();
         this->defines.push_back( ss.str() );
         
         ss.str("");
-        ss << "#define MAX_SPOT_LIGHTS " << static_cast<int>(count_if( scene->spotLights.begin(), scene->spotLights.end(), [](ptr<SpotLight> light){
-            return light->visible;
-        }));
+        ss << "#define MAX_SPOT_LIGHTS " << scene->spotLights.getSize();
         this->defines.push_back( ss.str() );
         
         config.reset();
@@ -151,6 +146,13 @@ namespace three {
             config[6] = 1;
         }
         
+        if( scene->getShadowCasterCount() > 0 ){
+            this->defines.push_back("#define USE_SHADOWMAP");
+            config[7] = 1;
+            
+            this->defines.push_back( "#define SHADOW_TYPE_PCF_SOFT" );
+        }
+        
     }
     
     void ShaderLib::compileShader() {
@@ -169,163 +171,29 @@ namespace three {
      * 
      */
     void ShaderLib::draw( ptr<Camera> camera, ptr<Arcball> arcball, ptr<Object3D> object, bool gamma_input ) {
+        glm::mat4 rot_mat(1.0);
+        if( arcball != nullptr) {
+            rot_mat = arcball->createViewRotationMatrix();
+        }
+        
         shader->setUniform( "projection_mat",   camera->projection );
-        shader->setUniform( "view_mat",         camera->matrix * arcball->createViewRotationMatrix() );
+        shader->setUniform( "view_mat",         camera->matrix * rot_mat );
         shader->setUniform( "camera_pos_w",     camera->position );
         
         if( !object->visible )
             return;
         
-        glm::mat4 mv = camera->matrix * arcball->createViewRotationMatrix() * object->matrixWorld;
+        glm::mat4 mv = camera->matrix * rot_mat * object->matrixWorld;
         shader->setUniform( "normal_mat", glm::inverseTranspose( glm::mat3(mv) ) );
         shader->setUniform( "model_view_mat", mv );
-
+        
         if( instance_of(object, Mesh ) ) {
             ptr<Mesh> mesh = downcast(object, Mesh) ;
             mesh->setUniforms(shader, gamma_input );
             mesh->draw();
         }
     }
-    
-    void ShaderLib::setFog( ptr<IFog> ifog, bool gamma_input ){
-        if( ifog == nullptr )
-            return;
-        
-        if( instance_of(ifog, Fog)) {
-            ptr<Fog> fog = downcast(ifog, Fog);
-            shader->setUniform( "fog_color", fog->color, 1.0, gamma_input );
-            shader->setUniform( "fog_near", fog->near );
-            shader->setUniform( "fog_far",  fog->far );
-        }
-        else if( instance_of(ifog, FogExp2)) {
-            ptr<FogExp2> fog = downcast(ifog, FogExp2);
-            shader->setUniform( "fog_color", fog->color, 1.0, gamma_input );
-            shader->setUniform( "fog_density", fog->distance );
-        }
-    }
-    
-    void ShaderLib::setAmbientLights( ptr<AmbientLight> light, bool gamma_input ){
-        if( light == nullptr )
-            shader->setUniform( "ambient_light_color", Color(0x000000), 1.0, gamma_input );
-        else {
-            if( light->visible )
-                shader->setUniform( "ambient_light_color", light->color, 1.0, gamma_input );
-        }
 
-    }
-    
-    void ShaderLib::setHemisphereLights( vector<ptr<HemisphereLight>>& lights, bool gamma_input ){
-        size_t size = count_if( lights.begin(), lights.end(),
-                               [](ptr<HemisphereLight> light){
-                                   return light->visible;
-                               });
-        if( size == 0 )
-            return;
-        
-        vector<Color> sky_colors;
-        vector<Color> ground_colors;
-        vector<float> intensities;
-        vector<glm::vec3> directions;
-        
-        for( ptr<HemisphereLight> light: lights ){
-            sky_colors.push_back   (light->color);
-            ground_colors.push_back(light->groundColor);
-            intensities.push_back  (light->intensity);
-            directions.push_back   (light->position);
-        }
-        
-        shader->setUniform( "hemisphere_light_sky_color", sky_colors, intensities, gamma_input );
-        shader->setUniform( "hemisphere_light_ground_color", ground_colors, intensities, gamma_input );
-        shader->setUniform( "hemisphere_light_direction", directions );
-    }
-    
-    void ShaderLib::setDirectionalLights( vector<ptr<DirectionalLight>>& lights, bool gamma_input ){
-        size_t size = count_if( lights.begin(), lights.end(),
-                       [](ptr<DirectionalLight> light){
-                           return light->visible;
-                       });
-        
-        if( size == 0 )
-            return;
-        
-        vector<glm::vec3> directions;
-        vector<Color> colors;
-        vector<float> intensities;
-        
-        for( ptr<DirectionalLight> light : lights ) {
-            if( !light->visible )
-                continue;
-            
-            directions.push_back ( light->position );
-            colors.push_back     ( light->color );
-            intensities.push_back( light->intensity );
-        }
-        
-        shader->setUniform( "directional_light_direction", directions );
-        shader->setUniform( "directional_light_color", colors, intensities, gamma_input );
-    }
-    
-    void ShaderLib::setPointLights( vector<ptr<PointLight>>& lights, bool gamma_input ){
-        size_t size = count_if( lights.begin(), lights.end(),
-                               [](ptr<PointLight> light){
-                                   return light->visible;
-                               });
-        if( size == 0 )
-            return;
-        
-        vector<Color> colors;
-        vector<glm::vec3> positions;
-        vector<float> intensities;
-        vector<float> distances;
-        
-        for( ptr<PointLight> light: lights ) {
-            colors.push_back     (light->color);
-            intensities.push_back(light->intensity);
-            positions.push_back  (light->position);
-            distances.push_back  (light->distance);
-        }
-        
-        shader->setUniform( "point_light_color", colors, intensities, gamma_input );
-        shader->setUniform( "point_light_position", positions );
-        shader->setUniform( "point_light_distance", distances );
-    }
-    
-    void ShaderLib::setSpotLights( vector<ptr<SpotLight>>& lights, bool gamma_input ){
-        size_t size = count_if( lights.begin(), lights.end(),
-                               [](ptr<SpotLight> light){
-                                   return light->visible;
-                               });
-        
-        if( size == 0 )
-            return;
-        
-        vector<Color> colors;
-        vector<float> intensities;
-        vector<glm::vec3> positions;
-        vector<glm::vec3> directions;
-        vector<float> cos_angles;
-        vector<float> exponents;
-        vector<float> distances;
-        
-        for( ptr<SpotLight> light: lights ){
-            colors.push_back     (light->color);
-            intensities.push_back(light->intensity);
-            positions.push_back  (light->position);
-            directions.push_back (glm::normalize(light->position - light->target));
-            cos_angles.push_back (cosf(Math::degToRad(light->angle)));
-            exponents.push_back  (light->exponent);
-            distances.push_back  (light->distance);
-        }
-        
-        
-        shader->setUniform( "spot_light_color", colors, intensities, gamma_input );
-        shader->setUniform( "spot_light_position", positions );
-        shader->setUniform( "spot_light_direction", directions );
-        
-        shader->setUniform( "spot_light_angle_cos", cos_angles );
-        shader->setUniform( "spot_light_exponent", exponents );
-        shader->setUniform( "spot_light_distance", distances );
-    }
  
     string ShaderLib::getID() {
         stringstream ss;

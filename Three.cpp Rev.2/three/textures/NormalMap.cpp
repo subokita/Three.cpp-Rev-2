@@ -18,7 +18,8 @@ namespace three {
     }
     
     NormalMap::NormalMap():
-        normalScale(glm::vec2(1.0, 1.0))
+        Texture     (TEXTURE_TYPE::TEXTURE_2D),
+        normalScale (glm::vec2(1.0, 1.0))
     {}
     
     NormalMap::~NormalMap(){
@@ -32,7 +33,7 @@ namespace three {
         shader->setUniform( "normal_scale", this->normalScale );
         
         glActiveTexture( GL_TEXTURE1 );
-        glBindTexture( GL_TEXTURE_2D, this->textureID );
+        bind();
         shader->setUniform("normal_map", 1);
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );

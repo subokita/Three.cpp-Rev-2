@@ -135,7 +135,42 @@ namespace three {
     }
     
     
-    glm::mat4x4 Math::composeMatrix( glm::vec3& position, glm::quat& quaternion, glm::vec3& scale ) {
+    
+    
+    glm::mat4 Math::lookAt( glm::vec3 eye, glm::vec3 target, glm::vec3 up ) {
+        glm::vec3 z = glm::normalize(eye - target);
+        
+        if( glm::length(z) == 0.0 )
+            z.z = 1;
+        
+        glm::vec3 x = glm::normalize( glm::cross(up, z ));
+        
+        if( glm::length( x ) == 0.0 ) {
+            z.x += 0.0001;
+            x = glm::normalize( glm::cross(up, z));
+        }
+        
+        glm::vec3 y = glm::cross(z, x);
+        
+        glm::mat4 mat(1.0);
+        
+        mat[0][0] = x.x;
+        mat[0][1] = x.y;
+        mat[0][2] = x.z;
+        
+        mat[1][0] = y.x;
+        mat[1][1] = y.y;
+        mat[1][2] = y.z;
+        
+        mat[2][0] = z.x;
+        mat[2][1] = z.y;
+        mat[2][2] = z.z;
+        
+        return mat;
+    }
+    
+    
+    glm::mat4x4 Math::composeMatrix( glm::vec3 position, glm::quat quaternion, glm::vec3 scale ) {
         glm::mat4x4 mat = glm::scale( glm::mat4_cast( quaternion ), scale );
         mat[3][0] = position.x;
         mat[3][1] = position.y;
@@ -143,10 +178,13 @@ namespace three {
         return mat;
     }
     
-    void Math::decomposeMatrix( glm::mat4x4& mat, glm::vec3& position, glm::quat& quaternion, glm::vec3& scale ) {
-        float sx = glm::length( glm::vec3( mat[0][0], mat[0][1], mat[0][2] ) );
-        float sy = glm::length( glm::vec3( mat[1][0], mat[1][1], mat[1][2] ) );
-        float sz = glm::length( glm::vec3( mat[2][0], mat[2][1], mat[2][2] ) );
+    void Math::decomposeMatrix( glm::mat4& mat, glm::vec3& position, glm::quat& quaternion, glm::vec3& scale ) {
+//        glm::mat4 mat = glm::inverse( matrix );
+        
+        float sx = glm::length( glm::vec3( mat[0][0], mat[1][0], mat[2][0] ) );
+        float sy = glm::length( glm::vec3( mat[0][1], mat[1][1], mat[2][1] ) );
+        float sz = glm::length( glm::vec3( mat[0][2], mat[1][2], mat[2][2] ) );
+        
         
         float determinant = glm::determinant( mat );
         if( determinant < 0.0 )
@@ -161,15 +199,15 @@ namespace three {
         float inverse_sz = 1.0 / sz;
         
         mat[0][0] *= inverse_sx;
-        mat[0][1] *= inverse_sx;
-        mat[0][2] *= inverse_sx;
+        mat[1][0] *= inverse_sx;
+        mat[2][0] *= inverse_sx;
         
-        mat[1][0] *= inverse_sy;
+        mat[0][1] *= inverse_sy;
         mat[1][1] *= inverse_sy;
-        mat[1][2] *= inverse_sy;
+        mat[2][1] *= inverse_sy;
         
-        mat[2][0] *= inverse_sz;
-        mat[2][1] *= inverse_sz;
+        mat[0][2] *= inverse_sz;
+        mat[1][2] *= inverse_sz;
         mat[2][2] *= inverse_sz;
         
         quaternion = glm::quat_cast( mat );

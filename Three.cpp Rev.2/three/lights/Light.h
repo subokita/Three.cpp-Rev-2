@@ -16,9 +16,10 @@
 #include "Object3D.h"
 #include "RenderTarget.h"
 #include "CastsShadow.h"
+#include "HasShaderUniforms.h"
 
 namespace three {
-    class Light : public Object3D, public CastsShadow{
+    class Light : public Object3D, public CastsShadow {
     public:
         /** Constructors **/
         Light();
@@ -28,7 +29,6 @@ namespace three {
     public:
         Color color;
         float intensity;
-        ptr<Object3D> target;
         
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const Light& obj ) {

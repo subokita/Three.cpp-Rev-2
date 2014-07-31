@@ -29,8 +29,14 @@ namespace three {
     protected:
         ptr<VirtualLight> createVirtualLight( ptr<Light> light, int cascade );
         void updateVirtualLight( ptr<Light> light, int cascade );
+        void updateShadowCamera( ptr<Camera> camera, ptr<VirtualLight> light );
         
     public:
+        ptr<Texture> depthTexture;
+        ptr<RenderTarget> renderTarget;
+        
+        
+        std::vector<ptr<Light>> lights;
         glm::vec3 min;
         glm::vec3 max;
         glm::vec3 position;
@@ -39,6 +45,10 @@ namespace three {
         ptr<ShaderLib> depthShader;
         ptr<Frustum> frustum;
         glm::mat4 projectionScreen;
+        
+        /*FIXME: debug*/
+        GLuint quad_vertex_buffer;
+        ptr<ShaderLib> passthruShader;
     };
 }
 

@@ -7,6 +7,7 @@
 //
 
 #include "Fog.h"
+#include "three.h"
 
 using namespace std;
 
@@ -30,4 +31,10 @@ namespace three {
     {}
     
     Fog::~Fog(){}
+    
+    void Fog::setUniforms( ptr<Shader> shader, bool gamma ) {
+        shader->setUniform( "fog_color", color, 1.0, gamma );
+        shader->setUniform( "fog_near", near );
+        shader->setUniform( "fog_far",  far );
+    }
 }

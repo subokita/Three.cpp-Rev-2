@@ -25,23 +25,26 @@ namespace three {
         return shared_ptr<Scene>( new Scene() );
     }
     
+    
+    void Scene::update() {
+        directionalLights.update();
+        hemisphereLights.update();
+        pointLights.update();
+        spotLights.update();
+    }
+    
     void Scene::addLight( ptr<Light> light ) {
 
-        if( instance_of(light, AmbientLight) ) {
+        if( instance_of(light, AmbientLight) )
             this->ambientLight = downcast(light, AmbientLight);
-        }
-        else if( instance_of(light, DirectionalLight) ) {
-            directionalLights.push_back( downcast(light, DirectionalLight) );
-        }
-        else if( instance_of(light, PointLight) ) {
-            pointLights.push_back( downcast(light, PointLight) );
-        }
-        else if( instance_of(light, HemisphereLight) ) {
-            hemisphereLights.push_back( downcast(light, HemisphereLight) );
-        }
-        else if( instance_of(light, SpotLight) ) {
-            spotLights.push_back( downcast(light, SpotLight) );
-        }
+        else if( instance_of(light, DirectionalLight) )
+            directionalLights.add( light );
+        else if( instance_of(light, PointLight) )
+            pointLights.add( light );
+        else if( instance_of(light, HemisphereLight) )
+            hemisphereLights.add( light );
+        else if( instance_of(light, SpotLight) )
+            spotLights.add( light );
     }
     
     void Scene::add( ptr<Object3D> object ) {
@@ -53,5 +56,24 @@ namespace three {
     
     void Scene::add( ptr<Mesh> object ) {
         Object3D::add( object );
+    }
+    
+    
+    unsigned int Scene::getShadowCasterCount() {
+        return directionalLights.getShadowCasterCount() + hemisphereLights.getShadowCasterCount();
+    }
+    
+    void Scene::setUniforms( ptr<Shader> shader, bool gamma ) {
+        if( fog != nullptr)
+            fog->setUniforms(shader, gamma);
+        
+        if( ambientLight == nullptr )
+            ambientLight = AmbientLight::create(0x0);
+        
+        ambientLight->setUniforms       ( shader, gamma );
+        directionalLights.setUniforms   ( shader, gamma );
+        hemisphereLights.setUniforms    ( shader, gamma );
+        pointLights.setUniforms         ( shader, gamma );
+        spotLights.setUniforms          ( shader, gamma );
     }
 }

@@ -17,7 +17,9 @@ namespace three {
         return make_shared<SpecularMap>();
     }
     
-    SpecularMap::SpecularMap() {}
+    SpecularMap::SpecularMap():
+        Texture(TEXTURE_TYPE::TEXTURE_2D)
+    {}
     
     SpecularMap::~SpecularMap() {
         if( this->textureID != 0 )
@@ -27,7 +29,7 @@ namespace three {
     
     void SpecularMap::setUniforms(ptr<Shader> shader, bool gamma) {
         glActiveTexture( GL_TEXTURE2 );
-        glBindTexture( GL_TEXTURE_2D, this->textureID );
+        bind();
         shader->setUniform( "specular_map" , 2 );
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );

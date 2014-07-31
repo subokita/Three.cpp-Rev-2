@@ -30,130 +30,210 @@ namespace three {
     }
     
     void ShadowMapPlugin::init( ptr<Scene> scene, ptr<Camera> camera ) {
-//        renderTarget = RenderTarget::create(GL_FRAMEBUFFER, 0);
-        
         depthShader->compileShader();
-        Utils::printWithLineNumbers( depthShader->constructVertexShader() );
-        Utils::printWithLineNumbers( depthShader->constructFragmentShader() );
         
         descendants = scene->getDescendants();
-//        renderTarget->generateFrameBuffer();
+        
+        for( auto entry: scene->directionalLights.getCollection() ) {
+            ptr<DirectionalLight> light = entry.second;
+            if( !light->castShadow )
+                continue;
+            
+            if( light->shadowCascade ) {
+//                for(int i = 0; i < light->shadowCascadeArray.size(); i++ ) {
+//                    ptr<VirtualLight> virtual_light;
+//                    
+//                    if( light->shadowCascadeArray[i] == nullptr  ) {
+//                        virtual_light = createVirtualLight( light, i );
+//                        virtual_light->originalCamera = camera;
+//                        
+//                        ptr<Gyroscope> gyro = Gyroscope::create();
+//                        gyro->position = light->shadowCascadeOffset;
+//                        gyro->add   ( virtual_light );
+//                        gyro->add   ( virtual_light->target );
+//                        camera->add ( gyro );
+//                        
+//                        light->shadowCascadeArray[i] = virtual_light;
+//                    }
+//                    else {
+//                        virtual_light = light->shadowCascadeArray[i];
+//                    }
+//                    
+//                    updateVirtualLight(light, i );
+//                    lights.push_back( virtual_light );
+//                }
+            }
+            else {
+                lights.push_back( light );
+            }
+        }
+        
+        for( auto entry: scene->spotLights.getCollection() ) {
+            ptr<SpotLight> light = entry.second;
+            if( light->castShadow )
+                lights.push_back( light );
+        }
+        
+        
+//        for( ptr<HemisphereLight> light: scene->hemisphereLights ) {
+//            if( light->castShadow )
+//                lights.push_back( light );
+//        }
+//        for( ptr<PointLight> light: scene->pointLights ) {
+//            if( light->castShadow )
+//                lights.push_back( light );
+//        }
+        
+        for( ptr<Light> light: lights ) {
+            if( light->shadowMap == nullptr ) {
+                FILTER shadow_filter = FILTER::LINEAR;
+                if( shadowMapType == SHADOW_MAP::PCF_SOFT )
+                    shadow_filter = FILTER::NEAREST_FILTER;
+                
+                light->shadowMap     = RenderTarget::create(GL_FRAMEBUFFER, 0);
+                light->shadowTexture = ShadowTexture::create(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, static_cast<GLuint>(shadow_filter), static_cast<GLuint>(shadow_filter));
+                
+                light->shadowMapSize = glm::vec2(1600.0 * 3 / 4, 900.0 * 3 / 4);
+                
+                light->shadowMap->generateFrameBuffer();
+                light->shadowTexture->genTexture();
+
+                light->shadowMap->bind();
+                light->shadowTexture->bind();
+
+
+                glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, light->shadowMapSize.x, light->shadowMapSize.y, 0, GL_RGBA, GL_FLOAT, 0 );
+
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLuint>(shadow_filter) );
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<GLuint>(shadow_filter) );
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL );
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE );
+                
+                glGenerateMipmap(GL_TEXTURE_2D);
+                
+                glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, light->shadowTexture->textureID, 0 );
+                GLenum draw_buffers[1] = { GL_COLOR_ATTACHMENT0 };
+                glDrawBuffers(1, draw_buffers);
+            }
+            
+            if( light->shadowCamera == nullptr ) {
+                if( instance_of(light, SpotLight)) {
+                    light->shadowCamera = PerspectiveCamera::create( light->shadowCameraFOV, light->shadowMapSize.x / light->shadowMapSize.y, light->shadowCameraNear, light->shadowCameraFar );
+                }
+                else if( instance_of(light, DirectionalLight)) {
+                    light->shadowCamera = OrthographicCamera::create(-15.0, 15.0, 15.0, -15.0, -30.0, 30.0);
+                }
+                else {
+                    cerr << "Unsupported light type for shadow" << endl;
+                    continue;
+                }
+            }
+            
+            light->updateMatrixWorld(false);
+            auto shadow_map = light->shadowMap;
+            auto shadow_cam = light->shadowCamera;
+            
+            shadow_cam->position = light->position;
+            shadow_cam->lookAt( light->target->position );
+            
+            shadow_cam->updateMatrixWorld(false);
+            shadow_cam->matrixWorldInverse = glm::inverse( shadow_cam->matrixWorld );
+            light->shadowMatrix = shadow_cam->projection * shadow_cam->matrix;
+        }
+        
+        passthruShader = SHADERLIB_SIMPLE_PASS->clone();
+        passthruShader->compileShader();
+        
+        GLuint quad_vertex_array;
+        glGenVertexArrays( 1, &quad_vertex_array );
+        glBindVertexArray( quad_vertex_array );
+        
+        static const GLfloat quad_vertex_buffer_data[] = {
+            -1.0f, -1.0f, 0.0f,
+            1.0f, -1.0f, 0.0f,
+            -1.0f,  1.0f, 0.0f,
+            -1.0f,  1.0f, 0.0f,
+            1.0f, -1.0f, 0.0f,
+            1.0f,  1.0f, 0.0f,
+        };
+        
+        
+        glGenBuffers( 1, &quad_vertex_buffer );
+        glBindBuffer( GL_ARRAY_BUFFER, quad_vertex_buffer );
+        glBufferData( GL_ARRAY_BUFFER, sizeof( quad_vertex_buffer_data ), quad_vertex_buffer_data, GL_STATIC_DRAW );
     }
     
     void ShadowMapPlugin::setState( ptr<Scene> scene, ptr<Camera> camera ) {
         glClearColor(1.0, 1.0, 1.0, 1.0);
         glDisable( GL_BLEND );
         glEnable( GL_CULL_FACE );
-        glFrontFace( GL_CCW );
+        glCullFace( GL_BACK );
         
         glEnable( GL_DEPTH_TEST );
     }
+
     
     void ShadowMapPlugin::render( ptr<Scene> scene, ptr<Arcball> arcball, ptr<Camera> camera ) {
-        vector<ptr<Light>> lights;
-        for( ptr<DirectionalLight> light: scene->directionalLights ) {
-            if( !light->castShadow )
-                continue;
+        for( ptr<Light> light: lights ) {
+            light->updateMatrixWorld(false);
             
-            if( light->shadowCascade ) {
-                for(int i = 0; i < light->shadowCascadeArray.size(); i++ ) {
-                    ptr<VirtualLight> virtual_light;
-                    
-                    if( light->shadowCascadeArray[i] == nullptr  ) {
-                        virtual_light = createVirtualLight( light, i );
-                        virtual_light->originalCamera = camera;
-                        
-                    }
-                    else {
-                        virtual_light = light->shadowCascadeArray[i];
-                    }
-                    
-                    updateVirtualLight(light, i );
-                    lights.push_back( virtual_light );
-                }
-            }
-            else
-                lights.push_back( light );
-        }
-        
-        for( ptr<SpotLight> light: scene->spotLights ) {
-            if( light->castShadow )
-                lights.push_back( light );
-        }
-        for( ptr<HemisphereLight> light: scene->hemisphereLights ) {
-            if( light->castShadow )
-                lights.push_back( light );
-        }
-        for( ptr<PointLight> light: scene->pointLights ) {
-            if( light->castShadow )
-                lights.push_back( light );
-        }
-        
-        
-        for(ptr<Light> light: lights ) {
-            if( light->shadowMap == nullptr ) {
-                FILTER shadow_filter = FILTER::LINEAR;
-                
-                if( shadowMapType == SHADOW_MAP::PCF_SOFT )
-                    shadow_filter = FILTER::NEAREST_FILTER;
-                
-                light->shadowMap = RenderTarget::create( GL_FRAMEBUFFER, 0 );
-                light->shadowMap->minFilter = shadow_filter;
-                light->shadowMap->magFilter = shadow_filter;
-                light->shadowMap->format    = PIXEL_FORMAT::RGBA;
-                light->shadowMap->width     = light->shadowMapSize[0];
-                light->shadowMap->height    = light->shadowMapSize[1];
-            }
+            auto shadow_map = light->shadowMap;
+            auto shadow_cam = light->shadowCamera;
             
-            if( light->shadowCamera == nullptr ) {
-                if( instance_of(light, SpotLight)){
-                    light->shadowCamera = PerspectiveCamera::create(light->shadowCameraFOV, light->shadowMapSize[0] / light->shadowMapSize[1], light->shadowCameraNear, light->shadowCameraFar );
-                    
-                }
-                else if( instance_of(light, DirectionalLight)){
-                    light->shadowCamera = OrthographicCamera::create(light->shadowCameraLeft, light->shadowCameraRight, light->shadowCameraTop, light->shadowCameraBottom, light->shadowCameraNear, light->shadowCameraFar);
-                }
-                else {
-                    cerr << "Unsupported light type for rendering shadow" << endl;
+            shadow_cam->position = light->position * light->quaternion;
+            shadow_cam->lookAt( light->target->position );
+            
+            
+            shadow_cam->updateMatrixWorld(false);
+            shadow_cam->matrixWorldInverse = glm::inverse( shadow_cam->matrixWorld );
+            
+            glm::mat4 bias_matrix (
+                                   0.5, 0.0, 0.0, 0.0,
+                                   0.0, 0.5, 0.0, 0.0,
+                                   0.0, 0.0, 0.5, 0.0,
+                                   0.5, 0.5, 0.5, 1.0
+                                   );
+            light->shadowMatrix = bias_matrix * shadow_cam->projection * shadow_cam->matrixWorld;
+            light->shadowMap->bind();
+            
+            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+//            glViewport(0, 0, 1600.0 * 3 / 4, 900.0 * 3 / 4);
+            
+            depthShader->bind();
+            for( auto object: descendants ){
+                object->updateMatrixWorld(false);
+
+                if( instance_of(object, Mesh) == false )
                     continue;
-                }
-                
-                scene->add( light->shadowCamera );
-                
-                if( scene->autoUpdate )
-                    scene->updateMatrixWorld(false);
+
+                if( object->castShadow == false )
+                    continue;
+
+                depthShader->draw(light->shadowCamera, nullptr, object, false );                
             }
-            
-            if( light->shadowCameraVisible ) {
-                //FIXME: Do something with cam helper
-            }
-            
-//            if( light->isVirtual && ) {
-//                
-//            }
-            
-            
+            depthShader->unbind();
+
+//            glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+//            
+//            glViewport(0, 0, 256, 256);
+//            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+//            passthruShader->bind();
+//            
+//            glActiveTexture( GL_TEXTURE0 );
+//            glBindTexture( GL_TEXTURE_2D, light->shadowTexture->textureID );
+//            passthruShader->shader->setUniform("texture_sampler", 0);
+//            
+//            glEnableVertexAttribArray( 0 );
+//            glBindBuffer( GL_ARRAY_BUFFER, quad_vertex_buffer );
+//            glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0 );
+//            glDrawArrays( GL_TRIANGLES, 0, 6 );
+//            
+//            glDisableVertexAttribArray( 0 );
+//            passthruShader->unbind();
         }
         
-        exit(1);
-        
-        
-//        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
-//        
-//        renderTarget->bind();
-//        
-//        for( auto object: descendants ){
-//            object->updateMatrixWorld(false);
-//
-//            if( instance_of(object, Mesh) == false )
-//                continue;
-//
-//            depthShader->bind();
-//            {
-//                depthShader->draw(camera, arcball, object, false );
-//            }
-//            depthShader->unbind();
-//        }
     }
     
     
@@ -219,4 +299,42 @@ namespace three {
         virtual_light->pointsFrustum[6].z = far_z;
         virtual_light->pointsFrustum[7].z = far_z;
     }
+    
+    void ShadowMapPlugin::updateShadowCamera( ptr<Camera> camera, ptr<VirtualLight> light ) {
+        glm::vec3 min_vec( MAX_FLOAT, MAX_FLOAT, MAX_FLOAT );
+        glm::vec3 max_vec( MIN_FLOAT, MIN_FLOAT, MIN_FLOAT );
+        
+        ptr<OrthographicCamera> shadow_cam = downcast(light->shadowCamera, OrthographicCamera);
+        
+        for( int i = 0; i < 8; i++ ) {
+            glm::vec3 point = light->pointsWorld[i];
+            
+            point = Projector::unprojectVector(point, camera);
+            point = glm::vec3(shadow_cam->matrixWorldInverse * glm::vec4(point, 1.0));
+            
+            if( point.x < min_vec.x )
+                min_vec.x = point.x;
+            if( point.x > max_vec.x )
+                max_vec.x = point.x;
+            
+            
+            if( point.y < min_vec.y )
+                min_vec.y = point.y;
+            if( point.y > max_vec.y )
+                max_vec.y = point.y;
+            
+            
+            if( point.z < min_vec.z )
+                min_vec.z = point.z;
+            if( point.z > max_vec.z )
+                max_vec.z = point.z;
+        }
+        
+        shadow_cam->left  = min_vec.x;
+        shadow_cam->right = max_vec.x;
+        shadow_cam->bottom = min_vec.y;
+        shadow_cam->top    = max_vec.y;
+        shadow_cam->updateProjectionMatrix();
+    }
+    
 }

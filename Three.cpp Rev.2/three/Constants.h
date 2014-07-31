@@ -12,12 +12,12 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
+#include <OpenGL/gl3.h>
 #include <glm/glm.hpp>
 
 #define instance_of(var, type) ( std::dynamic_pointer_cast<type>(var) != nullptr )
-#define downcast(var, type) std::dynamic_pointer_cast<type>(var)
+#define downcast(var, type) (std::dynamic_pointer_cast<type>(var))
 #define toggle( var ) ( var = !var )
-#define enum_to_int( val ) (static_cast<GLint>(val))
 
 /* Use alias declaration instead of macro definitions */
 template<typename T>
@@ -34,16 +34,21 @@ static const glm::vec3 NULL_VEC3 = glm::vec3( MIN_FLOAT, MIN_FLOAT, MIN_FLOAT );
 // FIXME: should use enums
 namespace three {
     
+    enum class TEXTURE_TYPE {
+        TEXTURE_2D      = GL_TEXTURE_2D,
+        TEXTURE_CUBEMAP = GL_TEXTURE_CUBE_MAP,
+    };
+    
     enum class CULL {
-        NONE            = 0,
-        BACK            = 1,
-        FRONT           = 2,
-        FRONT_AND_BACK  = 3
+        NONE            = GL_NONE,
+        BACK            = GL_BACK,
+        FRONT           = GL_FRONT,
+        FRONT_AND_BACK  = GL_FRONT_AND_BACK,
     };
     
     enum class FRONT_FACE {
-        CW  = 0,
-        CCW = 1,
+        CW  = GL_CW,
+        CCW = GL_CCW,
     };
     
     enum class SHADOW_MAP {
@@ -119,12 +124,12 @@ namespace three {
     
     // Filters
     enum class FILTER {
-        NEAREST_FILTER          = 1003,
-        NEAREST_MIPMAP_NEAREST  = 1004,
-        NEAREST_MIPMAP_LINEAR   = 1005,
-        LINEAR                  = 1006,
-        LINEAR_MIPMAP_NEAREST   = 1007,
-        LINEAR_MIPMAP_LINEAR    = 1008,
+        NEAREST_FILTER          = GL_NEAREST,
+        NEAREST_MIPMAP_NEAREST  = GL_NEAREST_MIPMAP_NEAREST,
+        NEAREST_MIPMAP_LINEAR   = GL_NEAREST_MIPMAP_LINEAR,
+        LINEAR                  = GL_LINEAR,
+        LINEAR_MIPMAP_NEAREST   = GL_LINEAR_MIPMAP_NEAREST,
+        LINEAR_MIPMAP_LINEAR    = GL_LINEAR_MIPMAP_LINEAR,
     };
     
     // Data types

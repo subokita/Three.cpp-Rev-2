@@ -17,7 +17,7 @@ namespace three {
     }
     
     EnvMap::EnvMap():
-        Texture( GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR )
+        Texture( TEXTURE_TYPE::TEXTURE_CUBEMAP, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR )
     {}
     
     EnvMap::~EnvMap(){

@@ -72,7 +72,7 @@ namespace three {
         GLFWwindow* window;
         
         
-        std::map<std::string, ptr<ShaderLib>> shaders;
+        std::map<std::string, ptr<ShaderLib>> shaderLibs;
         std::vector<ptr<RenderPlugin>> preRenderPlugins;
         std::vector<ptr<RenderPlugin>> postRenderPlugins;
         

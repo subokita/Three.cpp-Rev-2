@@ -7,6 +7,7 @@
 //
 
 #include "FogExp2.h"
+#include "three.h"
 
 using namespace std;
 namespace three {
@@ -29,4 +30,10 @@ namespace three {
     {}
     
     FogExp2::~FogExp2(){}
+    
+    
+    void FogExp2::setUniforms( ptr<Shader> shader, bool gamma ) {
+        shader->setUniform( "fog_color", color, 1.0, gamma );
+        shader->setUniform( "fog_density", distance );
+    }
 }

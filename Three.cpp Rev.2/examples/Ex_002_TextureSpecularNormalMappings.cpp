@@ -65,6 +65,16 @@ namespace three {
         scene->add( cylinder );
         scene->add( sphere_2 );
         
+        
+        auto plane = Mesh::create( PlaneGeometry::create(20.0f),
+                                  PhongMaterial::create(0x777777, 0x777777, 0x0, 0x999999, 30) );
+        plane->name = "plane";
+        plane->rotateX(-90.0f);
+        plane->translate(0.0, -1.0, 0.0);
+        plane->receiveShadow = true;
+        scene->add( plane );
+        
+        
         /* Create directional light */
         auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3(3.0, 1.0, 3.0) );
         scene->add( dir_light );

@@ -25,6 +25,8 @@
 #include "Face3.h"
 #include "Geometry.h"
 #include "Object3D.h"
+#include "Gyroscope.h"
+#include "Projector.h"
 
 /* ./three/lights */
 #include "Light.h"
@@ -35,6 +37,11 @@
 #include "SpotLight.h"
 #include "CastsShadow.h"
 #include "VirtualLight.h"
+#include "DirectionalLightsArray.h"
+#include "HemisphereLightsArray.h"
+#include "PointLightsArray.h"
+#include "SpotLightsArray.h"
+
 
 /* ./three/materials */
 #include "Material.h"
@@ -80,7 +87,7 @@
 #include "NormalMap.h"
 #include "SpecularMap.h"
 #include "TextureUtils.h"
-
+#include "ShadowTexture.h"
 
 /* ./three/renderers/scenes */
 #include "IFog.h"

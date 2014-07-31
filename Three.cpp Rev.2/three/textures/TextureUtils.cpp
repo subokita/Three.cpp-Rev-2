@@ -33,8 +33,8 @@ namespace three {
         
         ptr<EnvMap> map = EnvMap::create();
         
-        glGenTextures(1, &map->textureID);
-        glBindTexture( GL_TEXTURE_CUBE_MAP, map->textureID );
+        map->genTexture();
+        map->bind();
         
         const std::string filenames[6] = {
             neg_x, neg_y, neg_z, pos_x, pos_y, pos_z
@@ -85,9 +85,10 @@ namespace three {
         for( int i = 0; i < size; i++ ){
             speculars[i] = static_cast<float>(data[i]) / 255.0;
         }
+
+        map->genTexture();
+        map->bind();
         
-        glGenTextures(1, &map->textureID);
-        glBindTexture( GL_TEXTURE_2D, map->textureID );
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, map->width, map->height, 0, GL_RED, GL_FLOAT, &speculars[0]);
         
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -117,9 +118,10 @@ namespace three {
             normals[j].y = static_cast<int>(data[i+1]) / 255.0;
             normals[j].z = static_cast<int>(data[i+2]) / 255.0;
         }
+
+        map->genTexture();
+        map->bind();
         
-        glGenTextures(1, &map->textureID);
-        glBindTexture( GL_TEXTURE_2D, map->textureID );
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, map->width, map->height, 0, GL_BGR, GL_FLOAT, &normals[0]);
         
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -136,9 +138,9 @@ namespace three {
         ptr<Texture> texture = Texture::create();
         texture->width  = image->getWidth();
         texture->height = image->getHeight();
-        
-        glGenTextures(1, &texture->textureID);
-        glBindTexture( GL_TEXTURE_2D, texture->textureID );
+
+        texture->genTexture();
+        texture->bind();
         
         switch( image->getColorType() ) {
             case FIC_RGB:
@@ -168,8 +170,8 @@ namespace three {
         texture->width  = 1;
         texture->height = 1;
 
-        glGenTextures(1, &texture->textureID);
-        glBindTexture( GL_TEXTURE_2D, texture->textureID );
+        texture->genTexture();
+        texture->bind();
         
         vector<GLubyte> empty_data(3, 255);
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, texture->width, texture->height, 0, GL_BGR, GL_UNSIGNED_BYTE, &empty_data[0]);

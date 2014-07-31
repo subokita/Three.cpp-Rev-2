@@ -13,12 +13,13 @@ using namespace std;
 
 namespace three {
     
-    ptr<Texture> Texture::create() {
-        return make_shared<Texture>();
+    ptr<Texture> Texture::create(TEXTURE_TYPE type) {
+        return make_shared<Texture>(Texture(type));
     }
 
-    Texture::Texture() :
+    Texture::Texture(TEXTURE_TYPE type) :
         HasID    ( textureIDCount++ ),
+        type     ( type ),
         textureID( 0 ),
         width    ( 0 ),
         height   ( 0 ),
@@ -30,8 +31,9 @@ namespace three {
     {}
     
     
-    Texture::Texture(GLuint wrap_s, GLuint wrap_t, GLuint wrap_r, GLuint mag_filter, GLuint min_filter) :
+    Texture::Texture(TEXTURE_TYPE type, GLuint wrap_s, GLuint wrap_t, GLuint wrap_r, GLuint mag_filter, GLuint min_filter) :
         HasID    ( textureIDCount++ ),
+        type     ( type ),
         textureID( 0 ),
         width    ( 0 ),
         height   ( 0 ),
@@ -47,9 +49,19 @@ namespace three {
             glDeleteTextures(1, &this->textureID );
     }
     
+    
+    const GLuint Texture::genTexture() {
+        glGenTextures(1, &this->textureID);
+        return this->textureID;
+    }
+    
+    void Texture::bind() {
+        glBindTexture(static_cast<GLuint>(this->type) , this->textureID);
+    }
+    
     void Texture::setUniforms(ptr<Shader> shader, bool gamma) {
         glActiveTexture( GL_TEXTURE0 );
-        glBindTexture( GL_TEXTURE_2D, this->textureID );
+        bind();
         shader->setUniform("map", 0);
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );

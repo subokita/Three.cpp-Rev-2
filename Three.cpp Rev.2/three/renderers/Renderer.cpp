@@ -117,13 +117,12 @@ namespace three {
         };
         
         scrollCallbackHandler = []( GLFWwindow *window, double x, double y ) {
-//            glm::vec3 pos = instance->camera->position * instance->camera->quaternion * instance->camera->scale;
-//            glm::vec3 dir = glm::normalize(instance->camera->target + pos) * static_cast<float>(y);
-//            
-//            if( glm::length((pos - dir)) == 0.0 )
-//                return;
-//            
-//            instance->camera->position = (pos - dir);
+            auto cam = instance->camera;
+            glm::vec3 dir = glm::normalize(cam->target->position - cam->position) * static_cast<float>(-y);
+            if( glm::length((cam->position - dir)) == 0.0 )
+                return;
+
+            cam->matrix = glm::translate(cam->matrix, dir);
         };
         
         cursorCallbackHandler = []( GLFWwindow *window, double x, double y ) {
@@ -153,8 +152,10 @@ namespace three {
         this->scene = scene;
         this->camera = camera;
         
+        this->scene->update();
         
         vector<ptr<Object3D>> descendants = scene->getDescendants();
+        
         for( auto object: descendants ) {
             if( instance_of(object, Mesh)) {
                 ptr<Mesh> mesh = downcast(object, Mesh);
@@ -162,55 +163,45 @@ namespace three {
                 if( mesh->geometry != nullptr && !mesh->glBuffersInitialized )
                     mesh->initGLBuffers();
                 
-                ptr<ShaderLib> shader = ShaderLib::create(mesh);
-                shader->addDefinitions( scene, mesh, gammaInput, gammaOutput );
-                mesh->shaderID = shader->getID();
+                ptr<ShaderLib> shader_lib = ShaderLib::create(mesh);
+                shader_lib->addDefinitions( scene, mesh, gammaInput, gammaOutput );
+                mesh->shaderID = shader_lib->getID();
                 
-                if( shaders.count( mesh->shaderID ) == 0) {
-                    shaders[mesh->shaderID] = shader;
-                    shader->compileShader();
+                if( shaderLibs.count( mesh->shaderID ) == 0) {
+                    shaderLibs[mesh->shaderID] = shader_lib;
+                    shader_lib->compileShader();
                 }
             }
         }
         
-//        this->preRenderPlugins.push_back( ShadowMapPlugin::create() );
+        this->preRenderPlugins.push_back( ShadowMapPlugin::create() );
         
         for( ptr<RenderPlugin> pre_render_plugin: preRenderPlugins )
             pre_render_plugin->init(scene, camera);
 
-        
         while( !glfwWindowShouldClose( window )) {
-            
-            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
-            
-            setDefaultGLState();
-            camera->updateMatrix();
-            
             renderPlugins( preRenderPlugins, scene, camera );
-            
-            
+
             renderTarget->bind();
-            
+
+            setDefaultGLState();
+            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
             for( auto object: descendants ){
                 object->updateMatrixWorld(false);
                 
                 if( instance_of(object, Mesh) == false )
                     continue;
                 
-                ptr<ShaderLib> shader = shaders[object->shaderID];
-                shader->bind();
+                ptr<ShaderLib> shader_lib = shaderLibs[object->shaderID];
+                shader_lib->bind();
                 {
-                    shader->setFog              ( scene->fog, gammaInput );
-                    shader->setAmbientLights    ( scene->ambientLight, gammaInput );
-                    shader->setHemisphereLights ( scene->hemisphereLights, gammaInput );
-                    shader->setDirectionalLights( scene->directionalLights, gammaInput );
-                    shader->setPointLights      ( scene->pointLights, gammaInput );
-                    shader->setSpotLights       ( scene->spotLights, gammaInput);
-                
-                    shader->draw(camera, arcball, object, gammaInput );
+                    scene->setUniforms( shader_lib->getShader(), gammaInput );
+                    shader_lib->draw(camera, arcball, object, gammaInput );
                 }
-                shader->unbind();
+                shader_lib->unbind();
             }
+
             
             renderPlugins( postRenderPlugins, scene, camera );
             

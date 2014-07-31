@@ -7,6 +7,7 @@
 //
 
 #include "SpotLight.h"
+#include "three.h"
 
 using namespace std;
 
@@ -37,4 +38,5 @@ namespace three {
     }
     
     SpotLight::~SpotLight(){}
+    
 }

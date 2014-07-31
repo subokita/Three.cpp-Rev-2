@@ -275,7 +275,7 @@ namespace three {
     }
     
     
-    void Ray::applyMatrix( glm::mat4 mat ) {
+    void Ray::applyMatrix( glm::mat4& mat ) {
         direction   = glm::vec3(mat * glm::vec4(direction + origin, 0.0));
         origin      = glm::vec3( mat * glm::vec4(origin, 1.0) );
         direction   = glm::normalize(direction - origin);

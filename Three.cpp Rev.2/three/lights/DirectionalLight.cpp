@@ -7,6 +7,7 @@
 //
 
 #include "DirectionalLight.h"
+#include "three.h"
 
 using namespace std;
 namespace three {
@@ -20,14 +21,18 @@ namespace three {
     }
     
     DirectionalLight::DirectionalLight()
-    {}
+    {
+        setTarget(glm::vec3(0.0));
+    }
     
     DirectionalLight::DirectionalLight( Color color, float intensity, glm::vec3 position ) :
         Light( color, intensity )
     {
         this->position  = position;
+        setTarget(glm::vec3(0.0));
     }
     
     DirectionalLight::~DirectionalLight(){
     }
+    
 }

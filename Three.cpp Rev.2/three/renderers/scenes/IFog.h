@@ -12,9 +12,10 @@
 #include <iostream>
 #include "Color.h"
 #include "Constants.h"
+#include "HasShaderUniforms.h"
 
 namespace three {
-    class IFog {
+    class IFog: public HasShaderUniforms {
     public:
         IFog();
         IFog(Color color);

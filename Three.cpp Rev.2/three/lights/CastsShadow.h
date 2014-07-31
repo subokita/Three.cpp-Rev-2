@@ -24,10 +24,14 @@ namespace three {
     public:
         ptr<Camera>         shadowCamera;
         ptr<RenderTarget>   shadowMap;
+        ptr<ShadowTexture>  shadowTexture;
+        
         glm::mat4           shadowMatrix;
         glm::vec2           shadowMapSize;
         bool                shadowCascade;
         bool                shadowCameraVisible;
+        
+        glm::vec3 shadowCascadeOffset;
         
         std::vector<ptr<VirtualLight>> shadowCascadeArray;
         std::vector<float> shadowCascadeBias;

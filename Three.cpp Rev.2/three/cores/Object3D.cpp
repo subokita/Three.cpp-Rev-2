@@ -38,6 +38,11 @@ namespace three {
     Object3D::~Object3D(){    
     }
     
+    void Object3D::setTarget( glm::vec3 target_pos ) {
+        if( target == nullptr )
+            target = Object3D::create();
+        target->position = target_pos;
+    }
     
     ptr<Box3> Object3D::computeBoundingBox() {
         ptr<Box3> box = Box3::create();
@@ -85,17 +90,18 @@ namespace three {
         this->matrixWorldNeedsUpdate = true;
     }
     
-    
     void Object3D::updateMatrixWorld(bool force) {
         if( this->matrixAutoUpdate )
             this->updateMatrix();
         
         if( this-matrixWorldNeedsUpdate || force ) {
-            if( this->parent == nullptr )
+            if( this->parent == nullptr ) {
                 this->matrixWorld = this->matrix;
-            else
+            }
+            else {
                 this->matrixWorld = this->parent->matrixWorld * this->matrix;
-            
+            }
+
             matrixWorldNeedsUpdate = false;
             force = true;
         }

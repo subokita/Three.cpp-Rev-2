@@ -13,9 +13,11 @@
 #include "Light.h"
 
 namespace three {
-    class AmbientLight: public Light {
+    class AmbientLight: public Light, public HasShaderUniforms {
     public:
         static ptr<AmbientLight> create(Color color);
+        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
+        
         ~AmbientLight();
         
     protected:

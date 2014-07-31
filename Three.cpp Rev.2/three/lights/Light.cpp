@@ -14,14 +14,12 @@ using namespace std;
 namespace three {
     Light::Light():
         color    ( 0xFFFFFF ),
-        intensity( 1.0 ),
-        target( Object3D::create() )
+        intensity( 1.0 )
     {}
     
     Light::Light( const Color color, const float intensity ) :
         color    (color ),
-        intensity(intensity),
-        target( Object3D::create() )
+        intensity(intensity)
     {}
     
     Light::~Light(){}

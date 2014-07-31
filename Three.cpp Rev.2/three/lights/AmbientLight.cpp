@@ -7,7 +7,7 @@
 //
 
 #include "AmbientLight.h"
-
+#include "three.h"
 
 using namespace std;
 namespace three {
@@ -25,4 +25,8 @@ namespace three {
     {}
     
     AmbientLight::~AmbientLight(){}
+    
+    void AmbientLight::setUniforms( ptr<Shader> shader, bool gamma ) {
+        shader->setUniform( "ambient_light_color", color, 1.0, gamma );
+    }
 }

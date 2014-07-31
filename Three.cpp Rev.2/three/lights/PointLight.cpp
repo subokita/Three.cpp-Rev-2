@@ -7,6 +7,7 @@
 //
 
 #include "PointLight.h"
+#include "three.h"
 
 using namespace std;
 
@@ -28,4 +29,8 @@ namespace three {
     }
     
     PointLight::~PointLight(){}
+    
+    const float PointLight::getDistance() {
+        return distance;
+    }
 }

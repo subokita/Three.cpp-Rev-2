@@ -20,6 +20,8 @@ namespace three {
         static ptr<PointLight> create( const glm::vec3 position, const Color color, const float intensity, const float distance );
         ~PointLight();
         
+        const float getDistance();
+        
     protected:
         /** Constructors **/
         PointLight();

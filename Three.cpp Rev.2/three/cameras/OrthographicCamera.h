@@ -22,7 +22,7 @@ namespace three {
         
         virtual void updateProjectionMatrix() override;
         
-    protected:
+    public:
         OrthographicCamera();
         OrthographicCamera( float left, float right, float top, float bottom, float near, float far );
         

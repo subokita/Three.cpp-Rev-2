@@ -20,6 +20,8 @@ namespace three {
         static ptr<HemisphereLight> create(const Color sky_color, const Color ground_color, const float intensity);
         ~HemisphereLight();
         
+        const Color& getGroundColor();
+        
     protected:
         HemisphereLight();
         HemisphereLight(const Color sky_color, const Color ground_color, const float intensity);

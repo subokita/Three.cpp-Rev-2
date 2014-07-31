@@ -7,6 +7,7 @@
 //
 
 #include "HemisphereLight.h"
+#include "three.h"
 
 using namespace std;
 namespace three {
@@ -27,4 +28,8 @@ namespace three {
     }
     
     HemisphereLight::~HemisphereLight(){}
+    
+    const Color& HemisphereLight::getGroundColor() {
+        return groundColor;
+    }
 }

@@ -36,7 +36,7 @@ namespace three {
         glm::vec3 intersectsPlaneAt( ptr<Plane> plane );
         glm::vec3 intersectsBoxAt( ptr<Box3> box );
         
-        void applyMatrix( glm::mat4 mat );
+        void applyMatrix( glm::mat4& mat );
         bool equals(const Ray& other);
         
         glm::vec3 intersectsTriangleAt( ptr<Triangle> triangle, bool backface_cull = true );
