@@ -42,6 +42,7 @@ namespace three {
         static const string simplePassFragment = Utils::join({
             "float unpacked = unpackDepth( texture( texture_sampler, uv ) );",
             "color = vec4(unpacked, unpacked, unpacked, 1.0);",
+//            "color = texture(texture_sampler, uv);",
         }, "\t");
         
         
@@ -63,7 +64,6 @@ namespace three {
         
         static const string depthRGBAFragment = Utils::join({
             "fragment_depth = packDepth(gl_FragCoord.z);",
-//            "fragment_depth = vec4(gl_FragCoord.z, gl_FragCoord.z, gl_FragCoord.z, 1.0);",
         }, "\t");
         
         static const string cubeMapVertexParams = Utils::join({
@@ -106,18 +106,20 @@ namespace three {
         
         static const string shadowVertexParams = Utils::join({
             "#ifdef USE_SHADOWMAP",
-                "out vec4 shadow_coord_c;",
-                "uniform mat4 shadow_mat;",
+                "out vec4 shadow_coord_c[MAX_SHADOWS];",
+                "uniform mat4 shadow_mat[MAX_SHADOWS];",
             "#endif",
         });
         
         static const string shadowFragmentParams = Utils::join({
             "#ifdef USE_SHADOWMAP",
-                "in vec4 shadow_coord_c;",
-                "uniform float shadow_bias;",
-                "uniform float shadow_darkness;",
-                "uniform sampler2D shadow_map;",
-                "uniform vec2 shadow_map_size;",
+                "in vec4 shadow_coord_c         [MAX_SHADOWS];",
+            
+                "uniform float shadow_bias      [MAX_SHADOWS];",
+                "uniform float shadow_darkness  [MAX_SHADOWS];",
+                "uniform vec2 shadow_map_size   [MAX_SHADOWS];",
+            
+                "uniform sampler2D shadow_map   [MAX_SHADOWS];",
             
                 "float unpackDepth( const in vec4 rgba_depth ) {",
                     "const vec4 bit_shift = vec4( 1.0 / ( 256.0 * 256.0 * 256.0 ), 1.0 / ( 256.0 * 256.0 ), 1.0 / 256.0, 1.0 );",
@@ -130,82 +132,131 @@ namespace three {
         
         static const string shadowVertex = Utils::join({
             "#ifdef USE_SHADOWMAP",
-                "shadow_coord_c = shadow_mat * vec4(vertex_pos_w, 1.0);",
+                "for( int i = 0; i < MAX_SHADOWS; i++ ) {",
+                    "shadow_coord_c[i] = shadow_mat[i] * vec4(vertex_pos_w, 1.0);",
+                "}",
             "#endif",
         });
         
         static const string shadowFragment = Utils::join({
             "#ifdef USE_SHADOWMAP",
-                "vec3 frustum_colors[3];",
-                "frustum_colors[0] = vec3(1.0, 0.5, 0.0);",
-                "frustum_colors[1] = vec3(0.0, 1.0, 0.8);",
-                "frustum_colors[2] = vec3(0.0, 0.5, 1.0);",
-            
-            
                 "float f_depth;",
                 "vec3 shadow_color = vec3(1.0);",
+
+                "for (int i = 0; i < MAX_SHADOWS; i++ ) {",
+                    "vec3 shadow_coord = shadow_coord_c[i].xyz / shadow_coord_c[i].w;",
+                    "bvec4 in_frustum_vec = bvec4(shadow_coord.x >= 0.0, shadow_coord.x <= 1.0, shadow_coord.y >= 0.0, shadow_coord.y <= 1.0 );",
             
-                "vec3 shadow_coord = shadow_coord_c.xyz / shadow_coord_c.w;",
-                "bvec4 in_frustum_vec = bvec4(shadow_coord.x >= 0.0, shadow_coord.x <= 1.0, shadow_coord.y >= 0.0, shadow_coord.y <= 1.0 );",
-                "bool in_frustum = all( in_frustum_vec );",
-                "bvec2 frustum_test_vec = bvec2( in_frustum, shadow_coord.z <= 1.0 );",
-                "bool frustum_test = all( frustum_test_vec );",
+                    "bool in_frustum        = all( in_frustum_vec );",
+                    "bvec2 frustum_test_vec = bvec2( in_frustum, shadow_coord.z <= 1.0 );",
+                    "bool frustum_test      = all( frustum_test_vec );",
             
-                "if( frustum_test ) {",
-                    "shadow_coord.z += shadow_bias;",
-                    "#ifdef SHADOW_TYPE_PCF_SOFT",
-                        "float shadow = 0.0;",
-                        "const float shadow_delta = 1.0 / 9.0;",
-                        "float x_offset = 1.0 / shadow_map_size.x;",
-                        "float y_offset = 1.0 / shadow_map_size.y;",
-                        "float dx0 = -1.0 * x_offset;",
-                        "float dy0 = -1.0 * y_offset;",
-                        "float dx1 =  1.0 * x_offset;",
-                        "float dy1 =  1.0 * y_offset;",
-                        "mat3 shadow_kernel;",
-                        "mat3 depth_kernel;",
-                
-                        "depth_kernel[0][0] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx0, dx0) ));",
-                        "depth_kernel[0][1] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx0, 0.0) ));",
-                        "depth_kernel[0][2] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx0, dy1) ));",
-                        
-                        "depth_kernel[1][0] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(0.0, dy0) ));",
-                        "depth_kernel[1][1] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(0.0, 0.0) ));",
-                        "depth_kernel[1][2] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx0, dy1) ));",
-                        
-                        "depth_kernel[2][0] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx1, dy0) ));",
-                        "depth_kernel[2][1] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx1, 0.0) ));",
-                        "depth_kernel[2][2] = unpackDepth( texture( shadow_map, shadow_coord.xy + vec2(dx1, dy1) ));",
-                
-                        "vec3 shadow_z = vec3(shadow_coord.z);",
-                        "shadow_kernel[0] = vec3( lessThan(depth_kernel[0], shadow_z) );",
-                        "shadow_kernel[0] *= vec3(0.25);",
-                
-                        "shadow_kernel[1] = vec3( lessThan(depth_kernel[1], shadow_z) );",
-                        "shadow_kernel[1] *= vec3(0.25);",
-                
-                        "shadow_kernel[2] = vec3( lessThan(depth_kernel[2], shadow_z) );",
-                        "shadow_kernel[2] *= vec3(0.25);",
-                
-                        "vec2 fraction_coord = 1.0 - fract(shadow_coord.xy * shadow_map_size.xy );",
-                        "shadow_kernel[0] = mix( shadow_kernel[1], shadow_kernel[0], fraction_coord.x );",
-                        "shadow_kernel[1] = mix( shadow_kernel[2], shadow_kernel[1], fraction_coord.x );",
-                
-                        "vec4 shadow_values;",
-                        "shadow_values.x = mix( shadow_kernel[0][1], shadow_kernel[0][0], fraction_coord.y );",
-                        "shadow_values.y = mix( shadow_kernel[0][2], shadow_kernel[0][1], fraction_coord.y );",
-                        "shadow_values.z = mix( shadow_kernel[1][1], shadow_kernel[1][0], fraction_coord.y );",
-                        "shadow_values.w = mix( shadow_kernel[1][2], shadow_kernel[1][1], fraction_coord.y );",
-                
-                        "shadow = dot(shadow_values, vec4(1.0));",
-                        "shadow_color = shadow_color * vec3( (1.0 - shadow_darkness * shadow) );",
-                    "#else",
-                        "vec4 rgba_depth = texture( shadow_map, shadow_coord.xy );",
-                        "f_depth = unpackDepth( rgba_depth );",
-                        "if( f_depth < shadow_coord.z ) {",
-                            "shadow_color = shadow_color * vec3( 1.0 - shadow_darkness );",
-                        "}",
-                    "#endif",
+                    "if( frustum_test ) {",
+                        "shadow_coord.z += shadow_bias[i];",
+                        "#if defined( SHADOW_TYPE_PCF )",
+                            "float shadow             = 0.0;",
+                            "const float shadow_delta = 1.0 / 9.0;",
+                            "float x_offset           = 1.0 / shadow_map_size[i].x;",
+                            "float y_offset           = 1.0 / shadow_map_size[i].y;",
+                            "float dx0                = -1.25 * x_offset;",
+                            "float dy0                = -1.25 * y_offset;",
+                            "float dx1                =  1.25 * x_offset;",
+                            "float dy1                =  1.25 * y_offset;",
+            
+                            "f_depth = unpackDepth(texture( shadow_map[i], shadow_coord.xy + vec2(dx0, dy0)) );",
+                            "if( f_depth < shadow_coord.z )",
+                                "shadow += shadow_delta;",
+            
+                            "f_depth = unpackDepth(texture( shadow_map[i], shadow_coord.xy + vec2(0.0, dy0)) );",
+                            "if( f_depth < shadow_coord.z )",
+                                "shadow += shadow_delta;",
+            
+                            "f_depth = unpackDepth(texture( shadow_map[i], shadow_coord.xy + vec2(dx1, dy0)) );",
+                            "if( f_depth < shadow_coord.z )",
+                                "shadow += shadow_delta;",
+            
+                            "f_depth = unpackDepth(texture( shadow_map[i], shadow_coord.xy + vec2(dx0, 0.0)) );",
+                            "if( f_depth < shadow_coord.z )",
+                                "shadow += shadow_delta;",
+            
+                            "f_depth = unpackDepth(texture( shadow_map[i], shadow_coord.xy + vec2(0.0, 0.0)) );",
+                            "if( f_depth < shadow_coord.z )",
+                                "shadow += shadow_delta;",
+            
+                            "f_depth = unpackDepth(texture( shadow_map[i], shadow_coord.xy + vec2(dx1, 0.0)) );",
+                            "if( f_depth < shadow_coord.z )",
+                                "shadow += shadow_delta;",
+                            
+                            "f_depth = unpackDepth(texture( shadow_map[i], shadow_coord.xy + vec2(dx0, dy1)) );",
+                            "if( f_depth < shadow_coord.z )",
+                                "shadow += shadow_delta;",
+            
+                            "f_depth = unpackDepth(texture( shadow_map[i], shadow_coord.xy + vec2(0.0, dy1)) );",
+                            "if( f_depth < shadow_coord.z )",
+                                "shadow += shadow_delta;",
+            
+                            "f_depth = unpackDepth(texture( shadow_map[i], shadow_coord.xy + vec2(dx1, dy1)) );",
+                            "if( f_depth < shadow_coord.z )",
+                                "shadow += shadow_delta;",
+            
+                            "shadow_color = shadow_color * vec3( 1.0 - shadow_darkness[i] * shadow );",
+            
+                        "#elif defined( SHADOW_TYPE_PCF_SOFT )",
+                            "float shadow             = 0.0;",
+                            "const float shadow_delta = 1.0 / 9.0;",
+                            "float x_offset           = 1.0 / shadow_map_size[i].x;",
+                            "float y_offset           = 1.0 / shadow_map_size[i].y;",
+                            "float dx0                = -1.0 * x_offset;",
+                            "float dy0                = -1.0 * y_offset;",
+                            "float dx1                =  1.0 * x_offset;",
+                            "float dy1                =  1.0 * y_offset;",
+                            "mat3 shadow_kernel;",
+                            "mat3 depth_kernel;",
+
+                            "depth_kernel[0][0] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(dx0, dx0) ));",
+                            "depth_kernel[0][1] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(dx0, 0.0) ));",
+                            "depth_kernel[0][2] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(dx0, dy1) ));",
+
+                            "depth_kernel[1][0] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(0.0, dy0) ));",
+                            "depth_kernel[1][1] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(0.0, 0.0) ));",
+                            "depth_kernel[1][2] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(dx0, dy1) ));",
+
+                            "depth_kernel[2][0] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(dx1, dy0) ));",
+                            "depth_kernel[2][1] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(dx1, 0.0) ));",
+                            "depth_kernel[2][2] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(dx1, dy1) ));",
+
+                            "vec3 shadow_z = vec3(shadow_coord.z);",
+                            "shadow_kernel[0] = vec3( lessThan(depth_kernel[0], shadow_z) );",
+                            "shadow_kernel[0] *= vec3(0.25);",
+
+                            "shadow_kernel[1] = vec3( lessThan(depth_kernel[1], shadow_z) );",
+                            "shadow_kernel[1] *= vec3(0.25);",
+
+                            "shadow_kernel[2] = vec3( lessThan(depth_kernel[2], shadow_z) );",
+                            "shadow_kernel[2] *= vec3(0.25);",
+
+                            "vec2 fraction_coord = 1.0 - fract(shadow_coord.xy * shadow_map_size[i].xy );",
+                            "shadow_kernel[0] = mix( shadow_kernel[1], shadow_kernel[0], fraction_coord.x );",
+                            "shadow_kernel[1] = mix( shadow_kernel[2], shadow_kernel[1], fraction_coord.x );",
+
+                            "vec4 shadow_values;",
+                            "shadow_values.x = mix( shadow_kernel[0][1], shadow_kernel[0][0], fraction_coord.y );",
+                            "shadow_values.y = mix( shadow_kernel[0][2], shadow_kernel[0][1], fraction_coord.y );",
+                            "shadow_values.z = mix( shadow_kernel[1][1], shadow_kernel[1][0], fraction_coord.y );",
+                            "shadow_values.w = mix( shadow_kernel[1][2], shadow_kernel[1][1], fraction_coord.y );",
+
+                            "shadow = dot(shadow_values, vec4(1.0));",
+                            "shadow_color = shadow_color * vec3( (1.0 - shadow_darkness[i] * shadow) );",
+            
+            
+                        "#else",
+                            "vec4 rgba_depth = texture( shadow_map[i], shadow_coord.xy );",
+                            "f_depth = unpackDepth( rgba_depth );",
+                            "if( f_depth < shadow_coord.z ) {",
+                                "shadow_color = shadow_color * vec3( 1.0 - shadow_darkness[i] );",
+                            "}",
+                        "#endif",
+                    "}",
                 "}",
             
                 "#ifdef GAMMA_OUTPUT",
@@ -281,7 +332,7 @@ namespace three {
                 "#else",
                     "reflect_vec = reflect_c;",
                 "#endif",
-            
+
                 "#ifdef DOUBLE_SIDED",
                     "float flip_normal = (-1.0 + 2.0 * float( gl_FrontFacing ) );",
                     "vec4 cube_color = texture( env_map, flip_normal * vec3( flip_env_map * reflect_vec.x, reflect_vec.yz ) );",

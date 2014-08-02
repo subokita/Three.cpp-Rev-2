@@ -25,7 +25,6 @@ namespace three {
         SpotLight( const Color color, const float intensity, const float distance, const float angle, const float exponent );
 
         
-        glm::vec3 target; //FIXME: Target should be an object
         float distance;
         float angle;
         float exponent;

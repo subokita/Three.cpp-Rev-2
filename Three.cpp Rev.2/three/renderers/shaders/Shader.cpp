@@ -77,6 +77,9 @@ namespace three {
         string vertex_code      = shader.constructVertexShader();
         string fragment_code    = shader.constructFragmentShader();
         
+//        Utils::printWithLineNumbers( vertex_code );
+//        Utils::printWithLineNumbers( fragment_code );
+        
         compileShader( vertex_code, fragment_code );
     }
     
@@ -207,6 +210,15 @@ namespace three {
         glUniform1fv( uniforms[uniform_name], static_cast<GLsizei>(vector.size()), &vector[0] );
         return true;
     }
+    bool Shader::setUniform( const char * uniform_name, std::vector<glm::vec2>& vector ) {
+        if( uniforms.count( uniform_name ) == 0  ) {
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
+        }
+        glUniform2fv( uniforms[uniform_name], static_cast<GLsizei>(vector.size()), &vector[0][0] );
+        return true;
+    }
+
     
     bool Shader::setUniform( const char * uniform_name, std::vector<glm::vec3>& vector ) {
         if( uniforms.count( uniform_name ) == 0  ) {
@@ -254,6 +266,16 @@ namespace three {
     }
     
     
+    bool Shader::setUniform( const char * uniform_name, std::vector<GLint>& vector ){
+        if( uniforms.count( uniform_name ) == 0  ) {
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
+        }
+        glUniform1iv( uniforms[uniform_name], static_cast<GLsizei>(vector.size()), &vector[0] );
+        return true;
+    }
+    
+    
     bool Shader::setUniform( const char * uniform_name, GLint v0 ) {
         if( uniforms.count( uniform_name ) == 0  ) {
             /* cerr << uniform_name << " was not generated previously" << endl; */
@@ -278,6 +300,21 @@ namespace three {
             /* throw -1 */ return false;;
         }
         glUniformMatrix3fv( uniforms[uniform_name], 1, GL_FALSE, glm::value_ptr( matrix ));
+        return true;
+    }
+    
+    
+    bool Shader::setUniform( const char * uniform_name, std::vector<glm::mat4>& matrix ) {
+        if( uniforms.count( uniform_name ) == 0  ) {
+            /* cerr << uniform_name << " was not generated previously" << endl; */
+            /* throw -1 */ return false;;
+        }
+        
+        vector<GLfloat*> matrices;
+        for( glm::mat4& mat: matrix )
+            matrices.push_back( glm::value_ptr(mat) );
+
+        glUniformMatrix4fv( uniforms[uniform_name], static_cast<GLsizei>(matrix.size()), GL_FALSE, matrices[0] );
         return true;
     }
     

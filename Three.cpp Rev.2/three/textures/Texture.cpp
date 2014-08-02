@@ -59,10 +59,12 @@ namespace three {
         glBindTexture(static_cast<GLuint>(this->type) , this->textureID);
     }
     
-    void Texture::setUniforms(ptr<Shader> shader, bool gamma) {
+    void Texture::setUniforms(ptr<ShaderLib> shader_lib, bool gamma) {
+        auto shader = shader_lib->getShader();
+        
         glActiveTexture( GL_TEXTURE0 );
         bind();
-        shader->setUniform("map", 0);
+        shader->setUniform("map", 0 );
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT );

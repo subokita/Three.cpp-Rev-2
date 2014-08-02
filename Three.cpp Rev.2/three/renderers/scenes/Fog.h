@@ -19,7 +19,7 @@ namespace three {
         static ptr<Fog> create();
         static ptr<Fog> create( Color color, float near, float far );
         
-        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
+        virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
         
         Fog();
         Fog( Color color, float near, float far );

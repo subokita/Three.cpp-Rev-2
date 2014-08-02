@@ -30,6 +30,7 @@
 		A87DA592198A477C00DFC011 /* SpotLightsArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A87DA590198A477C00DFC011 /* SpotLightsArray.cpp */; };
 		A882D375196D903D0051958C /* FogExp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A882D373196D903D0051958C /* FogExp2.cpp */; };
 		A882D378196D9FB40051958C /* DirectionalLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A882D376196D9FB40051958C /* DirectionalLight.cpp */; };
+		A8876CAD198AD10C006553C8 /* Rect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8876CAB198AD10C006553C8 /* Rect.cpp */; };
 		A88AF9F4196C336A00601287 /* Face3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A88AF9F2196C336A00601287 /* Face3.cpp */; };
 		A88AF9F8196C650900601287 /* Light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A88AF9F6196C650900601287 /* Light.cpp */; };
 		A88AF9FB196C669700601287 /* AmbientLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A88AF9F9196C669700601287 /* AmbientLight.cpp */; };
@@ -142,6 +143,8 @@
 		A882D374196D903D0051958C /* FogExp2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FogExp2.h; sourceTree = "<group>"; };
 		A882D376196D9FB40051958C /* DirectionalLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DirectionalLight.cpp; sourceTree = "<group>"; };
 		A882D377196D9FB40051958C /* DirectionalLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectionalLight.h; sourceTree = "<group>"; };
+		A8876CAB198AD10C006553C8 /* Rect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rect.cpp; sourceTree = "<group>"; };
+		A8876CAC198AD10C006553C8 /* Rect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rect.h; sourceTree = "<group>"; };
 		A88AF9E7196BB6B500601287 /* ShaderChunks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderChunks.h; sourceTree = "<group>"; };
 		A88AF9ED196BC15200601287 /* ShaderLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderLib.h; sourceTree = "<group>"; };
 		A88AF9F0196BD04E00601287 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -184,6 +187,7 @@
 		A8BD1EF8198A2CBE00E28B15 /* HasShaderUniforms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HasShaderUniforms.h; sourceTree = "<group>"; };
 		A8C424A4197FDD7800FA8F77 /* LambertMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LambertMaterial.cpp; sourceTree = "<group>"; };
 		A8C424A5197FDD7800FA8F77 /* LambertMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LambertMaterial.h; sourceTree = "<group>"; };
+		A8D56834198B785E0003385B /* ShaderLibraries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderLibraries.h; sourceTree = "<group>"; };
 		A8DA557B1976E689000CC869 /* RenderPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderPlugin.cpp; sourceTree = "<group>"; };
 		A8DA557C1976E689000CC869 /* RenderPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderPlugin.h; sourceTree = "<group>"; };
 		A8DC9EC219794618004C75FB /* NormalMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NormalMap.cpp; sourceTree = "<group>"; };
@@ -388,11 +392,11 @@
 		A8F4C3EE196A692800D191DC /* three */ = {
 			isa = PBXGroup;
 			children = (
-				A8BD1EF4198A2CAA00E28B15 /* interfaces */,
 				A88AF9F0196BD04E00601287 /* Constants.h */,
 				A8F4C420196AAFCB00D191DC /* cameras */,
 				A8A33FA91973D8F000037E90 /* controls */,
 				A8F4C40C196AA06E00D191DC /* cores */,
+				A8BD1EF4198A2CAA00E28B15 /* interfaces */,
 				A88AF9F5196C64F300601287 /* lights */,
 				A8F4C42E196AF9C300D191DC /* materials */,
 				A8F4C42A196AE05D00D191DC /* maths */,
@@ -429,6 +433,7 @@
 				A88AF9E7196BB6B500601287 /* ShaderChunks.h */,
 				A88AF9ED196BC15200601287 /* ShaderLib.h */,
 				A8B372EC197BEA43009B168D /* ShaderLib.cpp */,
+				A8D56834198B785E0003385B /* ShaderLibraries.h */,
 			);
 			path = shaders;
 			sourceTree = "<group>";
@@ -483,6 +488,8 @@
 				A8EAD54019841AD300C223DB /* Gyroscope.h */,
 				A845FFAA19842E69002C15CA /* Projector.cpp */,
 				A845FFAB19842E69002C15CA /* Projector.h */,
+				A8876CAB198AD10C006553C8 /* Rect.cpp */,
+				A8876CAC198AD10C006553C8 /* Rect.h */,
 			);
 			path = cores;
 			sourceTree = "<group>";
@@ -608,6 +615,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8876CAD198AD10C006553C8 /* Rect.cpp in Sources */,
 				A8B372ED197BEA43009B168D /* ShaderLib.cpp in Sources */,
 				A84D131B197E642500BC5A03 /* MeshCubeMapMaterial.cpp in Sources */,
 				A84495ED197F81E50015B3ED /* BasicMaterial.cpp in Sources */,

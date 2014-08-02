@@ -19,6 +19,8 @@
 #define downcast(var, type) (std::dynamic_pointer_cast<type>(var))
 #define toggle( var ) ( var = !var )
 
+#define DEBUG_SHADOW
+
 /* Use alias declaration instead of macro definitions */
 template<typename T>
 using ptr = std::shared_ptr<T>;
@@ -124,7 +126,7 @@ namespace three {
     
     // Filters
     enum class FILTER {
-        NEAREST_FILTER          = GL_NEAREST,
+        NEAREST                 = GL_NEAREST,
         NEAREST_MIPMAP_NEAREST  = GL_NEAREST_MIPMAP_NEAREST,
         NEAREST_MIPMAP_LINEAR   = GL_NEAREST_MIPMAP_LINEAR,
         LINEAR                  = GL_LINEAR,

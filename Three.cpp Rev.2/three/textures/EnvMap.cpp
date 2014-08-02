@@ -26,10 +26,16 @@ namespace three {
     }
     
     
-    void EnvMap::setUniforms(ptr<Shader> shader, bool gamma) {
-        glActiveTexture( GL_TEXTURE3 );
+    void EnvMap::setUniforms(ptr<ShaderLib> shader_lib, bool gamma) {
+        auto shader = shader_lib->getShader();
+        
+        //FIXME: setting it to lower active texture no seems to interfere with other texture
+        // Maybe TEXTURE_CUBE_MAP actually requires 6 slots??
+        int offset = shader_lib->config[0] + shader_lib->config[1] + shader_lib->config[2] + 1;
+
+        glActiveTexture( GL_TEXTURE0 + offset );
         glBindTexture( GL_TEXTURE_CUBE_MAP, this->textureID );
-        shader->setUniform( "env_map", 3 );
+        shader->setUniform( "env_map", offset );
         
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, wrapR );
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, wrapS );

@@ -21,7 +21,7 @@ namespace three {
         
         ~ShadowTexture();
         
-        virtual void setUniforms(ptr<Shader> shader, bool gamma);
+        virtual void setUniforms(ptr<ShaderLib> shader_lib, bool gamma);
     };
 }
 

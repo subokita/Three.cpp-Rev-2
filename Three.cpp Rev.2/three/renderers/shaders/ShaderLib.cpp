@@ -75,10 +75,10 @@ namespace three {
     }
     
     void ShaderLib::addDefinitions(ptr<Scene> scene, ptr<Mesh> mesh, bool gamma_input, bool gamma_output) {
-        if( scene->fog != nullptr ) {
+        if( scene->getFog() != nullptr ) {
             this->defines.push_back("#define USE_FOG");
             
-            if( instance_of(scene->fog, FogExp2))
+            if( instance_of(scene->getFog(), FogExp2))
                 this->defines.push_back("#define FOG_EXP2");
         }
         
@@ -90,19 +90,19 @@ namespace three {
         
         stringstream ss;
         ss.str("");
-        ss << "#define MAX_DIR_LIGHTS " << scene->directionalLights.getSize();
+        ss << "#define MAX_DIR_LIGHTS " << scene->getDirectionalLights().getSize();
         this->defines.push_back( ss.str() );
         
         ss.str("");
-        ss << "#define MAX_POINT_LIGHTS " << scene->pointLights.getSize();
+        ss << "#define MAX_POINT_LIGHTS " << scene->getPointLights().getSize();
         this->defines.push_back( ss.str() );
         
         ss.str("");
-        ss << "#define MAX_HEMI_LIGHTS " << scene->hemisphereLights.getSize();
+        ss << "#define MAX_HEMI_LIGHTS " << scene->getHemisphereLights().getSize();
         this->defines.push_back( ss.str() );
         
         ss.str("");
-        ss << "#define MAX_SPOT_LIGHTS " << scene->spotLights.getSize();
+        ss << "#define MAX_SPOT_LIGHTS " << scene->getSpotLights().getSize();
         this->defines.push_back( ss.str() );
         
         config.reset();
@@ -127,32 +127,40 @@ namespace three {
             config[3] = 1;
         }
         
+        int shadow_caster_count = scene->getShadowCasterCount();
+        if( shadow_caster_count > 0 ){
+            this->defines.push_back("#define USE_SHADOWMAP");
+            config[4] = 1;
+            
+            ss.str("");
+            ss << "#define MAX_SHADOWS " << shadow_caster_count;
+            this->defines.push_back( ss.str() );
+            
+            switch( scene->getShadowMapType() ) {
+                case SHADOW_MAP::PCF      : this->defines.push_back( "#define SHADOW_TYPE_PCF" ); break;
+                case SHADOW_MAP::PCF_SOFT : this->defines.push_back( "#define SHADOW_TYPE_PCF_SOFT" ); break;
+                default: break;
+            }
+        }
+        
         
         if( mesh->material->alphaTest > 0.0 ) {
             ss.str("");
             ss << "#define ALPHATEST " << mesh->material->alphaTest ;
             this->defines.push_back( ss.str() );
-            config[4] = 1;
+            config[5] = 1;
         }
         
         
         if( mesh->material->wrapAround ) {
             this->defines.push_back( "#define WRAP_AROUND" );
-            config[5] = 1;
+            config[6] = 1;
         }
         
         if( mesh->material->side == SIDE::DOUBLE_SIDE ) {
             this->defines.push_back( "#define DOUBLE_SIDED" );
-            config[6] = 1;
-        }
-        
-        if( scene->getShadowCasterCount() > 0 ){
-            this->defines.push_back("#define USE_SHADOWMAP");
             config[7] = 1;
-            
-            this->defines.push_back( "#define SHADOW_TYPE_PCF_SOFT" );
         }
-        
     }
     
     void ShaderLib::compileShader() {
@@ -176,7 +184,7 @@ namespace three {
             rot_mat = arcball->createViewRotationMatrix();
         }
         
-        shader->setUniform( "projection_mat",   camera->projection );
+        shader->setUniform( "projection_mat",   camera->getProjectionMatrix() );
         shader->setUniform( "view_mat",         camera->matrix * rot_mat );
         shader->setUniform( "camera_pos_w",     camera->position );
         
@@ -189,7 +197,7 @@ namespace three {
         
         if( instance_of(object, Mesh ) ) {
             ptr<Mesh> mesh = downcast(object, Mesh) ;
-            mesh->setUniforms(shader, gamma_input );
+            mesh->setUniforms(shared_from_this(), gamma_input );
             mesh->draw();
         }
     }
@@ -198,7 +206,7 @@ namespace three {
     string ShaderLib::getID() {
         stringstream ss;
         ss << name << "_";
-        ss << hex << config.to_ullong();
+        ss << config.to_string();
         return ss.str();
     }
     

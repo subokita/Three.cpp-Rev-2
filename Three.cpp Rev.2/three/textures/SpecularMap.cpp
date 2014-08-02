@@ -27,10 +27,14 @@ namespace three {
     }
     
     
-    void SpecularMap::setUniforms(ptr<Shader> shader, bool gamma) {
-        glActiveTexture( GL_TEXTURE2 );
+    void SpecularMap::setUniforms(ptr<ShaderLib> shader_lib, bool gamma) {
+        auto shader = shader_lib->getShader();
+        
+        int offset = shader_lib->config[0] + shader_lib->config[1];
+        
+        glActiveTexture( GL_TEXTURE0 + offset );
         bind();
-        shader->setUniform( "specular_map" , 2 );
+        shader->setUniform( "specular_map" , offset );
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT );

@@ -21,6 +21,7 @@
 #include "HemisphereLightsArray.h"
 #include "PointLightsArray.h"
 #include "SpotLightsArray.h"
+#include "Rect.h"
 
 namespace three {
     class Scene : public Object3D, public HasShaderUniforms {
@@ -32,14 +33,35 @@ namespace three {
         void addLight( ptr<Light> light );
         
         unsigned int getShadowCasterCount();
+        
         void update();
-        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
+        virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
+        
+        bool isAutoUpdate();
+        const ptr<IFog> getFog();
+        const ptr<AmbientLight> getAmbientLight();
+        const Rect& getViewportSize();
+        
+        void setViewport( const float x, const float y, const float width, const float height );
+        void setFog(const ptr<IFog> fog);
+        void setShadowMapType(SHADOW_MAP type);
+        
+        SHADOW_MAP              getShadowMapType();
+        DirectionalLightsArray& getDirectionalLights();
+        HemisphereLightsArray&  getHemisphereLights();
+        PointLightsArray&       getPointLights();
+        SpotLightsArray&        getSpotLights();
         
     protected:
         Scene();
+        void setShadows(ptr<ShaderLib> shader_lib, bool gamma);
         
-    public:
+    protected:
+        Rect viewportSize;
         bool autoUpdate;
+        unsigned int shadowCasterCount;
+        SHADOW_MAP shadowMapType;
+        
         ptr<IFog> fog;
         ptr<AmbientLight> ambientLight;
         DirectionalLightsArray directionalLights;

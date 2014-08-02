@@ -18,22 +18,15 @@
 
 namespace three {
     class Camera : public Object3D {
-    protected:
-        Camera();
-        Camera(const glm::vec3 position, const glm::vec3 up);
-        
-        virtual ~Camera();
-        virtual void updateProjectionMatrix() = 0;
-        
     public:
+        const glm::mat4& getProjectionMatrix();
+        
         /* Methods */
         void lookAt( const glm::vec3 vec );
         void lookAt( const float x, const float y, const float z );
         
-    public:
-        /* Data members */
-        glm::mat4 matrixWorldInverse;
-        glm::mat4 projection;
+        virtual void updateMatrix() override;
+        
         
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const Camera& obj ) {
@@ -41,6 +34,22 @@ namespace three {
             os << "projectionMatrix  : " << Utils::toString(obj.projection)         << std::endl;
             return os;
         }
+        
+    protected:
+        Camera();
+        Camera(const glm::vec3 position, const glm::vec3 up);
+        
+        virtual ~Camera();
+        virtual void updateProjectionMatrix() = 0;
+        
+        
+    public:
+        /* Data members */
+        glm::mat4 matrixWorldInverse;
+        
+        
+    protected:
+        glm::mat4 projection;
         
     };
 }

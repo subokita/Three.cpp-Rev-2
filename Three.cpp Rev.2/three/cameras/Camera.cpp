@@ -28,16 +28,28 @@ namespace three {
     
     Camera::~Camera(){}
     
+    const glm::mat4& Camera::getProjectionMatrix() {
+        return this->projection;
+    }
     
     void Camera::lookAt( const float x, const float y, const float z ) {
         this->lookAt(glm::vec3(x, y, z));
     }
     
+    
+    void Camera::updateMatrix() {
+        this->matrix = glm::lookAt( this->position, this->target->position, this->up );
+    }
+    
+    
     void Camera::lookAt(const glm::vec3 vec ) {
         this->setTarget( vec );
         this->matrix = glm::lookAt( this->position, vec, this->up );
-        glm::vec3 temp = this->position;
-        Math::decomposeMatrix( this->matrix, this->position, this->quaternion, this->scale );
-        std::swap(temp, position);
+        
+//        glm::vec3 temp = this->position;
+//        Math::decomposeMatrix( this->matrix, this->position, this->quaternion, this->scale );
+//        std::swap(temp, position);
+        
+        this->quaternion = glm::quat_cast(this->matrix);
     }
 }

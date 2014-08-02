@@ -21,7 +21,7 @@ namespace three {
         
         static ptr<BasicMaterial> create( Color color = 0xFFFFFF );
         
-        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
+        virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
         
         BasicMaterial(Color color);
         BasicMaterial();

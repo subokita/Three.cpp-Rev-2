@@ -62,7 +62,8 @@ namespace three {
         }
     }
     
-    void PointLightsArray::setUniforms( ptr<Shader> shader, bool gamma ){
+    void PointLightsArray::setUniforms( ptr<ShaderLib> shader_lib, bool gamma ){
+        auto shader = shader_lib->getShader();
         shader->setUniform( "point_light_color", colors, intensities, gamma );
         shader->setUniform( "point_light_position", positions );
         shader->setUniform( "point_light_distance", distances );

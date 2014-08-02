@@ -16,6 +16,13 @@
 #include "RenderTarget.h"
 
 namespace three {
+    static const glm::mat4 SHADOW_BIAS_MATRIX = {
+        0.5, 0.0, 0.0, 0.0,
+        0.0, 0.5, 0.0, 0.0,
+        0.0, 0.0, 0.5, 0.0,
+        0.5, 0.5, 0.5, 1.0
+    };
+    
     class CastsShadow {
     public:
         CastsShadow();
@@ -50,6 +57,7 @@ namespace three {
         float shadowCameraBottom;
         float shadowCameraNear;
         float shadowCameraFar;
+        
     };
 }
 

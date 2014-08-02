@@ -20,21 +20,25 @@ namespace three {
     /** Constructors **/
     SpotLight::SpotLight():
         distance(0.0),
-        angle(Math::radToDeg(M_PI / 3.0)),
-        exponent(10.0),
-        target( 0.0, 0.0, 0.0 )
+        angle   (Math::radToDeg(M_PI / 3.0)),
+        exponent(10.0)
     {
         this->position = glm::vec3( 0.0, 1.0, 0.0 );
+        setTarget(glm::vec3(0.0));
     }
     
     SpotLight::SpotLight( const Color color, const float intensity, const float distance, const float angle, const float exponent ):
         Light   ( color, intensity ),
         distance( distance ),
         angle   ( angle ),
-        exponent(exponent),
-        target( 0.0, 0.0, 0.0 )
+        exponent(exponent)
     {
         this->position = glm::vec3( 0.0, 1.0, 0.0 );
+        setTarget(glm::vec3(0.0));
+        
+        this->shadowCameraFOV = angle;
+        this->shadowCameraNear = 1.0;
+        this->shadowCameraFar  = distance;
     }
     
     SpotLight::~SpotLight(){}

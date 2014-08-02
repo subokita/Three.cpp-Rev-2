@@ -25,7 +25,8 @@ namespace three  {
         
         /* Create scene */
         auto scene = Scene::create();
-        scene->fog = Fog::create( 0x72645b / 2, 2.0, 15.0 );
+        scene->setFog(Fog::create( 0x72645b / 2, 2.0, 15.0 ));
+        scene->setViewport(0, 0, 1600 * 2 / 4, 900 * 2 / 4);
         
         /* Create camera */
         auto camera = PerspectiveCamera::create( 50.0, renderer.aspectRatio, 0.001, 100.0 );
@@ -161,7 +162,7 @@ namespace three  {
         
         renderer.gammaInput  = true;
         renderer.gammaOutput = true;
-        renderer.clearColor = scene->fog->color;
+        renderer.clearColor = scene->getFog()->color;
         renderer.render(scene, camera );
     }
 }

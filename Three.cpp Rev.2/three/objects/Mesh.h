@@ -32,7 +32,7 @@ namespace three {
         void initGLBuffers();
         void draw();
 
-        virtual void setUniforms(ptr<Shader> shader, bool gamma ) override;
+        virtual void setUniforms(ptr<ShaderLib> shader_lib, bool gamma ) override;
         
     public:
         std::vector<GLuint> bufferIDs;

@@ -24,7 +24,7 @@ namespace three {
                Color emissive     = 0x000000
         );
         
-        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
+        virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
         
         LambertMaterial();
         LambertMaterial( Color diffuse, Color ambient, Color emissive );

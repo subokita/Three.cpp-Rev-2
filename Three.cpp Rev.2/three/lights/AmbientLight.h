@@ -16,7 +16,7 @@ namespace three {
     class AmbientLight: public Light, public HasShaderUniforms {
     public:
         static ptr<AmbientLight> create(Color color);
-        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
+        virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
         
         ~AmbientLight();
         

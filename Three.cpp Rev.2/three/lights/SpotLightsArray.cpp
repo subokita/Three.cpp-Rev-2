@@ -62,14 +62,15 @@ namespace three {
             colors.push_back     (light->color);
             intensities.push_back(light->intensity);
             positions.push_back  (light->position);
-            directions.push_back (glm::normalize(light->position - light->target));
+            directions.push_back (glm::normalize(light->position - light->target->position));
             cos_angles.push_back (cosf(Math::degToRad(light->angle)));
             exponents.push_back  (light->exponent);
             distances.push_back  (light->distance);
         }
     }
     
-    void SpotLightsArray::setUniforms( ptr<Shader> shader, bool gamma ){
+    void SpotLightsArray::setUniforms( ptr<ShaderLib> shader_lib, bool gamma ){
+        auto shader = shader_lib->getShader();
         shader->setUniform( "spot_light_color", colors, intensities, gamma );
         shader->setUniform( "spot_light_position", positions );
         shader->setUniform( "spot_light_direction", directions );

@@ -25,10 +25,14 @@ namespace three  {
             glDeleteTextures(1, &this->textureID );
     }
     
-    void ShadowTexture::setUniforms(ptr<Shader> shader, bool gamma) {
-        glActiveTexture( GL_TEXTURE4 );
+    void ShadowTexture::setUniforms(ptr<ShaderLib> shader_lib, bool gamma) {
+        auto shader = shader_lib->getShader();
+        
+        int offset = shader_lib->config[0] + shader_lib->config[1] + shader_lib->config[2] + shader_lib->config[3];
+        
+        glActiveTexture( GL_TEXTURE0 + offset );
         bind();
-        shader->setUniform( "shadowMap", 0 );
+        shader->setUniform( "shadowMap", offset  );
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrapR );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );
@@ -36,8 +40,7 @@ namespace three  {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter );
         
-        
-//        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL );
-//        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE );
     }
 }

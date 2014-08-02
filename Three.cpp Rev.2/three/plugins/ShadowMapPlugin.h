@@ -26,6 +26,8 @@ namespace three {
         virtual void init( ptr<Scene> scene, ptr<Camera> camera ) override;
         virtual void render( ptr<Scene> scene, ptr<Arcball> arcball, ptr<Camera> camera  ) override;
         
+        void debugShadow();
+        
     protected:
         ptr<VirtualLight> createVirtualLight( ptr<Light> light, int cascade );
         void updateVirtualLight( ptr<Light> light, int cascade );
@@ -40,15 +42,15 @@ namespace three {
         glm::vec3 min;
         glm::vec3 max;
         glm::vec3 position;
-        SHADOW_MAP shadowMapType;
         
         ptr<ShaderLib> depthShader;
         ptr<Frustum> frustum;
         glm::mat4 projectionScreen;
         
-        /*FIXME: debug*/
+        #ifdef DEBUG_SHADOW
         GLuint quad_vertex_buffer;
         ptr<ShaderLib> passthruShader;
+        #endif
     };
 }
 

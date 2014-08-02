@@ -28,7 +28,7 @@ namespace three {
          );
         
         
-        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
+        virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
         
         PhongMaterial();
         PhongMaterial( Color color, Color ambient, Color emissive, Color specular, float shininess, bool metal );

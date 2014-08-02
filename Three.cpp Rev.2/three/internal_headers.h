@@ -32,6 +32,7 @@ namespace three {
     class Object3D;
     class Gyroscope;
     class Projector;
+    class Rect;
     
     
     /* ./three/controls/ */

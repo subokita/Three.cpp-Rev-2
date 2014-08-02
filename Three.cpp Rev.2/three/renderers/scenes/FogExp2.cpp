@@ -32,7 +32,8 @@ namespace three {
     FogExp2::~FogExp2(){}
     
     
-    void FogExp2::setUniforms( ptr<Shader> shader, bool gamma ) {
+    void FogExp2::setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) {
+        auto shader = shader_lib->getShader();
         shader->setUniform( "fog_color", color, 1.0, gamma );
         shader->setUniform( "fog_density", distance );
     }

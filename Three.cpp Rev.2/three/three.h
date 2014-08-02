@@ -27,6 +27,7 @@
 #include "Object3D.h"
 #include "Gyroscope.h"
 #include "Projector.h"
+#include "Rect.h"
 
 /* ./three/lights */
 #include "Light.h"
@@ -99,6 +100,7 @@
 #include "Shader.h"
 #include "ShaderChunks.h"
 #include "ShaderLib.h"
+#include "ShaderLibraries.h"
 
 
 #endif

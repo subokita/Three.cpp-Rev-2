@@ -29,7 +29,7 @@ namespace three {
         const GLuint genTexture();
         void bind();
         
-        virtual void setUniforms(ptr<Shader> shader, bool gamma) override;
+        virtual void setUniforms(ptr<ShaderLib> shader_lib, bool gamma) override;
         
     public:
         unsigned int width;
@@ -44,7 +44,6 @@ namespace three {
         GLuint minFilter;
         int anisotropy;
         GLuint format;
-//        GLuint type;
         
         glm::vec2 offset;
         glm::vec2 repeat;

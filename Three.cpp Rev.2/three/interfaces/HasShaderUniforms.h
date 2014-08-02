@@ -20,7 +20,7 @@ namespace three  {
      */
     class HasShaderUniforms {
     public:
-        virtual void setUniforms( ptr<Shader> shader, bool gamma ) = 0;
+        virtual void setUniforms( ptr<ShaderLib> shader, bool gamma ) = 0;
     };
 }
 

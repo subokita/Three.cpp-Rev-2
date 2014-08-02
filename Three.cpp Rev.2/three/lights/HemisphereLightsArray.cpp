@@ -62,7 +62,8 @@ namespace three {
         }
     }
     
-    void HemisphereLightsArray::setUniforms( ptr<Shader> shader, bool gamma ){
+    void HemisphereLightsArray::setUniforms( ptr<ShaderLib> shader_lib, bool gamma ){
+        auto shader = shader_lib->getShader();
         shader->setUniform( "hemisphere_light_sky_color", skyColors, intensities, gamma );
         shader->setUniform( "hemisphere_light_ground_color", groundColors, intensities, gamma );
         shader->setUniform( "hemisphere_light_direction", directions );

@@ -19,7 +19,7 @@ namespace three {
         static ptr<FogExp2> create();
         static ptr<FogExp2> create( Color color, float distance );
         
-        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
+        virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
         
         FogExp2();
         FogExp2( Color color, float distance );

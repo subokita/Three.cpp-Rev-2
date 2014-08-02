@@ -29,16 +29,20 @@ int main(int argc, const char * argv[])
     
     /* Create scene */
     auto scene = Scene::create();
-    scene->fog = Fog::create( 0x72645b / 2, 2.0, 15.0 );
+    scene->setFog(Fog::create( 0x72645b / 2, 2.0, 15.0 ));
+    scene->setViewport( 0.0, 0.0, 1600.0f * 3 / 4, 900.0f * 3 / 4 );
+    scene->setShadowMapType( SHADOW_MAP::PCF_SOFT );
     
     /* Create camera */
     auto camera = PerspectiveCamera::create( 50.0, renderer.aspectRatio, 0.001, 100.0 );
-    camera->position = glm::vec3(0.0, 1.5, 5.5);
+    camera->translate(0.0, 1.5, 5.5);
     camera->lookAt( 0.0, 0.0, 0.0 );
     
     
     auto sphere_1 = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
                                   PhongMaterial::create(0x777777, 0x777777, 0x0, 0x999999, 30) );
+    
+    sphere_1->texture  = TextureUtils::loadAsTexture( path + "planets", "earth_atmos_2048.jpg");
     sphere_1->translate(-1.0, 0.0, 0.0);
     sphere_1->castShadow = true;
     sphere_1->receiveShadow = true;
@@ -66,17 +70,23 @@ int main(int argc, const char * argv[])
                                               "nx.png", "ny.png", "nz.png",
                                               "px.png", "py.png", "pz.png");
     
-    sphere_1->envMap = downcast(env->texture, EnvMap);
-    cube_2->envMap   = downcast(env->texture, EnvMap);
+//    sphere_1->envMap = downcast(env->texture, EnvMap);
+//    cube_2->envMap   = downcast(env->texture, EnvMap);
 //    scene->add( env );
     
     
-    
     /* Create directional light */
-    auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3(3.0, 1.0, 3.0) );
-    dir_light->castShadow = true;
-    scene->add( dir_light );
+    auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3( 3.0, 1.0, 3.0 ) );
+    dir_light->castShadow       = true;
+    dir_light->shadowBias       = -0.05;
+    dir_light->shadowMapSize    = glm::vec2(1024);
+//    scene->add( dir_light );
     
+    
+    auto spot_light = SpotLight::create(0x99CCFF, 1.0, 20.0, 50.0, 1.0 );
+    spot_light->position   = glm::vec3(3.0, 2.0, 3.0);
+    spot_light->castShadow = true;
+    scene->add( spot_light );
     
     /* Create an ambient light */
     scene->add( AmbientLight::create(0x777777));
@@ -92,7 +102,7 @@ int main(int argc, const char * argv[])
         
         if( rotate_objects ) {
             sphere_1->rotateY(-1.0f);
-            cube_2->rotateY(-1.0f);
+            cube_2->rotateX(-1.0f);
         }
     });
     
@@ -116,7 +126,7 @@ int main(int argc, const char * argv[])
     
     renderer.gammaInput  = true;
     renderer.gammaOutput = true;
-    renderer.clearColor = scene->fog->color;
+    renderer.clearColor = scene->getFog()->color;
     renderer.render(scene, camera );
 
     

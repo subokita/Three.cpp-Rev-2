@@ -36,27 +36,27 @@ namespace three {
     }
     
     
-    void Mesh::setUniforms(ptr<Shader> shader, bool gamma ) {
-        
+    void Mesh::setUniforms(ptr<ShaderLib> shader_lib, bool gamma ) {
+        auto shader = shader_lib->getShader();
         shader->setUniform( "model_mat", matrixWorld );
         
         if( material->wrapAround )
             shader->setUniform("wrapRGB", material->wrapRGB );
         
         if( texture != nullptr )
-            texture->setUniforms(shader, gamma );
+            texture->setUniforms(shader_lib, gamma );
         
         if( normalMap != nullptr )
-            normalMap->setUniforms( shader, gamma );
+            normalMap->setUniforms( shader_lib, gamma );
         
         if( specularMap != nullptr )
-            specularMap->setUniforms( shader, gamma );
+            specularMap->setUniforms( shader_lib, gamma );
         
         if( envMap != nullptr )
-            envMap->setUniforms( shader, gamma );
+            envMap->setUniforms( shader_lib, gamma );
         
         
-        material->setUniforms( shader, gamma );
+        material->setUniforms( shader_lib, gamma );
     }
     
     void Mesh::initGLBuffers() {

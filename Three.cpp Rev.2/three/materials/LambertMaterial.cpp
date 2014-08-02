@@ -55,8 +55,8 @@ namespace three {
     
     LambertMaterial::~LambertMaterial(){}
     
-    void LambertMaterial::setUniforms( ptr<Shader> shader, bool gamma ) {
-        
+    void LambertMaterial::setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) {
+        auto shader = shader_lib->getShader();
         shader->setUniform( "opacity",   this->opacity );
         shader->setUniform( "emissive",  this->emissive, 1.0, gamma );
         shader->setUniform( "ambient",   this->ambient, 1.0, gamma );

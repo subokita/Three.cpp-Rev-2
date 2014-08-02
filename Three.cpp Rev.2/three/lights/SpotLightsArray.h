@@ -26,7 +26,7 @@ namespace three {
         
         void update();
         void add( ptr<Light> light );
-        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
+        virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
         
         
     protected:

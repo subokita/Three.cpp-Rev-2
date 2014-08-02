@@ -26,7 +26,8 @@ namespace three {
     
     AmbientLight::~AmbientLight(){}
     
-    void AmbientLight::setUniforms( ptr<Shader> shader, bool gamma ) {
+    void AmbientLight::setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) {
+        auto shader = shader_lib->getShader();
         shader->setUniform( "ambient_light_color", color, 1.0, gamma );
     }
 }

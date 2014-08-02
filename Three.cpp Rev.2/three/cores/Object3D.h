@@ -42,7 +42,7 @@ namespace three {
         void rotateZ( const float angle );
         void rotate( const glm::vec3 axis, const float angle );
         
-        void updateMatrix();
+        virtual void updateMatrix();
         virtual void updateMatrixWorld(bool force);
         void add( ptr<Object3D> object );
         void remove( ptr<Object3D> object );

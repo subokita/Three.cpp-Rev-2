@@ -64,7 +64,6 @@ namespace three {
     }
     
     void PerspectiveCamera::updateProjectionMatrix() {
-        
         if( this->fullWidth > 0.0 ) {
             
             float aspect = fullWidth / fullHeight;

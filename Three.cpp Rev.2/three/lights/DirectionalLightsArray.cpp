@@ -14,7 +14,8 @@ namespace three {
     
     DirectionalLightsArray::DirectionalLightsArray():
         size(0)
-    {}
+    {
+    }
     
     DirectionalLightsArray::~DirectionalLightsArray(){
         lights.clear();
@@ -60,22 +61,9 @@ namespace three {
         }
     }
     
-    void DirectionalLightsArray::setUniforms( ptr<Shader> shader, bool gamma ){
-        for( auto entry : lights ) {
-            ptr<DirectionalLight> light = entry.second;
-            if( !light->visible )
-                continue;
-
-            /*FIXME: refactor out to setShadows*/
-            if( light->shadowMap != nullptr ) {
-                light->shadowTexture->setUniforms( shader, gamma );
-                shader->setUniform( "shadow_mat", light->shadowMatrix );
-                shader->setUniform( "shadow_bias", light->shadowBias);
-                shader->setUniform( "shadow_darkness", light->shadowDarkness );
-                shader->setUniform( "shadow_map_size", light->shadowMapSize );
-            }
-        }
-
+    void DirectionalLightsArray::setUniforms( ptr<ShaderLib> shader_lib, bool gamma ){
+        auto shader = shader_lib->getShader();
+        
         shader->setUniform( "directional_light_direction", directions );
         shader->setUniform( "directional_light_color", colors, intensities, gamma );
     }

@@ -7,6 +7,7 @@
 //
 
 #include "MeshCubeMapMaterial.h"
+#include "three.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ namespace three {
     MeshCubeMapMaterial::MeshCubeMapMaterial(){}
     MeshCubeMapMaterial::~MeshCubeMapMaterial(){}
     
-    void MeshCubeMapMaterial::setUniforms( ptr<Shader> shader, bool gamma ){
+    void MeshCubeMapMaterial::setUniforms( ptr<ShaderLib> shader, bool gamma ){
         glFrontFace( GL_CW );
     }
 }

@@ -42,21 +42,26 @@ namespace three {
         bool setUniform( const char * uniform_name, Color color, float intensity, bool gamma_input );
         bool setUniform( const char * uniform_name, std::vector<Color>& colors, std::vector<float>& intensities, bool gamma_input );
         
+        
         bool setUniform( const char * uniform_name, GLint v0 );
         bool setUniform( const char * uniform_name, GLfloat v0 );
-        bool setUniform( const char * uniform_name, std::vector<float>& vector );
         bool setUniform( const char * uniform_name, glm::mat3 matrix );
         bool setUniform( const char * uniform_name, glm::mat4 matrix );
         bool setUniform( const char * uniform_name, glm::vec2 vector );
         bool setUniform( const char * uniform_name, glm::vec3 vector );
         bool setUniform( const char * uniform_name, glm::vec4 vector );
+        
+        bool setUniform( const char * uniform_name, std::vector<GLint>& vector );
+        bool setUniform( const char * uniform_name, std::vector<float>& vector );
+        bool setUniform( const char * uniform_name, std::vector<glm::mat4>& matrix );
+        bool setUniform( const char * uniform_name, std::vector<glm::vec2>& vector );
         bool setUniform( const char * uniform_name, std::vector<glm::vec3>& vector );
         
         bool setUniform( const char * struct_name, const char * variable, GLfloat v0 );
         bool setUniform( const char * struct_name, const char * variable, glm::vec3 vector );
         bool setUniform( const char * struct_name, const char * variable, glm::vec4 vector );
         
-    protected:
+    public:
         GLuint vertexShaderId;
         GLuint fragmentShaderId;
         GLuint programId;

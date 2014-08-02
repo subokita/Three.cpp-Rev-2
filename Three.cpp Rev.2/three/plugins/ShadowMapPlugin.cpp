@@ -34,7 +34,7 @@ namespace three {
         
         descendants = scene->getDescendants();
         
-        for( auto entry: scene->directionalLights.getCollection() ) {
+        for( auto entry: scene->getDirectionalLights().getCollection() ) {
             ptr<DirectionalLight> light = entry.second;
             if( !light->castShadow )
                 continue;
@@ -68,32 +68,24 @@ namespace three {
             }
         }
         
-        for( auto entry: scene->spotLights.getCollection() ) {
+        for( auto entry: scene->getSpotLights().getCollection() ) {
             ptr<SpotLight> light = entry.second;
             if( light->castShadow )
                 lights.push_back( light );
         }
         
         
-//        for( ptr<HemisphereLight> light: scene->hemisphereLights ) {
-//            if( light->castShadow )
-//                lights.push_back( light );
-//        }
-//        for( ptr<PointLight> light: scene->pointLights ) {
-//            if( light->castShadow )
-//                lights.push_back( light );
-//        }
+        const Rect viewport_size = scene->getViewportSize();
         
         for( ptr<Light> light: lights ) {
             if( light->shadowMap == nullptr ) {
                 FILTER shadow_filter = FILTER::LINEAR;
-                if( shadowMapType == SHADOW_MAP::PCF_SOFT )
-                    shadow_filter = FILTER::NEAREST_FILTER;
+                
+                if( scene->getShadowMapType() == SHADOW_MAP::PCF_SOFT )
+                    shadow_filter = FILTER::NEAREST;
                 
                 light->shadowMap     = RenderTarget::create(GL_FRAMEBUFFER, 0);
-                light->shadowTexture = ShadowTexture::create(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, static_cast<GLuint>(shadow_filter), static_cast<GLuint>(shadow_filter));
-                
-                light->shadowMapSize = glm::vec2(1600.0 * 3 / 4, 900.0 * 3 / 4);
+                light->shadowTexture = ShadowTexture::create(GL_CLAMP, GL_CLAMP, GL_CLAMP, static_cast<GLuint>(shadow_filter), static_cast<GLuint>(shadow_filter));
                 
                 light->shadowMap->generateFrameBuffer();
                 light->shadowTexture->genTexture();
@@ -101,17 +93,19 @@ namespace three {
                 light->shadowMap->bind();
                 light->shadowTexture->bind();
 
-
                 glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, light->shadowMapSize.x, light->shadowMapSize.y, 0, GL_RGBA, GL_FLOAT, 0 );
-
+                
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLuint>(shadow_filter) );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<GLuint>(shadow_filter) );
-                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE );
                 
                 glGenerateMipmap(GL_TEXTURE_2D);
+
+                glDrawBuffer( GL_NONE );
+                glReadBuffer( GL_NONE );
                 
                 glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, light->shadowTexture->textureID, 0 );
                 GLenum draw_buffers[1] = { GL_COLOR_ATTACHMENT0 };
@@ -120,28 +114,28 @@ namespace three {
             
             if( light->shadowCamera == nullptr ) {
                 if( instance_of(light, SpotLight)) {
-                    light->shadowCamera = PerspectiveCamera::create( light->shadowCameraFOV, light->shadowMapSize.x / light->shadowMapSize.y, light->shadowCameraNear, light->shadowCameraFar );
+                    light->shadowCamera = PerspectiveCamera::create(light->shadowCameraFOV,
+                                                                    light->shadowMapSize.x / light->shadowMapSize.y,
+                                                                    light->shadowCameraNear,
+                                                                    light->shadowCameraFar );
                 }
                 else if( instance_of(light, DirectionalLight)) {
-                    light->shadowCamera = OrthographicCamera::create(-15.0, 15.0, 15.0, -15.0, -30.0, 30.0);
+                    light->shadowCamera = OrthographicCamera::create(light->shadowCameraLeft,
+                                                                     light->shadowCameraRight,
+                                                                     light->shadowCameraTop,
+                                                                     light->shadowCameraBottom,
+                                                                     light->shadowCameraNear,
+                                                                     light->shadowCameraFar );
                 }
                 else {
                     cerr << "Unsupported light type for shadow" << endl;
                     continue;
                 }
             }
-            
-            light->updateMatrixWorld(false);
-            auto shadow_map = light->shadowMap;
-            auto shadow_cam = light->shadowCamera;
-            
-            shadow_cam->position = light->position;
-            shadow_cam->lookAt( light->target->position );
-            
-            shadow_cam->updateMatrixWorld(false);
-            shadow_cam->matrixWorldInverse = glm::inverse( shadow_cam->matrixWorld );
-            light->shadowMatrix = shadow_cam->projection * shadow_cam->matrix;
         }
+        
+        
+        #ifdef DEBUG_SHADOW
         
         passthruShader = SHADERLIB_SIMPLE_PASS->clone();
         passthruShader->compileShader();
@@ -163,6 +157,7 @@ namespace three {
         glGenBuffers( 1, &quad_vertex_buffer );
         glBindBuffer( GL_ARRAY_BUFFER, quad_vertex_buffer );
         glBufferData( GL_ARRAY_BUFFER, sizeof( quad_vertex_buffer_data ), quad_vertex_buffer_data, GL_STATIC_DRAW );
+        #endif
     }
     
     void ShadowMapPlugin::setState( ptr<Scene> scene, ptr<Camera> camera ) {
@@ -176,30 +171,24 @@ namespace three {
 
     
     void ShadowMapPlugin::render( ptr<Scene> scene, ptr<Arcball> arcball, ptr<Camera> camera ) {
+        const Rect viewport = scene->getViewportSize();
+        
         for( ptr<Light> light: lights ) {
             light->updateMatrixWorld(false);
-            
+
             auto shadow_map = light->shadowMap;
             auto shadow_cam = light->shadowCamera;
             
-            shadow_cam->position = light->position * light->quaternion;
+            shadow_cam->position = light->position;
             shadow_cam->lookAt( light->target->position );
-            
-            
+
             shadow_cam->updateMatrixWorld(false);
-            shadow_cam->matrixWorldInverse = glm::inverse( shadow_cam->matrixWorld );
+            light->shadowMatrix = SHADOW_BIAS_MATRIX * shadow_cam->getProjectionMatrix() * shadow_cam->matrixWorld;
             
-            glm::mat4 bias_matrix (
-                                   0.5, 0.0, 0.0, 0.0,
-                                   0.0, 0.5, 0.0, 0.0,
-                                   0.0, 0.0, 0.5, 0.0,
-                                   0.5, 0.5, 0.5, 1.0
-                                   );
-            light->shadowMatrix = bias_matrix * shadow_cam->projection * shadow_cam->matrixWorld;
             light->shadowMap->bind();
             
             glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-//            glViewport(0, 0, 1600.0 * 3 / 4, 900.0 * 3 / 4);
+            glViewport(0, 0, light->shadowMapSize[0], light->shadowMapSize[1]);
             
             depthShader->bind();
             for( auto object: descendants ){
@@ -211,29 +200,36 @@ namespace three {
                 if( object->castShadow == false )
                     continue;
 
-                depthShader->draw(light->shadowCamera, nullptr, object, false );                
+                depthShader->draw(shadow_cam, arcball, object, false );
             }
             depthShader->unbind();
-
-//            glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-//            
-//            glViewport(0, 0, 256, 256);
-//            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-//            passthruShader->bind();
-//            
-//            glActiveTexture( GL_TEXTURE0 );
-//            glBindTexture( GL_TEXTURE_2D, light->shadowTexture->textureID );
-//            passthruShader->shader->setUniform("texture_sampler", 0);
-//            
-//            glEnableVertexAttribArray( 0 );
-//            glBindBuffer( GL_ARRAY_BUFFER, quad_vertex_buffer );
-//            glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0 );
-//            glDrawArrays( GL_TRIANGLES, 0, 6 );
-//            
-//            glDisableVertexAttribArray( 0 );
-//            passthruShader->unbind();
         }
+     
+    }
+    
+    
+    void ShadowMapPlugin::debugShadow() {
         
+        for( int i = 0; i < lights.size(); i++ ) {
+            auto light = lights[i];
+            
+            glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+            
+            glViewport(0 + i * 256, 0, 256, 256);
+            passthruShader->bind();
+            
+            glActiveTexture( GL_TEXTURE0 );
+            glBindTexture( GL_TEXTURE_2D, light->shadowTexture->textureID );
+            passthruShader->shader->setUniform("texture_sampler", 0);
+            
+            glEnableVertexAttribArray( 0 );
+            glBindBuffer( GL_ARRAY_BUFFER, quad_vertex_buffer );
+            glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0 );
+            glDrawArrays( GL_TRIANGLES, 0, 6 );
+            
+            glDisableVertexAttribArray( 0 );
+            passthruShader->unbind();
+        }
     }
     
     

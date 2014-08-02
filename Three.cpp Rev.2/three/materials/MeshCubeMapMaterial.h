@@ -22,7 +22,7 @@ namespace three {
         MeshCubeMapMaterial();
         ~MeshCubeMapMaterial();
         
-        virtual void setUniforms( ptr<Shader> shader, bool gamma ) override;
+        virtual void setUniforms( ptr<ShaderLib> shader, bool gamma ) override;
     };
 }
 

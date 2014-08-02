@@ -28,13 +28,17 @@ namespace three {
     }
     
     
-    void NormalMap::setUniforms(ptr<Shader> shader, bool gamma) {
+    void NormalMap::setUniforms(ptr<ShaderLib> shader_lib, bool gamma) {
+        auto shader = shader_lib->getShader();
+        
         /* NORMAL MAP related */
         shader->setUniform( "normal_scale", this->normalScale );
         
-        glActiveTexture( GL_TEXTURE1 );
+        int offset = shader_lib->config[0];
+        
+        glActiveTexture( GL_TEXTURE0 + offset );
         bind();
-        shader->setUniform("normal_map", 1);
+        shader->setUniform("normal_map", offset );
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT );

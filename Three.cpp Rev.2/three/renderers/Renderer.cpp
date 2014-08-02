@@ -88,6 +88,8 @@ namespace three {
         glBlendEquation( GL_FUNC_ADD );
         glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
         
+        glCullFace( GL_BACK );
+        
         glViewport(0, 0, width, height);
     }
     
@@ -174,11 +176,14 @@ namespace three {
             }
         }
         
-        this->preRenderPlugins.push_back( ShadowMapPlugin::create() );
+        auto shadow_map = ShadowMapPlugin::create();
+        this->preRenderPlugins.push_back( shadow_map );
         
         for( ptr<RenderPlugin> pre_render_plugin: preRenderPlugins )
             pre_render_plugin->init(scene, camera);
 
+        const Rect viewport = scene->getViewportSize();
+        
         while( !glfwWindowShouldClose( window )) {
             renderPlugins( preRenderPlugins, scene, camera );
 
@@ -186,6 +191,7 @@ namespace three {
 
             setDefaultGLState();
             glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+            glViewport(viewport.x, viewport.y, viewport.width, viewport.height);
 
             for( auto object: descendants ){
                 object->updateMatrixWorld(false);
@@ -196,14 +202,20 @@ namespace three {
                 ptr<ShaderLib> shader_lib = shaderLibs[object->shaderID];
                 shader_lib->bind();
                 {
-                    scene->setUniforms( shader_lib->getShader(), gammaInput );
+                    scene->setUniforms( shader_lib, gammaInput );
                     shader_lib->draw(camera, arcball, object, gammaInput );
                 }
                 shader_lib->unbind();
             }
 
+            #ifdef DEBUG_SHADOW
+            if( shadow_map != nullptr )
+                shadow_map->debugShadow();
+            #endif
             
             renderPlugins( postRenderPlugins, scene, camera );
+
+            scene->update();
             
             glfwSwapBuffers( window );
             glfwPollEvents();
