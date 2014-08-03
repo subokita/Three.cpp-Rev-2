@@ -42,6 +42,9 @@ namespace three {
         
         void renderPlugins( std::vector<ptr<RenderPlugin>>& plugins, ptr<Scene> scene, ptr<Camera> camera );
         
+        GLuint getWidth();
+        GLuint getHeight();
+        
     public:
         bool gammaInput;
         bool gammaOutput;

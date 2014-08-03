@@ -203,7 +203,7 @@ namespace three {
                 if( object->castShadow == false )
                     continue;
 
-                depthShader->draw(shadow_cam, arcball, object, false );
+                depthShader->draw(shadow_cam, nullptr, object, false );
             }
             depthShader->unbind();
         }

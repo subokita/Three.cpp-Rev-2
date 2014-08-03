@@ -128,7 +128,7 @@ namespace three {
         }
         
         int shadow_caster_count = scene->getShadowCasterCount();
-        if( shadow_caster_count > 0 ){
+        if( shadow_caster_count > 0 && mesh->receiveShadow ){
             this->defines.push_back("#define USE_SHADOWMAP");
             config[4] = 1;
             

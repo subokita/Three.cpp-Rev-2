@@ -74,6 +74,14 @@ namespace three {
     }
     
     
+    GLuint Renderer::getWidth(){
+        return this->width;
+    }
+    
+    GLuint Renderer::getHeight() {
+        return this->height;
+    }
+    
     void Renderer::setDefaultGLState() {
         glClearColor( clearColor.rep.x, clearColor.rep.y, clearColor.rep.z, clearAlpha );
         glClearDepth( 1.0 );

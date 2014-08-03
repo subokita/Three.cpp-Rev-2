@@ -15,6 +15,7 @@
 		A82B128A198A3E0E00F442C1 /* HemisphereLightsArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A82B1288198A3E0E00F442C1 /* HemisphereLightsArray.cpp */; };
 		A83D90BE19812E2C00A2D59F /* ShadowMapPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A83D90BC19812E2C00A2D59F /* ShadowMapPlugin.cpp */; };
 		A83D90C11981939E00A2D59F /* CastsShadow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A83D90BF1981939E00A2D59F /* CastsShadow.cpp */; };
+		A842BD47198E351C00129512 /* Ex_004_ShadowMapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A842BD45198E351C00129512 /* Ex_004_ShadowMapping.cpp */; };
 		A84495ED197F81E50015B3ED /* BasicMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A84495EB197F81E50015B3ED /* BasicMaterial.cpp */; };
 		A845FFAC19842E69002C15CA /* Projector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A845FFAA19842E69002C15CA /* Projector.cpp */; };
 		A848B2E2197CD9A10042B91B /* SpecularMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A848B2E0197CD9A10042B91B /* SpecularMap.cpp */; };
@@ -112,6 +113,8 @@
 		A83D90BD19812E2C00A2D59F /* ShadowMapPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShadowMapPlugin.h; sourceTree = "<group>"; };
 		A83D90BF1981939E00A2D59F /* CastsShadow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CastsShadow.cpp; sourceTree = "<group>"; };
 		A83D90C01981939E00A2D59F /* CastsShadow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CastsShadow.h; sourceTree = "<group>"; };
+		A842BD45198E351C00129512 /* Ex_004_ShadowMapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ex_004_ShadowMapping.cpp; sourceTree = "<group>"; };
+		A842BD46198E351C00129512 /* Ex_004_ShadowMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ex_004_ShadowMapping.h; sourceTree = "<group>"; };
 		A84495EB197F81E50015B3ED /* BasicMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BasicMaterial.cpp; sourceTree = "<group>"; };
 		A84495EC197F81E50015B3ED /* BasicMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicMaterial.h; sourceTree = "<group>"; };
 		A845FFAA19842E69002C15CA /* Projector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Projector.cpp; sourceTree = "<group>"; };
@@ -266,6 +269,8 @@
 				A84D1380197EBDFA00BC5A03 /* Ex_002_TextureSpecularNormalMappings.h */,
 				A84D1382197EC7F900BC5A03 /* Ex_003_EnvironmentMapping.cpp */,
 				A84D1383197EC7F900BC5A03 /* Ex_003_EnvironmentMapping.h */,
+				A842BD45198E351C00129512 /* Ex_004_ShadowMapping.cpp */,
+				A842BD46198E351C00129512 /* Ex_004_ShadowMapping.h */,
 			);
 			path = examples;
 			sourceTree = "<group>";
@@ -657,6 +662,7 @@
 				A84D137A197EB35100BC5A03 /* Ex_001_SimplePrimitives.cpp in Sources */,
 				A88AF9F8196C650900601287 /* Light.cpp in Sources */,
 				A8F4C423196AB09B00D191DC /* Camera.cpp in Sources */,
+				A842BD47198E351C00129512 /* Ex_004_ShadowMapping.cpp in Sources */,
 				A8F4C434196B069C00D191DC /* Color.cpp in Sources */,
 				A8F4C437196B08F300D191DC /* PlaneGeometry.cpp in Sources */,
 				A8F4C426196AB1B800D191DC /* PerspectiveCamera.cpp in Sources */,
