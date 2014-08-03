@@ -17,6 +17,7 @@ Current Progress
 * The library is able to render primitives such as textured cube or sphere on a scene, utilizing blinn-phong shading. 
 * Normal mapping and texture mapping are implemented
 * Shader is now one per configuration, e.g. if there are 2 meshes in the scene, one uses phong lighting and normal map, while the others only have texture mapping, then 2 shaders are created for the purposes.
+* Shadow mapping is implemented, you can now cast shadow using directional and spot lights (cascade shadow is still pending though)
 
 Many codes are still unoptimized, and some of the codes are patchy in the nature, aka not the optimal solution, but at least able to show working example. 
 
