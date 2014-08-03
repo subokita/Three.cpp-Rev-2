@@ -17,12 +17,12 @@ namespace three {
         shadowDarkness    (0.55),
         shadowMapSize     (512.0, 512.0),
         shadowCameraFOV   (60.0),
-        shadowCameraLeft  (-15.0),
-        shadowCameraRight ( 15.0),
-        shadowCameraTop   ( 15.0),
-        shadowCameraBottom(-15.0),
-        shadowCameraNear  (-15.0),
-        shadowCameraFar   ( 15.0)
+        shadowCameraLeft  (-10.0),
+        shadowCameraRight ( 10.0),
+        shadowCameraTop   ( 10.0),
+        shadowCameraBottom(-10.0),
+        shadowCameraNear  ( -5.0),
+        shadowCameraFar   ( 10.0)
     {
     }
     

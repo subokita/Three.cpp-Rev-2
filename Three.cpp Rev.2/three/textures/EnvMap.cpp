@@ -31,11 +31,9 @@ namespace three {
         
         //FIXME: setting it to lower active texture no seems to interfere with other texture
         // Maybe TEXTURE_CUBE_MAP actually requires 6 slots??
-        int offset = shader_lib->config[0] + shader_lib->config[1] + shader_lib->config[2] + 1;
-
-        glActiveTexture( GL_TEXTURE0 + offset );
+        glActiveTexture( GL_TEXTURE31 );
         glBindTexture( GL_TEXTURE_CUBE_MAP, this->textureID );
-        shader->setUniform( "env_map", offset );
+        shader->setUniform( "env_map", 31 );
         
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, wrapR );
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, wrapS );

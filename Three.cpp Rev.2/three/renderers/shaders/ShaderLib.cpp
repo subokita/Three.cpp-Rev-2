@@ -186,7 +186,7 @@ namespace three {
         
         shader->setUniform( "projection_mat",   camera->getProjectionMatrix() );
         shader->setUniform( "view_mat",         camera->matrix * rot_mat );
-        shader->setUniform( "camera_pos_w",     camera->position );
+        shader->setUniform( "camera_pos_w",     camera->position * camera->quaternion );
         
         if( !object->visible )
             return;

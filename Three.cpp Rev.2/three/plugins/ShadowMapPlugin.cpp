@@ -33,6 +33,9 @@ namespace three {
         depthShader->compileShader();
         
         descendants = scene->getDescendants();
+        std::sort(descendants.begin(), descendants.end(), [](ptr<Object3D> a, ptr<Object3D> b){
+            return a->position.z < b->position.z;
+        });
         
         for( auto entry: scene->getDirectionalLights().getCollection() ) {
             ptr<DirectionalLight> light = entry.second;
@@ -209,7 +212,7 @@ namespace three {
     
     
     void ShadowMapPlugin::debugShadow() {
-        
+        #ifdef DEBUG_SHADOW
         for( int i = 0; i < lights.size(); i++ ) {
             auto light = lights[i];
             
@@ -230,6 +233,7 @@ namespace three {
             glDisableVertexAttribArray( 0 );
             passthruShader->unbind();
         }
+        #endif
     }
     
     
