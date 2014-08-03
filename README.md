@@ -12,6 +12,7 @@ This is an effort to port Three.js to OpenGL. The main idea is not to create the
 
 I'm not a 3D programmer, I wanted to have a 3D library that I can use to show the results of SLAM / PTAM or Bundle Adjustment, while most sample codes out there use pre OpenGL 3.0 for visualization, and most of them implement their own 3D viewers.
 
+
 Current Progress
 ================
 * The library is able to render primitives such as textured cube or sphere on a scene, utilizing blinn-phong shading. 
@@ -20,6 +21,26 @@ Current Progress
 * Shadow mapping is implemented, you can now cast shadow using directional and spot lights (cascade shadow is still pending though)
 
 Many codes are still unoptimized, and some of the codes are patchy in the nature, aka not the optimal solution, but at least able to show working example. 
+
+
+
+Working Examples
+================
+* Simple primitives (https://www.youtube.com/watch?v=itGcH7vIeBY):
+
+![Simple primitives](http://subokita.files.wordpress.com/2014/07/screen-shot-2014-07-17-at-14-57-53.png?w=400)
+
+* Texture and Normal mappings (https://www.youtube.com/watch?v=SIQfvJHAWus):
+
+![Texture and normal Mappings](http://subokita.files.wordpress.com/2014/07/texture-and-normal-mappings.gif?w=400)
+
+* Environment / cube map (https://www.youtube.com/watch?v=ZHX935KbJRY):
+
+![Environment map](http://subokita.files.wordpress.com/2014/07/2014-07-22-20_37_43.gif?w=400)
+
+* Shadow mapping (https://www.youtube.com/watch?v=N6oa2CyxTFQ):
+
+![Shadow mapping](http://subokita.files.wordpress.com/2014/08/2014-08-03-11_26_29.gif?w=400)
 
 
 
@@ -36,4 +57,6 @@ I'm fairly average programmer, experienced, but not super programmer. Plus, it's
 
 * Why is it OS X centric (e.g. XCode, Homebrew, etc)?
 I only own a Macbook Air.
+
+
 
