@@ -9,7 +9,12 @@
 #ifndef Three_cpp_Rev_2_internal_headers_h
 #define Three_cpp_Rev_2_internal_headers_h
 
+/* STL libraries */
 #include <iostream>
+#include <map>
+#include <vector>
+
+/* 3D related libraries */
 #include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
 #include <glm/glm.hpp>

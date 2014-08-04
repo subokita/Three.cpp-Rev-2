@@ -27,7 +27,34 @@ namespace three {
         Material();
         virtual ~Material();
         
+        /** Output stream overloading */
+        friend std::ostream &operator <<( std::ostream& os, const Material& obj ) {
+            os << "Material {" << std::endl;
+            os << "\tside               : " << &obj.side                << std::endl;
+            os << "\topacity            : " << obj.opacity             << std::endl;
+            os << "\ttransparent        : " << obj.transparent         << std::endl;
+            os << "\tblending           : " << static_cast<int>(obj.blending) << std::endl;
+            os << "\tblendSrc           : " << obj.blendSrc            << std::endl;
+            os << "\tblendDst           : " << obj.blendDst            << std::endl;
+            os << "\tblendEquation      : " << obj.blendEquation       << std::endl;
+            os << "\tdepthTest          : " << obj.depthTest           << std::endl;
+            os << "\tdepthWrite         : " << obj.depthWrite          << std::endl;
+            os << "\tpolygonOffset      : " << obj.polygonOffset       << std::endl;
+            os << "\tpolygonOffsetFactor: " << obj.polygonOffsetFactor << std::endl;
+            os << "\tpolygonOffsetUnits : " << obj.polygonOffsetUnits  << std::endl;
+            os << "\talphaTest          : " << obj.alphaTest           << std::endl;
+            os << "\toverdraw           : " << obj.overdraw            << std::endl;
+            os << "\tvisible            : " << obj.visible             << std::endl;
+            os << "\tneedsUpdate        : " << obj.needsUpdate         << std::endl;
+            os << "}";
+            return os;
+        }
         
+        void setWireframe( bool flag );
+        bool isWireframe();
+        int getWireframeLineWidth();
+        
+    public:
         /* Data members */
         SIDE side;
         SHADING shading;
@@ -51,35 +78,11 @@ namespace three {
         glm::vec3 wrapRGB;
         
         
+    protected:
         bool        wireframe;
         int         wireframeLinewidth;
         std::string wireframeLinecap;
         std::string wireframeLinejoin;
-
-        
-        
-        /** Output stream overloading */
-        friend std::ostream &operator <<( std::ostream& os, const Material& obj ) {
-            os << "Material {" << std::endl;
-            os << "\tside               : " << &obj.side                << std::endl;
-            os << "\topacity            : " << obj.opacity             << std::endl;
-            os << "\ttransparent        : " << obj.transparent         << std::endl;
-            os << "\tblending           : " << static_cast<int>(obj.blending) << std::endl;
-            os << "\tblendSrc           : " << obj.blendSrc            << std::endl;
-            os << "\tblendDst           : " << obj.blendDst            << std::endl;
-            os << "\tblendEquation      : " << obj.blendEquation       << std::endl;
-            os << "\tdepthTest          : " << obj.depthTest           << std::endl;
-            os << "\tdepthWrite         : " << obj.depthWrite          << std::endl;
-            os << "\tpolygonOffset      : " << obj.polygonOffset       << std::endl;
-            os << "\tpolygonOffsetFactor: " << obj.polygonOffsetFactor << std::endl;
-            os << "\tpolygonOffsetUnits : " << obj.polygonOffsetUnits  << std::endl;
-            os << "\talphaTest          : " << obj.alphaTest           << std::endl;
-            os << "\toverdraw           : " << obj.overdraw            << std::endl;
-            os << "\tvisible            : " << obj.visible             << std::endl;
-            os << "\tneedsUpdate        : " << obj.needsUpdate         << std::endl;
-            os << "}";
-            return os;
-        }
         
     };
 }

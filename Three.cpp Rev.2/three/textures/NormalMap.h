@@ -20,7 +20,6 @@ namespace three {
         
         NormalMap();
         ~NormalMap();
-        
         virtual void setUniforms(ptr<ShaderLib> shader_lib, bool gamma) override;
         
         glm::vec2 normalScale;

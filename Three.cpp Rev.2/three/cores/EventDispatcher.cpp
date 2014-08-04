@@ -9,6 +9,8 @@
 #include "EventDispatcher.h"
 #include "Event.h"
 
+using namespace std;
+
 namespace three {
     void EventDispatcher::addEventListener(string type, ptr<EventDispatcher> obj ){
         if( find( listeners[type].begin(), listeners[type].end(), obj) == listeners[type].end() )

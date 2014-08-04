@@ -16,12 +16,16 @@
 namespace three {
     class ShadowTexture : public Texture {
     public:
-        static ptr<ShadowTexture> create(GLuint wrap_s, GLuint wrap_t, GLuint wrap_r, GLuint mag_filter, GLuint min_filter);
-        ShadowTexture(GLuint wrap_s, GLuint wrap_t, GLuint wrap_r, GLuint mag_filter, GLuint min_filter);
+        static ptr<ShadowTexture> create(GLuint wrap_s, GLuint wrap_t, GLuint wrap_r,
+                                         GLuint mag_filter, GLuint min_filter);
         
         ~ShadowTexture();
-        
         virtual void setUniforms(ptr<ShaderLib> shader_lib, bool gamma);
+        
+    protected:
+        ShadowTexture(GLuint wrap_s, GLuint wrap_t, GLuint wrap_r,
+                      GLuint mag_filter, GLuint min_filter);
+        
     };
 }
 

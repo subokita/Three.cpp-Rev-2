@@ -32,11 +32,10 @@ namespace three {
         ~ShaderLib();
         
         void addDefinitions(ptr<Scene> scene, ptr<Mesh> mesh, bool gamma_input, bool gamma_output);
-        
         bool empty();
         
         ptr<Shader> getShader();
-        
+        const std::bitset<32> getConfig();
         std::string getID();
         std::string getVertexParams();
         std::string getFragmentParams();
@@ -53,14 +52,16 @@ namespace three {
         
         void draw( ptr<Camera> camera, ptr<Arcball> arcball, ptr<Object3D> object, bool gamma_input );
         
-    public:
+    protected:
         ShaderLib( std::string name, std::vector<std::string> precisions, std::vector<std::string> defines,
                    std::string vertex_params, std::string vertex_code,
                    std::string fragment_params, std::string fragment_code );
         
-    public:
+        
+    protected:
         ptr<Shader> shader;
         std::bitset<32> config;
+        
         std::string id;
         std::string name;
         std::string version;

@@ -116,13 +116,13 @@ namespace three {
                 glm::vec2 uv4 = uvs[y  ][x+1];
                 
                 ptr<Face3> face = Face3::create( face_index_1, face_index_2, face_index_4 );
-                face->addVertexNormals( {n1, n2, n4} );
-                face->addVertexUVs({uv1, uv2, uv4});
+                face->setVertexNormals( {n1, n2, n4} );
+                face->setVertexUVs({uv1, uv2, uv4});
                 faces.push_back( face );
                 
                 face = Face3::create( face_index_2, face_index_3, face_index_4 );
-                face->addVertexNormals({n2, n3, n4});
-                face->addVertexUVs( {uv2, uv3, uv4} );
+                face->setVertexNormals({n2, n3, n4});
+                face->setVertexUVs( {uv2, uv3, uv4} );
                 faces.push_back( face );
             }
         }
@@ -143,8 +143,8 @@ namespace three {
                     glm::vec2 uv3 = glm::vec2( uv2.x, 0.0 );
                     
                     ptr<Face3> face = Face3::create( v1, v2, v3 );
-                    face->addVertexNormals( {normal, normal, normal});
-                    face->addVertexUVs({uv1, uv2, uv3});
+                    face->setVertexNormals( {normal, normal, normal});
+                    face->setVertexUVs({uv1, uv2, uv3});
                     faces.push_back( face );
                 }
             }
@@ -164,8 +164,8 @@ namespace three {
                     glm::vec2 uv3 = glm::vec2( uv2.x, 1.0 );
                     
                     ptr<Face3> face = Face3::create( v1, v2, v3 );
-                    face->addVertexNormals( {normal, normal, normal});
-                    face->addVertexUVs({uv1, uv2, uv3});
+                    face->setVertexNormals( {normal, normal, normal});
+                    face->setVertexUVs({uv1, uv2, uv3});
                     faces.push_back( face );
                 }
             }

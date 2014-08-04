@@ -29,7 +29,7 @@ namespace three  {
         scene->setViewport(0, 0, 1600 * 2 / 4, 900 * 2 / 4);
         
         /* Create camera */
-        auto camera = PerspectiveCamera::create( 50.0, renderer.aspectRatio, 0.001, 100.0 );
+        auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100.0 );
         camera->position = glm::vec3(0.0, 1.0, 5.5);
         camera->lookAt( 0.0, 1.0, 0.0 );
         
@@ -37,21 +37,21 @@ namespace three  {
         auto sphere = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
                                    PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x222222, 130.0, true ) );
         
-        sphere->texture     = TextureUtils::loadAsTexture    ( path + "planets", "earth_atmos_2048.jpg");
-        sphere->normalMap   = TextureUtils::loadAsNormalMap  ( path + "planets", "earth_normal_2048.jpg" );
-        sphere->specularMap = TextureUtils::loadAsSpecularMap( path + "planets", "earth_specular_2048.jpg" );
+        sphere->setTexture      ( TextureUtils::loadAsTexture    ( path + "planets", "earth_atmos_2048.jpg") );
+        sphere->setNormalMap    ( TextureUtils::loadAsNormalMap  ( path + "planets", "earth_normal_2048.jpg" ) );
+        sphere->setSpecularMap  ( TextureUtils::loadAsSpecularMap( path + "planets", "earth_specular_2048.jpg" ) );
         
         
         auto sphere_2 = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
                                      PhongMaterial::create( 0xDD00DD, 0x0, 0x0, 0x222222, 130.0, true ) );
-        sphere_2->normalMap   = TextureUtils::loadAsNormalMap  ( path, "tutorial_normals07.gif" );
+        sphere_2->setNormalMap( TextureUtils::loadAsNormalMap  ( path, "tutorial_normals07.gif" ) );
         sphere_2->translate( 0.0f, 1.66f, 0.0f );
         
         /* Cube with texture and normal map */
         auto cube = Mesh::create( CubeGeometry::create( 1.0f ),
                                  PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
         
-        cube->normalMap = TextureUtils::loadAsNormalMap( path, "four_shapes_normal.tga" );
+        cube->setNormalMap( TextureUtils::loadAsNormalMap( path, "four_shapes_normal.tga" ) );
         cube->translate(2.0f, 0.0f, 0.0f);
         
         
@@ -61,16 +61,16 @@ namespace three  {
         
         auto cube_2 = Mesh::create( CubeGeometry::create( 1.0f ), cube_2_material);
         cube_2->translate(2.0f, 1.66f, 0.0f);
-        cube_2->geometry->rotateZ(45.0);
-        cube_2->geometry->rotateX(-45.0);
+        cube_2->getGeometry()->rotateZ(45.0);
+        cube_2->getGeometry()->rotateX(-45.0);
         
         /* An open cylinder with double sided rendering */
         auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 1.0, 30, 5, true),
                                      PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
-        cylinder->material->side = SIDE::DOUBLE_SIDE;
+        cylinder->getMaterial()->side = SIDE::DOUBLE_SIDE;
         
-        cylinder->texture   = TextureUtils::loadAsTexture   ( path, "rock_color.tga" );
-        cylinder->normalMap = TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" );
+        cylinder->setTexture  ( TextureUtils::loadAsTexture   ( path, "rock_color.tga" ) );
+        cylinder->setNormalMap( TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" ) );
         cylinder->translate(-2.0f, 0.0f, 0.0f);
         
         auto cylinder_geometry = CylinderGeometry::create(0.5, 0.1, 1.0, 30, 5, true);
@@ -78,8 +78,8 @@ namespace three  {
         
         auto cylinder_2 = Mesh::create( cylinder_geometry,
                                         PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
-        cylinder_2->material->side = SIDE::DOUBLE_SIDE;
-        cylinder_2->normalMap = TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" );
+        cylinder_2->getMaterial()->side = SIDE::DOUBLE_SIDE;
+        cylinder_2->setNormalMap( TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" ) );
         cylinder_2->translate(-2.0f, 1.66f, 0.0f);
         
         scene->add( sphere );
@@ -91,18 +91,18 @@ namespace three  {
         
         
         auto env = Mesh::create( CubeGeometry::create(20.0f), MeshCubeMapMaterial::create() );
-        env->texture = TextureUtils::loadAsEnvMap( path + "cube/pisa",
+        env->setTexture( TextureUtils::loadAsEnvMap( path + "cube/pisa",
                                                   "nx.png", "ny.png", "nz.png",
-                                                  "px.png", "py.png", "pz.png");
+                                                  "px.png", "py.png", "pz.png") );
         
         scene->add( env );
         
-        sphere->envMap      = downcast(env->texture, EnvMap);
-        sphere_2->envMap    = downcast(env->texture, EnvMap);
-        cube->envMap        = downcast(env->texture, EnvMap);
-        cube_2->envMap      = downcast(env->texture, EnvMap);
-        cylinder->envMap    = downcast(env->texture, EnvMap);
-        cylinder_2->envMap  = downcast(env->texture, EnvMap);
+        sphere->setEnvMap    ( downcast(env->getTexture(), EnvMap) );
+        sphere_2->setEnvMap  ( downcast(env->getTexture(), EnvMap) );
+        cube->setEnvMap      ( downcast(env->getTexture(), EnvMap) );
+        cube_2->setEnvMap    ( downcast(env->getTexture(), EnvMap) );
+        cylinder->setEnvMap  ( downcast(env->getTexture(), EnvMap) );
+        cylinder_2->setEnvMap( downcast(env->getTexture(), EnvMap) );
         
         
         /* Create directional light */
@@ -142,12 +142,12 @@ namespace three  {
                         return;
                         
                     case GLFW_KEY_W:
-                        toggle(sphere->material->wireframe);
-                        toggle(sphere_2->material->wireframe);
-                        toggle(cube->material->wireframe);
-                        toggle(cube_2->material->wireframe);
-                        toggle(cylinder->material->wireframe);
-                        toggle(cylinder_2->material->wireframe);
+                        sphere->getMaterial()->setWireframe     (!sphere->getMaterial()->isWireframe());
+                        sphere_2->getMaterial()->setWireframe   (!sphere_2->getMaterial()->isWireframe());
+                        cube->getMaterial()->setWireframe       (!cube->getMaterial()->isWireframe());
+                        cube_2->getMaterial()->setWireframe     (!cube_2->getMaterial()->isWireframe());
+                        cylinder->getMaterial()->setWireframe   (!cylinder->getMaterial()->isWireframe());
+                        cylinder_2->getMaterial()->setWireframe (!cylinder_2->getMaterial()->isWireframe());
                         break;
                         
                     case GLFW_KEY_R: /* Toggle rotation */
@@ -160,9 +160,9 @@ namespace three  {
             }
         });
         
-        renderer.gammaInput  = true;
-        renderer.gammaOutput = true;
-        renderer.clearColor = scene->getFog()->color;
+        renderer.setGamma( true, true );
+        
+        renderer.setClearColor( scene->getFog()->color );
         renderer.render(scene, camera );
     }
 }

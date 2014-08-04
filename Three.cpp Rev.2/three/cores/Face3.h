@@ -25,26 +25,31 @@ namespace three {
         
         ~Face3();
         
-        void addVertexNormals( std::initializer_list<glm::vec3> vertex_normals );
-        void addVertexUVs( std::initializer_list<glm::vec2> vertex_uvs );
-        void addVertexColors( std::initializer_list<Color> vertex_colors );
+        void setVertexNormals( std::initializer_list<glm::vec3> vertex_normals );
+        void setVertexUVs( std::initializer_list<glm::vec2> vertex_uvs );
+        void setVertexColors( std::initializer_list<Color> vertex_colors );
+        
+        const glm::vec3& getFaceNormal();
+        void setFaceNormal(glm::vec3 normal);
+        void setFaceNormal(float x, float y, float z);
         
     protected:
         Face3();
         Face3( int a, int b, int c );
         Face3( int a, int b, int c, glm::vec3 normal, Color color, int material_index );
         
-        
+    /* Data members */
     public:
-        /* Data members */
-        int                    a;
-        int                    b;
-        int                    c;
+        int a;
+        int b;
+        int c;
+        glm::vec3 vertexNormals[3];
+        glm::vec2 uvs[3];
+        
+    protected:
         glm::vec3              normal;
         Color                  color;
         int                    materialIndex;
-        std::vector<glm::vec2> uvs;
-        std::vector<glm::vec3> vertexNormals;
         std::vector<glm::vec3> vertexTangents;
         std::vector<Color>     vertexColors;
         
@@ -57,7 +62,8 @@ namespace three {
             os << "\tb            : " << obj.b             << std::endl;
             os << "\tc            : " << obj.c             << std::endl;
             os << "\tnormal       : " << Utils::toString( obj.normal ) << std::endl;
-            os << "\tuvs          : " << Utils::toString( obj.uvs ) << std::endl;
+            os << "\tvertexNormals: " << Utils::toString( obj.vertexNormals, 3 ) << std::endl;
+            os << "\tuvs          : " << Utils::toString( obj.uvs, 3 ) << std::endl;
             os << "\tcolor        : " << obj.color         << std::endl;
             os << "\tmaterialIndex: " << obj.materialIndex << std::endl;
             os << "}";

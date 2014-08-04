@@ -21,8 +21,10 @@ namespace three {
         ~PerspectiveCamera();
         virtual void updateProjectionMatrix() override;
         
+        //FIXME: implement this
         void setLens( const float focal_length, const float frame_height );
         
+        //FIXME: implement this
         void setViewOffset( const float full_width, const float full_height,
                             const float x, const float y, const float width, const float height );
         

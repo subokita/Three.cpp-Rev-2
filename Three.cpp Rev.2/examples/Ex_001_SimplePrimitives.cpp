@@ -26,7 +26,7 @@ namespace three  {
         scene->setViewport(0, 0, 1600 * 3 / 4, 900 * 3 / 4);
         
         /* Create camera */
-        auto camera = PerspectiveCamera::create( 50.0, renderer.aspectRatio, 0.001, 100.0 );
+        auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100.0 );
         camera->position = glm::vec3(0.0, 0.0, 5.5);
         camera->lookAt( 0.0, 0.0, 0.0 );
         
@@ -41,7 +41,7 @@ namespace three  {
         
         auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.3, 1.0, 30, 5, true),
                                       PhongMaterial::create( 0xCCCC00, 0x0, 0x0, 0x111111, 150.0, false ) );
-        cylinder->material->side = SIDE::DOUBLE_SIDE;
+        cylinder->getMaterial()->side = SIDE::DOUBLE_SIDE;
         cylinder->translate(-2.0f, 0.0f, 0.0f);
 
         scene->add( sphere );
@@ -97,9 +97,9 @@ namespace three  {
             }
         });
         
-        renderer.gammaInput  = true;
-        renderer.gammaOutput = true;
-        renderer.clearColor = scene->getFog()->color;
+        renderer.setGamma( true, true );
+        
+        renderer.setClearColor( scene->getFog()->color );
         renderer.render(scene, camera );
     }
 }

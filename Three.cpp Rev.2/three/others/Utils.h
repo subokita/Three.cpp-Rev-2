@@ -32,7 +32,10 @@ namespace three {
         static std::string toString( const std::vector<int>& vec );
         static std::string toString( const std::vector<float>& vec );
         
+        
+        static std::string toString( const glm::vec2 * vec, const uint size );
         static std::string toString( const std::vector<glm::vec2>& vec );
+        static std::string toString( const glm::vec3 * vec, const uint size );
         static std::string toString( const std::vector<glm::vec3>& vec );
         
         static std::string toString( const glm::vec2& vec );
@@ -44,33 +47,35 @@ namespace three {
     };
     
     
-    static std::ostream &operator <<( std::ostream& os, const std::vector<glm::vec2>& obj ) {
-        return os << Utils::toString(obj);
-    }
-    
-    static std::ostream &operator <<( std::ostream& os, const glm::vec2& obj ) {
-        return os << Utils::toString(obj);
-    }
-    
-    static std::ostream &operator <<( std::ostream& os, const glm::vec3& obj ) {
-        return os << Utils::toString(obj);
-    }
-    
-    static std::ostream &operator <<( std::ostream& os, const glm::vec4& obj ) {
-        return os << Utils::toString(obj);
-    }
-    
-    static std::ostream &operator <<( std::ostream& os, const glm::mat4& obj ) {
-        return os << Utils::toString(obj);
-    }
+}
 
-    static std::ostream &operator <<( std::ostream& os, const glm::mat3& obj ) {
-        return os << Utils::toString(obj);
-    }
-    
-    static std::ostream &operator <<( std::ostream& os, const glm::quat& obj ) {
-        return os << Utils::toString(obj);
-    }
+
+static std::ostream &operator <<( std::ostream& os, const std::vector<glm::vec2>& obj ) {
+    return os << three::Utils::toString(obj);
+}
+
+static std::ostream &operator <<( std::ostream& os, const glm::vec2& obj ) {
+    return os << three::Utils::toString(obj);
+}
+
+static std::ostream &operator <<( std::ostream& os, const glm::vec3& obj ) {
+    return os << three::Utils::toString(obj);
+}
+
+static std::ostream &operator <<( std::ostream& os, const glm::vec4& obj ) {
+    return os << three::Utils::toString(obj);
+}
+
+static std::ostream &operator <<( std::ostream& os, const glm::mat4& obj ) {
+    return os << three::Utils::toString(obj);
+}
+
+static std::ostream &operator <<( std::ostream& os, const glm::mat3& obj ) {
+    return os << three::Utils::toString(obj);
+}
+
+static std::ostream &operator <<( std::ostream& os, const glm::quat& obj ) {
+    return os << three::Utils::toString(obj);
 }
 
 #endif /* defined(__Three_cpp__Utils__) */

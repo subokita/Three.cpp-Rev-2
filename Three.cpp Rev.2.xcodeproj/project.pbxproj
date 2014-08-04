@@ -436,8 +436,8 @@
 				A8F4C3F7196A825E00D191DC /* Shader.cpp */,
 				A8F4C3F8196A825E00D191DC /* Shader.h */,
 				A88AF9E7196BB6B500601287 /* ShaderChunks.h */,
-				A88AF9ED196BC15200601287 /* ShaderLib.h */,
 				A8B372EC197BEA43009B168D /* ShaderLib.cpp */,
+				A88AF9ED196BC15200601287 /* ShaderLib.h */,
 				A8D56834198B785E0003385B /* ShaderLibraries.h */,
 			);
 			path = shaders;

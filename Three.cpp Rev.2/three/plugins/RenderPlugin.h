@@ -21,7 +21,7 @@ namespace three {
         virtual void init( ptr<Scene>, ptr<Camera> ) = 0;
         virtual void render( ptr<Scene>, ptr<Arcball> arcball, ptr<Camera> ) = 0;
         
-    public:
+    protected:
         std::vector<ptr<Object3D>> descendants;
     };
 }

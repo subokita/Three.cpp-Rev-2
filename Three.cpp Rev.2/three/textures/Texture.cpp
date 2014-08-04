@@ -55,6 +55,7 @@ namespace three {
         return this->textureID;
     }
     
+    
     void Texture::bind() {
         glBindTexture(static_cast<GLuint>(this->type) , this->textureID);
     }

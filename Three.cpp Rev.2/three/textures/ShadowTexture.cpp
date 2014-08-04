@@ -28,7 +28,7 @@ namespace three  {
     void ShadowTexture::setUniforms(ptr<ShaderLib> shader_lib, bool gamma) {
         auto shader = shader_lib->getShader();
         
-        int offset = shader_lib->config[0] + shader_lib->config[1] + shader_lib->config[2] + shader_lib->config[3];
+        int offset = shader_lib->getConfig()[0] + shader_lib->getConfig()[1] + shader_lib->getConfig()[2] + shader_lib->getConfig()[3];
         
         glActiveTexture( GL_TEXTURE0 + offset );
         bind();

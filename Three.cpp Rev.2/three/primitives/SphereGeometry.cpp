@@ -108,27 +108,27 @@ namespace three {
                     uv1.x = (uv1.x + uv2.x) / 2.0;
                     
                     ptr<Face3> face = Face3::create( v1, v3, v4 );
-                    face->addVertexNormals({n1, n3, n4});
-                    face->addVertexUVs({uv1, uv3, uv4});
+                    face->setVertexNormals({n1, n3, n4});
+                    face->setVertexUVs({uv1, uv3, uv4});
                     faces.push_back( face );
                 }
                 else if( fabs( this->vertices[v3].y ) == radius ) {
                     uv3.x = (uv3.x + uv4.x) / 2.0;
                     
                     ptr<Face3> face = Face3::create( v1, v2, v3 );
-                    face->addVertexNormals({n1, n2, n3});
-                    face->addVertexUVs({uv1, uv2, uv3});
+                    face->setVertexNormals({n1, n2, n3});
+                    face->setVertexUVs({uv1, uv2, uv3});
                     faces.push_back( face );
                 }
                 else {
                     ptr<Face3> face = Face3::create( v1, v2, v4 );
-                    face->addVertexNormals({n1, n2, n4});
-                    face->addVertexUVs({uv1, uv2, uv4});
+                    face->setVertexNormals({n1, n2, n4});
+                    face->setVertexUVs({uv1, uv2, uv4});
                     faces.push_back( face );
                     
                     face = Face3::create( v2, v3, v4 );
-                    face->addVertexNormals({n2, n3, n4});
-                    face->addVertexUVs({uv2, uv3, uv4});
+                    face->setVertexNormals({n2, n3, n4});
+                    face->setVertexUVs({uv2, uv3, uv4});
                     faces.push_back( face );
                 }
             }

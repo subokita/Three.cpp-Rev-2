@@ -51,4 +51,16 @@ namespace three {
     Material::~Material() {
         
     }
+    
+    void Material::setWireframe( bool flag ) {
+        this->wireframe = flag;
+    }
+    
+    bool Material::isWireframe() {
+        return wireframe;
+    }
+    
+    int Material::getWireframeLineWidth() {
+        return wireframeLinewidth;
+    }
 }

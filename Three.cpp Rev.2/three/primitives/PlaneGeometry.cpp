@@ -76,13 +76,13 @@ namespace three {
                 glm::vec2 uvd( ( ix + 1 ) / gridX, 1 - iz / gridZ );
                 
                 ptr<Face3> face = Face3::create( a, b, d, normal );
-                face->addVertexNormals({normal, normal, normal});
-                face->addVertexUVs({uva, uvb, uvd});
+                face->setVertexNormals({normal, normal, normal});
+                face->setVertexUVs({uva, uvb, uvd});
                 faces.push_back( face );
                 
                 face = Face3::create( b, c, d, normal );
-                face->addVertexNormals({normal, normal, normal});
-                face->addVertexUVs({uvb, uvc, uvd});
+                face->setVertexNormals({normal, normal, normal});
+                face->setVertexUVs({uvb, uvc, uvd});
                 faces.push_back( face );
             }
         }

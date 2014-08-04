@@ -30,7 +30,7 @@ namespace three {
     void SpecularMap::setUniforms(ptr<ShaderLib> shader_lib, bool gamma) {
         auto shader = shader_lib->getShader();
         
-        int offset = shader_lib->config[0] + shader_lib->config[1];
+        int offset = shader_lib->getConfig()[0] + shader_lib->getConfig()[1];
         
         glActiveTexture( GL_TEXTURE0 + offset );
         bind();

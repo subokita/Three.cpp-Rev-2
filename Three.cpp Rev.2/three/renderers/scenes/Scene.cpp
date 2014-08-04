@@ -129,7 +129,7 @@ namespace three {
         vector<glm::vec2> shadow_map_sizes;
         vector<ptr<ShadowTexture>> shadow_textures;
         
-        int offset = shader_lib->config[0] + shader_lib->config[1] + shader_lib->config[2] + shader_lib->config[3];
+        int offset = shader_lib->getConfig()[0] + shader_lib->getConfig()[1] + shader_lib->getConfig()[2] + shader_lib->getConfig()[3];
         
         for( auto entry : directionalLights.getCollection() ) {
             ptr<DirectionalLight> light = entry.second;

@@ -22,17 +22,6 @@ namespace three {
         
         virtual void updateProjectionMatrix() override;
         
-    public:
-        OrthographicCamera();
-        OrthographicCamera( float left, float right, float top, float bottom, float near, float far );
-        
-        /* Data members */
-        float left;
-        float right;
-        float top;
-        float bottom;
-        float near;
-        float far;
         
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const OrthographicCamera& obj ) {
@@ -46,6 +35,19 @@ namespace three {
             os << "}";
             return os;
         }
+        
+    protected:
+        OrthographicCamera();
+        OrthographicCamera( float left, float right, float top, float bottom, float near, float far );
+        
+    public:
+        /* Data members */
+        float left;
+        float right;
+        float top;
+        float bottom;
+        float near;
+        float far;
     };
 }
 

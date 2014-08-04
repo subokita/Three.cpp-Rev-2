@@ -14,16 +14,17 @@ using namespace std;
 
 namespace three {
     ptr<ShaderLib> ShaderLib::create( ptr<Mesh> mesh ) {
-        if( instance_of(mesh->material, PhongMaterial) )
+        /* Return appropriate shader libs according to material type */
+        if( instance_of(mesh->getMaterial(), PhongMaterial) )
             return SHADERLIB_PHONG->clone();
         
-        else if ( instance_of(mesh->material, MeshCubeMapMaterial ) )
+        else if ( instance_of(mesh->getMaterial(), MeshCubeMapMaterial ) )
             return SHADERLIB_CUBEMAP->clone();
         
-        else if ( instance_of(mesh->material, BasicMaterial ) )
+        else if ( instance_of(mesh->getMaterial(), BasicMaterial ) )
             return SHADERLIB_BASIC->clone();
         
-        else if ( instance_of(mesh->material, LambertMaterial))
+        else if ( instance_of(mesh->getMaterial(), LambertMaterial))
             return SHADERLIB_LAMBERT->clone();
         
         return nullptr;
@@ -48,8 +49,7 @@ namespace three {
         vertexCode    ( vertex_code ),
         fragmentParams( fragment_params ),
         fragmentCode  ( fragment_code )
-    {
-    }
+    {}
     
     
     ShaderLib::ShaderLib( const ShaderLib& rhs ) :
@@ -107,22 +107,22 @@ namespace three {
         
         config.reset();
         
-        if( mesh->texture != nullptr ) {
+        if( mesh->hasTexture() ) {
             this->defines.push_back( "#define USE_MAP" );
             config[0] = 1;
         }
         
-        if( mesh->normalMap != nullptr ) {
+        if( mesh->hasNormalMap() ) {
             this->defines.push_back( "#define USE_NORMALMAP" );
             config[1] = 1;
         }
         
-        if( mesh->specularMap!= nullptr ) {
+        if( mesh->hasSpecularMap() ) {
             this->defines.push_back( "#define USE_SPECULARMAP" );
             config[2] = 1;
         }
         
-        if( mesh->envMap != nullptr ) {
+        if( mesh->hasEnvMap() ) {
             this->defines.push_back( "#define USE_ENVMAP" );
             config[3] = 1;
         }
@@ -144,20 +144,20 @@ namespace three {
         }
         
         
-        if( mesh->material->alphaTest > 0.0 ) {
+        if( mesh->getMaterial()->alphaTest > 0.0 ) {
             ss.str("");
-            ss << "#define ALPHATEST " << mesh->material->alphaTest ;
+            ss << "#define ALPHATEST " << mesh->getMaterial()->alphaTest ;
             this->defines.push_back( ss.str() );
             config[5] = 1;
         }
         
         
-        if( mesh->material->wrapAround ) {
+        if( mesh->getMaterial()->wrapAround ) {
             this->defines.push_back( "#define WRAP_AROUND" );
             config[6] = 1;
         }
         
-        if( mesh->material->side == SIDE::DOUBLE_SIDE ) {
+        if( mesh->getMaterial()->side == SIDE::DOUBLE_SIDE ) {
             this->defines.push_back( "#define DOUBLE_SIDED" );
             config[7] = 1;
         }
@@ -176,7 +176,7 @@ namespace three {
     }
     
     /**
-     * 
+     * Draw all the meshes, and set the appropriate uniforms
      */
     void ShaderLib::draw( ptr<Camera> camera, ptr<Arcball> arcball, ptr<Object3D> object, bool gamma_input ) {
         glm::mat4 rot_mat(1.0);
@@ -214,6 +214,9 @@ namespace three {
         return fragmentCode.empty() || vertexCode.empty();
     }
     
+    const bitset<32> ShaderLib::getConfig() {
+        return config;
+    }
     
     string ShaderLib::getVertexParams() {
         return this->vertexParams;

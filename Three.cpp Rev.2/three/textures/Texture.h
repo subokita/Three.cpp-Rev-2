@@ -27,16 +27,18 @@ namespace three {
         ~Texture();
         
         const GLuint genTexture();
-        void bind();
         
+        void bind();
         virtual void setUniforms(ptr<ShaderLib> shader_lib, bool gamma) override;
         
+        
     public:
-        unsigned int width;
-        unsigned int height;
+        GLuint textureID;
+        uint width;
+        uint height;
         
         TEXTURE_TYPE type;
-        GLuint textureID;
+
         GLuint wrapS;
         GLuint wrapT;
         GLuint wrapR;

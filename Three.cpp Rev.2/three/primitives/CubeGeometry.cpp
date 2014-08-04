@@ -132,17 +132,17 @@ namespace three {
 				glm::vec2 uvd = glm::vec2( ( ix + 1.0 ) / grid_x, 1.0 - iy / grid_y );
                 
 				ptr<Face3> face = Face3::create( a + offset, b + offset, d + offset );
-				face->normal = normal;
-                face->materialIndex = material_index;
-                face->addVertexNormals( {normal, normal, normal});
-                face->addVertexUVs({uva, uvb, uvd});
+				face->setFaceNormal( normal );
+//                face->materialIndex = material_index;
+                face->setVertexNormals( {normal, normal, normal});
+                face->setVertexUVs({uva, uvb, uvd});
 				faces.push_back( face );
                 
 				face = Face3::create( b + offset, c + offset, d + offset );
-				face->normal = normal ;
-                face->materialIndex = material_index;
-                face->addVertexNormals( {normal, normal, normal});
-                face->addVertexUVs({uvb, uvc, uvd});
+				face->setFaceNormal( normal );
+//                face->materialIndex = material_index;
+                face->setVertexNormals( {normal, normal, normal});
+                face->setVertexUVs({uvb, uvc, uvd});
 				faces.push_back( face );
 			}
 		}

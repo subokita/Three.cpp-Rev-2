@@ -10,20 +10,14 @@
 #define __Three_cpp_Rev_2__Renderer__
 
 #include <iostream>
-
-#include <OpenGL/gl3.h>
-#include <GLFW/glfw3.h>
+#include <map>
+#include <vector>
 
 #include "internal_headers.h"
-
-#include "ShaderLib.h"
-#include "Shader.h"
-#include "Scene.h"
-#include "Camera.h"
-#include "Arcball.h"
+#include "Color.h"
 
 namespace three {
-    class Renderer : public enable_shared_from_this<Renderer> {
+    class Renderer : public std::enable_shared_from_this<Renderer> {
     public:
         Renderer();
         virtual ~Renderer();
@@ -40,17 +34,12 @@ namespace three {
         void setMouseButtonCallbackHandler( std::function<void(GLFWwindow*, int, int, int)> handler );
         void setCursorCallbackHandler     ( std::function<void(GLFWwindow*, double, double)> handler );
         
-        void renderPlugins( std::vector<ptr<RenderPlugin>>& plugins, ptr<Scene> scene, ptr<Camera> camera );
-        
         GLuint getWidth();
         GLuint getHeight();
         
-    public:
-        bool gammaInput;
-        bool gammaOutput;
-        Color clearColor;
-        float clearAlpha;
-        float aspectRatio;
+        void setGamma( const bool input, const bool output );
+        void setClearColor( Color clear_color = 0xFFFFFF );
+        const float getAspectRatio();
         
     protected:
         static void errorCallback          ( int error, const char * desc );
@@ -59,33 +48,43 @@ namespace three {
         static void scrollCallback         ( GLFWwindow *window, double x, double y );
         static void mouseButtonCallback    ( GLFWwindow * window, int button, int action, int mods );
         static void cursorCallback         ( GLFWwindow *window, double x, double y );
+        
         void initCallbacks();
-
+        void renderPlugins( std::vector<ptr<RenderPlugin>>& plugins, ptr<Scene> scene, ptr<Camera> camera );
         
     protected:
         ptr<RenderTarget> renderTarget;
         ptr<Arcball> arcball;
         ptr<Scene> scene;
         ptr<Camera> camera;
+        ptr<ShadowMapPlugin> shadowMapPlugin;
+        
         static Renderer* instance;
+        
+        bool gammaInput;
+        bool gammaOutput;
+        Color clearColor;
+        float clearAlpha;
+        float aspectRatio;
+        
         GLuint width;
         GLuint height;
         GLuint vertexArrayId;
         
         GLFWwindow* window;
         
-        
         std::map<std::string, ptr<ShaderLib>> shaderLibs;
         std::vector<ptr<RenderPlugin>> preRenderPlugins;
         std::vector<ptr<RenderPlugin>> postRenderPlugins;
         
-        std::function<void()> postRenderCallback = [](){};
-        std::function<void(int, const char*)> errorCallbackHandler;
-        std::function<void(GLFWwindow*, int, int)> frameBufferSizeHandler;
+        /* All the function callback pointers */
+        std::function<void()>                                postRenderCallback = [](){};
+        std::function<void(int, const char*)>                errorCallbackHandler;
+        std::function<void(GLFWwindow*, int, int)>           frameBufferSizeHandler;
         std::function<void(GLFWwindow*, int, int, int, int)> keyCallbackHandler;
-        std::function<void(GLFWwindow*, double, double)> scrollCallbackHandler;
-        std::function<void(GLFWwindow*, int, int, int)> mouseButtonCallbackHandler;
-        std::function<void(GLFWwindow*, double, double)> cursorCallbackHandler;
+        std::function<void(GLFWwindow*, double, double)>     scrollCallbackHandler;
+        std::function<void(GLFWwindow*, int, int, int)>      mouseButtonCallbackHandler;
+        std::function<void(GLFWwindow*, double, double)>     cursorCallbackHandler;
     };
 }
 

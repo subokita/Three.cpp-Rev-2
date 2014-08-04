@@ -23,7 +23,7 @@ namespace three {
         vertexArrayId( -1 ),
         gammaInput   ( false ),
         gammaOutput  ( false ),
-        clearColor   ( 0x000000 ),
+        clearColor   ( 0x0 ),
         clearAlpha   ( 1.0 ),
         renderTarget ( RenderTarget::create( GL_FRAMEBUFFER, 0) )
     {}
@@ -66,13 +66,11 @@ namespace three {
         glBindVertexArray(vertexArrayId);
         
         arcball = Arcball::create(width, height, 2.0f);
-        
+        shadowMapPlugin = ShadowMapPlugin::create();
         
         initCallbacks();
         instance = this;
-        
     }
-    
     
     GLuint Renderer::getWidth(){
         return this->width;
@@ -80,6 +78,19 @@ namespace three {
     
     GLuint Renderer::getHeight() {
         return this->height;
+    }
+    
+    void Renderer::setGamma( const bool input, const bool output ) {
+        this->gammaInput  = input;
+        this->gammaOutput = output;
+    }
+    
+    void Renderer::setClearColor( Color clear_color ) {
+        this->clearColor = clear_color;
+    }
+    
+    const float Renderer::getAspectRatio() {
+        return this->aspectRatio;
     }
     
     void Renderer::setDefaultGLState() {
@@ -97,8 +108,6 @@ namespace three {
         glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
         
         glCullFace( GL_BACK );
-        
-        glViewport(0, 0, width, height);
     }
     
     /**
@@ -127,6 +136,7 @@ namespace three {
         };
         
         scrollCallbackHandler = []( GLFWwindow *window, double x, double y ) {
+            /* Handle zooming using mouse scroll */
             auto cam = instance->camera;
             glm::vec3 dir = glm::normalize(cam->target->position - cam->position) * static_cast<float>(-y);
             if( glm::length((cam->position - dir)) == 0.0 )
@@ -161,16 +171,16 @@ namespace three {
         
         this->scene = scene;
         this->camera = camera;
-        
         this->scene->update();
         
         vector<ptr<Object3D>> descendants = scene->getDescendants();
         
+        /* Try to get a set of unique shaders for each objects in the scene */
         for( auto object: descendants ) {
             if( instance_of(object, Mesh)) {
                 ptr<Mesh> mesh = downcast(object, Mesh);
                 
-                if( mesh->geometry != nullptr && !mesh->glBuffersInitialized )
+                if( mesh->hasGeometry() && !mesh->areGLBuffersInitialized() )
                     mesh->initGLBuffers();
                 
                 ptr<ShaderLib> shader_lib = ShaderLib::create(mesh);
@@ -184,8 +194,7 @@ namespace three {
             }
         }
         
-        auto shadow_map = ShadowMapPlugin::create();
-        this->preRenderPlugins.push_back( shadow_map );
+        this->preRenderPlugins.push_back( shadowMapPlugin );
         
         for( ptr<RenderPlugin> pre_render_plugin: preRenderPlugins )
             pre_render_plugin->init(scene, camera);
@@ -193,17 +202,19 @@ namespace three {
         const Rect viewport = scene->getViewportSize();
         
         while( !glfwWindowShouldClose( window )) {
+            /* Update objects' world matrices */
+            for( auto object: descendants )
+                object->updateMatrixWorld(false);
+            
             renderPlugins( preRenderPlugins, scene, camera );
 
+            /* Render the scene */
             renderTarget->bind();
-
             setDefaultGLState();
             glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
             glViewport(viewport.x, viewport.y, viewport.width, viewport.height);
 
             for( auto object: descendants ){
-                object->updateMatrixWorld(false);
-                
                 if( instance_of(object, Mesh) == false )
                     continue;
                 
@@ -217,8 +228,8 @@ namespace three {
             }
 
             #ifdef DEBUG_SHADOW
-            if( shadow_map != nullptr )
-                shadow_map->debugShadow();
+            if( shadowMapPlugin != nullptr )
+                shadowMapPlugin->debugShadow();
             #endif
             
             renderPlugins( postRenderPlugins, scene, camera );

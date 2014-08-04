@@ -17,21 +17,24 @@ namespace three {
         
     public:
         static ptr<RenderTarget> create( GLenum target, GLuint framebuffer );
-        RenderTarget( GLenum target, GLuint framebuffer );
         ~RenderTarget();
         
         void bind();
         void generateFrameBuffer();
-        
-    public:
+    
+    protected:
+        RenderTarget( GLenum target, GLuint framebuffer );
         GLenum target;
         GLuint framebuffer;
         
-        GLuint width;
-        GLuint height;
-        FILTER minFilter;
-        FILTER magFilter;
-        PIXEL_FORMAT format;
+/* FIXME: For now these ar ecommented out, they seems to be more of texture's properties */
+//    public:
+//        GLuint width;
+//        GLuint height;
+//        FILTER minFilter;
+//        FILTER magFilter;
+//        PIXEL_FORMAT format;
+
         
     };
 }

@@ -12,9 +12,6 @@
 using namespace std;
 
 namespace three {
-    ptr<Mesh> Mesh::create(){
-        return make_shared<Mesh>();
-    }
     
     ptr<Mesh> Mesh::create(ptr<Geometry> geometry, ptr<Material> material) {
         return make_shared<Mesh>( Mesh(geometry, material) );
@@ -26,15 +23,90 @@ namespace three {
     Mesh::Mesh( ptr<Geometry> geometry, ptr<Material> material ) :
         geometry            ( geometry ),
         material            ( material ),
-        glBuffersInitialized(false),
-        bufferIDs           ( vector<GLuint>(4, 0) )
+        glBuffersInitialized(false)
     {}
     
     Mesh::~Mesh() {
         if( glBuffersInitialized )
-            glDeleteBuffers(4, &bufferIDs[0] );
+            glDeleteBuffers(4, bufferIDs );
     }
     
+    
+    bool Mesh::hasTexture(){
+        return texture != nullptr;
+    }
+    
+    bool Mesh::hasNormalMap() {
+        return normalMap != nullptr;
+    }
+    
+    bool Mesh::hasSpecularMap() {
+        return specularMap != nullptr;
+    }
+    
+    bool Mesh::hasEnvMap() {
+        return envMap != nullptr;
+    }
+    
+    bool Mesh::hasGeometry() {
+        return geometry != nullptr;
+    }
+    
+    bool Mesh::hasMaterial() {
+        return material != nullptr;
+    }
+    
+    bool Mesh::areGLBuffersInitialized() {
+        return this->glBuffersInitialized;
+    }
+    
+    const ptr<Texture> Mesh::getTexture() {
+        return this->texture;
+    }
+    
+    const ptr<NormalMap> Mesh::getNormalMap() {
+        return this->normalMap;
+    }
+    
+    const ptr<SpecularMap> Mesh::getSpecularMap() {
+        return this->specularMap;
+    }
+    
+    const ptr<EnvMap> Mesh::getEnvMap() {
+        return this->envMap;
+    }
+    
+    const ptr<Geometry> Mesh::getGeometry() {
+        return this->geometry;
+    }
+    
+    const ptr<Material> Mesh::getMaterial() {
+        return this->material;
+    }
+    
+    void Mesh::setTexture( const ptr<Texture> texture ) {
+        this->texture = texture;
+    }
+    
+    void Mesh::setNormalMap( const ptr<NormalMap> normal_map ) {
+        this->normalMap = normal_map;
+    }
+    
+    void Mesh::setSpecularMap( const ptr<SpecularMap> specular_map ) {
+        this->specularMap = specular_map;
+    }
+    
+    void Mesh::setEnvMap( const ptr<EnvMap> env_map ) {
+        this->envMap = env_map;
+    }
+    
+    void Mesh::setGeometry( const ptr<Geometry> geometry ) {
+        this->geometry = geometry;
+    }
+    
+    void Mesh::setMaterial( const ptr<Material> material ) {
+        this->material = material;
+    }
     
     void Mesh::setUniforms(ptr<ShaderLib> shader_lib, bool gamma ) {
         auto shader = shader_lib->getShader();
@@ -88,8 +160,7 @@ namespace three {
 //            normal = normal * geometry->quaternion;
         
         
-        //FIXME: Indexed VBO messes the uv for textures
-        glGenBuffers( 4, &bufferIDs[0] );
+        glGenBuffers( 4, bufferIDs );
         glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[0] );
         glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec3 ) * geometry->vertices.size(), &geometry->vertices[0], GL_STATIC_DRAW );
         
@@ -109,8 +180,8 @@ namespace three {
     
     void Mesh::draw() {
         
-        glPolygonMode( GL_FRONT_AND_BACK, material->wireframe ? GL_LINE : GL_FILL );
-        glLineWidth( material->wireframeLinewidth );
+        glPolygonMode( GL_FRONT_AND_BACK, material->isWireframe() ? GL_LINE : GL_FILL );
+        glLineWidth( material->getWireframeLineWidth() );
         
         if( material->side == SIDE::DOUBLE_SIDE )  {
             glDisable( GL_CULL_FACE );

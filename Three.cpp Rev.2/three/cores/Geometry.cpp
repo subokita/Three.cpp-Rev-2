@@ -26,7 +26,7 @@ namespace three {
             glm::vec3 a = this->vertices[face->a];
             glm::vec3 b = this->vertices[face->b];
             glm::vec3 c = this->vertices[face->c];
-            face->normal = glm::normalize( glm::cross(c - b, a - b) );
+            face->setFaceNormal(glm::normalize( glm::cross(c - b, a - b) ));
         }
     }
     
@@ -36,13 +36,11 @@ namespace three {
         
         if( area_weighted ) {
             for( ptr<Face3> face : faces ) {
-                glm::vec3 a = this->vertices[face->a];
-                glm::vec3 b = this->vertices[face->b];
-                glm::vec3 c = this->vertices[face->c];
+                glm::vec3& a = this->vertices[face->a];
+                glm::vec3& b = this->vertices[face->b];
+                glm::vec3& c = this->vertices[face->c];
                 
-                glm::vec3 cb = c - b;
-                glm::vec3 ab = a - b;
-                cb = glm::cross(cb, ab);
+                glm::vec3 cb = glm::cross(c - b, a - b);
                 
                 vertices[face->a] += cb;
                 vertices[face->b] += cb;
@@ -51,9 +49,10 @@ namespace three {
         }
         else {
             for( ptr<Face3> face : faces ) {
-                vertices[face->a] += face->normal;
-                vertices[face->b] += face->normal;
-                vertices[face->c] += face->normal;
+                const glm::vec3& normal = face->getFaceNormal();
+                vertices[face->a] += normal;
+                vertices[face->b] += normal;
+                vertices[face->c] += normal;
             }
         }
         
@@ -61,11 +60,11 @@ namespace three {
             vertex = glm::normalize( vertex );
         
         for( ptr<Face3> face: faces ) {
-            face->vertexNormals.resize(3);
-            
-            face->vertexNormals[0] = vertices[face->a];
-            face->vertexNormals[1] = vertices[face->b];
-            face->vertexNormals[2] = vertices[face->c];
+            face->setVertexNormals({
+                vertices[face->a],
+                vertices[face->b],
+                vertices[face->c]
+            });
         }
     }
     
@@ -155,9 +154,11 @@ namespace three {
         
         /* Normalizing the vertex normals */
         for( auto face: faces ) {
-            face->vertexNormals[0] = glm::normalize(face->vertexNormals[0] );
-            face->vertexNormals[1] = glm::normalize(face->vertexNormals[1] );
-            face->vertexNormals[2] = glm::normalize(face->vertexNormals[2] );
+            face->setVertexNormals({
+                glm::normalize(face->vertexNormals[0]),
+                glm::normalize(face->vertexNormals[1]),
+                glm::normalize(face->vertexNormals[2])
+            });
         }
     }
 }

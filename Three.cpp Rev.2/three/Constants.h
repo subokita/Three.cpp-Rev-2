@@ -10,14 +10,12 @@
 #define __Three_cpp_Rev_2__Constants__
 
 #include <iostream>
-#include <vector>
 #include <numeric>
 #include <OpenGL/gl3.h>
 #include <glm/glm.hpp>
 
 #define instance_of(var, type) ( std::dynamic_pointer_cast<type>(var) != nullptr )
 #define downcast(var, type) (std::dynamic_pointer_cast<type>(var))
-#define toggle( var ) ( var = !var )
 
 //#define DEBUG_SHADOW
 

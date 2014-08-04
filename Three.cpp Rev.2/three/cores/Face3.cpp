@@ -48,18 +48,33 @@ namespace  three {
     Face3::~Face3(){}
     
     
-    void Face3::addVertexColors( std::initializer_list<Color> vertex_colors ) {
+    const glm::vec3& Face3::getFaceNormal() {
+        return this->normal;
+    }
+    
+    void Face3::setFaceNormal(glm::vec3 normal){
+        this->normal = normal;
+    }
+    void Face3::setFaceNormal(float x, float y, float z) {
+        this->normal.x = x;
+        this->normal.y = y;
+        this->normal.z = z;
+    }
+    
+    void Face3::setVertexColors( std::initializer_list<Color> vertex_colors ) {
         for( Color color: vertex_colors )
             this->vertexColors.push_back( color );
     }
     
-    void Face3::addVertexNormals( std::initializer_list<glm::vec3> vertex_normals ) {
-        for( glm::vec3 normal: vertex_normals )
-            this->vertexNormals.push_back( normal );
+    void Face3::setVertexNormals( std::initializer_list<glm::vec3> vertex_normals ) {
+        vertexNormals[0] = *(vertex_normals.begin());
+        vertexNormals[1] = *(vertex_normals.begin()+1);
+        vertexNormals[2] = *(vertex_normals.begin()+2);
     }
     
-    void Face3::addVertexUVs( std::initializer_list<glm::vec2> vertex_uvs ) {
-        for( glm::vec2 uv: vertex_uvs )
-            this->uvs.push_back( uv );
+    void Face3::setVertexUVs( std::initializer_list<glm::vec2> vertex_uvs ) {
+        uvs[0] = *(vertex_uvs.begin());
+        uvs[1] = *(vertex_uvs.begin()+1);
+        uvs[2] = *(vertex_uvs.begin()+2);
     }
 }

@@ -18,10 +18,12 @@ namespace three {
     public:
         static ptr<SpecularMap> create();
         
+        virtual void setUniforms(ptr<ShaderLib> shader_lib, bool gamma) override;
+        
         SpecularMap();
         ~SpecularMap();
         
-        virtual void setUniforms(ptr<ShaderLib> shader_lib, bool gamma) override;
+    protected:
     };
 }
 

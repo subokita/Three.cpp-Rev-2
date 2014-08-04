@@ -34,7 +34,7 @@ namespace three {
         /* NORMAL MAP related */
         shader->setUniform( "normal_scale", this->normalScale );
         
-        int offset = shader_lib->config[0];
+        int offset = shader_lib->getConfig()[0];
         
         glActiveTexture( GL_TEXTURE0 + offset );
         bind();

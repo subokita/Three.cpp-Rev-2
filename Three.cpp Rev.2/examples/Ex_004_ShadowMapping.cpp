@@ -30,7 +30,7 @@ namespace three  {
         scene->setShadowMapType( SHADOW_MAP::PCF_SOFT );
         
         /* Create camera */
-        auto camera = PerspectiveCamera::create( 50.0, renderer.aspectRatio, 0.001, 100.0 );
+        auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100.0 );
         camera->translate(0.0, 1.5, 5.5);
         camera->lookAt( 0.0, 0.0, 0.0 );
         
@@ -38,25 +38,25 @@ namespace three  {
         auto sphere = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
                                    PhongMaterial::create(0x777777, 0x0, 0x0, 0x999999, 30, true) );
         
-        sphere->normalMap = TextureUtils::loadAsNormalMap  ( path, "tutorial_normals07.gif" );
+        sphere->setNormalMap( TextureUtils::loadAsNormalMap  ( path, "tutorial_normals07.gif" ) );
         sphere->translate(0.0, 0.0, 0.0);
         sphere->castShadow = true;
         sphere->receiveShadow = true;
         
         auto cube = Mesh::create( CubeGeometry::create(1.0),
                                  PhongMaterial::create(0x777777, 0x0, 0x0, 0x0, 30, false) );
-        cube->texture = TextureUtils::loadAsTexture( path, "four_shapes_color.tga" );
+        cube->setTexture( TextureUtils::loadAsTexture( path, "four_shapes_color.tga" ) );
         cube->translate(-2.0, 0.0, -2.0);
         cube->castShadow = true;
         cube->receiveShadow = true;
         
         auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 1.0, 30, 5, true),
                                      PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
-        cylinder->material->side = SIDE::DOUBLE_SIDE;
+        cylinder->getMaterial()->side = SIDE::DOUBLE_SIDE;
         cylinder->castShadow = true;
         cylinder->receiveShadow = true;
-        cylinder->texture   = TextureUtils::loadAsTexture   ( path, "rock_color.tga" );
-        cylinder->normalMap = TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" );
+        cylinder->setTexture  ( TextureUtils::loadAsTexture   ( path, "rock_color.tga" ) );
+        cylinder->setNormalMap( TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" ) );
         cylinder->translate(+2.0f, 0.0f, -2.0f);
         
         scene->add( cylinder );
@@ -74,11 +74,11 @@ namespace three  {
         
         /* Cubemap */
         auto env = Mesh::create( CubeGeometry::create(20.0f), MeshCubeMapMaterial::create() );
-        env->texture = TextureUtils::loadAsEnvMap( path + "cube/pisa",
+        env->setTexture( TextureUtils::loadAsEnvMap( path + "cube/pisa",
                                                   "nx.png", "ny.png", "nz.png",
-                                                  "px.png", "py.png", "pz.png");
+                                                  "px.png", "py.png", "pz.png"));
         
-        sphere->envMap = downcast(env->texture, EnvMap);
+        sphere->setEnvMap( downcast(env->getTexture(), EnvMap) );
         scene->add( env );
         
         
@@ -131,9 +131,9 @@ namespace three  {
             }
         });
         
-        renderer.gammaInput  = true;
-        renderer.gammaOutput = true;
-        renderer.clearColor = scene->getFog()->color;
+        renderer.setGamma( true, true );
+        
+        renderer.setClearColor( scene->getFog()->color );
         renderer.render(scene, camera );
     }
 }

@@ -123,8 +123,8 @@ namespace three {
             if( instance_of(node, Mesh)) {
                 ptr<Mesh> mesh = downcast(node, Mesh);
                 
-                if( mesh->geometry != nullptr ) {
-                    for( glm::vec3 vec : mesh->geometry->vertices ) {
+                if( mesh->hasGeometry() ) {
+                    for( glm::vec3 vec : mesh->getGeometry()->vertices ) {
                         glm::vec3 temp = glm::vec3(node->matrixWorld * glm::vec4( vec, 1.0 ) );
                         this->expandByPoint( temp );
                     }

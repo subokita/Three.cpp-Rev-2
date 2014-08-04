@@ -18,10 +18,6 @@ namespace three {
     
     ShadowMapPlugin::ShadowMapPlugin() :
         frustum         (Frustum::create()),
-        projectionScreen(glm::mat4(1.0)),
-        min             (glm::vec3(0.0)),
-        max             (glm::vec3(0.0)),
-        position        (glm::vec3(0.0)),
         depthShader     (SHADERLIB_DEPTH_RGBA)
     {
     }
@@ -186,23 +182,26 @@ namespace three {
             shadow_cam->lookAt( light->target->position );
 
             shadow_cam->updateMatrixWorld(false);
-            light->shadowMatrix = SHADOW_BIAS_MATRIX * shadow_cam->getProjectionMatrix() * shadow_cam->matrixWorld;
+            glm::mat4 vp_mat = shadow_cam->getProjectionMatrix() * shadow_cam->matrixWorld;
             
+            light->shadowMatrix = SHADOW_BIAS_MATRIX * vp_mat;
             light->shadowMap->bind();
+            frustum->setFrom( vp_mat );
             
             glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
             glViewport(0, 0, light->shadowMapSize[0], light->shadowMapSize[1]);
             
             depthShader->bind();
             for( auto object: descendants ){
-                object->updateMatrixWorld(false);
-
                 if( instance_of(object, Mesh) == false )
                     continue;
 
                 if( object->castShadow == false )
                     continue;
-
+                
+                if( frustum->intersects(object) == false )
+                    continue;
+                
                 depthShader->draw(shadow_cam, nullptr, object, false );
             }
             depthShader->unbind();

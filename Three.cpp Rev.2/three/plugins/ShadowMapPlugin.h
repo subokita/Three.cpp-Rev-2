@@ -21,10 +21,9 @@ namespace three {
         ShadowMapPlugin();
         ~ShadowMapPlugin();
         
-        
-        virtual void setState( ptr<Scene> scene, ptr<Camera> camera ) ;
-        virtual void init( ptr<Scene> scene, ptr<Camera> camera ) override;
-        virtual void render( ptr<Scene> scene, ptr<Arcball> arcball, ptr<Camera> camera  ) override;
+        virtual void setState( ptr<Scene> scene, ptr<Camera> camera ) override;
+        virtual void init    ( ptr<Scene> scene, ptr<Camera> camera ) override;
+        virtual void render  ( ptr<Scene> scene, ptr<Arcball> arcball, ptr<Camera> camera  ) override;
         
         void debugShadow();
         
@@ -33,19 +32,19 @@ namespace three {
         void updateVirtualLight( ptr<Light> light, int cascade );
         void updateShadowCamera( ptr<Camera> camera, ptr<VirtualLight> light );
         
-    public:
+    protected:
         ptr<Texture> depthTexture;
         ptr<RenderTarget> renderTarget;
-        
-        
-        std::vector<ptr<Light>> lights;
-        glm::vec3 min;
-        glm::vec3 max;
-        glm::vec3 position;
-        
         ptr<ShaderLib> depthShader;
+        std::vector<ptr<Light>> lights;
+        
+        
+//        glm::vec3 min;
+//        glm::vec3 max;
+//        glm::vec3 position;
+//        glm::mat4 projectionScreen;
+        
         ptr<Frustum> frustum;
-        glm::mat4 projectionScreen;
         
         #ifdef DEBUG_SHADOW
         GLuint quad_vertex_buffer;
