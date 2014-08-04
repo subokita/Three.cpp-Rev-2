@@ -144,20 +144,20 @@ namespace three {
         }
         
         
-        if( mesh->getMaterial()->alphaTest > 0.0 ) {
+        if( mesh->getMaterial()->getAlphaTest() > 0.0 ) {
             ss.str("");
-            ss << "#define ALPHATEST " << mesh->getMaterial()->alphaTest ;
+            ss << "#define ALPHATEST " << mesh->getMaterial()->getAlphaTest() ;
             this->defines.push_back( ss.str() );
             config[5] = 1;
         }
         
         
-        if( mesh->getMaterial()->wrapAround ) {
+        if( mesh->getMaterial()->doesWrapAround() ) {
             this->defines.push_back( "#define WRAP_AROUND" );
             config[6] = 1;
         }
         
-        if( mesh->getMaterial()->side == SIDE::DOUBLE_SIDE ) {
+        if( mesh->getMaterial()->getSide() == SIDE::DOUBLE_SIDE ) {
             this->defines.push_back( "#define DOUBLE_SIDED" );
             config[7] = 1;
         }

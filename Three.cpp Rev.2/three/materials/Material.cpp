@@ -63,4 +63,82 @@ namespace three {
     int Material::getWireframeLineWidth() {
         return wireframeLinewidth;
     }
+    
+    const SIDE Material::getSide() {
+        return side;
+    }
+    
+    void Material::setSide(SIDE side) {
+        this->side = side;
+    }
+    bool Material::isVisible() {
+        return visible;
+    }
+    
+    void Material::setVisible( bool flag ) {
+        this->visible = flag;
+    }
+    
+    bool Material::requiresUpdate() {
+        return this->needsUpdate;
+    }
+    
+    void Material::setRequiresUpdate( bool flag ) {
+        this->needsUpdate = flag;
+    }
+
+    bool Material::doesWrapAround() {
+        return wrapAround;
+    }
+    
+    void Material::setWrapAround(bool flag ) {
+        this->wrapAround = flag;
+    }
+    
+    const glm::vec3 Material::getWrapRGB() {
+        return wrapRGB;
+    }
+    
+    void Material::setWrapRGB( const glm::vec3 wrap_rgb ) {
+        this->wrapRGB = wrap_rgb;
+    }
+    
+    float Material::getAlphaTest() {
+        return this->alphaTest;
+    }
+    
+    void Material::setAlphaTest(const float alpha) {
+        this->alphaTest = alpha;
+    }
+    
+    const SHADING Material::getShading() {
+        return this->shading;
+    }
+    
+    void Material::setShading( SHADING shading ) {
+        this->shading = shading;
+    }
+    
+    float Material::getOpacity() {
+        return this->opacity;
+    }
+    
+    void Material::setOpacity( float opacity ) {
+        this->opacity = opacity;
+    }
+    
+    bool Material::isTransparent() {
+        return this->transparent;
+    }
+    
+    void Material::setTransparent( bool flag ) {
+        this->transparent = flag;
+    }
+    const BLENDING_MODE Material::getBlendingMode() {
+        return this->blending;
+    }
+    
+    void Material::setBlendingMode( BLENDING_MODE mode ) {
+        this->blending = mode;
+    }
 }

@@ -112,8 +112,8 @@ namespace three {
         auto shader = shader_lib->getShader();
         shader->setUniform( "model_mat", matrixWorld );
         
-        if( material->wrapAround )
-            shader->setUniform("wrapRGB", material->wrapRGB );
+        if( material->doesWrapAround() )
+            shader->setUniform("wrapRGB", material->getWrapRGB() );
         
         if( texture != nullptr )
             texture->setUniforms(shader_lib, gamma );
@@ -183,7 +183,7 @@ namespace three {
         glPolygonMode( GL_FRONT_AND_BACK, material->isWireframe() ? GL_LINE : GL_FILL );
         glLineWidth( material->getWireframeLineWidth() );
         
-        if( material->side == SIDE::DOUBLE_SIDE )  {
+        if( material->getSide() == SIDE::DOUBLE_SIDE )  {
             glDisable( GL_CULL_FACE );
         }
         else {

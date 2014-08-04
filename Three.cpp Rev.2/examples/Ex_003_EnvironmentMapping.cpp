@@ -56,8 +56,8 @@ namespace three  {
         
         
         auto cube_2_material = PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false );
-        cube_2_material->useRefraction = true;
-        cube_2_material->refractionRatio = 0.5;
+        cube_2_material->setRefraction( true );
+        cube_2_material->setRefractionRatio( 0.5 );
         
         auto cube_2 = Mesh::create( CubeGeometry::create( 1.0f ), cube_2_material);
         cube_2->translate(2.0f, 1.66f, 0.0f);
@@ -67,7 +67,7 @@ namespace three  {
         /* An open cylinder with double sided rendering */
         auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 1.0, 30, 5, true),
                                      PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
-        cylinder->getMaterial()->side = SIDE::DOUBLE_SIDE;
+        cylinder->getMaterial()->setSide( SIDE::DOUBLE_SIDE );
         
         cylinder->setTexture  ( TextureUtils::loadAsTexture   ( path, "rock_color.tga" ) );
         cylinder->setNormalMap( TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" ) );
@@ -78,7 +78,7 @@ namespace three  {
         
         auto cylinder_2 = Mesh::create( cylinder_geometry,
                                         PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
-        cylinder_2->getMaterial()->side = SIDE::DOUBLE_SIDE;
+        cylinder_2->getMaterial()->setSide( SIDE::DOUBLE_SIDE );
         cylinder_2->setNormalMap( TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" ) );
         cylinder_2->translate(-2.0f, 1.66f, 0.0f);
         

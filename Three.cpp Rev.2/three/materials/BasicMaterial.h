@@ -18,15 +18,14 @@
 namespace three {
     class BasicMaterial : public Material {
     public:
-        
         static ptr<BasicMaterial> create( Color color = 0xFFFFFF );
-        
         virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
-        
-        BasicMaterial(Color color);
-        BasicMaterial();
         ~BasicMaterial();
         
+    protected:
+        BasicMaterial();
+        BasicMaterial(Color color);
+
     protected:
         Color color;
         

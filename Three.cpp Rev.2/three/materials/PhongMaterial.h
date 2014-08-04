@@ -27,32 +27,53 @@ namespace three {
              bool metal = false
          );
         
-        
         virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
-        
-        PhongMaterial();
-        PhongMaterial( Color color, Color ambient, Color emissive, Color specular, float shininess, bool metal );
         ~PhongMaterial();
         
-    public:
+        const Color& getDiffuseColor();
+        const Color& getEmissiveColor();
+        const Color& getAmbientColor();
+        const Color& getSpecularColor();
+        float getShininess();
+        bool isMetal();
+        bool usesRefraction();
+        const TEXTURE_OPERATION getTextureOperation();
+        float getReflectivity();
+        float getRefractionRatio();
+        const COLOR_MODE getVertexColorsMode();
         
-        /* Data members */
+        
+        void setDiffuseColor( const Color color );
+        void setEmissiveColor( const Color color );
+        void setAmbientColor( const Color color );
+        void setSpecularColor( const Color color );
+        void setShininess( float shininess );
+        void setMetal( bool flag );
+        void setRefraction( bool flag );
+        void setTextureOperation( TEXTURE_OPERATION op );
+        void setReflectivity( float value );
+        void setRefractionRatio( float value );
+        void setVertexColorsMode( COLOR_MODE mode );
+        
+    protected:
+        PhongMaterial();
+        PhongMaterial( Color color, Color ambient, Color emissive, Color specular, float shininess, bool metal );
+        
+        
+    protected:
         Color       color;
         Color       ambient;
         Color       emissive;
         Color       specular;
         float       shininess;
         bool        metal;
-        bool        wrapAround;
-        glm::vec3   wrapRGB;
         bool        useRefraction;
         
         TEXTURE_OPERATION combine;
-        
         float       reflectivity;
         float       refractionRatio;
-        bool        fog;
         COLOR_MODE  vertexColors;
+        
         bool        skinning;
         bool        morphTargets;
         bool        morphNormals;

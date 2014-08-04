@@ -50,40 +50,61 @@ namespace three {
             return os;
         }
         
-        void setWireframe( bool flag );
         bool isWireframe();
+        bool isVisible();
+        bool requiresUpdate();
+        bool doesWrapAround();
+        
         int getWireframeLineWidth();
+        const SIDE getSide();
+        const glm::vec3 getWrapRGB();
+        float getAlphaTest();
+        const SHADING getShading();
+        float getOpacity();
+        bool isTransparent();
+        const BLENDING_MODE getBlendingMode();
         
-    public:
-        /* Data members */
+        void setWireframe( bool flag );
+        void setSide(SIDE side);
+        void setVisible( bool flag );
+        void setRequiresUpdate( bool flag );
+        void setWrapAround( bool flag );
+        void setWrapRGB( const glm::vec3 wrap_rgb );
+        void setAlphaTest(const float alpha);
+        void setShading( SHADING shading );
+        void setOpacity( float opacity );
+        void setTransparent( bool flag );
+        void setBlendingMode( BLENDING_MODE mode );
+
+    protected:
         SIDE side;
-        SHADING shading;
         
-        float opacity;
-        bool  transparent;
-        BLENDING_MODE blending;
-        int   blendSrc;
-        int   blendDst;
-        int   blendEquation;
+        bool        wireframe;
+        int         wireframeLinewidth;
+        std::string wireframeLinecap;
+        std::string wireframeLinejoin;
+        float overdraw;
         bool  depthTest;
         bool  depthWrite;
         bool  polygonOffset;
         float polygonOffsetFactor;
         float polygonOffsetUnits;
-        float alphaTest;
-        float overdraw;
+        
         bool  visible;
         bool  needsUpdate;
         bool  wrapAround;
         glm::vec3 wrapRGB;
         
+        int   blendSrc;
+        int   blendDst;
+        int   blendEquation;
+        float alphaTest;
         
-    protected:
-        bool        wireframe;
-        int         wireframeLinewidth;
-        std::string wireframeLinecap;
-        std::string wireframeLinejoin;
+        SHADING shading;
         
+        float opacity;
+        bool  transparent;
+        BLENDING_MODE blending;
     };
 }
 #endif /* defined(__Three_cpp_Rev_2__Material__) */

@@ -52,7 +52,7 @@ namespace three  {
         
         auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 1.0, 30, 5, true),
                                      PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
-        cylinder->getMaterial()->side = SIDE::DOUBLE_SIDE;
+        cylinder->getMaterial()->setSide( SIDE::DOUBLE_SIDE );
         cylinder->castShadow = true;
         cylinder->receiveShadow = true;
         cylinder->setTexture  ( TextureUtils::loadAsTexture   ( path, "rock_color.tga" ) );
