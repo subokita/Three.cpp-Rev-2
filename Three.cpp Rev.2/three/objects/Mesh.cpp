@@ -155,7 +155,7 @@ namespace three {
        
 //        for( auto& vert: geometry->vertices)
 //            vert = vert * geometry->quaternion;
-//        
+//
 //        for( auto& normal: normals)
 //            normal = normal * geometry->quaternion;
         

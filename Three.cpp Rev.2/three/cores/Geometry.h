@@ -22,19 +22,25 @@ namespace three {
     class Geometry : public Object3D{
         friend class Mesh;
         friend class Box3;
+        friend class Loader;
         
     public:
+        static ptr<Geometry> create();
+        Geometry();
         ~Geometry();
         
-    protected:
-        virtual void init() = 0;
+        void addVertex( glm::vec3 vertex );
+        void addFace( ptr<Face3> face );
         
-        Geometry();
         void mergeVertices();
         void computeFaceNormals();
         void computeVertexNormalsForNonMergedFaces();
         void computeVertexNormals( bool area_weighted );
         
+    protected:
+        virtual void init();
+        
+
     public:
         
     protected:

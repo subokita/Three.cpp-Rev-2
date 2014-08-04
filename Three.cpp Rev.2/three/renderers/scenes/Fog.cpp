@@ -12,11 +12,6 @@
 using namespace std;
 
 namespace three {
-    
-    ptr<Fog> Fog::create(){
-        return make_shared<Fog>();
-    }
-    
     ptr<Fog> Fog::create( Color color, float near, float far ){
         return make_shared<Fog>( Fog(color, near, far) );
     }
@@ -38,5 +33,21 @@ namespace three {
         shader->setUniform( "fog_color", color, 1.0, gamma );
         shader->setUniform( "fog_near", near );
         shader->setUniform( "fog_far",  far );
+    }
+    
+    
+    float Fog::getNear() {
+        return this->near;
+    }
+    
+    float Fog::getFar() {
+        return this->far;
+    }
+    
+    void Fog::setNear(float near) {
+        this->near = near;
+    }
+    void Fog::setFar(float far) {
+        this->far = far;
     }
 }

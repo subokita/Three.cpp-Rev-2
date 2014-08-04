@@ -10,24 +10,16 @@
 #define __Three_cpp_Rev_2__Fog__
 
 #include <iostream>
+#include "internal_headers.h"
 #include "IFog.h"
 #include "HasShaderUniforms.h"
 
 namespace three {
     class Fog: public IFog{
     public:
-        static ptr<Fog> create();
         static ptr<Fog> create( Color color, float near, float far );
-        
         virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
-        
-        Fog();
-        Fog( Color color, float near, float far );
         ~Fog();
-        
-    public:
-        float near;
-        float far;
         
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const Fog& obj ) {
@@ -37,6 +29,21 @@ namespace three {
             os << "}";
             return os;
         }
+        
+        float getNear();
+        float getFar();
+        
+        void setNear(float near);
+        void setFar(float far);
+        
+    protected:
+        Fog();
+        Fog( Color color, float near, float far );
+        
+    protected:
+        float near;
+        float far;
+        
     };
 }
 

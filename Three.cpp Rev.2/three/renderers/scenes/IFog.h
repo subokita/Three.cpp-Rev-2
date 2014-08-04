@@ -10,8 +10,8 @@
 #define __Three_cpp_Rev_2__IFog__
 
 #include <iostream>
+#include "internal_headers.h"
 #include "Color.h"
-#include "Constants.h"
 #include "HasShaderUniforms.h"
 
 namespace three {
@@ -21,8 +21,8 @@ namespace three {
         IFog(Color color);
         virtual ~IFog();
         
-    public:
-        Color color;
+        const Color& getColor();
+        void setColor(const Color color);
         
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const IFog& obj ) {
@@ -31,6 +31,10 @@ namespace three {
             os << "}";
             return os;
         }
+        
+    protected:
+        Color color;
+        
     };
 }
 

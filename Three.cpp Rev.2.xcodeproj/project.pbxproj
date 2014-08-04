@@ -47,6 +47,7 @@
 		A8A33FBE19740CEF00037E90 /* Line3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A33FBC19740CEF00037E90 /* Line3.cpp */; };
 		A8A33FC119740D9C00037E90 /* Plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A33FBF19740D9C00037E90 /* Plane.cpp */; };
 		A8A4BB9B198817010090B91A /* ShadowTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A4BB99198817010090B91A /* ShadowTexture.cpp */; };
+		A8A53583198FA2990052D45E /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A53581198FA2990052D45E /* Loader.cpp */; };
 		A8AC4AF71976456F00D4449B /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AC4AF51976456F00D4449B /* Texture.cpp */; };
 		A8AC4AFA19764BCF00D4449B /* TextureUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AC4AF819764BCF00D4449B /* TextureUtils.cpp */; };
 		A8B372ED197BEA43009B168D /* ShaderLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8B372EC197BEA43009B168D /* ShaderLib.cpp */; };
@@ -179,6 +180,8 @@
 		A8A33FC019740D9C00037E90 /* Plane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Plane.h; sourceTree = "<group>"; };
 		A8A4BB99198817010090B91A /* ShadowTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShadowTexture.cpp; sourceTree = "<group>"; };
 		A8A4BB9A198817010090B91A /* ShadowTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShadowTexture.h; sourceTree = "<group>"; };
+		A8A53581198FA2990052D45E /* Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Loader.cpp; sourceTree = "<group>"; };
+		A8A53582198FA2990052D45E /* Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Loader.h; sourceTree = "<group>"; };
 		A8AC4AF51976456F00D4449B /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		A8AC4AF61976456F00D4449B /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
 		A8AC4AF819764BCF00D4449B /* TextureUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureUtils.cpp; sourceTree = "<group>"; };
@@ -472,6 +475,8 @@
 			children = (
 				A825E619196D71F20003C5C7 /* Mesh.cpp */,
 				A825E61A196D71F20003C5C7 /* Mesh.h */,
+				A8A53581198FA2990052D45E /* Loader.cpp */,
+				A8A53582198FA2990052D45E /* Loader.h */,
 			);
 			path = objects;
 			sourceTree = "<group>";
@@ -648,6 +653,7 @@
 				A88AF9FE196D0CCA00601287 /* IFog.cpp in Sources */,
 				A8A33FB8197408A100037E90 /* Sphere.cpp in Sources */,
 				A882D375196D903D0051958C /* FogExp2.cpp in Sources */,
+				A8A53583198FA2990052D45E /* Loader.cpp in Sources */,
 				A850585219756B0500866386 /* Frustum.cpp in Sources */,
 				A87DA592198A477C00DFC011 /* SpotLightsArray.cpp in Sources */,
 				A8E434221982DF41000BE965 /* Triangle.cpp in Sources */,
@@ -773,15 +779,18 @@
 					/usr/local/Cellar/glfw3/3.0.4/include,
 					/usr/local/Cellar/glm/0.9.5.3/include,
 					/usr/local/Cellar/freeimage/3.15.4/include,
+					/usr/local/Cellar/assimp/3.0.1270/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/glfw3/3.0.4/lib,
 					/usr/local/Cellar/freeimage/3.15.4/lib,
+					/usr/local/Cellar/assimp/3.0.1270/lib,
 				);
 				OTHER_LDFLAGS = (
 					"-lglfw3.3.0",
 					"-lfreeimageplus-3.15.4",
 					"-lfreeimage-3.15.4",
+					"-lassimp.3.0.255",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -796,15 +805,18 @@
 					/usr/local/Cellar/glfw3/3.0.4/include,
 					/usr/local/Cellar/glm/0.9.5.3/include,
 					/usr/local/Cellar/freeimage/3.15.4/include,
+					/usr/local/Cellar/assimp/3.0.1270/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/glfw3/3.0.4/lib,
 					/usr/local/Cellar/freeimage/3.15.4/lib,
+					/usr/local/Cellar/assimp/3.0.1270/lib,
 				);
 				OTHER_LDFLAGS = (
 					"-lglfw3.3.0",
 					"-lfreeimageplus-3.15.4",
 					"-lfreeimage-3.15.4",
+					"-lassimp.3.0.255",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

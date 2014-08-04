@@ -222,7 +222,7 @@ namespace three {
             
             glActiveTexture( GL_TEXTURE0 );
             glBindTexture( GL_TEXTURE_2D, light->shadowTexture->textureID );
-            passthruShader->shader->setUniform("texture_sampler", 0);
+            passthruShader->getShader()->setUniform("texture_sampler", 0);
             
             glEnableVertexAttribArray( 0 );
             glBindBuffer( GL_ARRAY_BUFFER, quad_vertex_buffer );

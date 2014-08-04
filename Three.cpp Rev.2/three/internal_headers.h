@@ -78,6 +78,7 @@ namespace three {
     
     /* ./three/objects */
     class Mesh;
+    class Loader;
     
     /* ./three/plugins */
     class RenderPlugin;

@@ -19,4 +19,12 @@ namespace three {
     {}
     
     IFog::~IFog(){}
+    
+    const Color& IFog::getColor() {
+        return color;
+    }
+    
+    void IFog::setColor(const Color color) {
+        this->color = color;
+    }
 }

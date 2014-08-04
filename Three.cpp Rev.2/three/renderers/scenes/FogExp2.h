@@ -16,17 +16,9 @@
 namespace three {
     class FogExp2 : public IFog {
     public:
-        static ptr<FogExp2> create();
-        static ptr<FogExp2> create( Color color, float distance );
-        
+        static ptr<FogExp2> create( Color color, float distance = 0.00025 );
         virtual void setUniforms( ptr<ShaderLib> shader_lib, bool gamma ) override;
-        
-        FogExp2();
-        FogExp2( Color color, float distance );
         ~FogExp2();
-        
-        /* Data members */
-        float distance;
         
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const FogExp2& obj ) {
@@ -35,6 +27,16 @@ namespace three {
             os << "}";
             return os;
         }
+        
+        float getDistance();
+        void setDistance( float distance );
+        
+    protected:
+        FogExp2( Color color, float distance );
+        
+    protected:
+        float distance;
+        
     };
 }
 

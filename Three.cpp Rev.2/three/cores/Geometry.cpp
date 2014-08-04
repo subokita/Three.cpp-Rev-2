@@ -13,12 +13,28 @@
 using namespace std;
 
 namespace three {
+    ptr<Geometry> Geometry::create() {
+        return make_shared<Geometry>();
+    }
+    
     Geometry::Geometry() :
         noOfElements(0)
     {
     }
     
     Geometry::~Geometry() {
+    }
+    
+    void Geometry::addVertex( glm::vec3 vertex ) {
+        vertices.push_back(vertex);
+    }
+    
+    void Geometry::addFace( ptr<Face3> face ) {
+        faces.push_back( face );
+    }
+    
+    void Geometry::init() {
+        /* does nothing */
     }
     
     void Geometry::computeFaceNormals() {

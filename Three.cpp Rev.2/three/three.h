@@ -64,6 +64,7 @@
 
 /* ./three/objects */
 #include "Mesh.h"
+#include "Loader.h"
 
 /* ./three/others */
 #include "Utils.h"

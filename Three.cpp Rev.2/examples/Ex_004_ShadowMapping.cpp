@@ -133,7 +133,7 @@ namespace three  {
         
         renderer.setGamma( true, true );
         
-        renderer.setClearColor( scene->getFog()->color );
+        renderer.setClearColor( scene->getFog()->getColor() );
         renderer.render(scene, camera );
     }
 }
