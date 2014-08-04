@@ -63,7 +63,6 @@ namespace three {
         float height_half = this->height / 2.0;
         float depth_half  = this->depth  / 2.0;
         
-        
         buildPlane( 2, 1, - 1, - 1, depth, height,  width_half,     0 ); // px
         buildPlane( 2, 1,   1, - 1, depth, height,  -width_half,    1 ); // nx
         buildPlane( 0, 2,   1,   1, width, depth,   height_half,    2 ); // py
@@ -80,8 +79,8 @@ namespace three {
         int w;
         int grid_x = widthSegments;
         int grid_y = heightSegments;
-        float width_half  = width / 2.0;
-        float height_half = width / 2.0;
+        float width_half  = width  * 0.5;
+        float height_half = height * 0.5;
         
 		int offset = (int) vertices.size();
         
@@ -98,7 +97,6 @@ namespace three {
             w = 0;
             grid_x = depthSegments;
         }
-        
         
         normal[w] = depth > 0.0 ? 1.0 : -1.0;
         
@@ -118,6 +116,7 @@ namespace three {
 			}
 		}
         
+        
         for ( int iy = 0; iy < grid_y; iy++ ) {
             
 			for ( int ix = 0; ix < grid_x; ix++ ) {
@@ -133,14 +132,12 @@ namespace three {
                 
 				ptr<Face3> face = Face3::create( a + offset, b + offset, d + offset );
 				face->setFaceNormal( normal );
-//                face->materialIndex = material_index;
                 face->setVertexNormals( {normal, normal, normal});
                 face->setVertexUVs({uva, uvb, uvd});
 				faces.push_back( face );
                 
 				face = Face3::create( b + offset, c + offset, d + offset );
 				face->setFaceNormal( normal );
-//                face->materialIndex = material_index;
                 face->setVertexNormals( {normal, normal, normal});
                 face->setVertexUVs({uvb, uvc, uvd});
 				faces.push_back( face );

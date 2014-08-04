@@ -37,7 +37,7 @@ namespace three {
     }
     
     void Camera::updateMatrix() {
-        this->matrix = glm::lookAt( this->position, this->target->position, this->up );
+        this->matrix = glm::lookAt( this->position, this->target->getPosition(), this->up );
     }
     
     

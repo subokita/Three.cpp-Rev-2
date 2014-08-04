@@ -124,13 +124,17 @@ namespace three {
                 ptr<Mesh> mesh = downcast(node, Mesh);
                 
                 if( mesh->hasGeometry() ) {
-                    for( glm::vec3 vec : mesh->getGeometry()->vertices ) {
-                        glm::vec3 temp = glm::vec3(node->matrixWorld * glm::vec4( vec, 1.0 ) );
+                    ptr<Geometry> geom = mesh->getGeometry();
+                    geom->updateMatrixWorld(true);
+                    
+                    for( glm::vec3 vec : geom->getVertices() ) {
+                        glm::vec3 temp = glm::vec3(geom->matrixWorld * glm::vec4( vec, 1.0 ) );
                         this->expandByPoint( temp );
                     }
                 }
             }
         });
+        
         
         return *this;
     }

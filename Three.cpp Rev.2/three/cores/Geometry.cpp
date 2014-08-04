@@ -37,6 +37,11 @@ namespace three {
         /* does nothing */
     }
     
+    
+    const std::vector<glm::vec3>& Geometry::getVertices() {
+        return this->vertices;
+    }
+    
     void Geometry::computeFaceNormals() {
         for( ptr<Face3> face: faces ) {
             glm::vec3 a = this->vertices[face->a];
@@ -117,7 +122,7 @@ namespace three {
             face->b = changes[face->b];
             face->c = changes[face->c];
             
-            vector<int> indices = { face->a, face->b, face->c };
+            vector<uint> indices = { face->a, face->b, face->c };
             
             int dup_index = -1;
             for( int n = 0; n < 3; n++ ) {

@@ -30,7 +30,7 @@ namespace three {
         
         descendants = scene->getDescendants();
         std::sort(descendants.begin(), descendants.end(), [](ptr<Object3D> a, ptr<Object3D> b){
-            return a->position.z < b->position.z;
+            return a->getPosition().z < b->getPosition().z;
         });
         
         for( auto entry: scene->getDirectionalLights().getCollection() ) {
@@ -178,8 +178,8 @@ namespace three {
             auto shadow_map = light->shadowMap;
             auto shadow_cam = light->shadowCamera;
             
-            shadow_cam->position = light->position;
-            shadow_cam->lookAt( light->target->position );
+            shadow_cam->setPosition( light->getPosition() );
+            shadow_cam->lookAt( light->target->getPosition() );
 
             shadow_cam->updateMatrixWorld(false);
             glm::mat4 vp_mat = shadow_cam->getProjectionMatrix() * shadow_cam->matrixWorld;
@@ -188,8 +188,8 @@ namespace three {
             light->shadowMap->bind();
             frustum->setFrom( vp_mat );
             
-            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
             glViewport(0, 0, light->shadowMapSize[0], light->shadowMapSize[1]);
+            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
             
             depthShader->bind();
             for( auto object: descendants ){
@@ -212,10 +212,12 @@ namespace three {
     
     void ShadowMapPlugin::debugShadow() {
         #ifdef DEBUG_SHADOW
+        glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+        glClearColor(0.0, 0.0, 0.0, 1.0);
+        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+        
         for( int i = 0; i < lights.size(); i++ ) {
             auto light = lights[i];
-            
-            glBindFramebuffer( GL_FRAMEBUFFER, 0 );
             
             glViewport(0 + i * 256, 0, 256, 256);
             passthruShader->bind();
@@ -276,10 +278,10 @@ namespace three {
     void ShadowMapPlugin::updateVirtualLight( ptr<Light> light, int cascade ) {
         ptr<VirtualLight> virtual_light = light->shadowCascadeArray[cascade];
         
-        virtual_light->position         = light->position;
-        virtual_light->target->position = light->target->position;
+        virtual_light->setPosition( light->getPosition() );
+        virtual_light->target->setPosition( light->target->getPosition() );
         
-        virtual_light->lookAt( virtual_light->target->position );
+        virtual_light->lookAt( virtual_light->target->getPosition() );
         
         virtual_light->shadowCameraVisible  = light->shadowCameraVisible;
         virtual_light->shadowDarkness       = light->shadowDarkness;

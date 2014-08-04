@@ -13,5 +13,5 @@
 #include "Ex_002_TextureSpecularNormalMappings.h"
 #include "Ex_003_EnvironmentMapping.h"
 #include "Ex_004_ShadowMapping.h"
-
+#include "Ex_005_PLYLoading.h"
 #endif

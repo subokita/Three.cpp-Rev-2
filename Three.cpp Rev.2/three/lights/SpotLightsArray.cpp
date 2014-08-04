@@ -61,8 +61,8 @@ namespace three {
             size++;
             colors.push_back     (light->color);
             intensities.push_back(light->intensity);
-            positions.push_back  (light->position);
-            directions.push_back (glm::normalize(light->position - light->target->position));
+            positions.push_back  (light->getPosition());
+            directions.push_back (glm::normalize(light->getPosition() - light->target->getPosition()));
             cos_angles.push_back (cosf(Math::degToRad(light->angle)));
             exponents.push_back  (light->exponent);
             distances.push_back  (light->distance);

@@ -37,6 +37,8 @@ namespace three {
         void computeVertexNormalsForNonMergedFaces();
         void computeVertexNormals( bool area_weighted );
         
+        const std::vector<glm::vec3>& getVertices();
+        
     protected:
         virtual void init();
         

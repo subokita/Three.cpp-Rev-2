@@ -152,12 +152,13 @@ namespace three {
             uvs[face->b] = face->uvs[1];
             uvs[face->c] = face->uvs[2];
         }
-       
-//        for( auto& vert: geometry->vertices)
-//            vert = vert * geometry->quaternion;
-//
-//        for( auto& normal: normals)
-//            normal = normal * geometry->quaternion;
+        
+        geometry->updateMatrixWorld(true);
+        for( auto& vert: geometry->vertices)
+            vert = glm::vec3(glm::vec4(vert, 1.0) * geometry->matrixWorld);
+        
+        for( auto& normal: normals)
+            normal = glm::vec3(glm::vec4(normal, 1.0) * geometry->matrixWorld);
         
         
         glGenBuffers( 4, bufferIDs );

@@ -34,7 +34,6 @@ namespace three {
         ptr<Box3> computeBoundingBox();
         ptr<Sphere> computeBoundingSphere();
         
-        
         void translate( const float x, const float y, const float z );
         void translate( const glm::vec3 offset );
         void rotateX( const float angle );
@@ -53,6 +52,19 @@ namespace three {
         std::vector<ptr<Object3D>> getDescendants();
         void setTarget( glm::vec3 target_pos );
         
+        const glm::vec3& getScale();
+        const glm::vec3& getPosition();
+        
+        void setPositionX(float val);
+        void setPositionY(float val);
+        void setPositionZ(float val);
+        
+        void setPosition( const glm::vec3 position );
+        void setPosition( float x, float y, float z );
+        void setScale( float ratio );
+        void setScale( const glm::vec3 scale );
+        void setScale( float x, float y, float z );
+        
         
     public:
         bool visible;
@@ -68,12 +80,15 @@ namespace three {
         
         ptr<Object3D> target;
         glm::quat quaternion;
-        glm::vec3 scale;
-        glm::vec3 position;
         glm::vec3 up;
         glm::mat4 matrix;
         glm::mat4 matrixWorld;
         std::string shaderID;
+        
+    protected:
+        glm::vec3 scale;
+        glm::vec3 position;
+
     };
 }
 

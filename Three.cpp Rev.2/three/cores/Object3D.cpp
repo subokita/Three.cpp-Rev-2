@@ -171,4 +171,47 @@ namespace three {
         
         return descendants;
     }
+    
+    
+    const glm::vec3& Object3D::getScale() {
+        return scale;
+    }
+    const glm::vec3& Object3D::getPosition() {
+        return position;
+    }
+    
+    void Object3D::setPosition( const glm::vec3 position ) {
+        this->position = position;
+    }
+    void Object3D::setPosition( float x, float y, float z ) {
+        this->position.x = x;
+        this->position.y = y;
+        this->position.z = z;
+    }
+    
+    void Object3D::setScale( float ratio ) {
+        this->scale.x = ratio;
+        this->scale.y = ratio;
+        this->scale.z = ratio;
+    }
+    
+    void Object3D::setScale( const glm::vec3 scale ) {
+        this->scale = scale;
+    }
+    
+    void Object3D::setScale( float x, float y, float z ) {
+        this->scale.x = x;
+        this->scale.y = y;
+        this->scale.z = z;
+    }
+    
+    void Object3D::setPositionX(float val) {
+        this->position.x = val;
+    }
+    void Object3D::setPositionY(float val) {
+        this->position.y = val;
+    }
+    void Object3D::setPositionZ(float val) {
+        this->position.z = val;
+    }
 }

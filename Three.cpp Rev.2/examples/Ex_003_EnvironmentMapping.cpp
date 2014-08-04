@@ -30,7 +30,7 @@ namespace three  {
         
         /* Create camera */
         auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100.0 );
-        camera->position = glm::vec3(0.0, 1.0, 5.5);
+        camera->setPosition(0.0, 1.0, 5.5);
         camera->lookAt( 0.0, 1.0, 0.0 );
         
         /* A sphere, cube, and cylinder walk into a pub */
@@ -118,8 +118,8 @@ namespace three  {
         bool rotate_objects = false;
         float light_rotation_1 = 0.0;
         renderer.setPostRenderCallbackHandler( [&](){
-            dir_light->position.x = 2.0 * cosf( light_rotation_1 );
-            dir_light->position.z = 2.0 * sinf( light_rotation_1 );
+            dir_light->setPositionX( 2.0 * cosf( light_rotation_1 ) );
+            dir_light->setPositionZ( 2.0 * sinf( light_rotation_1 ) );
             
             light_rotation_1 += 0.01;
             

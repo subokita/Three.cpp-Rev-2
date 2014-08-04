@@ -138,8 +138,8 @@ namespace three {
         scrollCallbackHandler = []( GLFWwindow *window, double x, double y ) {
             /* Handle zooming using mouse scroll */
             auto cam = instance->camera;
-            glm::vec3 dir = glm::normalize(cam->target->position - cam->position) * static_cast<float>(-y);
-            if( glm::length((cam->position - dir)) == 0.0 )
+            glm::vec3 dir = glm::normalize(cam->target->getPosition() - cam->getPosition()) * static_cast<float>(-y);
+            if( glm::length((cam->getPosition() - dir)) == 0.0 )
                 return;
 
             cam->matrix = glm::translate(cam->matrix, dir);
@@ -209,10 +209,11 @@ namespace three {
             renderPlugins( preRenderPlugins, scene, camera );
 
             /* Render the scene */
+            #ifndef DEBUG_SHADOW
             renderTarget->bind();
             setDefaultGLState();
-            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
             glViewport(viewport.x, viewport.y, viewport.width, viewport.height);
+            glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
             for( auto object: descendants ){
                 if( instance_of(object, Mesh) == false )
@@ -226,7 +227,8 @@ namespace three {
                 }
                 shader_lib->unbind();
             }
-
+            #endif
+            
             #ifdef DEBUG_SHADOW
             if( shadowMapPlugin != nullptr )
                 shadowMapPlugin->debugShadow();

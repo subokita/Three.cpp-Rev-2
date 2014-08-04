@@ -20,8 +20,8 @@
 namespace three {
     class Face3 {
     public:
-        static ptr<Face3> create(int a, int b, int c);
-        static ptr<Face3> create(int a, int b, int c, glm::vec3 normal, Color color = 0xFFFFFF, int material_index = 0);
+        static ptr<Face3> create(uint a, uint b, uint c);
+        static ptr<Face3> create(uint a, uint b, uint c, glm::vec3 normal, Color color = 0xFFFFFF, int material_index = 0);
         
         ~Face3();
         
@@ -35,14 +35,14 @@ namespace three {
         
     protected:
         Face3();
-        Face3( int a, int b, int c );
-        Face3( int a, int b, int c, glm::vec3 normal, Color color, int material_index );
+        Face3( uint a, uint b, uint c );
+        Face3( uint a, uint b, uint c, glm::vec3 normal, Color color, int material_index );
         
     /* Data members */
     public:
-        int a;
-        int b;
-        int c;
+        uint a;
+        uint b;
+        uint c;
         glm::vec3 vertexNormals[3];
         glm::vec2 uvs[3];
         

@@ -58,7 +58,7 @@ namespace three {
             skyColors.push_back    (light->color);
             groundColors.push_back (light->getGroundColor());
             intensities.push_back  (light->intensity);
-            directions.push_back   (light->position);
+            directions.push_back   (light->getPosition());
         }
     }
     

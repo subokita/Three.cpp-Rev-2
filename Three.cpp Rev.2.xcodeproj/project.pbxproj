@@ -48,6 +48,7 @@
 		A8A33FC119740D9C00037E90 /* Plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A33FBF19740D9C00037E90 /* Plane.cpp */; };
 		A8A4BB9B198817010090B91A /* ShadowTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A4BB99198817010090B91A /* ShadowTexture.cpp */; };
 		A8A53583198FA2990052D45E /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A53581198FA2990052D45E /* Loader.cpp */; };
+		A8A53586198FE6F80052D45E /* Ex_005_PLYLoading.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A53584198FE6F80052D45E /* Ex_005_PLYLoading.cpp */; };
 		A8AC4AF71976456F00D4449B /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AC4AF51976456F00D4449B /* Texture.cpp */; };
 		A8AC4AFA19764BCF00D4449B /* TextureUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AC4AF819764BCF00D4449B /* TextureUtils.cpp */; };
 		A8B372ED197BEA43009B168D /* ShaderLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8B372EC197BEA43009B168D /* ShaderLib.cpp */; };
@@ -182,6 +183,8 @@
 		A8A4BB9A198817010090B91A /* ShadowTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShadowTexture.h; sourceTree = "<group>"; };
 		A8A53581198FA2990052D45E /* Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Loader.cpp; sourceTree = "<group>"; };
 		A8A53582198FA2990052D45E /* Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Loader.h; sourceTree = "<group>"; };
+		A8A53584198FE6F80052D45E /* Ex_005_PLYLoading.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ex_005_PLYLoading.cpp; sourceTree = "<group>"; };
+		A8A53585198FE6F80052D45E /* Ex_005_PLYLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ex_005_PLYLoading.h; sourceTree = "<group>"; };
 		A8AC4AF51976456F00D4449B /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		A8AC4AF61976456F00D4449B /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
 		A8AC4AF819764BCF00D4449B /* TextureUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureUtils.cpp; sourceTree = "<group>"; };
@@ -274,6 +277,8 @@
 				A84D1383197EC7F900BC5A03 /* Ex_003_EnvironmentMapping.h */,
 				A842BD45198E351C00129512 /* Ex_004_ShadowMapping.cpp */,
 				A842BD46198E351C00129512 /* Ex_004_ShadowMapping.h */,
+				A8A53584198FE6F80052D45E /* Ex_005_PLYLoading.cpp */,
+				A8A53585198FE6F80052D45E /* Ex_005_PLYLoading.h */,
 			);
 			path = examples;
 			sourceTree = "<group>";
@@ -628,6 +633,7 @@
 				A8876CAD198AD10C006553C8 /* Rect.cpp in Sources */,
 				A8B372ED197BEA43009B168D /* ShaderLib.cpp in Sources */,
 				A84D131B197E642500BC5A03 /* MeshCubeMapMaterial.cpp in Sources */,
+				A8A53586198FE6F80052D45E /* Ex_005_PLYLoading.cpp in Sources */,
 				A84495ED197F81E50015B3ED /* BasicMaterial.cpp in Sources */,
 				A8AC4AFA19764BCF00D4449B /* TextureUtils.cpp in Sources */,
 				A83D90BE19812E2C00A2D59F /* ShadowMapPlugin.cpp in Sources */,
