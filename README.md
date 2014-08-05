@@ -43,6 +43,9 @@ Working Examples
 
 ![Shadow mapping](http://subokita.files.wordpress.com/2014/08/2014-08-03-11_26_29.gif?w=400)
 
+* Loading PLY models (https://www.youtube.com/watch?v=xL2jixliwb4):
+
+![Loading PLY Models](http://abload.de/img/2014-08-0418_53_49xrai2.gif)
 
 
 FAQ
