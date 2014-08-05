@@ -96,6 +96,13 @@ namespace three {
         this->specularMap = specular_map;
     }
     
+    void Mesh::setEnvMap( const ptr<Texture> env_map ) {
+        if( !instance_of(env_map, EnvMap)) {
+            throw runtime_error( "Error, trying to set non-env map as env-map of a mesh" );
+        }
+        this->envMap = downcast(env_map, EnvMap);
+    }
+    
     void Mesh::setEnvMap( const ptr<EnvMap> env_map ) {
         this->envMap = env_map;
     }
@@ -181,8 +188,9 @@ namespace three {
     
     void Mesh::draw() {
         
-        glPolygonMode( GL_FRONT_AND_BACK, material->isWireframe() ? GL_LINE : GL_FILL );
-        glLineWidth( material->getWireframeLineWidth() );
+        glPolygonMode( GL_FRONT_AND_BACK, static_cast<GLint>(material->getPolygonMode()) );
+        glLineWidth( material->getLineWidth() );
+        glPointSize(material->getLineWidth() );
         
         if( material->getSide() == SIDE::DOUBLE_SIDE )  {
             glDisable( GL_CULL_FACE );

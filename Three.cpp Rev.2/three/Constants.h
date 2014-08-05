@@ -155,6 +155,12 @@ namespace three {
         LUMINANCE_ALPHA = 1023,
     };
     
+    enum class POLYGON_MODE {
+        POINT       = GL_POINT,
+        WIREFRAME   = GL_LINE,
+        POLYGON     = GL_FILL
+    };
+    
     
     // Compressed texture formats
     static const int RGB_S3TC_DXT1_Format  = 2001;

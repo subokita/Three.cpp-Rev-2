@@ -7,6 +7,7 @@
 //
 
 #include "CubeGeometry.h"
+#include "three.h"
 #include <exception>
 
 using namespace std;

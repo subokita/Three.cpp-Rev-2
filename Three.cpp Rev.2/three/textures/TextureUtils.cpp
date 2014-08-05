@@ -89,6 +89,8 @@ namespace three {
         map->genTexture();
         map->bind();
         
+        
+        
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, map->width, map->height, 0, GL_RED, GL_FLOAT, &speculars[0]);
         
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -141,6 +143,8 @@ namespace three {
 
         texture->genTexture();
         texture->bind();
+        
+        
         
         switch( image->getColorType() ) {
             case FIC_RGB:

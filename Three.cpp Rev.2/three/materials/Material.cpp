@@ -39,8 +39,8 @@ namespace three {
         visible             = true;
         needsUpdate         = true;
         
-        wireframe           = false;
-        wireframeLinewidth  = 1;
+        polygonMode         = POLYGON_MODE::POLYGON;
+        lineWidth           = 1;
         wireframeLinecap    = "round";
         wireframeLinejoin   = "round";
         
@@ -52,16 +52,20 @@ namespace three {
         
     }
     
-    void Material::setWireframe( bool flag ) {
-        this->wireframe = flag;
+    void Material::setPolygonMode(three::POLYGON_MODE mode) {
+        this->polygonMode = mode;
     }
     
-    bool Material::isWireframe() {
-        return wireframe;
+    const POLYGON_MODE Material::getPolygonMode() {
+        return polygonMode;
     }
     
-    int Material::getWireframeLineWidth() {
-        return wireframeLinewidth;
+    int Material::getLineWidth() {
+        return lineWidth;
+    }
+    
+    void Material::setLineWidth( float width ) {
+        lineWidth = width;
     }
     
     const SIDE Material::getSide() {

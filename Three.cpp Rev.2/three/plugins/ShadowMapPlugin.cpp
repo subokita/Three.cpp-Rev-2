@@ -102,13 +102,11 @@ namespace three {
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE );
                 
                 glGenerateMipmap(GL_TEXTURE_2D);
-
-                glDrawBuffer( GL_NONE );
-                glReadBuffer( GL_NONE );
                 
                 glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, light->shadowTexture->textureID, 0 );
-                GLenum draw_buffers[1] = { GL_COLOR_ATTACHMENT0 };
-                glDrawBuffers(1, draw_buffers);
+                glDrawBuffer( GL_COLOR_ATTACHMENT0 );
+                glReadBuffer( GL_NONE );
+
             }
             
             if( light->shadowCamera == nullptr ) {

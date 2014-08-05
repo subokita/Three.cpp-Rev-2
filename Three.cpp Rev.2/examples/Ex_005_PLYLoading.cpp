@@ -44,7 +44,7 @@ namespace three  {
         
         float x_offset = -1.0;
         for( string filename: filenames ) {
-            auto statue = Loader::loadPLY(path + "/ply models/", filename);
+            auto statue = Loader::loadPLY(path + "/ply models/", filename, aiProcess_GenSmoothNormals );
             statue->setMaterial(PhongMaterial::create(0x777777, 0x0, 0x0, 0x999999, 30, true));
             statue->getGeometry()->setScale(10.0f);
             statue->castShadow      = true;
@@ -140,10 +140,17 @@ namespace three  {
                         return;
                         
                     case GLFW_KEY_W:
-                        for( auto statue: statues )
-                            statue->getMaterial()->setWireframe( !statue->getMaterial()->isWireframe() );
+                        for( auto statue: statues ){
+                            if( statue->getMaterial()->getPolygonMode() == POLYGON_MODE::POLYGON )
+                                statue->getMaterial()->setPolygonMode( POLYGON_MODE::WIREFRAME );
+                            else
+                                statue->getMaterial()->setPolygonMode( POLYGON_MODE::POLYGON );
+                        }
                         
-                        sphere->getMaterial()->setWireframe( !sphere->getMaterial()->isWireframe() );
+                        if( sphere->getMaterial()->getPolygonMode() == POLYGON_MODE::POLYGON )
+                            sphere->getMaterial()->setPolygonMode( POLYGON_MODE::WIREFRAME );
+                        else
+                            sphere->getMaterial()->setPolygonMode( POLYGON_MODE::POLYGON );
                         break;
                         
                     case GLFW_KEY_R: /* Toggle rotation */

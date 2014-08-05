@@ -8,6 +8,7 @@
 
 #include "SphereGeometry.h"
 #include <vector>
+#include "three.h"
 
 using namespace std;
 namespace three {

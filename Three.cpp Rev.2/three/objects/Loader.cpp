@@ -12,39 +12,38 @@
 using namespace std;
 namespace three {
     
-    ptr<Mesh> Loader::loadPLY( const std::string path, const std::string filename ) {
+    ptr<Mesh> Loader::loadPLY( const std::string path, const std::string filename, unsigned int flags ) {
         cout << path << "/" << filename << endl;
         
         Assimp::Importer importer;
-        const aiScene * scene = importer.ReadFile( path + "/" + filename, aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals );
+        const aiScene * scene = importer.ReadFile( path + "/" + filename, flags );
         
-        if( !scene ) {
+        if( !scene )
             throw runtime_error(importer.GetErrorString());
-        }
         
-        if( scene->HasMeshes() == false ) {
+        if( scene->HasMeshes() == false )
             throw runtime_error( "No mesh found in " + path + "/" + filename );
-        }
+        
         
         ptr<Geometry> geometry = Geometry::create();
-        
         
         bool has_vertex_normals = false;
         for( int m = 0; m < scene->mNumMeshes; m++ ) {
             const aiMesh * mesh = scene->mMeshes[m];
             
             if( mesh->HasFaces() ) {
-            
+                
+                geometry->vertices.resize( mesh->mNumVertices );
                 
                 for( int i = 0; i < mesh->mNumVertices; i++ )
-                    geometry->addVertex( toGLMVec3(mesh->mVertices[i]) );
+                    geometry->vertices[i] = toGLMVec3(mesh->mVertices[i]);
+                
+                geometry->faces.resize( mesh->mNumFaces );
                 
                 for( int i = 0; i < mesh->mNumFaces; i++ ) {
-                    aiFace aiface = mesh->mFaces[i];
+                    aiFace f = mesh->mFaces[i];
                     
-                    ptr<Face3> face = Face3::create(aiface.mIndices[0],
-                                                    aiface.mIndices[1],
-                                                    aiface.mIndices[2]);
+                    ptr<Face3> face = Face3::create(f.mIndices[2], f.mIndices[1], f.mIndices[0]);
                     
                     if( mesh->HasNormals() ) {
                         has_vertex_normals = true;
@@ -55,6 +54,7 @@ namespace three {
                         });
                     }
                     
+                    /* FIXME: Can assimp generate UV coords? */
                     if( mesh->HasTextureCoords(0) ) {
                         face->setVertexUVs({
                             toGLMVec2( mesh->mTextureCoords[0][face->a] ),
@@ -63,13 +63,10 @@ namespace three {
                         });
                     }
 
-                    geometry->addFace( face );
+                    geometry->faces[i] = face;
                 }
             }
         }
-        
-        if( !has_vertex_normals )
-            geometry->computeVertexNormals(true);
         
         return Mesh::create(geometry, PhongMaterial::create());
     }

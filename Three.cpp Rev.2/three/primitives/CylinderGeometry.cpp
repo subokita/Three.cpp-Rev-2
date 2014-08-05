@@ -7,6 +7,7 @@
 //
 
 #include "CylinderGeometry.h"
+#include "three.h"
 
 using namespace std;
 

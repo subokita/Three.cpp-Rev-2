@@ -47,6 +47,7 @@ namespace three {
         void setTexture     ( const ptr<Texture> texture );
         void setNormalMap   ( const ptr<NormalMap> normal_map );
         void setSpecularMap ( const ptr<SpecularMap> specular_map );
+        void setEnvMap      ( const ptr<Texture> env_map );
         void setEnvMap      ( const ptr<EnvMap> env_map );
         void setGeometry    ( const ptr<Geometry> geometry );
         void setMaterial    ( const ptr<Material> material );

@@ -104,4 +104,7 @@
 #include "ShaderLibraries.h"
 
 
+/* external libs */
+#include <assimp/postprocess.h>
+
 #endif

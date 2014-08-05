@@ -20,7 +20,7 @@
 namespace three {
     class Loader {
     public:
-        static ptr<Mesh> loadPLY( const std::string path, const std::string filename );
+        static ptr<Mesh> loadPLY( const std::string path, const std::string filename, unsigned int flags );
         
     protected:
         static inline glm::vec2 toGLMVec2(aiVector3D& ai_vector);

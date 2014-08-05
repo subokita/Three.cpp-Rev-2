@@ -9,6 +9,7 @@
 #include "Geometry.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <sstream>
+#include "three.h"
 
 using namespace std;
 
@@ -122,7 +123,7 @@ namespace three {
             face->b = changes[face->b];
             face->c = changes[face->c];
             
-            vector<uint> indices = { face->a, face->b, face->c };
+            vector<int> indices = { face->a, face->b, face->c };
             
             int dup_index = -1;
             for( int n = 0; n < 3; n++ ) {

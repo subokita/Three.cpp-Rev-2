@@ -10,18 +10,13 @@
 #define __Three_cpp_Rev_2__Geometry__
 
 #include <iostream>
-#include <vector>
-#include <OpenGL/gl3.h>
-#include <glm/glm.hpp>
+#include "internal_headers.h"
 
-#include "Constants.h"
-#include "Face3.h"
 #include "Object3D.h"
 
 namespace three {
     class Geometry : public Object3D{
         friend class Mesh;
-        friend class Box3;
         friend class Loader;
         
     public:

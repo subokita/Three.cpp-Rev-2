@@ -50,12 +50,12 @@ namespace three {
             return os;
         }
         
-        bool isWireframe();
+        const POLYGON_MODE getPolygonMode();
         bool isVisible();
         bool requiresUpdate();
         bool doesWrapAround();
         
-        int getWireframeLineWidth();
+        int getLineWidth();
         const SIDE getSide();
         const glm::vec3 getWrapRGB();
         float getAlphaTest();
@@ -64,7 +64,8 @@ namespace three {
         bool isTransparent();
         const BLENDING_MODE getBlendingMode();
         
-        void setWireframe( bool flag );
+        void setLineWidth( float width );
+        void setPolygonMode( POLYGON_MODE mode );
         void setSide(SIDE side);
         void setVisible( bool flag );
         void setRequiresUpdate( bool flag );
@@ -79,8 +80,8 @@ namespace three {
     protected:
         SIDE side;
         
-        bool        wireframe;
-        int         wireframeLinewidth;
+        POLYGON_MODE polygonMode;
+        float       lineWidth;
         std::string wireframeLinecap;
         std::string wireframeLinejoin;
         float overdraw;

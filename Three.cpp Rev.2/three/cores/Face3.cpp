@@ -13,11 +13,11 @@ using namespace std;
 namespace  three {
     
     
-    ptr<Face3> Face3::create(uint a, uint b, uint c) {
+    ptr<Face3> Face3::create(int a, int b, int c) {
         return make_shared<Face3>(Face3(a, b, c));
     }
     
-    ptr<Face3> Face3::create(uint a, uint b, uint c, glm::vec3 normal, Color color, int material_index) {
+    ptr<Face3> Face3::create(int a, int b, int c, glm::vec3 normal, Color color, int material_index) {
         return make_shared<Face3>(Face3(a, b, c, normal, color, material_index));
     }
     
@@ -29,14 +29,14 @@ namespace  three {
     {}
     
     
-    Face3::Face3( uint a, uint b, uint c ):
+    Face3::Face3( int a, int b, int c ):
         a            ( a ),
         b            ( b ),
         c            ( c ),
         materialIndex( 0 )
     {}
     
-    Face3::Face3( uint a, uint b, uint c, glm::vec3 normal, Color color, int material_index ):
+    Face3::Face3( int a, int b, int c, glm::vec3 normal, Color color, int material_index ):
         a            ( a ),
         b            ( b ),
         c            ( c ),

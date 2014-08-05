@@ -7,7 +7,7 @@
 //
 
 #include "PlaneGeometry.h"
-
+#include "three.h"
 using namespace std;
 
 namespace three {

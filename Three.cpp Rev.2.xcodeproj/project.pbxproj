@@ -786,17 +786,21 @@
 					/usr/local/Cellar/glm/0.9.5.3/include,
 					/usr/local/Cellar/freeimage/3.15.4/include,
 					/usr/local/Cellar/assimp/3.0.1270/include,
+					/usr/local/Cellar/tbb/4.2.3/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/glfw3/3.0.4/lib,
 					/usr/local/Cellar/freeimage/3.15.4/lib,
 					/usr/local/Cellar/assimp/3.0.1270/lib,
+					/usr/local/Cellar/tbb/4.2.3/lib,
 				);
 				OTHER_LDFLAGS = (
 					"-lglfw3.3.0",
 					"-lfreeimageplus-3.15.4",
 					"-lfreeimage-3.15.4",
 					"-lassimp.3.0.255",
+					"-ltbbmalloc",
+					"-ltbb",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -812,17 +816,21 @@
 					/usr/local/Cellar/glm/0.9.5.3/include,
 					/usr/local/Cellar/freeimage/3.15.4/include,
 					/usr/local/Cellar/assimp/3.0.1270/include,
+					/usr/local/Cellar/tbb/4.2.3/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/glfw3/3.0.4/lib,
 					/usr/local/Cellar/freeimage/3.15.4/lib,
 					/usr/local/Cellar/assimp/3.0.1270/lib,
+					/usr/local/Cellar/tbb/4.2.3/lib,
 				);
 				OTHER_LDFLAGS = (
 					"-lglfw3.3.0",
 					"-lfreeimageplus-3.15.4",
 					"-lfreeimage-3.15.4",
 					"-lassimp.3.0.255",
+					"-ltbbmalloc",
+					"-ltbb",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

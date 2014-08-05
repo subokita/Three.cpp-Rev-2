@@ -109,12 +109,6 @@ namespace three {
                         glfwSetWindowShouldClose( window, GL_TRUE );
                         return;
                         
-                    case GLFW_KEY_W: /* Toggle wireframe */
-                        sphere->getMaterial()->setWireframe  (!sphere->getMaterial()->isWireframe());
-                        cube->getMaterial()->setWireframe    (!cube->getMaterial()->isWireframe());
-                        cylinder->getMaterial()->setWireframe(!cylinder->getMaterial()->isWireframe());
-                        break;
-                        
                     case GLFW_KEY_R: /* Toggle rotation */
                         rotate_objects = !rotate_objects;
                         break;
