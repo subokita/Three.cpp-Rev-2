@@ -17,6 +17,7 @@
 #include "PerspectiveCamera.h"
 
 /* ./three/controls/ */
+#include "CameraControl.h"
 #include "Arcball.h"
 
 /* ./three/cores/ */

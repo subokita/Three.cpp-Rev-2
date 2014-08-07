@@ -32,6 +32,32 @@ namespace three {
     }
     
     
+    void Mesh::setPointMode( bool flag ) {
+        if( this->material != nullptr ) {
+            if( flag ) {
+                this->material->setSide(SIDE::DOUBLE_SIDE);
+                this->material->setPolygonMode(POLYGON_MODE::POINT);
+            }
+            else {
+                this->material->setSide(SIDE::FRONT_SIDE);
+                this->material->setPolygonMode(POLYGON_MODE::POLYGON);
+            }
+        }
+    }
+    
+    void Mesh::setWireframeMode( bool flag ) {
+        if( this->material != nullptr ) {
+            if( flag ){
+                this->material->setSide(SIDE::DOUBLE_SIDE);
+                this->material->setPolygonMode(POLYGON_MODE::WIREFRAME);
+            }
+            else {
+                this->material->setSide(SIDE::FRONT_SIDE);
+                this->material->setPolygonMode(POLYGON_MODE::POLYGON);
+            }
+        }
+    }
+    
     bool Mesh::hasTexture(){
         return texture != nullptr;
     }
@@ -167,10 +193,10 @@ namespace three {
         for( auto& normal: normals)
             normal = glm::vec3(glm::vec4(normal, 1.0) * geometry->matrixWorld);
         
-        
-        glGenBuffers( 4, bufferIDs );
+        glGenBuffers( 5, bufferIDs );
         glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[0] );
         glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec3 ) * geometry->vertices.size(), &geometry->vertices[0], GL_STATIC_DRAW );
+        
         
         glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[1] );
         glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec3 ) * normals.size(), &normals[0], GL_STATIC_DRAW );
@@ -181,9 +207,14 @@ namespace three {
         glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[3] );
         glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec2 ) * uvs.size(), &uvs[0], GL_STATIC_DRAW );
         
+        
+//        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[4] );
+//        glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec3 ) * geometry->colors.size(), &geometry->colors[0], GL_STATIC_DRAW );
+        
         glBuffersInitialized = true;
         
         geometry->vertices.clear();
+        geometry->faces.clear();
     }
     
     void Mesh::draw() {
@@ -215,6 +246,11 @@ namespace three {
         glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[3] );
         glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 0, (void*) 0 );
         
+        /* Colors */
+//        glEnableVertexAttribArray( 3 );
+//        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[4] );
+//        glVertexAttribPointer( 3, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0 );
+        
         /* Indices */
         glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, bufferIDs[2] );
         glDrawElements( GL_TRIANGLES, geometry->noOfElements, GL_UNSIGNED_SHORT, (void*) 0);
@@ -222,6 +258,7 @@ namespace three {
         glDisableVertexAttribArray( 0 );
         glDisableVertexAttribArray( 1 );
         glDisableVertexAttribArray( 2 );
+        glDisableVertexAttribArray( 3 );
         glBindTexture( GL_TEXTURE_2D, 0 );
     }
 }

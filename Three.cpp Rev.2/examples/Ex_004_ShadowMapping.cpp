@@ -91,7 +91,7 @@ namespace three  {
         
         /* Create a spotlight, the shadow should be casted no the left hand side */
         auto spot_light = SpotLight::create(0x99CCFF, 1.0, 20.0, 50.0, 1.0 );
-        spot_light->setPosition(3.0, 2.0, 3.0);
+        spot_light->position = glm::vec3(3.0, 2.0, 3.0);
         spot_light->castShadow = true;
         scene->add( spot_light );
         
@@ -102,8 +102,8 @@ namespace three  {
         bool rotate_objects = false;
         float light_rotation_1 = 0.0;
         renderer.setPostRenderCallbackHandler( [&](){
-            dir_light->setPositionX( 3.0 * cosf( light_rotation_1 ) );
-            dir_light->setPositionZ( 3.0 * sinf( light_rotation_1 ) );
+            dir_light->position.x = ( 3.0 * cosf( light_rotation_1 ) );
+            dir_light->position.z = ( 3.0 * sinf( light_rotation_1 ) );
             
             light_rotation_1 += 0.01;
             

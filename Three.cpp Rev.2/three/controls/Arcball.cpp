@@ -7,6 +7,7 @@
 //
 
 #include "Arcball.h"
+#include "three.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -16,54 +17,34 @@
 
 namespace three {
     
-    ptr<Arcball> Arcball::create( int window_width, int window_height, GLfloat roll_speed, bool x_axis, bool y_axis  ) {
-        ptr<Arcball> arcball = std::make_shared<Arcball>();
-        arcball->init(window_width, window_height, roll_speed, x_axis, y_axis );
-        return arcball;
+    ptr<Arcball> Arcball::create( GLfloat roll_speed, bool x_axis, bool y_axis  ) {
+        return std::make_shared<Arcball>(Arcball(roll_speed, x_axis, y_axis ));
     }
     
     
-    /**
-     * @param roll_speed the speed of rotation
-     */
-    void Arcball::init( int window_width, int window_height, GLfloat roll_speed, bool x_axis, bool y_axis  ) {
-        this->windowWidth  = window_width;
-        this->windowHeight = window_height;
+    Arcball::Arcball(GLfloat roll_speed, bool x_axis, bool y_axis) :
+        rollSpeed   (roll_speed),
+        angle       (0.0f),
+        camAxis     (glm::vec3(0.0, 1.0, 0.0))
+    {
         
-        this->mouseEvent = 0;
-        this->rollSpeed  = roll_speed;
-        this->angle      = 0.0f;
-        this->camAxis    = glm::vec3(0.0f, 1.0f, 0.0f);
-        
-        this->xAxis = x_axis;
-        this->yAxis = y_axis;
     }
     
-    /**
-     * Convert the mouse cursor coordinate on the window (i.e. from (0,0) to (windowWidth, windowHeight))
-     * into normalized screen coordinate (i.e. (-1, -1) to (1, 1)
-     */
-    glm::vec3 Arcball::toScreenCoord( double x, double y ) {
-        glm::vec3 coord(0.0f);
-        
-        if( xAxis )
-            coord.x =  (2 * x - windowWidth ) / windowWidth;
-        
-        if( yAxis )
-            coord.y = -(2 * y - windowHeight) / windowHeight;
-        
-        /* Clamp it to border of the windows, comment these codes to allow rotation when cursor is not over window */
-        coord.x = glm::clamp( coord.x, -1.0f, 1.0f );
-        coord.y = glm::clamp( coord.y, -1.0f, 1.0f );
-        
-        float length_squared = coord.x * coord.x + coord.y * coord.y;
-        if( length_squared <= 1.0 )
-            coord.z = sqrt( 1.0 - length_squared );
-        else
-            coord = glm::normalize( coord );
-        
-        return coord;
+    Arcball::~Arcball() {    
     }
+    
+    void Arcball::scrollCallback( GLFWwindow *window, double x, double y ) {
+        /* Handle zooming using mouse scroll */
+        glm::vec3 camera_pos = glm::vec3(createTransformationMatrix() * glm::vec4(camera->position, 1.0) );
+
+        glm::vec3 dir = glm::normalize(camera->target->position - camera_pos) * static_cast<float>(-y);
+        if( glm::length((camera_pos - dir)) == 0.0 )
+            return;
+        
+        translationVector += dir;
+        camera->matrix = glm::translate(camera->matrix, dir);
+    }
+    
     
     /**
      * Check whether we should start the mouse event
@@ -72,7 +53,21 @@ namespace three {
      * Event 2: tracking of subsequent cursor movement
      */
     void Arcball::mouseButtonCallback( GLFWwindow * window, int button, int action, int mods ){
-        mouseEvent = ( action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT );
+        this->mouseEvent = action == GLFW_PRESS ;
+        this->button     = button;
+        
+        if( action == GLFW_RELEASE ) {
+            glm::mat4 rot_mat = createTransformationMatrix();
+            camera->matrix *= rot_mat;
+            camera->updatePosition      ( rot_mat );
+            camera->updateUpDirection   ( rot_mat );
+            camera->updateTargetPosition( rot_mat );
+            
+            
+            angle               = 0.0;
+            camAxis             = glm::vec3(0.0, 1.0, 0.0);
+            translationVector   = glm::vec3(0.0);
+        }
     }
     
     void Arcball::cursorCallback( GLFWwindow *window, double x, double y ){
@@ -89,19 +84,25 @@ namespace three {
         /* Tracking the subsequent */
         currPos  = toScreenCoord( x, y );
         
-        /* Calculate the angle in radians, and clamp it between 0 and 90 degrees */
-        angle    = acos( std::min(1.0f, glm::dot(prevPos, currPos) ));
-        
-        /* Cross product to get the rotation axis, but it's still in camera coordinate */
-        camAxis  = glm::cross( prevPos, currPos );
+        if( mouseEvent == 2 && button == GLFW_MOUSE_BUTTON_LEFT ) {
+            /* Calculate the angle in radians, and clamp it between 0 and 90 degrees */
+            angle    = acos( std::min(1.0f, glm::dot(prevPos, currPos) ));
+            
+            /* Cross product to get the rotation axis, but it's still in camera coordinate */
+            camAxis  = glm::cross( prevPos, currPos );
+        }
+        else if(mouseEvent == 2 && button == GLFW_MOUSE_BUTTON_RIGHT) {
+            translationVector = (currPos - prevPos);
+            translationVector *= 2.0;
+        }
     }
     
     /**
      * Create rotation matrix within the camera coordinate,
      * multiply this matrix with view matrix to rotate the camera
      */
-    glm::mat4 Arcball::createViewRotationMatrix() {
-        return glm::rotate( glm::degrees(angle) * rollSpeed, camAxis );
+    glm::mat4 Arcball::createTransformationMatrix() {
+        return glm::translate(glm::rotate( glm::degrees(angle) * rollSpeed, camAxis ), translationVector);
     }
     
     /**

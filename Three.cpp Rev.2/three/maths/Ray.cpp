@@ -16,9 +16,9 @@ namespace three {
         return make_shared<Ray>(origin, direction);
     }
     
-    Ray::~Ray(){}
-    
     Ray::Ray(){}
+    
+    Ray::~Ray(){}
     
     Ray::Ray( glm::vec3 origin, glm::vec3 direction ) :
         origin   ( origin ),
@@ -281,7 +281,7 @@ namespace three {
         direction   = glm::normalize(direction - origin);
     }
     
-    bool Ray::equals(const Ray& other) {
-        return (this->origin == other.origin) && (this->direction == other.direction);
+    bool Ray::equals(ptr<Ray> other) {
+        return (this->origin == other->origin) && (this->direction == other->direction);
     }
 }

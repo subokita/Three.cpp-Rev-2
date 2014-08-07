@@ -135,8 +135,8 @@ namespace three {
             }
         }
         
-        computeFaceNormals();
-        computeVertexNormals(true);
-        mergeVertices();
+//        computeFaceNormals();
+//        computeVertexNormals(true);
+//        mergeVertices();
     }
 }

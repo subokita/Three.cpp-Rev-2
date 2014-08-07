@@ -41,6 +41,7 @@ namespace three {
     
     
     /* ./three/controls/ */
+    class CameraControl;
     class Arcball;
     
     /* ./three/lights */

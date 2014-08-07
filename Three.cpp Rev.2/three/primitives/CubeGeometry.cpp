@@ -48,6 +48,12 @@ namespace three {
     
     CubeGeometry::~CubeGeometry(){}
     
+    ptr<CubeGeometry> CubeGeometry::create(glm::vec3 size, const int width_segments, const int height_segments,
+                                           const int depth_segments) {
+        return make_shared<CubeGeometry>(CubeGeometry( size.x, size.y, size.z, width_segments,
+                                                       height_segments, depth_segments ));
+    }
+    
     ptr<CubeGeometry> CubeGeometry::create( const float size, const int segments ) {
         return make_shared<CubeGeometry>(CubeGeometry(size, segments));
     }

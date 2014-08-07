@@ -178,15 +178,18 @@ namespace three {
     /**
      * Draw all the meshes, and set the appropriate uniforms
      */
-    void ShaderLib::draw( ptr<Camera> camera, ptr<Arcball> arcball, ptr<Object3D> object, bool gamma_input ) {
+    void ShaderLib::draw( ptr<Camera> camera, ptr<CameraControl> cam_control, ptr<Object3D> object, bool gamma_input ) {
         glm::mat4 rot_mat(1.0);
-        if( arcball != nullptr) {
-            rot_mat = arcball->createViewRotationMatrix();
+        glm::vec3 cam_position = camera->position * camera->quaternion;
+        
+        if( cam_control != nullptr) {
+            rot_mat = cam_control->createTransformationMatrix();
+            cam_position = glm::vec3(glm::vec4(cam_position, 1.0) * rot_mat);
         }
         
         shader->setUniform( "projection_mat",   camera->getProjectionMatrix() );
         shader->setUniform( "view_mat",         camera->matrix * rot_mat );
-        shader->setUniform( "camera_pos_w",     camera->getPosition() * camera->quaternion );
+        shader->setUniform( "camera_pos_w",     cam_position );
         
         if( !object->visible )
             return;

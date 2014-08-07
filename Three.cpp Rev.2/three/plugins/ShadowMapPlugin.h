@@ -23,7 +23,7 @@ namespace three {
         
         virtual void setState( ptr<Scene> scene, ptr<Camera> camera ) override;
         virtual void init    ( ptr<Scene> scene, ptr<Camera> camera ) override;
-        virtual void render  ( ptr<Scene> scene, ptr<Arcball> arcball, ptr<Camera> camera  ) override;
+        virtual void render  ( ptr<Scene> scene, ptr<Camera> camera  ) override;
         
         void debugShadow();
         

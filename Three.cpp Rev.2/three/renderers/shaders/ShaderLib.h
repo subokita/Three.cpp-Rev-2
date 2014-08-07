@@ -50,7 +50,7 @@ namespace three {
         void bind();
         void unbind();
         
-        void draw( ptr<Camera> camera, ptr<Arcball> arcball, ptr<Object3D> object, bool gamma_input );
+        void draw( ptr<Camera> camera, ptr<CameraControl> arcball, ptr<Object3D> object, bool gamma_input );
         
     protected:
         ShaderLib( std::string name, std::vector<std::string> precisions, std::vector<std::string> defines,

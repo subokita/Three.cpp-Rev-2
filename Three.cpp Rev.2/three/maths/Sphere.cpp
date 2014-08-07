@@ -107,8 +107,7 @@ namespace three {
     }
     
     Sphere& Sphere::applyMatrix( glm::mat4x4& mat ) {
-        glm::vec4 temp = glm::vec4( center, 1 ) * mat;
-        this->center   = glm::vec3( temp );
+        this->center   = glm::vec3( mat * glm::vec4( center, 1 ) );
         this->radius   = this->radius * three::Math::getMaxScaleOnAxis( mat );
         return *this;
     }

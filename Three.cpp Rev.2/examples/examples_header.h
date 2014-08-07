@@ -14,4 +14,5 @@
 #include "Ex_003_EnvironmentMapping.h"
 #include "Ex_004_ShadowMapping.h"
 #include "Ex_005_PLYLoading.h"
+#include "Ex_006_BoundingBoxTest.h"
 #endif

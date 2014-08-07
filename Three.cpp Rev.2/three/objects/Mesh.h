@@ -44,6 +44,9 @@ namespace three {
         const ptr<Geometry>     getGeometry();
         const ptr<Material>     getMaterial();
         
+        void setPointMode    ( bool flag );
+        void setWireframeMode( bool flag );
+        
         void setTexture     ( const ptr<Texture> texture );
         void setNormalMap   ( const ptr<NormalMap> normal_map );
         void setSpecularMap ( const ptr<SpecularMap> specular_map );
@@ -56,7 +59,7 @@ namespace three {
         Mesh();
         
     protected:
-        GLuint bufferIDs[4];
+        GLuint bufferIDs[5];
         bool glBuffersInitialized;
         
         ptr<Geometry> geometry;

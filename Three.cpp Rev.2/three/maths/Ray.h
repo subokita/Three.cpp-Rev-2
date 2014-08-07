@@ -16,10 +16,10 @@ namespace three {
     class Ray {
     public:
         static ptr<Ray> create( glm::vec3 origin, glm::vec3 direction );
-        ~Ray();
-        
         Ray();
         Ray( glm::vec3 origin, glm::vec3 direction );
+        ~Ray();
+        
         void set( glm::vec3 origin, glm::vec3 direction );
         
         glm::vec3 at(float t);
@@ -37,11 +37,12 @@ namespace three {
         glm::vec3 intersectsBoxAt( ptr<Box3> box );
         
         void applyMatrix( glm::mat4& mat );
-        bool equals(const Ray& other);
+        bool equals(ptr<Ray> other);
         
         glm::vec3 intersectsTriangleAt( ptr<Triangle> triangle, bool backface_cull = true );
         
     protected:
+        
         glm::vec3 origin;
         glm::vec3 direction;
     };

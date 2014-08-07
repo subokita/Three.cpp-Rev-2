@@ -65,7 +65,6 @@ namespace three {
         glGenVertexArrays(1, &vertexArrayId );
         glBindVertexArray(vertexArrayId);
         
-        arcball = Arcball::create(width, height, 2.0f);
         shadowMapPlugin = ShadowMapPlugin::create();
         
         initCallbacks();
@@ -89,7 +88,7 @@ namespace three {
         this->clearColor = clear_color;
     }
     
-    const float Renderer::getAspectRatio() {
+    float Renderer::getAspectRatio() {
         return this->aspectRatio;
     }
     
@@ -122,7 +121,7 @@ namespace three {
             glViewport(0, 0, width, height);
         };
         
-        keyCallbackHandler = [](GLFWwindow *window, int key, int scancode, int action, int mod) {
+        defaultKeyCallbackHandler = [](GLFWwindow *window, int key, int scancode, int action, int mod) {
             if( action == GLFW_PRESS ) {
                 switch ( key) {
                     case GLFW_KEY_ESCAPE: case GLFW_KEY_Q:
@@ -135,23 +134,29 @@ namespace three {
             }
         };
         
+        keyCallbackHandler = [](GLFWwindow *window, int key, int scancode, int action, int mod) {};
+        
         scrollCallbackHandler = []( GLFWwindow *window, double x, double y ) {
-            /* Handle zooming using mouse scroll */
-            auto cam = instance->camera;
-            glm::vec3 dir = glm::normalize(cam->target->getPosition() - cam->getPosition()) * static_cast<float>(-y);
-            if( glm::length((cam->getPosition() - dir)) == 0.0 )
-                return;
-
-            cam->matrix = glm::translate(cam->matrix, dir);
+            if( instance->camControl != nullptr ) {
+                instance->camControl->scrollCallback(window, x, y);
+            }
         };
         
-        cursorCallbackHandler = []( GLFWwindow *window, double x, double y ) {
-            instance->arcball->cursorCallback( window, x, y );
+        defaultCursorCallbackHandler = []( GLFWwindow *window, double x, double y ) {
+            if( instance->camControl != nullptr ) {
+                instance->cursorPosition = instance->camControl->toScreenCoord(x, y);
+                instance->camControl->cursorCallback( window, x, y );
+            }
         };
         
-        mouseButtonCallbackHandler = []( GLFWwindow * window, int button, int action, int mods ) {
-            instance->arcball->mouseButtonCallback( window, button, action, mods );
+        cursorCallbackHandler = []( GLFWwindow *window, double x, double y ) {};
+        
+        defaultMouseButtonCallbackHandler = []( GLFWwindow * window, int button, int action, int mods ) {
+            if( instance->camControl != nullptr )
+                instance->camControl->mouseButtonCallback( window, button, action, mods );
         };
+        
+        mouseButtonCallbackHandler = []( GLFWwindow * window, int button, int action, int mods ) {};
         
         glfwSetErrorCallback          ( Renderer::errorCallback );
         glfwSetFramebufferSizeCallback( window, Renderer::frameBufferSizeCallback );
@@ -168,6 +173,9 @@ namespace three {
         
         if( scene == nullptr || camera == nullptr )
             throw runtime_error( "Unable to render scene with a null scene or camera" );
+        
+        if( this->camControl != nullptr )
+            camControl->init(camera, width, height );
         
         this->scene = scene;
         this->camera = camera;
@@ -209,7 +217,6 @@ namespace three {
             renderPlugins( preRenderPlugins, scene, camera );
 
             /* Render the scene */
-            #ifndef DEBUG_SHADOW
             renderTarget->bind();
             setDefaultGLState();
             glViewport(viewport.x, viewport.y, viewport.width, viewport.height);
@@ -223,13 +230,14 @@ namespace three {
                 shader_lib->bind();
                 {
                     scene->setUniforms( shader_lib, gammaInput );
-                    shader_lib->draw(camera, arcball, object, gammaInput );
+                    shader_lib->draw(camera, camControl, object, gammaInput );
                 }
                 shader_lib->unbind();
             }
-            #endif
             
             #ifdef DEBUG_SHADOW
+            setDefaultGLState();
+            
             if( shadowMapPlugin != nullptr )
                 shadowMapPlugin->debugShadow();
             #endif
@@ -246,6 +254,13 @@ namespace three {
         
     }
     
+    void Renderer::setCameraControl( ptr<CameraControl> cam_control ) {
+        this->camControl = cam_control;
+    }
+    
+    glm::vec3 Renderer::getCursorPosition() {
+        return cursorPosition;
+    }
     
     void Renderer::renderPlugins( std::vector<ptr<RenderPlugin>>& plugins, ptr<Scene> scene, ptr<Camera> camera ) {
         if( plugins.empty() )
@@ -253,11 +268,12 @@ namespace three {
         
         for( ptr<RenderPlugin> plugin: plugins ) {
             plugin->setState( scene, camera );
-            plugin->render( scene, arcball, camera );
+            plugin->render( scene, camera );
         }
     }
     
     void Renderer::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mod) {
+        instance->defaultKeyCallbackHandler( window, key, scancode, action, mod );
         instance->keyCallbackHandler( window, key, scancode, action, mod );
     }
 
@@ -274,10 +290,12 @@ namespace three {
     }
     
     void Renderer::mouseButtonCallback( GLFWwindow * window, int button, int action, int mods ){
+        instance->defaultMouseButtonCallbackHandler(window, button, action, mods );
         instance->mouseButtonCallbackHandler(window, button, action, mods );
     }
     
     void Renderer::cursorCallback( GLFWwindow *window, double x, double y ) {
+        instance->defaultCursorCallbackHandler(window, x, y);
         instance->cursorCallbackHandler(window, x, y);
     }
     

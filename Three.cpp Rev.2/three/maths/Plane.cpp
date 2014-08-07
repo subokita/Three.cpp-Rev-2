@@ -127,8 +127,8 @@ namespace three {
     
     Plane& Plane::applyMatrix( glm::mat4x4& mat ) {
         glm::mat3x3 normal_mat  = glm::mat3x3(glm::inverseTranspose( mat ));
-        glm::vec3 new_normal    = normal * normal_mat;
-        glm::vec3 new_coplanar  = glm::vec3(glm::vec4(coplanarPoint(), 1) * mat);
+        glm::vec3 new_normal    = normal_mat * normal;
+        glm::vec3 new_coplanar  = glm::vec3(mat * glm::vec4(coplanarPoint(), 1));
         setFromNormalAndCoplanarPoint( new_normal, new_coplanar );
         return *this;
     }

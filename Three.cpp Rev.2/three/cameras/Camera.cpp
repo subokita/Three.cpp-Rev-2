@@ -28,6 +28,18 @@ namespace three {
     
     Camera::~Camera(){}
     
+    void Camera::updatePosition( glm::mat4& mat ) {
+        this->position = glm::vec3(glm::vec4(this->position, 1.0) * mat);
+    }
+    
+    void Camera::updateTargetPosition(glm::mat4& mat) {
+        this->target->position = glm::vec3(glm::vec4(this->target->position, 1.0)* mat);
+    }
+    
+    void Camera::updateUpDirection( glm::mat4& mat ) {
+        this->up = glm::normalize( glm::vec3(glm::vec4(this->up, 1.0) * mat) );
+    }
+    
     const glm::mat4& Camera::getProjectionMatrix() {
         return this->projection;
     }
@@ -37,7 +49,7 @@ namespace three {
     }
     
     void Camera::updateMatrix() {
-        this->matrix = glm::lookAt( this->position, this->target->getPosition(), this->up );
+        this->matrix = glm::lookAt( this->position, this->target->position, this->up );
     }
     
     

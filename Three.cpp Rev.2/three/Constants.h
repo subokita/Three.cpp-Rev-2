@@ -17,7 +17,7 @@
 #define instance_of(var, type) ( std::dynamic_pointer_cast<type>(var) != nullptr )
 #define downcast(var, type) (std::dynamic_pointer_cast<type>(var))
 
-//#define DEBUG_SHADOW
+#define DEBUG_SHADOW
 
 /* Use alias declaration instead of macro definitions */
 template<typename T>

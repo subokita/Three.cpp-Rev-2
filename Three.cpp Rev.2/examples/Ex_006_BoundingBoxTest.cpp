@@ -1,33 +1,33 @@
 //
-//  Ex_005_PLYLoading.cpp
+//  Ex_006_BoundingBoxTest.cpp
 //  Three.cpp Rev.2
 //
-//  Created by Saburo Okita on 04/08/14.
+//  Created by Saburo Okita on 06/08/14.
 //  Copyright (c) 2014 Saburo Okita. All rights reserved.
 //
 
-#include "Ex_005_PLYLoading.h"
-
+#include "Ex_006_BoundingBoxTest.h"
 
 using namespace std;
 
 namespace three  {
     
-    ptr<Ex_005_PLYLoading> Ex_005_PLYLoading::create(){
-        return make_shared<Ex_005_PLYLoading>();
+    ptr<Ex_006_BoundingBoxTest> Ex_006_BoundingBoxTest::create(){
+        return make_shared<Ex_006_BoundingBoxTest>();
     }
     
-    void Ex_005_PLYLoading::run() {
+    void Ex_006_BoundingBoxTest::run() {
         const string path = "/Users/saburookita/Personal Projects/Three.cpp Rev.2/examples/assets/";
         
         Renderer renderer;
-        renderer.init( "Ex 005: Loading PLY objects", 1600 * 2 / 4, 900 * 2 / 4 );
+        renderer.init( "Ex 006: Bounding Box Tests", 1600 * 2 / 4, 900 * 2 / 4 );
+        renderer.setCameraControl(Arcball::create(2.0f));
         
         /* Create scene */
         auto scene = Scene::create();
         scene->setFog(Fog::create( 0x72645b / 2, 2.0, 15.0 ));
         scene->setViewport( 0.0, 0.0, renderer.getWidth(), renderer.getHeight() );
-        scene->setShadowMapType( SHADOW_MAP::PCF_SOFT );
+        scene->setShadowMapType( SHADOW_MAP::BASIC );
         
         /* Create camera */
         auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100.0 );
@@ -49,7 +49,7 @@ namespace three  {
                                           aiProcess_GenSmoothNormals | aiProcess_FlipWindingOrder );
             
             statue->setMaterial(PhongMaterial::create(0x777777, 0x0, 0x777777, 0x0, 0, true));
-            statue->getGeometry()->setScale(10.f);
+            statue->getGeometry()->setScale(10.0f);
             statue->castShadow      = true;
             statue->receiveShadow   = true;
             
@@ -62,6 +62,7 @@ namespace three  {
             scene->add( statue );
             statues.push_back( statue );
         }
+        
         
         /* Create our objects */
         auto sphere = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
@@ -82,6 +83,12 @@ namespace three  {
         box->receiveShadow = true;
         scene->add( box );
         
+        auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 2.0, 30, 5, false),
+                                     PhongMaterial::create( 0xCCCC00, 0x0, 0x0, 0x111111, 150.0, true ) );
+        cylinder->translate(-3.0f, 0.0f, -3.0f);
+        cylinder->castShadow = true;
+        cylinder->receiveShadow = true;
+        scene->add( cylinder );
         
         /* And the ground plane */
         auto plane = Mesh::create( PlaneGeometry::create(50.0f), PhongMaterial::create() );
@@ -105,13 +112,8 @@ namespace three  {
         dir_light->shadowBias       = -0.001;
         dir_light->shadowCameraNear = -10.0;
         dir_light->shadowCameraFar  =  10.0;
+        dir_light->shadowMapSize    = glm::vec2(512);
         scene->add( dir_light );
-        
-        /* Create a spotlight, the shadow should be casted no the left hand side */
-        auto spot_light = SpotLight::create(0x99CCFF, 1.0, 20.0, 50.0, 1.0 );
-        spot_light->position = glm::vec3(3.0, 2.0, 3.0);
-        spot_light->castShadow = true;
-        scene->add( spot_light );
         
         /* Create an ambient light */
         scene->add( AmbientLight::create(0x777777));
@@ -131,44 +133,31 @@ namespace three  {
             }
         });
         
+        renderer.setCursorCallbackHandler([&](GLFWwindow *, double, double){
+            glm::vec3 pos = renderer.getCursorPosition();
+            pos.z = MAX_FLOAT;
+            
+            glm::vec3 dir = pos - glm::vec3(0.0);
+            
+            ptr<Ray> ray = Ray::create(camera->position, dir);
+            vector<ptr<Object3D>> desc = scene->getDescendants();
+            
+            
+        });
+        
+        renderer.setMouseButtonCallbackHandler([&] (GLFWwindow *, int, int, int){
+            
+        });
+        
         /* Override key callback handler */
-        renderer.setKeyCallbackHandler([&](GLFWwindow *window, int key, int scancode, int action, int mod) {
+        renderer.setKeyCallbackHandler([&](GLFWwindow *, int key, int scancode, int action, int mod) {
             if( action == GLFW_PRESS ) {
                 switch ( key) {
-                    case GLFW_KEY_ESCAPE: case GLFW_KEY_Q:
-                        glfwSetWindowShouldClose( window, GL_TRUE );
-                        return;
-                        
-                    case GLFW_KEY_F:
-                        for( auto statue: statues )
-                            statue->getMaterial()->setPolygonMode( POLYGON_MODE::POLYGON );
-                        sphere->getMaterial()->setPolygonMode( POLYGON_MODE::POLYGON );
-                        break;
-                        
-                    case GLFW_KEY_P:
-                        for( auto statue: statues ) {
-                            statue->getMaterial()->setPolygonMode( POLYGON_MODE::POINT );
-                            statue->getMaterial()->setLineWidth(2.0f);
-                        }
-                        sphere->getMaterial()->setPolygonMode( POLYGON_MODE::POINT );
-                        sphere->getMaterial()->setLineWidth(2.0f);
-                        break;
-                        
-                    case GLFW_KEY_W:
-                        for( auto statue: statues ) {
-                            statue->getMaterial()->setPolygonMode( POLYGON_MODE::WIREFRAME );
-                            statue->getMaterial()->setLineWidth(1.0f);
-                        }
-                        sphere->getMaterial()->setPolygonMode( POLYGON_MODE::WIREFRAME );
-                        sphere->getMaterial()->setLineWidth(1.0f);
-                        break;
-                        
                     case GLFW_KEY_R: /* Toggle rotation */
                         rotate_objects = !rotate_objects;
                         break;
                         
-                    default:
-                        break;
+                    default: break;
                 }
             }
         });

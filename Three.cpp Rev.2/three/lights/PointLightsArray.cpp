@@ -57,7 +57,7 @@ namespace three {
             size++;
             colors.push_back     (light->color);
             intensities.push_back(light->intensity);
-            positions.push_back  (light->getPosition());
+            positions.push_back  (light->position);
             distances.push_back  (light->getDistance());
         }
     }

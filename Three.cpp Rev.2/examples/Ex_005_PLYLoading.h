@@ -10,8 +10,6 @@
 #define __Three_cpp_Rev_2__Ex_005_PLYLoading__
 
 #include <iostream>
-
-#include <iostream>
 #include "Example.h"
 
 namespace three {

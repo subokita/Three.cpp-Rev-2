@@ -40,7 +40,7 @@ namespace three {
         }, "\t");
         
         static const string simplePassFragment = Utils::join({
-            "float unpacked = unpackDepth( texture( texture_sampler, uv ) );",
+            "float unpacked = 1.0 - unpackDepth( texture( texture_sampler, uv ) );",
             "color = vec4(unpacked, unpacked, unpacked, 1.0);",
 //            "color = texture(texture_sampler, uv);",
         }, "\t");
@@ -88,6 +88,7 @@ namespace three {
             "layout (location = 0) in vec3 vertex_pos_m;",
             "layout (location = 1) in vec3 vertex_normal_m;",
             "layout (location = 2) in vec2 vertex_uv_m;",
+            
             
             "uniform mat4 model_mat;",
             "uniform mat4 model_view_mat;",

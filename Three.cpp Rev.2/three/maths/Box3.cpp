@@ -239,7 +239,7 @@ namespace three {
         };
         
         for( int i = 0; i < 8; i++ )
-            points[i]  = points[i] * mat;
+            points[i]  = mat * points[i];
         
         this->makeEmpty();
         this->setFrom( points );

@@ -25,6 +25,10 @@ namespace three {
         void lookAt( const glm::vec3 vec );
         void lookAt( const float x, const float y, const float z );
         
+        void updatePosition( glm::mat4& mat );
+        void updateTargetPosition(glm::mat4& mat);
+        void updateUpDirection( glm::mat4& mat );
+        
         virtual void updateMatrix() override;
         
         

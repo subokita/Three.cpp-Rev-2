@@ -76,8 +76,6 @@ namespace three {
     Line3& Line3::applyMatrix( glm::mat4x4& mat ) {
         this->start = glm::vec3(mat * glm::vec4(this->start, 1));
         this->end   = glm::vec3(mat * glm::vec4(this->end,   1));
-//        this->start = glm::vec3(glm::vec4(this->start, 1) * mat);
-//        this->end   = glm::vec3(glm::vec4(this->end,   1) * mat);
         return *this;
     }
     

@@ -16,6 +16,11 @@
 namespace three {
     class CubeGeometry: public Geometry {
     public:
+        static ptr<CubeGeometry> create( glm::vec3 size,
+                                         const int width_segments  = 1,
+                                         const int height_segments = 1,
+                                         const int depth_segments  = 1 );
+        
         static ptr<CubeGeometry> create( const float size, const int segments = 1 );
         static ptr<CubeGeometry> create( const float width, const float height, const float depth,
                                          const int width_segments  = 1,

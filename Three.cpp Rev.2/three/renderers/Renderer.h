@@ -39,14 +39,18 @@ namespace three {
         
         void setGamma( const bool input, const bool output );
         void setClearColor( Color clear_color = 0xFFFFFF );
-        const float getAspectRatio();
+        float getAspectRatio();
+        glm::vec3 getCursorPosition();
+        
+        void setCameraControl( ptr<CameraControl> cam_control );
+        
         
     protected:
         static void errorCallback          ( int error, const char * desc );
         static void frameBufferSizeCallback( GLFWwindow *window, int width, int height );
         static void keyCallback            ( GLFWwindow *window, int key, int scancode, int action, int mod);
         static void scrollCallback         ( GLFWwindow *window, double x, double y );
-        static void mouseButtonCallback    ( GLFWwindow * window, int button, int action, int mods );
+        static void mouseButtonCallback    ( GLFWwindow *window, int button, int action, int mods );
         static void cursorCallback         ( GLFWwindow *window, double x, double y );
         
         void initCallbacks();
@@ -54,7 +58,7 @@ namespace three {
         
     protected:
         ptr<RenderTarget> renderTarget;
-        ptr<Arcball> arcball;
+        ptr<CameraControl> camControl;
         ptr<Scene> scene;
         ptr<Camera> camera;
         ptr<ShadowMapPlugin> shadowMapPlugin;
@@ -67,6 +71,7 @@ namespace three {
         float clearAlpha;
         float aspectRatio;
         
+        glm::vec3 cursorPosition;
         GLuint width;
         GLuint height;
         GLuint vertexArrayId;
@@ -76,6 +81,12 @@ namespace three {
         std::map<std::string, ptr<ShaderLib>> shaderLibs;
         std::vector<ptr<RenderPlugin>> preRenderPlugins;
         std::vector<ptr<RenderPlugin>> postRenderPlugins;
+        
+        
+        /* Function pointers to default key handlers which are not supposed to be overriden */
+        std::function<void(GLFWwindow*, int, int, int, int)> defaultKeyCallbackHandler;
+        std::function<void(GLFWwindow*, int, int, int)>      defaultMouseButtonCallbackHandler;
+        std::function<void(GLFWwindow*, double, double)>     defaultCursorCallbackHandler;
         
         /* All the function callback pointers */
         std::function<void()>                                postRenderCallback = [](){};

@@ -30,7 +30,7 @@ namespace three {
         
         descendants = scene->getDescendants();
         std::sort(descendants.begin(), descendants.end(), [](ptr<Object3D> a, ptr<Object3D> b){
-            return a->getPosition().z < b->getPosition().z;
+            return a->position.z < b->position.z;
         });
         
         for( auto entry: scene->getDirectionalLights().getCollection() ) {
@@ -98,8 +98,8 @@ namespace three {
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<GLuint>(shadow_filter) );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE );
+                glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL );
                 
                 glGenerateMipmap(GL_TEXTURE_2D);
                 
@@ -128,6 +128,16 @@ namespace three {
                     cerr << "Unsupported light type for shadow" << endl;
                     continue;
                 }
+            }
+            
+//            if( light->shadowCameraVisible && !light->cameraHelper ) {
+//                
+//            }
+            
+            if( instance_of(light, VirtualLight) ) {
+                ptr<VirtualLight> vlight = downcast(light, VirtualLight );
+                if( vlight->originalCamera == camera )
+                    updateShadowCamera(camera, vlight );
             }
         }
         
@@ -161,13 +171,13 @@ namespace three {
         glClearColor(1.0, 1.0, 1.0, 1.0);
         glDisable( GL_BLEND );
         glEnable( GL_CULL_FACE );
-        glCullFace( GL_BACK );
+        glCullFace( GL_FRONT );
         
         glEnable( GL_DEPTH_TEST );
     }
 
     
-    void ShadowMapPlugin::render( ptr<Scene> scene, ptr<Arcball> arcball, ptr<Camera> camera ) {
+    void ShadowMapPlugin::render( ptr<Scene> scene, ptr<Camera> camera ) {
         const Rect viewport = scene->getViewportSize();
         
         for( ptr<Light> light: lights ) {
@@ -176,8 +186,8 @@ namespace three {
             auto shadow_map = light->shadowMap;
             auto shadow_cam = light->shadowCamera;
             
-            shadow_cam->setPosition( light->getPosition() );
-            shadow_cam->lookAt( light->target->getPosition() );
+            shadow_cam->position = light->position;
+            shadow_cam->lookAt( light->target->position );
 
             shadow_cam->updateMatrixWorld(false);
             glm::mat4 vp_mat = shadow_cam->getProjectionMatrix() * shadow_cam->matrixWorld;
@@ -211,13 +221,12 @@ namespace three {
     void ShadowMapPlugin::debugShadow() {
         #ifdef DEBUG_SHADOW
         glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-        glClearColor(0.0, 0.0, 0.0, 1.0);
-        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+        glClearColor(1.0, 1.0, 1.0, 1.0);
         
         for( int i = 0; i < lights.size(); i++ ) {
             auto light = lights[i];
             
-            glViewport(0 + i * 256, 0, 256, 256);
+            glViewport(0 + i * 100, 0, 100, 100);
             passthruShader->bind();
             
             glActiveTexture( GL_TEXTURE0 );
@@ -276,10 +285,10 @@ namespace three {
     void ShadowMapPlugin::updateVirtualLight( ptr<Light> light, int cascade ) {
         ptr<VirtualLight> virtual_light = light->shadowCascadeArray[cascade];
         
-        virtual_light->setPosition( light->getPosition() );
-        virtual_light->target->setPosition( light->target->getPosition() );
+        virtual_light->position = light->position;
+        virtual_light->target->position = light->target->position ;
         
-        virtual_light->lookAt( virtual_light->target->getPosition() );
+        virtual_light->lookAt( virtual_light->target->position );
         
         virtual_light->shadowCameraVisible  = light->shadowCameraVisible;
         virtual_light->shadowDarkness       = light->shadowDarkness;
