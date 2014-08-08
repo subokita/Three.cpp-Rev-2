@@ -27,7 +27,9 @@ namespace three {
         wrapT    ( GL_REPEAT ),
         wrapR    ( GL_REPEAT ),
         magFilter( GL_LINEAR ),
-        minFilter( GL_LINEAR )
+        minFilter( GL_LINEAR ),
+        offset   ( glm::vec2(0.0, 0.0) ),
+        repeat   ( glm::vec2(1.0, 1.0) )
     {}
     
     
@@ -41,7 +43,9 @@ namespace three {
         wrapT    ( wrap_t ),
         wrapR    ( wrap_r ),
         magFilter( mag_filter ),
-        minFilter( min_filter )
+        minFilter( min_filter ),
+        offset   ( glm::vec2(0.0, 0.0) ),
+        repeat   ( glm::vec2(1.0, 1.0) )
     {}
     
     Texture::~Texture(){
@@ -66,9 +70,13 @@ namespace three {
         glActiveTexture( GL_TEXTURE0 );
         bind();
         shader->setUniform("map", 0 );
+
+        glm::vec4 offset_repeat( this->offset.x, this->offset.y, this->repeat.x, this->repeat.y );
+        shader->setUniform( "offset_repeat", offset_repeat );
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrapR );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter );
     }

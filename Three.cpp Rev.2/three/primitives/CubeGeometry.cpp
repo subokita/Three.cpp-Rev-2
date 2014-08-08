@@ -77,15 +77,15 @@ namespace three {
         buildPlane( 0, 1,   1, - 1, width, height,  depth_half,     4 ); // pz
         buildPlane( 0, 1, - 1, - 1, width, height,  -depth_half,    5 ); // nz
         
-        //mergeVertices();
+//        mergeVertices();
     }
     
     void CubeGeometry::buildPlane( int u, int v, int udir, int vdir,
                                    float width, float height, float depth, int material_index ) {
         
         int w;
-        int grid_x = widthSegments;
-        int grid_y = heightSegments;
+        float grid_x = widthSegments;
+        float grid_y = heightSegments;
         float width_half  = width  * 0.5;
         float height_half = height * 0.5;
         
@@ -107,14 +107,14 @@ namespace three {
         
         normal[w] = depth > 0.0 ? 1.0 : -1.0;
         
-        int grid_x1 = grid_x + 1;
-		int grid_y1 = grid_y + 1;
+        float grid_x1 = grid_x + 1;
+		float grid_y1 = grid_y + 1;
 		float segment_width = width / grid_x;
 		float segment_height = height / grid_y;
 
         
-		for ( int iy = 0; iy < grid_y1; iy ++ ) {
-			for ( int ix = 0; ix < grid_x1; ix ++ ) {
+		for ( float iy = 0; iy < grid_y1; iy += 1.0 ) {
+			for ( float ix = 0; ix < grid_x1; ix += 1.0 ) {
                 glm::vec3 vector;
 				vector[u] = ( ix * segment_width - width_half ) * udir;
 				vector[v] = ( iy * segment_height - height_half ) * vdir;
@@ -124,9 +124,9 @@ namespace three {
 		}
         
         
-        for ( int iy = 0; iy < grid_y; iy++ ) {
+        for ( float iy = 0; iy < grid_y; iy+=1.0 ) {
             
-			for ( int ix = 0; ix < grid_x; ix++ ) {
+			for ( float ix = 0; ix < grid_x; ix+=1.0 ) {
 				int  a = ix + grid_x1 * iy;
 				int  b = ix + grid_x1 * ( iy + 1.0 );
 				int  c = ( ix + 1.0 ) + grid_x1 * ( iy + 1.0 );

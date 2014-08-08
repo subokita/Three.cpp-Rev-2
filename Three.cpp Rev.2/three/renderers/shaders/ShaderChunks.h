@@ -21,6 +21,7 @@ namespace three {
         static const string simplePassVertexParams = Utils::join({
             "layout (location = 0) in vec3 vertex_pos_m;",
             "out vec2 uv;",
+            "",
         });
         static const string simplePassFragmentParams = Utils::join({
             "out vec4 color;",
@@ -32,17 +33,20 @@ namespace three {
                 "float depth = dot( rgba_depth, bit_shift );",
                 "return depth;",
             "}",
+            "",
         });
         
         static const string simplePassVertex = Utils::join({
             "gl_Position = vec4(vertex_pos_m, 1.0);",
             "uv = (vertex_pos_m.xy + vec2(1.0, 1.0)) / 2.0;",
+            "",
         }, "\t");
         
         static const string simplePassFragment = Utils::join({
             "float unpacked = 1.0 - unpackDepth( texture( texture_sampler, uv ) );",
             "color = vec4(unpacked, unpacked, unpacked, 1.0);",
-//            "color = texture(texture_sampler, uv);",
+            //            "color = texture(texture_sampler, uv);",
+            "",
         }, "\t");
         
         
@@ -54,34 +58,41 @@ namespace three {
                 "const vec4 bit_mask  = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );",
                 "vec4 res = mod( depth * bit_shift * vec4( 255 ), vec4( 256 ) ) / vec4( 255 );",
                 "res -= res.xxyz * bit_mask;",
-            "return res;",
+                "return res;",
             "}",
+            "",
         });
         
         static const string depthRGBAVertex = Utils::join({
             "gl_Position   = projection_mat * model_view_mat * vec4(vertex_pos_m, 1.0);",
+            "",
         }, "\t");
         
         static const string depthRGBAFragment = Utils::join({
             "fragment_depth = packDepth(gl_FragCoord.z);",
+            "",
         }, "\t");
         
         static const string cubeMapVertexParams = Utils::join({
             "out vec3 vertex_pos_w;",
+            "",
         });
         
         static const string cubeMapFragmentParams = Utils::join({
             "in vec3 vertex_pos_w;",
             "uniform samplerCube env_map;",
+            "",
         });
         
         static const string cubeMapVertex = Utils::join({
             "vertex_pos_w      = vec3( model_mat * vec4(vertex_pos_m, 1.0) );",
             "gl_Position       = projection_mat * model_view_mat * vec4(vertex_pos_m, 1.0);",
+            "",
         }, "\t");
         
         static const string cubeMapFragment = Utils::join({
             "frag_color = texture( env_map, vec3( vertex_pos_w.x, vertex_pos_w.yz ) );",
+            "",
         }, "\t");
         
         static const string standardVertexParams = Utils::join({
@@ -96,12 +107,14 @@ namespace three {
             "uniform mat4 projection_mat;",
             "uniform mat3 normal_mat;",
             "uniform vec3 camera_pos_w;",
+            "",
         });
         
         static const string standardFragmentParams = Utils::join({
             "out vec4 frag_color;",
             
             "uniform vec3 camera_pos_w;",
+            "",
         });
         
         
@@ -110,6 +123,7 @@ namespace three {
                 "out vec4 shadow_coord_c[MAX_SHADOWS];",
                 "uniform mat4 shadow_mat[MAX_SHADOWS];",
             "#endif",
+            "",
         });
         
         static const string shadowFragmentParams = Utils::join({
@@ -128,6 +142,7 @@ namespace three {
                     "return depth;",
                 "}",
             "#endif",
+            "",
         });
         
         
@@ -137,6 +152,7 @@ namespace three {
                     "shadow_coord_c[i] = shadow_mat[i] * vec4(vertex_pos_w, 1.0);",
                 "}",
             "#endif",
+            "",
         });
         
         static const string shadowFragment = Utils::join({
@@ -266,6 +282,7 @@ namespace three {
             
                 "frag_color.xyz = frag_color.xyz * shadow_color;",
             "#endif",
+            "",
         });
         
         
@@ -274,6 +291,7 @@ namespace three {
             "#ifdef USE_SPECULARMAP",
                 "uniform sampler2D specular_map;",
             "#endif",
+            "",
         });
         
         static const string envMapVertexParams = Utils::join({
@@ -282,6 +300,7 @@ namespace three {
                 "uniform float refraction_ratio;",
                 "uniform bool use_refraction;",
             "#endif",
+            "",
         });
         static const string envMapFragmentParams = Utils::join({
             "#ifdef USE_ENVMAP",
@@ -297,6 +316,7 @@ namespace three {
                     "in vec3 reflect_c;",
                 "#endif",
             "#endif",
+            "",
         });
         
         static const string envMapVertex = Utils::join({
@@ -312,6 +332,7 @@ namespace three {
                     "reflect_c = reflect(camera_to_vert, vertex_normal_w );",
                 "}",
             "#endif",
+            "",
         });
         
         static const string envMapFragment = Utils::join({
@@ -355,6 +376,7 @@ namespace three {
                     "frag_color.xyz = mix( frag_color.xyz, frag_color.xyz * cube_color.xyz, specular_strength * reflectivity );",
                 "}",
             "#endif",
+            "",
         });
 
         
@@ -379,21 +401,25 @@ namespace three {
                     "return normalize( tsn * mapN );",
                 "}",
             "#endif",
+            "",
         });
         
         static const string normalMapFragment = Utils::join({
             "#ifdef USE_NORMALMAP",
                 "norm_normal_c = perturbNormal2Arb( -eye_direction_c, norm_normal_c );",
             "#endif",
+            "",
         }, "\t");
         
         static const string textureVertexParams = Utils::join({
             "#if defined( USE_MAP ) || defined( USE_NORMALMAP ) || defined( USE_SPECULARMAP )",
                 "out vec2 uv;",
+                "uniform vec4 offset_repeat;",
             "#endif",
             "#ifdef USE_MAP",
                 "uniform sampler2D map;",
             "#endif",
+            "",
         });
         
         static const string textureFragmentParams = Utils::join({
@@ -403,13 +429,15 @@ namespace three {
             "#ifdef USE_MAP",
                 "uniform sampler2D map;",
             "#endif",
+            "",
         });
         
         
         static const string textureVertex = Utils::join({
             "#if defined( USE_MAP ) || defined( USE_NORMALMAP ) || defined( USE_SPECULARMAP )",
-                "uv = vertex_uv_m;",
+                "uv = vertex_uv_m * offset_repeat.zw + offset_repeat.xy;",
             "#endif",
+            "",
         });
         
         static const string textureFragment = Utils::join({
@@ -422,12 +450,14 @@ namespace three {
             
                 "frag_color = frag_color * texel_color;",
             "#endif",
+            "",
         });
         
         static const string alphaTestFragment = Utils::join({
             "#ifdef ALPHATEST",
                 "if( frag_color.a < ALPHATEST ) discard;",
             "#endif",
+            "",
         });
         
         
@@ -435,6 +465,7 @@ namespace three {
             "out vec3 normal_c;",
             "out vec3 eye_direction_c;",
             "out vec3 vertex_pos_w;",
+            "",
         });
         
         static const string basicVertex = Utils::join({
@@ -442,6 +473,7 @@ namespace three {
             "normal_c          = normalize(normal_mat * vec3(vertex_normal_m));",
             "vertex_pos_w      = vec3( model_mat * vec4(vertex_pos_m, 1.0) );",
             "gl_Position       = projection_mat * model_view_mat * vec4(vertex_pos_m, 1.0);",
+            "",
         }, "\t" );
         
         
@@ -454,6 +486,7 @@ namespace three {
             "in vec3 normal_c;",
             "in vec3 eye_direction_c;",
             "in vec3 vertex_pos_w;",
+            "",
         });
         
         
@@ -461,17 +494,20 @@ namespace three {
             "frag_color = vec4( diffuse, opacity );",
             "vec3 norm_normal_c        = normalize( normal_c );",
             "float specular_strength   = 1.0;",
+            "",
         }, "\t");
         
         static const string basicFragment_2 = Utils::join({
             "#ifdef GAMMA_OUTPUT",
                 "frag_color.xyz = sqrt(frag_color.xyz);",
             "#endif",
+            "",
         }, "\t" );
         
         
         static const string basicFragment_3 = Utils::join({
             "frag_color.xyz = vec3(1.0);",
+            "",
         }, "\t" );
         
         static const string lambertVertexParams = Utils::join({
@@ -493,6 +529,7 @@ namespace three {
             "out vec3 normal_c;",
             "out vec3 eye_direction_c;",
             "out vec3 vertex_pos_w;",
+            "",
         });
         
 
@@ -504,6 +541,7 @@ namespace three {
             
             "vec3 vertex_pos_c  = (model_view_mat * vec4(vertex_pos_m, 1.0)).xyz;",
             "vec3 norm_normal_c = normalize( normal_c );",
+            "",
         });
         
         
@@ -512,6 +550,7 @@ namespace three {
             "#ifdef DOUBLE_SIDED",
                 "light_back_color = vec3( 0.0 );",
             "#endif",
+            "",
         });
         
         
@@ -520,6 +559,7 @@ namespace three {
             "#ifdef DOUBLE_SIDED",
                 "light_back_color = light_back_color * diffuse + ambient * ambient_light_color + emissive;",
             "#endif",
+            "",
         });
         
         
@@ -532,11 +572,13 @@ namespace three {
             "#ifdef DOUBLE_SIDED",
                 "in vec3 light_back_color;",
             "#endif",
+            "",
         });
         
         static const string lambertFragment_1 = Utils::join({
             "frag_color = vec4( vec3( 1.0 ), opacity );",
             "float specular_strength = 1.0;",
+            "",
         }, "\t");
         
         
@@ -549,6 +591,7 @@ namespace three {
             "#else",
                 "frag_color.xyz *= light_front_color;",
             "#endif",
+            "",
         }, "\t");
         
         
@@ -556,6 +599,7 @@ namespace three {
             "#ifdef GAMMA_OUTPUT",
                 "frag_color.xyz = sqrt(frag_color.xyz);",
             "#endif",
+            "",
         }, "\t" );
         
         static const string lambertDirectionalLightsVertex = Utils::join({
@@ -593,6 +637,7 @@ namespace three {
                 "}",
             
             "#endif",
+            "",
         }, "\t");
 
         
@@ -632,6 +677,7 @@ namespace three {
                     "#endif",
                 "}",
             "#endif",
+            "",
 
         }, "\t");
         
@@ -653,6 +699,7 @@ namespace three {
                 "}",
             
             "#endif",
+            "",
         });
         
         static const string lambertSpotLightsVertex = Utils::join({
@@ -700,12 +747,14 @@ namespace three {
                 "}",
             
             "#endif",
+            "",
         });
         
         static const string phongVertexParams = Utils::join({
             "out vec3 normal_c;",
             "out vec3 eye_direction_c;",
             "out vec3 vertex_pos_w;",
+            "",
         });
         
         static const string phongVertex = Utils::join({
@@ -713,6 +762,7 @@ namespace three {
             "normal_c          = normalize(normal_mat * vec3(vertex_normal_m));",
             "vertex_pos_w      = vec3( model_mat * vec4(vertex_pos_m, 1.0) );",
             "gl_Position       = projection_mat * model_view_mat * vec4(vertex_pos_m, 1.0);",
+            "",
         }, "\t" );
         
         static const string phongFragmentParams = Utils::join({
@@ -734,6 +784,7 @@ namespace three {
             "#ifdef WRAP_AROUND",
                 "uniform vec3 wrapRGB;",
             "#endif",
+            "",
         });
         
         static const string specularMapFragment = Utils::join({
@@ -741,6 +792,7 @@ namespace three {
                 "vec4 texel_specular = texture( specular_map, uv );",
                 "specular_strength   = texel_specular.r;",
             "#endif",
+            "",
         }, "\t");
         
         static const string phongFragment_1 = Utils::join({
@@ -752,14 +804,16 @@ namespace three {
             "vec3 norm_eye_direction_c = normalize( eye_direction_c );",
             "float specular_strength   = 1.0;",
             "float specular_norm       = (shininess + 2.0001) / 8.0;",
+            "",
         }, "\t");
         
         static const string phongFragment_2 = Utils::join({
             "#ifdef METAL",
-                "frag_color.xyz = frag_color.xyz * ( emissive + ambient_light_color * ambient + total_diffuse + total_specular );",
+                "frag_color.xyz = frag_color.xyz * ( emissive + total_diffuse + ambient_light_color * ambient + total_specular );",
             "#else",
                 "frag_color.xyz = frag_color.xyz * ( emissive + ambient_light_color * ambient + total_diffuse ) + total_specular;",
             "#endif",
+            "",
         }, "\t" );
         
         
@@ -767,6 +821,7 @@ namespace three {
             "#ifdef GAMMA_OUTPUT",
                 "frag_color.xyz = sqrt(frag_color.xyz);",
             "#endif",
+            "",
         }, "\t" );
 
         static const string pointLightsParams = Utils::join({
@@ -775,6 +830,7 @@ namespace three {
                 "uniform vec3 point_light_position  [MAX_POINT_LIGHTS];",
                 "uniform float point_light_distance [MAX_POINT_LIGHTS];",
             "#endif",
+            "",
         });
         
         
@@ -816,6 +872,7 @@ namespace three {
                 "total_diffuse  += point_diffuse;",
                 "total_specular += point_specular;",
             "#endif",
+            "",
         }, "\t");
         
         static const string directionalLightsParams = Utils::join({
@@ -823,6 +880,7 @@ namespace three {
                 "uniform vec3 directional_light_color    [MAX_DIR_LIGHTS];",
                 "uniform vec3 directional_light_direction[MAX_DIR_LIGHTS];",
             "#endif",
+            "",
         });
         
         static const string phongDirectionalLightsFragment = Utils::join({
@@ -860,6 +918,7 @@ namespace three {
             "total_diffuse  += dir_diffuse;",
             "total_specular += dir_specular;",
             "#endif",
+            "",
         }, "\t");
         
         
@@ -869,6 +928,7 @@ namespace three {
                 "uniform vec3 hemisphere_light_ground_color [MAX_HEMI_LIGHTS];",
                 "uniform vec3 hemisphere_light_direction    [MAX_HEMI_LIGHTS];",
             "#endif",
+            "",
         });
         
         
@@ -905,6 +965,7 @@ namespace three {
                 "total_diffuse  += hemi_diffuse;",
                 "total_specular += hemi_specular;",
             "#endif",
+            "",
         }, "\t");
         
         
@@ -917,6 +978,7 @@ namespace three {
                 "uniform float spot_light_exponent [MAX_SPOT_LIGHTS];",
                 "uniform float spot_light_distance [MAX_SPOT_LIGHTS];",
             "#endif",
+            "",
         });
         
         
@@ -961,6 +1023,7 @@ namespace three {
                 "total_specular += spot_specular;",
             
             "#endif",
+            "",
         }, "\t");
         
         
@@ -975,6 +1038,7 @@ namespace three {
                     "uniform float fog_far;",
                 "#endif",
             "#endif",
+            "",
         });
         
         static const string fogFragment = Utils::join({
@@ -982,7 +1046,7 @@ namespace three {
                 "#ifdef USE_LOGDEPTHBUF_EXT",
                     "float depth = gl_FragDepthEXT / gl_FragCoord.w;",
                 "#else",
-                    "float depth = (gl_FragCoord.z / gl_FragCoord.w);",
+                    "float depth = gl_FragCoord.z / gl_FragCoord.w;",
                 "#endif",
                 
                 "#ifdef FOG_EXP2",
@@ -996,6 +1060,7 @@ namespace three {
                 "frag_color = mix( frag_color, vec4( fog_color, frag_color.w ), fog_factor );",
             
             "#endif",
+            "",
         }, "\t" );
     }
 }

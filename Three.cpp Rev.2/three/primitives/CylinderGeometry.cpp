@@ -172,6 +172,7 @@ namespace three {
             }
         }
         
-        computeFaceNormals();
+        computeVertexNormals(true);
+//        computeFaceNormals();
     }
 }

@@ -30,6 +30,7 @@ namespace three {
         
         void bind();
         virtual void setUniforms(ptr<ShaderLib> shader_lib, bool gamma) override;
+        void setWrap();
         
         
     public:
@@ -49,7 +50,10 @@ namespace three {
         
         glm::vec2 offset;
         glm::vec2 repeat;
+        
+    protected:
         unsigned int unpackAlignment;
+        
     };
 }
 

@@ -27,7 +27,7 @@ namespace three  {
         auto scene = Scene::create();
         scene->setFog(Fog::create( 0x72645b / 2, 2.0, 15.0 ));
         scene->setViewport( 0.0, 0.0, renderer.getWidth(), renderer.getHeight() );
-        scene->setShadowMapType( SHADOW_MAP::BASIC );
+        scene->setShadowMapType( SHADOW_MAP::PCF );
         
         /* Create camera */
         auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100.0 );
@@ -48,7 +48,7 @@ namespace three  {
                                           aiProcess_JoinIdenticalVertices |
                                           aiProcess_GenSmoothNormals | aiProcess_FlipWindingOrder );
             
-            statue->setMaterial(PhongMaterial::create(0x777777, 0x0, 0x777777, 0x0, 0, true));
+            statue->setMaterial(PhongMaterial::create(0xcccccc, 0x0, 0x000000, 0x999999, 10, true));
             statue->getGeometry()->setScale(10.0f);
             statue->castShadow      = true;
             statue->receiveShadow   = true;
@@ -72,7 +72,7 @@ namespace three  {
         sphere->translate( 2.0, 0.66f, 1.0);
         sphere->castShadow = true;
         sphere->receiveShadow = true;
-        scene->add( sphere );
+//        scene->add( sphere );
         
         
         auto box = Mesh::create( CubeGeometry::create(3.0f, 3.0f, 3.0f),
@@ -81,14 +81,14 @@ namespace three  {
         box->translate( -1.0f, 1.5f, -4.0f );
         box->castShadow = true;
         box->receiveShadow = true;
-        scene->add( box );
+//        scene->add( box );
         
         auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 2.0, 30, 5, false),
-                                     PhongMaterial::create( 0xCCCC00, 0x0, 0x0, 0x111111, 150.0, true ) );
-        cylinder->translate(-3.0f, 0.0f, -3.0f);
+                                      PhongMaterial::create( 0xCCCC00, 0x0, 0x0, 0x111111, 150.0, true ) );
+        cylinder->translate(-4.0f, 1.0f, -2.0f);
         cylinder->castShadow = true;
         cylinder->receiveShadow = true;
-        scene->add( cylinder );
+//        scene->add( cylinder );
         
         /* And the ground plane */
         auto plane = Mesh::create( PlaneGeometry::create(50.0f), PhongMaterial::create() );
@@ -109,14 +109,21 @@ namespace three  {
         /* Create a (rotating) directional light */
         auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3( 3.0, 1.0, 3.0 ) );
         dir_light->castShadow       = true;
-        dir_light->shadowBias       = -0.001;
+        dir_light->shadowBias       = -0.0001;
         dir_light->shadowCameraNear = -10.0;
         dir_light->shadowCameraFar  =  10.0;
         dir_light->shadowMapSize    = glm::vec2(512);
         scene->add( dir_light );
         
+        /* Create a spotlight, the shadow should be casted no the left hand side */
+        auto spot_light = SpotLight::create(0x99CCFF, 1.0, 20.0, 50.0, 1.0 );
+        spot_light->position = glm::vec3(3.0, 2.0, 3.0);
+        spot_light->castShadow = true;
+//        scene->add( spot_light );
+        
+        
         /* Create an ambient light */
-        scene->add( AmbientLight::create(0x777777));
+        scene->add( AmbientLight::create(0xCCCCCC));
         
         /* Create a post render callback for objects rotation */
         bool rotate_objects = false;

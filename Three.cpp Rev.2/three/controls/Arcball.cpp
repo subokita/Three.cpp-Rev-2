@@ -35,14 +35,17 @@ namespace three {
     
     void Arcball::scrollCallback( GLFWwindow *window, double x, double y ) {
         /* Handle zooming using mouse scroll */
-        glm::vec3 camera_pos = glm::vec3(createTransformationMatrix() * glm::vec4(camera->position, 1.0) );
-
-        glm::vec3 dir = glm::normalize(camera->target->position - camera_pos) * static_cast<float>(-y);
-        if( glm::length((camera_pos - dir)) == 0.0 )
+        
+        glm::vec3 dir = glm::normalize(camera->position - camera->target->position);
+        if( glm::length(dir) <= 0.01 )
             return;
         
-        translationVector += dir;
-        camera->matrix = glm::translate(camera->matrix, dir);
+        dir *= static_cast<float>(-y);
+        
+        camera->position += dir;
+        camera->target->position += dir;
+        
+        camera->lookAt(camera->target->position);
     }
     
     
@@ -61,7 +64,7 @@ namespace three {
             camera->matrix *= rot_mat;
             camera->updatePosition      ( rot_mat );
             camera->updateUpDirection   ( rot_mat );
-            camera->updateTargetPosition( rot_mat );
+//            camera->updateTargetPosition( rot_mat );
             
             
             angle               = 0.0;

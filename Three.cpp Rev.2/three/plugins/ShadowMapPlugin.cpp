@@ -39,28 +39,28 @@ namespace three {
                 continue;
             
             if( light->shadowCascade ) {
-//                for(int i = 0; i < light->shadowCascadeArray.size(); i++ ) {
-//                    ptr<VirtualLight> virtual_light;
-//                    
-//                    if( light->shadowCascadeArray[i] == nullptr  ) {
-//                        virtual_light = createVirtualLight( light, i );
-//                        virtual_light->originalCamera = camera;
-//                        
-//                        ptr<Gyroscope> gyro = Gyroscope::create();
-//                        gyro->position = light->shadowCascadeOffset;
-//                        gyro->add   ( virtual_light );
-//                        gyro->add   ( virtual_light->target );
-//                        camera->add ( gyro );
-//                        
-//                        light->shadowCascadeArray[i] = virtual_light;
-//                    }
-//                    else {
-//                        virtual_light = light->shadowCascadeArray[i];
-//                    }
-//                    
-//                    updateVirtualLight(light, i );
-//                    lights.push_back( virtual_light );
-//                }
+                for(int i = 0; i < light->shadowCascadeArray.size(); i++ ) {
+                    ptr<VirtualLight> virtual_light;
+                    
+                    if( light->shadowCascadeArray[i] == nullptr  ) {
+                        virtual_light = createVirtualLight( light, i );
+                        virtual_light->originalCamera = camera;
+                        
+                        ptr<Gyroscope> gyro = Gyroscope::create();
+                        gyro->position = light->shadowCascadeOffset;
+                        gyro->add   ( virtual_light );
+                        gyro->add   ( virtual_light->target );
+                        camera->add ( gyro );
+                        
+                        light->shadowCascadeArray[i] = virtual_light;
+                    }
+                    else {
+                        virtual_light = light->shadowCascadeArray[i];
+                    }
+                    
+                    updateVirtualLight(light, i );
+                    lights.push_back( virtual_light );
+                }
             }
             else {
                 lights.push_back( light );
@@ -168,7 +168,7 @@ namespace three {
     }
     
     void ShadowMapPlugin::setState( ptr<Scene> scene, ptr<Camera> camera ) {
-        glClearColor(1.0, 1.0, 1.0, 1.0);
+        glClearColor(0.0, 0.0, 0.0, 1.0);
         glDisable( GL_BLEND );
         glEnable( GL_CULL_FACE );
         glCullFace( GL_FRONT );

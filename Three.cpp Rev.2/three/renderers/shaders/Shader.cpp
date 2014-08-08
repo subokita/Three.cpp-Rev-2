@@ -76,7 +76,11 @@ namespace three {
         
         string vertex_code      = shader.constructVertexShader();
         string fragment_code    = shader.constructFragmentShader();
-        
+
+//        cout << shader.getID() << endl;
+//        cout << vertex_code << endl;
+//        cout << "===================" << endl;
+//        cout << fragment_code << endl;
 //        Utils::printWithLineNumbers( vertex_code );
 //        Utils::printWithLineNumbers( fragment_code );
         

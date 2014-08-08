@@ -44,36 +44,36 @@ namespace three {
         float width_half  = width / 2.0;
         float height_half = height / 2.0;
         
-        int gridX = widthSegments;
-        int gridZ = heightSegments;
+        float gridX = widthSegments;
+        float gridZ = heightSegments;
         
-        int gridX1 = gridX + 1;
-        int gridZ1 = gridZ + 1;
+        float gridX1 = gridX + 1.0;
+        float gridZ1 = gridZ + 1.0;
         
         float segment_width = width / gridX;
         float segment_height = height / gridZ;
         
         glm::vec3 normal(0, 0, 1);
-        for ( int iz = 0; iz < gridZ1; iz ++ ) {
+        for ( float iz = 0; iz < gridZ1; iz += 1.0 ) {
             float y = iz * segment_height - height_half;
             
-            for ( int ix = 0; ix < gridX1; ix ++ ) {
+            for ( float ix = 0; ix < gridX1; ix += 1.0 ) {
                 float x = ix * segment_width - width_half;
                 vertices.push_back( glm::vec3(x, -y, 0.0) );
             }
         }
         
-        for ( int iz = 0; iz < gridZ; iz ++ ) {
-            for ( int ix = 0; ix < gridX; ix ++ ) {
+        for ( float iz = 0; iz < gridZ; iz += 1.0 ) {
+            for ( float ix = 0; ix < gridX; ix +=1.0 ) {
                 int a = ix + gridX1 * iz;
                 int b = ix + gridX1 * ( iz + 1 );
                 int c = ( ix + 1 ) + gridX1 * ( iz + 1 );
                 int d = ( ix + 1 ) + gridX1 * iz;
                 
-                glm::vec2 uva( ix / gridX, 1 - iz / gridZ );
-                glm::vec2 uvb( ix / gridX, 1 - ( iz + 1 ) / gridZ );
-                glm::vec2 uvc( ( ix + 1 ) / gridX, 1 - ( iz + 1 ) / gridZ );
-                glm::vec2 uvd( ( ix + 1 ) / gridX, 1 - iz / gridZ );
+                glm::vec2 uva( ix / gridX, 1.0 - iz / gridZ );
+                glm::vec2 uvb( ix / gridX, 1.0 - ( iz + 1 ) / gridZ );
+                glm::vec2 uvc( ( ix + 1.0 ) / gridX, 1.0 - ( iz + 1.0 ) / gridZ );
+                glm::vec2 uvd( ( ix + 1.0 ) / gridX, 1.0 - iz / gridZ );
                 
                 ptr<Face3> face = Face3::create( a, b, d, normal );
                 face->setVertexNormals({normal, normal, normal});
@@ -87,6 +87,6 @@ namespace three {
             }
         }
         
-        mergeVertices();
+//        mergeVertices();
     }
 }

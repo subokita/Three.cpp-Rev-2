@@ -165,13 +165,14 @@ namespace three {
     }
     
     void Mesh::initGLBuffers() {
-    
         geometry->noOfElements = static_cast<int>( geometry->faces.size() * 3);
         
         std::vector<unsigned short> index;
         std::vector<glm::vec3> normals( geometry->vertices.size() );
-        std::vector<glm::vec2> uvs( geometry->vertices.size() );
+        std::vector<glm::vec2> uvs    ( geometry->vertices.size() );
     
+        std::map<int, int> count;
+        
         for( ptr<Face3> face: geometry->faces ) {
             index.push_back( face->a );
             index.push_back( face->b );
@@ -183,7 +184,7 @@ namespace three {
             
             uvs[face->a] = face->uvs[0];
             uvs[face->b] = face->uvs[1];
-            uvs[face->c] = face->uvs[2];
+            uvs[face->c] = face->uvs[2];   
         }
         
         geometry->updateMatrixWorld(true);

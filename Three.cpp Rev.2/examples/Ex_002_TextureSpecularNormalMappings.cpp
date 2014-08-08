@@ -20,6 +20,7 @@ namespace three {
         
         Renderer renderer;
         renderer.init( "Ex 002: Texture, Specular and Normal Mappings", 1600 * 3 / 4, 900 * 3 / 4 );
+        renderer.setCameraControl(Arcball::create(2.0f));
         
         /* Create scene */
         auto scene = Scene::create();
@@ -45,7 +46,7 @@ namespace three {
         sphere_2->translate( 0.0f, 1.66f, 0.0f );
         
         /* Cube with texture and normal map */
-        auto cube = Mesh::create( CubeGeometry::create( 1.0f ),
+        auto cube = Mesh::create( CubeGeometry::create( 1.0f, 2 ),
                                  PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
         cube->getGeometry()->rotateX(45.0);
         cube->setTexture    ( TextureUtils::loadAsTexture  ( path, "four_shapes_color.tga" ) );
@@ -89,7 +90,7 @@ namespace three {
         float light_rotation_1 = 0.0;
         renderer.setPostRenderCallbackHandler( [&](){
             dir_light->position.x = ( 2.0 * cosf( light_rotation_1 ) );
-            dir_light->position.y = ( 2.0 * sinf( light_rotation_1 ) );
+            dir_light->position.z = ( 2.0 * sinf( light_rotation_1 ) );
            
             light_rotation_1 += 0.01;
             

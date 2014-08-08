@@ -36,6 +36,9 @@ namespace three {
         bind();
         shader->setUniform( "specular_map" , offset );
         
+        glm::vec4 offset_repeat( this->offset.x, this->offset.y, this->repeat.x, this->repeat.y );
+        shader->setUniform( "offset_repeat", offset_repeat );
+        
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter );
