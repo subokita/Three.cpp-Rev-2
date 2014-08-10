@@ -17,14 +17,12 @@ namespace three {
     }
     
     Ray::Ray(){}
-    
     Ray::~Ray(){}
     
     Ray::Ray( glm::vec3 origin, glm::vec3 direction ) :
         origin   ( origin ),
         direction( direction )
-    {
-    }
+    {}
     
     
     void Ray::set( glm::vec3 origin, glm::vec3 direction ){
@@ -45,10 +43,13 @@ namespace three {
     
     float Ray::distanceTo( glm::vec3 point ){
         float direction_dist = glm::dot( point - origin, direction );
-        if( direction_dist < 0.0 )
-            return glm::dot( origin, point );
         
-        return glm::dot((direction * direction_dist) + origin, point);
+        return glm::length(point - (origin + direction * direction_dist));
+//        float direction_dist = glm::dot( point - origin, direction );
+//        if( direction_dist < 0.0 )
+//            return glm::dot( origin, point );
+//        
+//        return glm::dot((direction * direction_dist) + origin, point);
     }
     
     float Ray::distanceSquaredTo( glm::vec3 v0, glm::vec3 v1 ){

@@ -28,6 +28,7 @@
 #include "Object3D.h"
 #include "Gyroscope.h"
 #include "Projector.h"
+#include "Raycaster.h"
 #include "Rect.h"
 
 /* ./three/lights */

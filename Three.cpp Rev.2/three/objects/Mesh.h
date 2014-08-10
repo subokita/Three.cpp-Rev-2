@@ -21,7 +21,7 @@ namespace three {
     public:
         static ptr<Mesh> create(ptr<Geometry> geometry, ptr<Material> material);
         
-        Mesh( ptr<Geometry> geometry, ptr<Material> material );
+        Mesh();
         ~Mesh();
         
         void initGLBuffers();
@@ -56,7 +56,6 @@ namespace three {
         void setMaterial    ( const ptr<Material> material );
         
     protected:
-        Mesh();
         
     protected:
         GLuint bufferIDs[5];

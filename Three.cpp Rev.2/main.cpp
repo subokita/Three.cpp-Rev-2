@@ -18,11 +18,11 @@ using namespace three;
 int main(int argc, const char * argv[])
 {
 //    Ex_001_SimplePrimitives::create()->run();
-    Ex_002_TextureSpecularNormalMappings::create()->run();
+//    Ex_002_TextureSpecularNormalMappings::create()->run();
 //    Ex_003_EnvironmentMapping::create()->run();
 //    Ex_004_ShadowMapping::create()->run();
 //    Ex_005_PLYLoading::create()->run();
-//    Ex_006_BoundingBoxTest::create()->run();
+    Ex_006_BoundingBoxTest::create()->run();
     
     
 

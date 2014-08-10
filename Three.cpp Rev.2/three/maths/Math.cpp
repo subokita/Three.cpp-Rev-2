@@ -170,8 +170,8 @@ namespace three {
     }
     
     
-    glm::mat4x4 Math::composeMatrix( glm::vec3 position, glm::quat quaternion, glm::vec3 scale ) {
-        glm::mat4x4 mat = glm::scale( glm::mat4_cast( quaternion ), scale );
+    glm::mat4x4 Math::composeMatrix( glm::vec3 position, glm::quat q, glm::vec3 scale ) {
+        glm::mat4x4 mat = glm::scale( glm::mat4_cast( q ), scale );
         mat[3][0] = position.x;
         mat[3][1] = position.y;
         mat[3][2] = position.z;

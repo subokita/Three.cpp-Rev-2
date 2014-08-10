@@ -140,7 +140,7 @@ namespace three {
     
     string Utils::toString( const glm::vec4& vec ) {
         char temp[100];
-        sprintf( temp, "(%+.2f, %+.2f, %+.2f, %+.2f)", vec.x, vec.y, vec.z, vec.w );
+        sprintf( temp, "(%+.4f, %+.4f, %+.4f, %+.4f)", vec.x, vec.y, vec.z, vec.w );
         return string( temp );
     }
     

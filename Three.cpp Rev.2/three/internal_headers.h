@@ -37,6 +37,7 @@ namespace three {
     class Object3D;
     class Gyroscope;
     class Projector;
+    class Raycaster;
     class Rect;
     
     

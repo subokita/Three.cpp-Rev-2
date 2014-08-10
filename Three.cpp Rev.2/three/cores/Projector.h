@@ -18,6 +18,7 @@ namespace three {
         static glm::vec3 projectVector( glm::vec3 vector, ptr<Camera> camera );
         static glm::vec3 unprojectVector( glm::vec3 vector, ptr<Camera> camera );
         
+        static ptr<Raycaster> pickingRay( glm::vec3 vector, ptr<Camera> camera );
     };
 }
 

@@ -125,11 +125,10 @@ namespace three {
                 
                 if( mesh->hasGeometry() ) {
                     ptr<Geometry> geom = mesh->getGeometry();
-                    geom->updateMatrixWorld(true);
                     
                     for( glm::vec3 vec : geom->getVertices() ) {
-                        glm::vec3 temp = glm::vec3(geom->matrixWorld * glm::vec4( vec, 1.0 ) );
-                        this->expandByPoint( temp );
+                        glm::vec3 trans_vec = glm::vec3(geom->matrixWorld * glm::vec4( vec, 1.0 ) );
+                        this->expandByPoint( trans_vec );
                     }
                 }
             }
@@ -154,9 +153,18 @@ namespace three {
         return this->max - this->min;
     }
     
-    Box3& Box3::expandByPoint(glm::vec3 point) {
-        this->min = glm::min( this->min, point );
-        this->max = glm::max( this->max, point );
+    Box3& Box3::expandByPoint(glm::vec3& point) {
+        this->min.x = std::min( this->min.x, point.x );
+        this->min.y = std::min( this->min.y, point.y );
+        this->min.z = std::min( this->min.z, point.z );
+        
+        this->max.x = std::max( this->max.x, point.x );
+        this->max.y = std::max( this->max.y, point.y );
+        this->max.z = std::max( this->max.z, point.z );
+        
+        
+//        this->min = glm::min( this->min, point );
+//        this->max = glm::max( this->max, point );
         return *this;
     }
     

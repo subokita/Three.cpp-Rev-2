@@ -22,6 +22,7 @@ namespace three  {
         
         Renderer renderer;
         renderer.init( "Ex 003: Environment Mappings, Cube Maps", 1600 * 2 / 4, 900 * 2 / 4 );
+        renderer.setCameraControl(Arcball::create(2.0f));
         
         /* Create scene */
         auto scene = Scene::create();
@@ -48,7 +49,7 @@ namespace three  {
         sphere_2->translate( 0.0f, 1.66f, 0.0f );
         
         /* Cube with texture and normal map */
-        auto cube = Mesh::create( CubeGeometry::create( 1.0f ),
+        auto cube = Mesh::create( CubeGeometry::create( 1.0f, 4 ),
                                  PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
         
         cube->setNormalMap( TextureUtils::loadAsNormalMap( path, "four_shapes_normal.tga" ) );
@@ -97,12 +98,12 @@ namespace three  {
         
         scene->add( env );
         
-        sphere->setEnvMap    ( downcast(env->getTexture(), EnvMap) );
-        sphere_2->setEnvMap  ( downcast(env->getTexture(), EnvMap) );
-        cube->setEnvMap      ( downcast(env->getTexture(), EnvMap) );
-        cube_2->setEnvMap    ( downcast(env->getTexture(), EnvMap) );
-        cylinder->setEnvMap  ( downcast(env->getTexture(), EnvMap) );
-        cylinder_2->setEnvMap( downcast(env->getTexture(), EnvMap) );
+        sphere->setEnvMap    ( env->getTexture() );
+        sphere_2->setEnvMap  ( env->getTexture() );
+        cube->setEnvMap      ( env->getTexture() );
+        cube_2->setEnvMap    ( env->getTexture() );
+        cylinder->setEnvMap  ( env->getTexture() );
+        cylinder_2->setEnvMap( env->getTexture() );
         
         
         /* Create directional light */

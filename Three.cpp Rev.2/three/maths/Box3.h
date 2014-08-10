@@ -29,7 +29,7 @@ namespace three {
         Box3& intersects( Box3& box );
         Box3& unions( Box3& box );
         
-        Box3& expandByPoint( glm::vec3 point );
+        Box3& expandByPoint( glm::vec3& point );
         Box3& expandByVector( glm::vec3 vector );
         Box3& expandByScalar( float scalar );
         Box3& makeEmpty();

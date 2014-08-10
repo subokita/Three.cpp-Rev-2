@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "internal_headers.h"
+#include "Utils.h"
 
 namespace three {
     class Ray {
@@ -18,6 +19,7 @@ namespace three {
         static ptr<Ray> create( glm::vec3 origin, glm::vec3 direction );
         Ray();
         Ray( glm::vec3 origin, glm::vec3 direction );
+        
         ~Ray();
         
         void set( glm::vec3 origin, glm::vec3 direction );
@@ -41,8 +43,16 @@ namespace three {
         
         glm::vec3 intersectsTriangleAt( ptr<Triangle> triangle, bool backface_cull = true );
         
-    protected:
+        /** Output stream overloading */
+        friend std::ostream &operator <<( std::ostream& os, const Ray& obj ) {
+            os << "Ray {" << std::endl;
+            os << "\torigin   : " << Utils::toString( obj.origin ) << std::endl;
+            os << "\tdirection: " << Utils::toString( obj.direction ) << std::endl;
+            os << "}";
+            return os;
+        }
         
+    protected:
         glm::vec3 origin;
         glm::vec3 direction;
     };

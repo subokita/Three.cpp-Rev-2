@@ -43,15 +43,16 @@ namespace three {
         glm::vec3 coord(0.0f);
         
         if( xAxis )
-            coord.x =  (2 * x - windowWidth ) / windowWidth;
+            coord.x = (x / static_cast<float>(windowWidth)  - 0.5f) * 2.0f;
         
         if( yAxis )
-            coord.y = -(2 * y - windowHeight) / windowHeight;
+            coord.y = (0.5f - y / static_cast<float>(windowHeight)) * 2.0f;
+        
         
         /* Clamp it to border of the windows, comment these codes to allow rotation when cursor is not over window */
         coord.x = glm::clamp( coord.x, -1.0f, 1.0f );
         coord.y = glm::clamp( coord.y, -1.0f, 1.0f );
-        
+
         float length_squared = coord.x * coord.x + coord.y * coord.y;
         if( length_squared <= 1.0 )
             coord.z = sqrt( 1.0 - length_squared );

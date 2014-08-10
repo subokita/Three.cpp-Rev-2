@@ -60,6 +60,7 @@
 		A8DA557D1976E689000CC869 /* RenderPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DA557B1976E689000CC869 /* RenderPlugin.cpp */; };
 		A8DC9EC419794618004C75FB /* NormalMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DC9EC219794618004C75FB /* NormalMap.cpp */; };
 		A8DC9EC7197994DD004C75FB /* CylinderGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8DC9EC5197994DD004C75FB /* CylinderGeometry.cpp */; };
+		A8E2567919952C7A00901AC8 /* Raycaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8E2567719952C7A00901AC8 /* Raycaster.cpp */; };
 		A8E4341F19825249000BE965 /* Ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8E4341D19825249000BE965 /* Ray.cpp */; };
 		A8E434221982DF41000BE965 /* Triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8E434201982DF41000BE965 /* Triangle.cpp */; };
 		A8EAD53E1984080A00C223DB /* VirtualLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8EAD53C1984080A00C223DB /* VirtualLight.cpp */; };
@@ -209,6 +210,8 @@
 		A8DC9EC319794618004C75FB /* NormalMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalMap.h; sourceTree = "<group>"; };
 		A8DC9EC5197994DD004C75FB /* CylinderGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CylinderGeometry.cpp; sourceTree = "<group>"; };
 		A8DC9EC6197994DD004C75FB /* CylinderGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CylinderGeometry.h; sourceTree = "<group>"; };
+		A8E2567719952C7A00901AC8 /* Raycaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Raycaster.cpp; sourceTree = "<group>"; };
+		A8E2567819952C7A00901AC8 /* Raycaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Raycaster.h; sourceTree = "<group>"; };
 		A8E4341D19825249000BE965 /* Ray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ray.cpp; sourceTree = "<group>"; };
 		A8E4341E19825249000BE965 /* Ray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ray.h; sourceTree = "<group>"; };
 		A8E434201982DF41000BE965 /* Triangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Triangle.cpp; sourceTree = "<group>"; };
@@ -515,6 +518,8 @@
 				A845FFAB19842E69002C15CA /* Projector.h */,
 				A8876CAB198AD10C006553C8 /* Rect.cpp */,
 				A8876CAC198AD10C006553C8 /* Rect.h */,
+				A8E2567719952C7A00901AC8 /* Raycaster.cpp */,
+				A8E2567819952C7A00901AC8 /* Raycaster.h */,
 			);
 			path = cores;
 			sourceTree = "<group>";
@@ -698,6 +703,7 @@
 				A882D378196D9FB40051958C /* DirectionalLight.cpp in Sources */,
 				A845FFAC19842E69002C15CA /* Projector.cpp in Sources */,
 				A8F0EE3A196E8C74003EDB98 /* SphereGeometry.cpp in Sources */,
+				A8E2567919952C7A00901AC8 /* Raycaster.cpp in Sources */,
 				A8F4C3DF196A687600D191DC /* main.cpp in Sources */,
 				A8F4C429196AD14100D191DC /* OrthographicCamera.cpp in Sources */,
 				A88AFA01196D0D3C00601287 /* Fog.cpp in Sources */,

@@ -14,17 +14,21 @@ using namespace std;
 namespace three {
     
     ptr<Mesh> Mesh::create(ptr<Geometry> geometry, ptr<Material> material) {
-        return make_shared<Mesh>( Mesh(geometry, material) );
+        ptr<Mesh> mesh = make_shared<Mesh>();
+        mesh->setGeometry( geometry );
+        mesh->setMaterial( material );
+        return mesh;
     }
     
-    Mesh::Mesh()
-    {}
-    
-    Mesh::Mesh( ptr<Geometry> geometry, ptr<Material> material ) :
-        geometry            ( geometry ),
-        material            ( material ),
+    Mesh::Mesh():
         glBuffersInitialized(false)
     {}
+    
+//    Mesh::Mesh( ptr<Geometry> geometry, ptr<Material> material ) :
+//        geometry            ( geometry ),
+//        material            ( material ),
+//        glBuffersInitialized(false)
+//    {}
     
     Mesh::~Mesh() {
         if( glBuffersInitialized )
@@ -134,7 +138,13 @@ namespace three {
     }
     
     void Mesh::setGeometry( const ptr<Geometry> geometry ) {
+        if( this->geometry != nullptr ) {
+            this->geometry->parent = nullptr;
+            this->remove( this->geometry );
+        }
+        
         this->geometry = geometry;
+        this->add( geometry );
     }
     
     void Mesh::setMaterial( const ptr<Material> material ) {
@@ -189,10 +199,10 @@ namespace three {
         
         geometry->updateMatrixWorld(true);
         for( auto& vert: geometry->vertices)
-            vert = glm::vec3(glm::vec4(vert, 1.0) * geometry->matrixWorld);
+            vert = glm::vec3(geometry->matrix * glm::vec4(vert, 1.0));
         
         for( auto& normal: normals)
-            normal = glm::vec3(glm::vec4(normal, 1.0) * geometry->matrixWorld);
+            normal = glm::vec3(geometry->matrix * glm::vec4(normal, 1.0));
         
         glGenBuffers( 5, bufferIDs );
         glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[0] );
@@ -214,7 +224,7 @@ namespace three {
         
         glBuffersInitialized = true;
         
-        geometry->vertices.clear();
+//        geometry->vertices.clear();
         geometry->faces.clear();
     }
     
@@ -222,7 +232,7 @@ namespace three {
         
         glPolygonMode( GL_FRONT_AND_BACK, static_cast<GLint>(material->getPolygonMode()) );
         glLineWidth( material->getLineWidth() );
-        glPointSize(material->getLineWidth() );
+        glPointSize( material->getLineWidth() );
         
         if( material->getSide() == SIDE::DOUBLE_SIDE )  {
             glDisable( GL_CULL_FACE );

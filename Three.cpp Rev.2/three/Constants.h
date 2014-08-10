@@ -26,8 +26,8 @@ using ptr = std::shared_ptr<T>;
 template<typename T>
 using vector2D = std::vector<std::vector<T>>;
 
-static const float MAX_FLOAT = std::numeric_limits<float>::max();
-static const float MIN_FLOAT = std::numeric_limits<float>::min();
+static const float MAX_FLOAT = std::numeric_limits<GLfloat>::max();
+static const float MIN_FLOAT = -MAX_FLOAT;
 static const glm::vec3 NULL_VEC3 = glm::vec3( MIN_FLOAT, MIN_FLOAT, MIN_FLOAT );
 
 

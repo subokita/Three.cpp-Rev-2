@@ -31,8 +31,8 @@ namespace three  {
         
         /* Create camera */
         auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100.0 );
-        camera->translate(0.0, 1.5, 5.5);
-        camera->lookAt( 0.0, 1.0, 0.0 );
+        camera->translate(0.0, 0.0, 5.5);
+        camera->lookAt( 0.0, 0.0, 0.0 );
         
         /* Load our ply models */
         vector<string> filenames = {
@@ -42,68 +42,83 @@ namespace three  {
         
         vector<ptr<Mesh>> statues;
         
-        float x_offset = -1.0;
-        for( string filename: filenames ) {
-            auto statue = Loader::loadPLY(path + "/ply models/", filename,
-                                          aiProcess_JoinIdenticalVertices |
-                                          aiProcess_GenSmoothNormals | aiProcess_FlipWindingOrder );
-            
-            statue->setMaterial(PhongMaterial::create(0xcccccc, 0x0, 0x000000, 0x999999, 10, true));
-            statue->getGeometry()->setScale(10.0f);
-            statue->castShadow      = true;
-            statue->receiveShadow   = true;
-            
-            auto bounding_box = statue->computeBoundingBox();
-            glm::vec3 size    = bounding_box->size();
-            glm::vec3 center  = bounding_box->center();
-            statue->translate(x_offset, -(center.y - size.y * 0.5), 0.0);
-            
-            x_offset += 2.0f;
-            scene->add( statue );
-            statues.push_back( statue );
-        }
-        
-        
-        /* Create our objects */
-        auto sphere = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
+//        float x_offset = -1.0;
+//        for( string filename: filenames ) {
+//            auto statue = Loader::loadPLY(path + "/ply models/", filename,
+//                                          aiProcess_JoinIdenticalVertices |
+//                                          aiProcess_GenSmoothNormals | aiProcess_FlipWindingOrder );
+//            
+//            statue->setMaterial(PhongMaterial::create(0xcccccc, 0x0, 0x000000, 0x999999, 10, true));
+//            statue->getGeometry()->setScale(10.0f);
+//            statue->castShadow      = true;
+//            statue->receiveShadow   = true;
+//            
+//            auto bounding_box = statue->computeBoundingBox();
+//            glm::vec3 size    = bounding_box->size();
+//            glm::vec3 center  = bounding_box->center();
+//            statue->translate(x_offset, -(center.y - size.y * 0.5), 0.0);
+//            
+//            x_offset += 2.0f;
+//            scene->add( statue );
+//            statues.push_back( statue );
+//            
+//            auto s = statue->computeBoundingSphere();
+//            auto bound = Mesh::create(SphereGeometry::create(30, 15, s->radius), PhongMaterial::create());
+//            bound->translate(s->center);
+//            bound->setWireframeMode(true);
+//            scene->add( bound );
+//        }
+//        
+//        
+//        auto origin = Mesh::create( SphereGeometry::create(15, 10, 0.1f), PhongMaterial::create() );
+//        origin->setWireframeMode(true);
+//        origin->translate(0.0, 1.0, 0.0);
+//        scene->add(origin);
+//        
+//        /* Create our objects */
+        auto sphere = Mesh::create( SphereGeometry::create(30, 20, 0.11f ),
                                    PhongMaterial::create(0x777777, 0x0, 0x0, 0x999999, 30, true) );
-        
-        sphere->setNormalMap( TextureUtils::loadAsNormalMap  ( path, "tutorial_normals07.gif" ) );
-        sphere->translate( 2.0, 0.66f, 1.0);
+        sphere->setWireframeMode(true);
         sphere->castShadow = true;
         sphere->receiveShadow = true;
-//        scene->add( sphere );
+        scene->add( sphere );
         
         
-        auto box = Mesh::create( CubeGeometry::create(3.0f, 3.0f, 3.0f),
+        auto box = Mesh::create( CubeGeometry::create(1.0f, 3),
                                 PhongMaterial::create(0x777777, 0x777777, 0x0, 0x0, 0.0, true) );
         box->setTexture( TextureUtils::loadAsTexture( path, "crate.tga") );
-        box->translate( -1.0f, 1.5f, -4.0f );
+        box->name = "box";
+        box->getGeometry()->rotateX(45.0f);
+        box->getGeometry()->setScale(1.0f);
+        box->translate(2.0f, 0.0, 0.0);
         box->castShadow = true;
         box->receiveShadow = true;
-//        scene->add( box );
+        scene->add( box );
         
-        auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 2.0, 30, 5, false),
+        auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 1.0, 30, 5, false),
                                       PhongMaterial::create( 0xCCCC00, 0x0, 0x0, 0x111111, 150.0, true ) );
-        cylinder->translate(-4.0f, 1.0f, -2.0f);
+        cylinder->name = "cylinder";
+        cylinder->translate(-2.0f, 0.0f, 0.0f);
         cylinder->castShadow = true;
         cylinder->receiveShadow = true;
-//        scene->add( cylinder );
+        scene->add( cylinder );
+        
         
         /* And the ground plane */
         auto plane = Mesh::create( PlaneGeometry::create(50.0f), PhongMaterial::create() );
+        plane->name = "plane";
         plane->rotateX(-90.0f);
         plane->receiveShadow = true;
-        scene->add( plane );
-        
-        /* Cubemap */
-        auto env = Mesh::create( CubeGeometry::create(50.0f), MeshCubeMapMaterial::create() );
-        env->setTexture( TextureUtils::loadAsEnvMap( path + "cube/pisa",
-                                                    "nx.png", "ny.png", "nz.png",
-                                                    "px.png", "py.png", "pz.png"));
-        
-        sphere->setEnvMap( env->getTexture() );
-        scene->add( env );
+//        scene->add( plane );
+//
+//        /* Cubemap */
+//        auto env = Mesh::create( CubeGeometry::create(50.0f), MeshCubeMapMaterial::create() );
+//        env->setTexture( TextureUtils::loadAsEnvMap( path + "cube/pisa",
+//                                                    "nx.png", "ny.png", "nz.png",
+//                                                    "px.png", "py.png", "pz.png"));
+//        
+//        sphere->setEnvMap( env->getTexture() );
+//        scene->add( env );
         
         
         /* Create a (rotating) directional light */
@@ -135,25 +150,40 @@ namespace three  {
             light_rotation_1 += 0.01;
             
             if( rotate_objects ) {
-                for( auto statue: statues )
-                    statue->rotateY(1.0f);
+                box->rotateY(-1.0f);
             }
         });
         
-        renderer.setCursorCallbackHandler([&](GLFWwindow *, double, double){
-            glm::vec3 pos = renderer.getCursorPosition();
-            pos.z = MAX_FLOAT;
-            
-            glm::vec3 dir = pos - glm::vec3(0.0);
-            
-            ptr<Ray> ray = Ray::create(camera->position, dir);
-            vector<ptr<Object3D>> desc = scene->getDescendants();
-            
-            
+        renderer.setCursorCallbackHandler([&](GLFWwindow *, double x, double y){
         });
         
-        renderer.setMouseButtonCallbackHandler([&] (GLFWwindow *, int, int, int){
-            
+        renderer.setMouseButtonCallbackHandler([&] (GLFWwindow *, int button, int action, int mod){
+            if( action == GLFW_PRESS ) {
+                glm::vec3 vec = renderer.getCursorPosition();
+                
+                glm::vec4 ray_start(vec.x, vec.y, -1.0, 1.0);
+                glm::vec4 ray_end  (vec.x, vec.y,  0.0, 1.0);
+                glm::mat4 inverse_vp = glm::inverse(camera->getProjectionMatrix() * camera->matrix);
+                
+                ray_start = inverse_vp * ray_start;
+                ray_end   = inverse_vp * ray_end;
+                ray_start /= ray_start.w;
+                ray_end   /= ray_end.w;
+
+                glm::vec3 origin    = glm::vec3(ray_start);
+                glm::vec3 direction = glm::normalize( glm::vec3( ray_end - ray_start ) );
+                ptr<Ray> ray = Ray::create(origin, direction);
+                
+                
+                auto descendants = scene->getDescendants();
+                for( auto obj: descendants ) {
+                    if( instance_of(obj, Geometry))
+                        continue;
+                    
+                    if(ray->intersects(obj->computeBoundingSphere()))
+                        cout << obj->name << endl;
+                }
+            }
         });
         
         /* Override key callback handler */
