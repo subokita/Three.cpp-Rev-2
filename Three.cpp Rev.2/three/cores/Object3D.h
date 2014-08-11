@@ -49,10 +49,12 @@ namespace three {
         void traverse( std::function<void(ptr<Object3D>)> callback );
         ptr<Object3D> getObjectByID( const unsigned int id, bool recursive );
         
-        std::vector<ptr<Object3D>> getDescendants();
+        std::vector<ptr<Object3D>> getDescendants(bool only_visible = true);
         void setTarget( glm::vec3 target_pos );
         
         void setScale(float scale);
+        
+        ptr<Box3> getBoundingBox();
         
     public:
         bool visible;
@@ -77,6 +79,7 @@ namespace three {
         glm::vec3 scale;
         
     protected:
+        ptr<Box3> boundingBox;
     };
 }
 

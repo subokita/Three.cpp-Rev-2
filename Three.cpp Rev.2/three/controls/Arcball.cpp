@@ -64,8 +64,7 @@ namespace three {
             camera->matrix *= rot_mat;
             camera->updatePosition      ( rot_mat );
             camera->updateUpDirection   ( rot_mat );
-//            camera->updateTargetPosition( rot_mat );
-            
+            camera->updateTargetPosition( rot_mat );
             
             angle               = 0.0;
             camAxis             = glm::vec3(0.0, 1.0, 0.0);

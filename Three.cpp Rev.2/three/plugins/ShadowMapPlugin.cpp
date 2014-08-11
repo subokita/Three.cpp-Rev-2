@@ -75,7 +75,7 @@ namespace three {
         
         
         const Rect viewport_size = scene->getViewportSize();
-        
+
         for( ptr<Light> light: lights ) {
             if( light->shadowMap == nullptr ) {
                 FILTER shadow_filter = FILTER::LINEAR;
@@ -315,10 +315,10 @@ namespace three {
         ptr<OrthographicCamera> shadow_cam = downcast(light->shadowCamera, OrthographicCamera);
         
         for( int i = 0; i < 8; i++ ) {
-            glm::vec3 point = light->pointsWorld[i];
+            glm::vec4 point = glm::vec4(light->pointsWorld[i], 1.0);
             
             point = Projector::unprojectVector(point, camera);
-            point = glm::vec3(shadow_cam->matrixWorldInverse * glm::vec4(point, 1.0));
+            point = shadow_cam->matrixWorldInverse * point;
             
             if( point.x < min_vec.x )
                 min_vec.x = point.x;

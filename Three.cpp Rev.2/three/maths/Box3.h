@@ -19,20 +19,20 @@ namespace three {
         static ptr<Box3> create();
         static ptr<Box3> create( glm::vec3 min_vec, glm::vec3 max_vec );
         
-        Box3& set( glm::vec3 min_vec, glm::vec3 max_vec );
-        Box3& addPoint( glm::vec3 point );
-        Box3& setFrom( std::vector<glm::vec4>& points );
-        Box3& setFrom( std::vector<glm::vec3>& points );
-        Box3& setFrom( glm::vec3 center, glm::vec3 size );
-        Box3& setFrom( ptr<Object3D> obj );
+        void set( glm::vec3 min_vec, glm::vec3 max_vec );
+        void addPoint( glm::vec3 point );
+        void setFrom( std::vector<glm::vec4>& points );
+        void setFrom( std::vector<glm::vec3>& points );
+        void setFrom( glm::vec3 center, glm::vec3 size );
+        void setFrom( ptr<Object3D> obj );
         
-        Box3& intersects( Box3& box );
-        Box3& unions( Box3& box );
+        void intersects( Box3& box );
+        void unions( Box3& box );
         
-        Box3& expandByPoint( glm::vec3& point );
-        Box3& expandByVector( glm::vec3 vector );
-        Box3& expandByScalar( float scalar );
-        Box3& makeEmpty();
+        void expandByPoint( glm::vec3& point );
+        void expandByVector( glm::vec3 vector );
+        void expandByScalar( float scalar );
+        void makeEmpty();
         
         bool empty();
         bool contains( glm::vec3 point );
@@ -48,8 +48,8 @@ namespace three {
         
         ptr<Sphere> getBoundingSphere();
         
-        Box3& applyMatrix(glm::mat4x4& mat);
-        Box3& translate( glm::vec3 offset );
+        ptr<Box3> applyMatrix(glm::mat4x4& mat);
+        void translate( glm::vec3 offset );
 
         Box3();
         Box3( glm::vec3 min_vec, glm::vec3 max_vec );

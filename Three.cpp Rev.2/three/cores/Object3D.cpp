@@ -44,6 +44,10 @@ namespace three {
         target->position = target_pos;
     }
     
+    ptr<Box3> Object3D::getBoundingBox() {
+        return boundingBox->applyMatrix(matrixWorld);
+    }
+    
     ptr<Box3> Object3D::computeBoundingBox() {
         ptr<Box3> box = Box3::create();
         box->setFrom(shared_from_this());
@@ -157,13 +161,16 @@ namespace three {
         return nullptr;
     }
     
-    vector<ptr<Object3D>> Object3D::getDescendants() {
+    vector<ptr<Object3D>> Object3D::getDescendants(bool only_visible) {
         vector<ptr<Object3D>> descendants;
         
         for( auto entry: children ){
+            if( !entry.second->visible )
+                continue;
+            
             descendants.push_back( entry.second );
             
-            vector<ptr<Object3D>> grandchildren = entry.second->getDescendants();
+            vector<ptr<Object3D>> grandchildren = entry.second->getDescendants(only_visible);
             if( !grandchildren.empty() )
                 copy( grandchildren.begin(), grandchildren.end(), back_inserter(descendants) );
         }

@@ -55,7 +55,8 @@ namespace three {
     
     Sphere& Sphere::setFrom( std::vector<glm::vec3>& points ) {
         Box3 box;
-        this->center = box.setFrom( points ).center();
+        box.setFrom( points );
+        this->center = box.center();
         
         float max_radius = 0.0;
         for( glm::vec3 point: points )

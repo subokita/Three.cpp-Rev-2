@@ -34,15 +34,14 @@ namespace three {
     Box3::~Box3(){}
     
     
-    Box3& Box3::set( glm::vec3 min_vec, glm::vec3 max_vec ) {
+    void Box3::set( glm::vec3 min_vec, glm::vec3 max_vec ) {
         this->min = min_vec;
         this->max = max_vec;
-        return *this;
     }
     
     
     
-    Box3& Box3::addPoint( glm::vec3 point ) {
+    void Box3::addPoint( glm::vec3 point ) {
         if( point.x < min.x )
             min.x = point.x;
         else if( point.x > max.x )
@@ -57,11 +56,9 @@ namespace three {
             min.z = point.z;
         else if( point.z > max.z )
             max.z = point.z;
-        
-        return *this;
     }
     
-    Box3& Box3::setFrom( vector<glm::vec4>& points ) {
+    void Box3::setFrom( vector<glm::vec4>& points ) {
         if( points.empty() ) {
             this->makeEmpty();
         }
@@ -86,10 +83,9 @@ namespace three {
                     max.z = points[i].z;
             }
         }
-        return * this;
     }
     
-    Box3& Box3::setFrom( vector<glm::vec3>& points ) {
+    void Box3::setFrom( vector<glm::vec3>& points ) {
         if( points.empty() ) {
             this->makeEmpty();
         }
@@ -100,22 +96,19 @@ namespace three {
             for( size_t i = 1; i < points.size(); i++ )
                 addPoint( points[i] );
         }
-        return * this;
     }
     
     
-    Box3& Box3::setFrom( glm::vec3 center, glm::vec3 size ) {
+    void Box3::setFrom( glm::vec3 center, glm::vec3 size ) {
         glm::vec3 half_size = size;
         half_size /= 2.0;
         
         this->min = center - half_size;
         this->max = center + half_size;
-        
-        return *this;
     }
     
 
-    Box3& Box3::setFrom(ptr<Object3D> obj) {
+    void Box3::setFrom(ptr<Object3D> obj) {
         obj->updateMatrixWorld(true);
         this->makeEmpty();
         
@@ -133,9 +126,6 @@ namespace three {
                 }
             }
         });
-        
-        
-        return *this;
     }
     
     bool Box3::empty() {
@@ -153,32 +143,20 @@ namespace three {
         return this->max - this->min;
     }
     
-    Box3& Box3::expandByPoint(glm::vec3& point) {
-        this->min.x = std::min( this->min.x, point.x );
-        this->min.y = std::min( this->min.y, point.y );
-        this->min.z = std::min( this->min.z, point.z );
-        
-        this->max.x = std::max( this->max.x, point.x );
-        this->max.y = std::max( this->max.y, point.y );
-        this->max.z = std::max( this->max.z, point.z );
-        
-        
-//        this->min = glm::min( this->min, point );
-//        this->max = glm::max( this->max, point );
-        return *this;
+    void Box3::expandByPoint(glm::vec3& point) {
+        this->min = glm::min( this->min, point );
+        this->max = glm::max( this->max, point );
     }
     
     
-    Box3& Box3::expandByVector( glm::vec3 vector ) {
+    void Box3::expandByVector( glm::vec3 vector ) {
         this->min -= vector;
         this->max += vector;
-        return *this;
     }
     
-    Box3& Box3::expandByScalar( float scalar ) {
+    void Box3::expandByScalar( float scalar ) {
         this->min -= scalar;
         this->max += scalar;
-        return *this;
     }
     
     bool Box3::contains( glm::vec3 point ) {
@@ -196,10 +174,9 @@ namespace three {
     }
     
     
-    Box3& Box3::makeEmpty() {
+    void Box3::makeEmpty() {
         min = glm::vec3( MAX_FLOAT, MAX_FLOAT, MAX_FLOAT );
         max = glm::vec3( MIN_FLOAT, MIN_FLOAT, MIN_FLOAT );
-        return *this;
     }
     
     
@@ -234,7 +211,9 @@ namespace three {
     }
     
     // FIXME: Test
-    Box3& Box3::applyMatrix( glm::mat4x4& mat ) {
+    ptr<Box3> Box3::applyMatrix( glm::mat4x4& mat ) {
+        ptr<Box3> box = Box3::create();
+        
         vector<glm::vec4> points {
             glm::vec4(min.x, min.y, min.z, 1),
             glm::vec4(min.x, min.y, max.z, 1),
@@ -249,28 +228,25 @@ namespace three {
         for( int i = 0; i < 8; i++ )
             points[i]  = mat * points[i];
         
-        this->makeEmpty();
-        this->setFrom( points );
+        box->makeEmpty();
+        box->setFrom( points );
         
-        return *this;
+        return box;
     }
     
-    Box3& Box3::intersects( Box3& box ) {
+    void Box3::intersects( Box3& box ) {
         this->min = glm::max(this->min, box.min);
         this->max = glm::min(this->max, box.max);
-        return *this;
     }
     
-    Box3& Box3::unions( Box3& box ) {
+    void Box3::unions( Box3& box ) {
         this->min = glm::min( this->min, box.min );
         this->max = glm::max( this->max, box.max );
-        return *this;
     }
     
-    Box3& Box3::translate( glm::vec3 offset ) {
+    void Box3::translate( glm::vec3 offset ) {
         min += offset;
         max += offset;
-        return *this;
     }
     
     bool Box3::equals( Box3& box ) {

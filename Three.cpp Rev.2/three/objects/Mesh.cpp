@@ -224,7 +224,10 @@ namespace three {
         
         glBuffersInitialized = true;
         
-//        geometry->vertices.clear();
+        boundingBox = Box3::create();
+        boundingBox->setFrom( geometry->vertices );
+        
+        geometry->vertices.clear();
         geometry->faces.clear();
     }
     
