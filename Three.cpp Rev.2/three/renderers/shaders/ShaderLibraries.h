@@ -196,6 +196,7 @@ static const ptr<ShaderLib> SHADERLIB_PHONG = ShaderLib::create(
     {"#define PHONG"},
     Utils::join({
         Chunks::standardVertexParams,
+        Chunks::colorVertexParams,
         Chunks::phongVertexParams,
         Chunks::textureVertexParams,
         Chunks::envMapVertexParams,
@@ -203,6 +204,7 @@ static const ptr<ShaderLib> SHADERLIB_PHONG = ShaderLib::create(
     }),
     Utils::join({
     "void main() {",
+        Chunks::colorVertex,
         Chunks::textureVertex,
         Chunks::phongVertex,
         Chunks::envMapVertex,
@@ -211,6 +213,7 @@ static const ptr<ShaderLib> SHADERLIB_PHONG = ShaderLib::create(
     }),
     Utils::join({
         Chunks::standardFragmentParams,
+        Chunks::colorFragmentParams,
         Chunks::phongFragmentParams,
         Chunks::directionalLightsParams,
         Chunks::pointLightsParams,
@@ -235,6 +238,7 @@ static const ptr<ShaderLib> SHADERLIB_PHONG = ShaderLib::create(
         Chunks::phongHemisphereLightsFragment,
         Chunks::phongSpotLightsFragment,
         Chunks::phongFragment_2,
+        Chunks::colorFragment,
         Chunks::envMapFragment,
         Chunks::shadowFragment,
         Chunks::phongFragment_3,

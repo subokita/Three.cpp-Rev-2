@@ -28,6 +28,8 @@ namespace three {
         ptr<Geometry> geometry = Geometry::create();
         
         bool has_vertex_normals = false;
+        bool has_vertex_colors  = false;
+        
         for( int m = 0; m < scene->mNumMeshes; m++ ) {
             const aiMesh * mesh = scene->mMeshes[m];
             
@@ -62,15 +64,31 @@ namespace three {
                             toGLMVec2( mesh->mTextureCoords[0][face->c] )
                         });
                     }
+                    
+                    if( mesh->HasVertexColors(0)) {
+                        has_vertex_colors = true;
+                        
+                        face->setVertexColors({
+                            toGLMVec3( mesh->mColors[0][face->a] ),
+                            toGLMVec3( mesh->mColors[0][face->b] ),
+                            toGLMVec3( mesh->mColors[0][face->c] )
+                        });
+                    }
 
                     geometry->faces[i] = face;
                 }
             }
         }
         
-        return Mesh::create(geometry, PhongMaterial::create());
+        ptr<Mesh> mesh = Mesh::create(geometry, PhongMaterial::create());
+        mesh->setUseVertexColors( has_vertex_colors );
+        return mesh;
     }
- 
+    
+    glm::vec3 Loader::toGLMVec3(aiColor4D&  ai_color) {
+        float factor = (ai_color.r > 1.0 || ai_color.g > 1.0 || ai_color.b > 1.0) ? 255.0: 1.0;
+        return glm::vec3( ai_color.r / factor, ai_color.g / factor, ai_color.b / factor );
+    }
     
     glm::vec2 Loader::toGLMVec2(aiVector3D& ai_vector) {
         return glm::vec2( ai_vector.x, ai_vector.y );

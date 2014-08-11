@@ -26,15 +26,11 @@ namespace three {
         blendDst            = three::OneMinusSrcAlphaFactor;
         blendEquation       = three::AddEquation;
         
-        depthTest           = true;
-        depthWrite          = true;
-        
         polygonOffset       = false;
         polygonOffsetFactor = 0.0;
         polygonOffsetUnits  = 0.0;
         
         alphaTest           = 0.0;
-        overdraw            = 0.0;
         
         visible             = true;
         needsUpdate         = true;

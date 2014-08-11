@@ -56,17 +56,14 @@ namespace three {
         
         ptr<Box3> getBoundingBox();
         
+        bool useVertexColors();
+        void setUseVertexColors( bool flag );
+        
     public:
         bool visible;
         bool frustumCulled;
         bool castShadow;
         bool receiveShadow;
-        
-        bool matrixAutoUpdate;
-        bool matrixWorldNeedsUpdate;
-        
-        ptr<Object3D> parent;
-        std::map<int, ptr<Object3D>> children;
         
         ptr<Object3D> target;
         glm::quat quaternion;
@@ -79,6 +76,13 @@ namespace three {
         glm::vec3 scale;
         
     protected:
+        bool vertexColors;
+        
+        std::map<int, ptr<Object3D>> children;
+        bool matrixAutoUpdate;
+        bool matrixWorldNeedsUpdate;
+        
+        ptr<Object3D> parent;
         ptr<Box3> boundingBox;
     };
 }

@@ -42,7 +42,6 @@ namespace three {
         
     protected:
         std::vector<glm::vec3> vertices;
-        std::vector<glm::vec3> colors;
         std::vector<ptr<Face3>> faces;
         int noOfElements;
     };

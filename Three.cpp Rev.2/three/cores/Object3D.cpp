@@ -18,15 +18,16 @@ namespace three {
     }
     
     Object3D::Object3D():
-        HasID        ( Object3DIDCount++ ),
-        visible      ( true ),
-        frustumCulled( true ),
-        castShadow   ( false ),
-        receiveShadow( false ),
-        quaternion   ( glm::quat(1.0, 0.0, 0.0, 0.0) ),
-        scale        ( glm::vec3(1.0, 1.0, 1.0) ),
-        position     ( glm::vec3(0.0, 0.0, 0.0) ),
-        up           ( glm::vec3(0.0, 1.0, 0.0) ),
+        HasID           ( Object3DIDCount++ ),
+        visible         ( true ),
+        frustumCulled   ( true ),
+        castShadow      ( false ),
+        receiveShadow   ( false ),
+        vertexColors    ( false ),
+        quaternion      ( glm::quat(1.0, 0.0, 0.0, 0.0) ),
+        scale           ( glm::vec3(1.0, 1.0, 1.0) ),
+        position        ( glm::vec3(0.0, 0.0, 0.0) ),
+        up              ( glm::vec3(0.0, 1.0, 0.0) ),
         matrix                  ( glm::mat4(1.0 )),
         matrixWorld             ( glm::mat4(1.0 )),
         matrixAutoUpdate        ( true ),
@@ -36,6 +37,15 @@ namespace three {
     }
     
     Object3D::~Object3D(){    
+    }
+    
+    
+    bool Object3D::useVertexColors() {
+        return vertexColors;
+    }
+    
+    void Object3D::setUseVertexColors( bool flag ) {
+        this->vertexColors = flag;
     }
     
     void Object3D::setTarget( glm::vec3 target_pos ) {

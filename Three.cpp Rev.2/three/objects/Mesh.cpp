@@ -180,7 +180,8 @@ namespace three {
         std::vector<unsigned short> index;
         std::vector<glm::vec3> normals( geometry->vertices.size() );
         std::vector<glm::vec2> uvs    ( geometry->vertices.size() );
-    
+        std::vector<glm::vec3> colors ( geometry->vertices.size() );
+        
         std::map<int, int> count;
         
         for( ptr<Face3> face: geometry->faces ) {
@@ -194,7 +195,11 @@ namespace three {
             
             uvs[face->a] = face->uvs[0];
             uvs[face->b] = face->uvs[1];
-            uvs[face->c] = face->uvs[2];   
+            uvs[face->c] = face->uvs[2];
+
+            colors[face->a] = face->vertexColors[0];
+            colors[face->b] = face->vertexColors[1];
+            colors[face->c] = face->vertexColors[2];
         }
         
         geometry->updateMatrixWorld(true);
@@ -217,10 +222,10 @@ namespace three {
         
         glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[3] );
         glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec2 ) * uvs.size(), &uvs[0], GL_STATIC_DRAW );
+
         
-        
-//        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[4] );
-//        glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec3 ) * geometry->colors.size(), &geometry->colors[0], GL_STATIC_DRAW );
+        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[4] );
+        glBufferData( GL_ARRAY_BUFFER, sizeof( glm::vec3 ) * colors.size(), &colors[0], GL_STATIC_DRAW );
         
         glBuffersInitialized = true;
         
@@ -261,9 +266,9 @@ namespace three {
         glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 0, (void*) 0 );
         
         /* Colors */
-//        glEnableVertexAttribArray( 3 );
-//        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[4] );
-//        glVertexAttribPointer( 3, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0 );
+        glEnableVertexAttribArray( 3 );
+        glBindBuffer( GL_ARRAY_BUFFER, bufferIDs[4] );
+        glVertexAttribPointer( 3, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0 );
         
         /* Indices */
         glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, bufferIDs[2] );

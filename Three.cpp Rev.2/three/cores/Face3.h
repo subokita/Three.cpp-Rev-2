@@ -28,6 +28,7 @@ namespace three {
         void setVertexNormals( std::initializer_list<glm::vec3> vertex_normals );
         void setVertexUVs( std::initializer_list<glm::vec2> vertex_uvs );
         void setVertexColors( std::initializer_list<Color> vertex_colors );
+        void setVertexColors( std::initializer_list<glm::vec3> vertex_colors );
         
         const glm::vec3& getFaceNormal();
         void setFaceNormal(glm::vec3 normal);
@@ -45,13 +46,13 @@ namespace three {
         int c;
         glm::vec3 vertexNormals[3];
         glm::vec2 uvs[3];
+        glm::vec3 vertexColors[3];
         
     protected:
         glm::vec3              normal;
         Color                  color;
         int                    materialIndex;
         std::vector<glm::vec3> vertexTangents;
-        std::vector<Color>     vertexColors;
         
         
         // FIXME: print the normals, tangents and colors too
@@ -64,6 +65,7 @@ namespace three {
             os << "\tnormal       : " << Utils::toString( obj.normal ) << std::endl;
             os << "\tvertexNormals: " << Utils::toString( obj.vertexNormals, 3 ) << std::endl;
             os << "\tuvs          : " << Utils::toString( obj.uvs, 3 ) << std::endl;
+            os << "\tvertexColros : " << Utils::toString( obj.vertexColors, 3 ) << std::endl;
             os << "\tcolor        : " << obj.color         << std::endl;
             os << "\tmaterialIndex: " << obj.materialIndex << std::endl;
             os << "}";

@@ -25,6 +25,7 @@ namespace three {
     protected:
         static inline glm::vec2 toGLMVec2(aiVector3D& ai_vector);
         static inline glm::vec3 toGLMVec3(aiVector3D& ai_vector);
+        static inline glm::vec3 toGLMVec3(aiColor4D&  ai_color);
     };
 }
 

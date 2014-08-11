@@ -75,6 +75,8 @@ namespace three {
     }
     
     void ShaderLib::addDefinitions(ptr<Scene> scene, ptr<Mesh> mesh, bool gamma_input, bool gamma_output) {
+        config.reset();
+        
         if( scene->getFog() != nullptr ) {
             this->defines.push_back("#define USE_FOG");
             
@@ -85,8 +87,14 @@ namespace three {
         if( gamma_input )
             this->defines.push_back("#define GAMMA_INPUT");
         
-        if( gamma_output )
+        if( gamma_output ) {
             this->defines.push_back("#define GAMMA_OUTPUT");
+        }
+        
+        if( mesh->useVertexColors() ) {
+            this->defines.push_back("#define USE_COLOR");
+            config[8] = 1;
+        }
         
         stringstream ss;
         ss.str("");
@@ -105,7 +113,6 @@ namespace three {
         ss << "#define MAX_SPOT_LIGHTS " << scene->getSpotLights().getSize();
         this->defines.push_back( ss.str() );
         
-        config.reset();
         
         if( mesh->hasTexture() ) {
             this->defines.push_back( "#define USE_MAP" );

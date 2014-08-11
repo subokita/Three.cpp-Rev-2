@@ -38,8 +38,8 @@
 		A88AF9FB196C669700601287 /* AmbientLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A88AF9F9196C669700601287 /* AmbientLight.cpp */; };
 		A88AF9FE196D0CCA00601287 /* IFog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A88AF9FC196D0CCA00601287 /* IFog.cpp */; };
 		A88AFA01196D0D3C00601287 /* Fog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A88AF9FF196D0D3C00601287 /* Fog.cpp */; };
-		A88AFA07196D194100601287 /* sandbox.fsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = A88AFA05196D183100601287 /* sandbox.fsh */; };
-		A88AFA08196D194100601287 /* sandbox.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = A88AFA06196D183700601287 /* sandbox.vsh */; };
+		A88AFA07196D194100601287 /* phong.fsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = A88AFA05196D183100601287 /* phong.fsh */; };
+		A88AFA08196D194100601287 /* phong.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = A88AFA06196D183700601287 /* phong.vsh */; };
 		A8A33FAC1973D8F900037E90 /* Arcball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A33FAA1973D8F900037E90 /* Arcball.cpp */; };
 		A8A33FAF1973EA3700037E90 /* Box3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A33FAD1973EA3700037E90 /* Box3.cpp */; };
 		A8A33FB41973F78D00037E90 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A33FB01973F78D00037E90 /* Event.cpp */; };
@@ -93,8 +93,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				A88AFA07196D194100601287 /* sandbox.fsh in CopyFiles */,
-				A88AFA08196D194100601287 /* sandbox.vsh in CopyFiles */,
+				A88AFA07196D194100601287 /* phong.fsh in CopyFiles */,
+				A88AFA08196D194100601287 /* phong.vsh in CopyFiles */,
 				A8F4C3E1196A687600D191DC /* Three_cpp_Rev_2.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -168,8 +168,8 @@
 		A88AF9FD196D0CCA00601287 /* IFog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFog.h; sourceTree = "<group>"; };
 		A88AF9FF196D0D3C00601287 /* Fog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fog.cpp; sourceTree = "<group>"; };
 		A88AFA00196D0D3C00601287 /* Fog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fog.h; sourceTree = "<group>"; };
-		A88AFA05196D183100601287 /* sandbox.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = sandbox.fsh; sourceTree = "<group>"; };
-		A88AFA06196D183700601287 /* sandbox.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = sandbox.vsh; sourceTree = "<group>"; };
+		A88AFA05196D183100601287 /* phong.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = phong.fsh; sourceTree = "<group>"; };
+		A88AFA06196D183700601287 /* phong.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = phong.vsh; sourceTree = "<group>"; };
 		A8A33FAA1973D8F900037E90 /* Arcball.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Arcball.cpp; sourceTree = "<group>"; };
 		A8A33FAB1973D8F900037E90 /* Arcball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arcball.h; sourceTree = "<group>"; };
 		A8A33FAD1973EA3700037E90 /* Box3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box3.cpp; sourceTree = "<group>"; };
@@ -339,8 +339,8 @@
 		A88AFA03196D180E00601287 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
-				A88AFA05196D183100601287 /* sandbox.fsh */,
-				A88AFA06196D183700601287 /* sandbox.vsh */,
+				A88AFA05196D183100601287 /* phong.fsh */,
+				A88AFA06196D183700601287 /* phong.vsh */,
 			);
 			path = shaders;
 			sourceTree = "<group>";

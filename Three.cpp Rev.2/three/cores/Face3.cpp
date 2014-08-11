@@ -25,7 +25,8 @@ namespace  three {
         a            ( 0 ),
         b            ( 0 ),
         c            ( 0 ),
-        materialIndex( 0 )
+        materialIndex( 0 ),
+        vertexColors { glm::vec3(1.0), glm::vec3(1.0), glm::vec3(1.0) }
     {}
     
     
@@ -33,7 +34,8 @@ namespace  three {
         a            ( a ),
         b            ( b ),
         c            ( c ),
-        materialIndex( 0 )
+        materialIndex( 0 ),
+        vertexColors { glm::vec3(1.0), glm::vec3(1.0), glm::vec3(1.0) }
     {}
     
     Face3::Face3( int a, int b, int c, glm::vec3 normal, Color color, int material_index ):
@@ -42,7 +44,8 @@ namespace  three {
         c            ( c ),
         normal       ( normal ),
         color        ( color ),
-        materialIndex( material_index )
+        materialIndex( material_index ),
+        vertexColors { glm::vec3(1.0), glm::vec3(1.0), glm::vec3(1.0) }
     {}
     
     Face3::~Face3(){}
@@ -61,19 +64,26 @@ namespace  three {
         this->normal.z = z;
     }
     
+    void Face3::setVertexColors( std::initializer_list<glm::vec3> vertex_colors ) {
+        vertexColors[0] = (*(vertex_colors.begin()  ));
+        vertexColors[1] = (*(vertex_colors.begin()+1));
+        vertexColors[2] = (*(vertex_colors.begin()+2));
+    }
+    
     void Face3::setVertexColors( std::initializer_list<Color> vertex_colors ) {
-        for( Color color: vertex_colors )
-            this->vertexColors.push_back( color );
+        vertexColors[0] = (*(vertex_colors.begin()  )).rep;
+        vertexColors[1] = (*(vertex_colors.begin()+1)).rep;
+        vertexColors[2] = (*(vertex_colors.begin()+2)).rep;
     }
     
     void Face3::setVertexNormals( std::initializer_list<glm::vec3> vertex_normals ) {
-        vertexNormals[0] = *(vertex_normals.begin());
+        vertexNormals[0] = *(vertex_normals.begin()  );
         vertexNormals[1] = *(vertex_normals.begin()+1);
         vertexNormals[2] = *(vertex_normals.begin()+2);
     }
     
     void Face3::setVertexUVs( std::initializer_list<glm::vec2> vertex_uvs ) {
-        uvs[0] = *(vertex_uvs.begin());
+        uvs[0] = *(vertex_uvs.begin()  );
         uvs[1] = *(vertex_uvs.begin()+1);
         uvs[2] = *(vertex_uvs.begin()+2);
     }

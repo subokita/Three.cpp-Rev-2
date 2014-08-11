@@ -45,10 +45,13 @@ namespace three  {
         float x_offset = -1.0;
         for( string filename: filenames ) {
             auto statue = Loader::loadPLY(path + "/ply models/", filename,
+                                          aiProcess_Triangulate |
+                                          aiProcess_OptimizeMeshes |
                                           aiProcess_JoinIdenticalVertices |
                                           aiProcess_GenSmoothNormals | aiProcess_FlipWindingOrder );
             
             statue->setMaterial(PhongMaterial::create(0xcccccc, 0x0, 0x000000, 0x999999, 10, true));
+            
             statue->getGeometry()->setScale(10.0f);
             statue->castShadow      = true;
             statue->receiveShadow   = true;
@@ -57,6 +60,8 @@ namespace three  {
             glm::vec3 center = bbox->center();
             glm::vec3 size   = bbox->size();
             statue->translate(x_offset, -(center.y - size.y * 0.5), 0.0);
+            
+            cout << *bbox << endl;
             
             x_offset += 2.0f;
             scene->add( statue );
