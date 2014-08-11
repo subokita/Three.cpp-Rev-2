@@ -47,6 +47,10 @@ Working Examples
 
 ![Loading PLY Models](http://abload.de/img/2014-08-0418_53_49xrai2.gif)
 
+* Ray casting / picking (https://www.youtube.com/watch?v=Ku-UwyC8RAc)
+
+![Ray casting](http://subokita.files.wordpress.com/2014/08/2014-08-11-11_23_27.gif?w=400)
+
 
 FAQ
 ===
