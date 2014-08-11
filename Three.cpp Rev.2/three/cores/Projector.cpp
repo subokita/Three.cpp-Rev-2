@@ -12,26 +12,29 @@
 
 namespace three {
     
-    glm::vec3 Projector::projectVector( glm::vec3 vector, ptr<Camera> camera ){
-        camera->matrixWorldInverse = glm::inverse( camera->matrixWorld );
-        glm::mat4 view_projection_mat = camera->getProjectionMatrix() * camera->matrixWorldInverse;
-        return glm::vec3(view_projection_mat * glm::vec4(vector, 0.0));
+    glm::vec4 Projector::projectVector( const glm::vec4 vector, ptr<Camera> camera ){
+        glm::mat4 vp = camera->getProjectionMatrix() * camera->matrix;
+        return vp * vector;
     }
     
-    glm::vec3 Projector::unprojectVector( glm::vec3 vector, ptr<Camera> camera ){
+    glm::vec4 Projector::unprojectVector( const glm::vec4 vector, ptr<Camera> camera ){
         glm::mat4 inverse_vp = glm::inverse(camera->getProjectionMatrix() * camera->matrix);
-        return glm::vec3( inverse_vp * glm::vec4(vector, 0.0) ) + camera->position;
+        glm::vec4 result = inverse_vp * vector;
+        result /= result.w;
+        return result;
     }
     
     
-    ptr<Raycaster> Projector::pickingRay( glm::vec3 vector, ptr<Camera> camera ) {
-        vector.z = -1.0;
-        glm::vec3 end( vector.x, vector.y, 1.0 );
+    ptr<Raycaster> Projector::pickingRay( const glm::vec3 normalized_screen_coord, ptr<Camera> camera ) {
+        glm::vec4 ray_start(normalized_screen_coord.x, normalized_screen_coord.y, -1.0, 1.0);
+        glm::vec4 ray_end  (normalized_screen_coord.x, normalized_screen_coord.y,  0.0, 1.0);
+
+        ray_start = unprojectVector(ray_start, camera );
+        ray_end   = unprojectVector(ray_end,   camera );
         
-        vector  = unprojectVector(vector, camera );
-        end     = unprojectVector(end, camera);
+        glm::vec3 origin    = glm::vec3(ray_start);
+        glm::vec3 direction = glm::normalize( glm::vec3( ray_end - ray_start ) );
         
-        end = glm::normalize(end - vector);
-        return Raycaster::create(vector, end, 0.0, MAX_FLOAT);
+        return Raycaster::create(origin, direction, 0.0, MAX_FLOAT);
     }
 }

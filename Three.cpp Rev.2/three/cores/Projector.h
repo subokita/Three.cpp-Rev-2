@@ -15,10 +15,10 @@
 namespace three {
     class Projector {
     public:
-        static glm::vec3 projectVector( glm::vec3 vector, ptr<Camera> camera );
-        static glm::vec3 unprojectVector( glm::vec3 vector, ptr<Camera> camera );
+        static glm::vec4 projectVector( const glm::vec4 vector, ptr<Camera> camera );
+        static glm::vec4 unprojectVector( const glm::vec4 vector, ptr<Camera> camera );
         
-        static ptr<Raycaster> pickingRay( glm::vec3 vector, ptr<Camera> camera );
+        static ptr<Raycaster> pickingRay( const glm::vec3 normalized_screen_coord, ptr<Camera> camera );
     };
 }
 
