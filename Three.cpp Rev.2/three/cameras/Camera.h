@@ -48,7 +48,6 @@ namespace three {
         
         
     public:
-        /* Data members */
         glm::mat4 matrixWorldInverse;
         
         

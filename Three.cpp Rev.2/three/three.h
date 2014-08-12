@@ -50,6 +50,7 @@
 #include "Material.h"
 #include "MeshCubeMapMaterial.h"
 #include "BasicMaterial.h"
+#include "LineBasicMaterial.h"
 #include "LambertMaterial.h"
 #include "PhongMaterial.h"
 

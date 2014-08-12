@@ -92,16 +92,15 @@ namespace three {
                 light->shadowMap->bind();
                 light->shadowTexture->bind();
 
-                glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, light->shadowMapSize.x, light->shadowMapSize.y, 0, GL_RGBA, GL_FLOAT, 0 );
                 
+                glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, light->shadowMapSize.x, light->shadowMapSize.y, 0, GL_RGBA, GL_FLOAT, 0 );
+
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLuint>(shadow_filter) );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<GLuint>(shadow_filter) );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE );
                 glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL );
-                
-                glGenerateMipmap(GL_TEXTURE_2D);
                 
                 glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, light->shadowTexture->textureID, 0 );
                 glDrawBuffer( GL_COLOR_ATTACHMENT0 );
@@ -171,7 +170,7 @@ namespace three {
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glDisable( GL_BLEND );
         glEnable( GL_CULL_FACE );
-        glCullFace( GL_FRONT );
+        glCullFace( GL_FRONT_AND_BACK );
         
         glEnable( GL_DEPTH_TEST );
     }

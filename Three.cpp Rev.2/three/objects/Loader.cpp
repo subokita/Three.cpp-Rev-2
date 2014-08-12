@@ -80,7 +80,7 @@ namespace three {
             }
         }
         
-        ptr<Mesh> mesh = Mesh::create(geometry, PhongMaterial::create());
+        ptr<Mesh> mesh = Mesh::create(geometry, nullptr );
         mesh->setUseVertexColors( has_vertex_colors );
         return mesh;
     }

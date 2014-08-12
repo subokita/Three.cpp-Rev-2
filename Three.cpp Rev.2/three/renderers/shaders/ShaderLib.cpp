@@ -21,8 +21,10 @@ namespace three {
         else if ( instance_of(mesh->getMaterial(), MeshCubeMapMaterial ) )
             return SHADERLIB_CUBEMAP->clone();
         
-        else if ( instance_of(mesh->getMaterial(), BasicMaterial ) )
+        else if ( instance_of(mesh->getMaterial(), BasicMaterial ) ||
+                  instance_of(mesh->getMaterial(), LineBasicMaterial ) )
             return SHADERLIB_BASIC->clone();
+        
         
         else if ( instance_of(mesh->getMaterial(), LambertMaterial))
             return SHADERLIB_LAMBERT->clone();

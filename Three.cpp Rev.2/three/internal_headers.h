@@ -63,6 +63,7 @@ namespace three {
     class Material;
     class MeshCubeMapMaterial;
     class BasicMaterial;
+    class LineBasicMaterial;
     class LambertMaterial;
     class PhongMaterial;
     

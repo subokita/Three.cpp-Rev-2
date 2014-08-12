@@ -22,7 +22,9 @@ namespace three  {
         
         Renderer renderer;
         renderer.init( "Ex 004: Shadow Mapping", 1600 * 2 / 4, 900 * 2 / 4 );
-
+        renderer.setCameraControl(Arcball::create(2.0f));
+        
+        
         /* Create scene */
         auto scene = Scene::create();
         scene->setFog(Fog::create( 0x72645b / 2, 2.0, 15.0 ));
@@ -43,10 +45,10 @@ namespace three  {
         sphere->castShadow = true;
         sphere->receiveShadow = true;
         
-        auto cube = Mesh::create( CubeGeometry::create(1.0),
+        auto cube = Mesh::create( CubeGeometry::create(1.0, 10),
                                  PhongMaterial::create(0x777777, 0x0, 0x0, 0x0, 30, false) );
-        cube->setTexture( TextureUtils::loadAsTexture( path, "four_shapes_color.tga" ) );
-        cube->translate(-2.0, 0.0, -2.0);
+//        cube->setTexture( TextureUtils::loadAsTexture( path, "four_shapes_color.tga" ) );
+        cube->translate(0.0, 0.5, 0.0);
         cube->castShadow = true;
         cube->receiveShadow = true;
         
@@ -57,18 +59,18 @@ namespace three  {
         cylinder->receiveShadow = true;
         cylinder->setTexture  ( TextureUtils::loadAsTexture   ( path, "rock_color.tga" ) );
         cylinder->setNormalMap( TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" ) );
-        cylinder->translate(+2.0f, 0.0f, -2.0f);
+        cylinder->translate(+2.0f, 0.5f, -2.0f);
         
-        scene->add( cylinder );
+//        scene->add( cylinder );
         scene->add( cube );
-        scene->add( sphere );
+//        scene->add( sphere );
         
         /* And the ground plane */
         auto plane = Mesh::create( PlaneGeometry::create(20.0f),
                                   PhongMaterial::create(0x777777, 0x777777, 0x0, 0x999999, 30) );
         plane->name = "plane";
         plane->rotateX(-90.0f);
-        plane->translate(0.0, -1.0, 0.0);
+        plane->translate(0.0, 0.0, 0.0);
         plane->receiveShadow = true;
         scene->add( plane );
         
@@ -85,8 +87,8 @@ namespace three  {
         /* Create a (rotating) directional light */
         auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3( 3.0, 1.0, 3.0 ) );
         dir_light->castShadow       = true;
-        dir_light->shadowBias       = -0.05;
-        dir_light->shadowMapSize    = glm::vec2(1024);
+        dir_light->shadowBias       = -0.001;
+        dir_light->shadowMapSize    = glm::vec2(512);
         scene->add( dir_light );
         
         /* Create a spotlight, the shadow should be casted no the left hand side */

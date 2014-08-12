@@ -83,7 +83,6 @@ namespace three {
         static const string simplePassFragment = Utils::join({
             "float unpacked = 1.0 - unpackDepth( texture( texture_sampler, uv ) );",
             "frag_color     = vec4(unpacked, unpacked, unpacked, 1.0);",
-            //            "frag_color = texture(texture_sampler, uv);",
             "",
         }, "\t");
         
@@ -210,6 +209,7 @@ namespace three {
             
                     "if( frustum_test ) {",
                         "shadow_coord.z += shadow_bias[i];",
+            
                         "#if defined( SHADOW_TYPE_PCF )",
                             "float shadow             = 0.0;",
                             "const float shadow_delta = 1.0 / 9.0;",
@@ -260,16 +260,14 @@ namespace three {
             
                         "#elif defined( SHADOW_TYPE_PCF_SOFT )",
                             "float shadow             = 0.0;",
-                            "const float shadow_delta = 1.0 / 9.0;",
                             "float x_offset           = 1.0 / shadow_map_size[i].x;",
                             "float y_offset           = 1.0 / shadow_map_size[i].y;",
-                            "float dx0                = -1.0 * x_offset;",
-                            "float dy0                = -1.0 * y_offset;",
-                            "float dx1                =  1.0 * x_offset;",
-                            "float dy1                =  1.0 * y_offset;",
-                            "mat3 shadow_kernel;",
-                            "mat3 depth_kernel;",
+                            "float dx0                = -1.25 * x_offset;",
+                            "float dy0                = -1.25 * y_offset;",
+                            "float dx1                =  1.25 * x_offset;",
+                            "float dy1                =  1.25 * y_offset;",
 
+                            "mat3 depth_kernel;",
                             "depth_kernel[0][0] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(dx0, dx0) ));",
                             "depth_kernel[0][1] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(dx0, 0.0) ));",
                             "depth_kernel[0][2] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(dx0, dy1) ));",
@@ -283,6 +281,7 @@ namespace three {
                             "depth_kernel[2][2] = unpackDepth( texture( shadow_map[i], shadow_coord.xy + vec2(dx1, dy1) ));",
 
                             "vec3 shadow_z = vec3(shadow_coord.z);",
+                            "mat3 shadow_kernel;",
                             "shadow_kernel[0] = vec3( lessThan(depth_kernel[0], shadow_z) );",
                             "shadow_kernel[0] *= vec3(0.25);",
 
@@ -303,8 +302,7 @@ namespace three {
                             "shadow_values.w = mix( shadow_kernel[1][2], shadow_kernel[1][1], fraction_coord.y );",
 
                             "shadow = dot(shadow_values, vec4(1.0));",
-                            "shadow_color = shadow_color * vec3( (1.0 - shadow_darkness[i] * shadow) );",
-            
+                            "shadow_color = shadow_color * vec3(1.0 - shadow_darkness[i] * shadow );",
             
                         "#else",
                             "vec4 rgba_depth = texture( shadow_map[i], shadow_coord.xy );",

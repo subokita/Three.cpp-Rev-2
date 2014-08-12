@@ -51,7 +51,6 @@ namespace three  {
                                           aiProcess_GenSmoothNormals | aiProcess_FlipWindingOrder );
             
             statue->setMaterial(PhongMaterial::create(0xcccccc, 0x0, 0x000000, 0x999999, 10, true));
-            
             statue->getGeometry()->setScale(10.0f);
             statue->castShadow      = true;
             statue->receiveShadow   = true;
@@ -79,7 +78,8 @@ namespace three  {
         scene->add( box );
         
         auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.5, 1.0, 30, 5, false),
-                                      PhongMaterial::create( 0xDDDDDD, 0x0, 0x0, 0x111111, 150.0, true ) );
+                                      PhongMaterial::create( 0xDDDDDD, 0x0, 0x0, 0x111111, 150.0, true )
+                                     );
         cylinder->translate(-3.0f, 0.5f, 0.0f);
         cylinder->castShadow = true;
         cylinder->receiveShadow = true;
@@ -98,7 +98,7 @@ namespace three  {
                                                     "nx.png", "ny.png", "nz.png",
                                                     "px.png", "py.png", "pz.png"));
         
-        cylinder->setEnvMap( env->getTexture() );
+//        cylinder->setEnvMap( env->getTexture() );
         scene->add( env );
         
         
