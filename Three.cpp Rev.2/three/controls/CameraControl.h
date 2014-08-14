@@ -27,7 +27,7 @@ namespace three {
         ~CameraControl();
         
     protected:
-        CameraControl();
+        CameraControl(bool x_axis = true, bool y_axis = true);
         ptr<Camera> camera;
         
         int windowWidth;

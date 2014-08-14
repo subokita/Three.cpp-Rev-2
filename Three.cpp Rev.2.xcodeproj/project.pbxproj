@@ -49,6 +49,7 @@
 		A8A4BB9B198817010090B91A /* ShadowTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A4BB99198817010090B91A /* ShadowTexture.cpp */; };
 		A8A53583198FA2990052D45E /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A53581198FA2990052D45E /* Loader.cpp */; };
 		A8A53586198FE6F80052D45E /* Ex_005_PLYLoading.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A53584198FE6F80052D45E /* Ex_005_PLYLoading.cpp */; };
+		A8A9BE41199BDEAC0018B67E /* Ex_007_PointCloudTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A9BE3F199BDEAC0018B67E /* Ex_007_PointCloudTest.cpp */; };
 		A8AC4AF71976456F00D4449B /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AC4AF51976456F00D4449B /* Texture.cpp */; };
 		A8AC4AFA19764BCF00D4449B /* TextureUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AC4AF819764BCF00D4449B /* TextureUtils.cpp */; };
 		A8AEA5C41993587900D80D4C /* CameraControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8AEA5C21993587900D80D4C /* CameraControl.cpp */; };
@@ -187,6 +188,8 @@
 		A8A53582198FA2990052D45E /* Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Loader.h; sourceTree = "<group>"; };
 		A8A53584198FE6F80052D45E /* Ex_005_PLYLoading.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ex_005_PLYLoading.cpp; sourceTree = "<group>"; };
 		A8A53585198FE6F80052D45E /* Ex_005_PLYLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ex_005_PLYLoading.h; sourceTree = "<group>"; };
+		A8A9BE3F199BDEAC0018B67E /* Ex_007_PointCloudTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ex_007_PointCloudTest.cpp; sourceTree = "<group>"; };
+		A8A9BE40199BDEAC0018B67E /* Ex_007_PointCloudTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ex_007_PointCloudTest.h; sourceTree = "<group>"; };
 		A8AC4AF51976456F00D4449B /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		A8AC4AF61976456F00D4449B /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
 		A8AC4AF819764BCF00D4449B /* TextureUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureUtils.cpp; sourceTree = "<group>"; };
@@ -287,6 +290,8 @@
 				A8A53585198FE6F80052D45E /* Ex_005_PLYLoading.h */,
 				A831C97E19927EAD009523D1 /* Ex_006_BoundingBoxTest.cpp */,
 				A831C97F19927EAD009523D1 /* Ex_006_BoundingBoxTest.h */,
+				A8A9BE3F199BDEAC0018B67E /* Ex_007_PointCloudTest.cpp */,
+				A8A9BE40199BDEAC0018B67E /* Ex_007_PointCloudTest.h */,
 			);
 			path = examples;
 			sourceTree = "<group>";
@@ -712,6 +717,7 @@
 				A83D90C11981939E00A2D59F /* CastsShadow.cpp in Sources */,
 				A8A33FAF1973EA3700037E90 /* Box3.cpp in Sources */,
 				A8F4C3FD196A839F00D191DC /* Utils.cpp in Sources */,
+				A8A9BE41199BDEAC0018B67E /* Ex_007_PointCloudTest.cpp in Sources */,
 				A825E61B196D71F20003C5C7 /* Mesh.cpp in Sources */,
 				A82B128A198A3E0E00F442C1 /* HemisphereLightsArray.cpp in Sources */,
 				A87DA58F198A418C00DFC011 /* PointLightsArray.cpp in Sources */,

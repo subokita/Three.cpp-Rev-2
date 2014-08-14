@@ -13,10 +13,10 @@ using namespace std;
 namespace three {
     
     
-    CameraControl::CameraControl():
+    CameraControl::CameraControl(bool x_axis, bool y_axis):
         mouseEvent  ( 0 ),
-        xAxis       ( true ),
-        yAxis       ( true )
+        xAxis       ( x_axis ),
+        yAxis       ( y_axis )
     {
     }
     

@@ -30,16 +30,16 @@ namespace three {
         bool has_vertex_normals = false;
         bool has_vertex_colors  = false;
         
+        
         for( int m = 0; m < scene->mNumMeshes; m++ ) {
             const aiMesh * mesh = scene->mMeshes[m];
             
+            geometry->vertices.resize( mesh->mNumVertices );
+            for( int i = 0; i < mesh->mNumVertices; i++ ) {
+                geometry->vertices[i] = toGLMVec3(mesh->mVertices[i]);
+            }
+            
             if( mesh->HasFaces() ) {
-                
-                geometry->vertices.resize( mesh->mNumVertices );
-                
-                for( int i = 0; i < mesh->mNumVertices; i++ )
-                    geometry->vertices[i] = toGLMVec3(mesh->mVertices[i]);
-                
                 geometry->faces.resize( mesh->mNumFaces );
                 
                 for( int i = 0; i < mesh->mNumFaces; i++ ) {

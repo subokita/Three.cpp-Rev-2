@@ -15,4 +15,5 @@
 #include "Ex_004_ShadowMapping.h"
 #include "Ex_005_PLYLoading.h"
 #include "Ex_006_BoundingBoxTest.h"
+#include "Ex_007_PointCloudTest.h"
 #endif

@@ -23,6 +23,7 @@ namespace three {
     
     
     Arcball::Arcball(GLfloat roll_speed, bool x_axis, bool y_axis) :
+        CameraControl( x_axis, y_axis ),
         rollSpeed   (roll_speed),
         angle       (0.0f),
         camAxis     (glm::vec3(0.0, 1.0, 0.0))
