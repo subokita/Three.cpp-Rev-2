@@ -67,6 +67,7 @@ namespace three {
         fragmentCode  ( rhs.fragmentCode )
     {}
     
+    ShaderLib::~ShaderLib(){}
     
     ptr<ShaderLib> ShaderLib::clone() const {
         return make_shared<ShaderLib>(ShaderLib(*this));
@@ -76,16 +77,20 @@ namespace three {
         return shader;
     }
     
+    
+    /**
+     * Create a plethora of #define statements based on the expected configuration of the shader
+     */
     void ShaderLib::addDefinitions(ptr<Scene> scene, ptr<Mesh> mesh, bool gamma_input, bool gamma_output) {
         config.reset();
         
         if( scene->getFog() != nullptr ) {
             this->defines.push_back("#define USE_FOG");
-            
+
             if( instance_of(scene->getFog(), FogExp2))
                 this->defines.push_back("#define FOG_EXP2");
         }
-        
+    
         if( gamma_input )
             this->defines.push_back("#define GAMMA_INPUT");
         
@@ -185,7 +190,7 @@ namespace three {
     }
     
     /**
-     * Draw all the meshes, and set the appropriate uniforms
+     * Pass the camera matrices to shader uniforms, and call the draw function on the mesh
      */
     void ShaderLib::draw( ptr<Camera> camera, ptr<CameraControl> cam_control, ptr<Object3D> object, bool gamma_input ) {
         glm::mat4 rot_mat(1.0);
@@ -214,7 +219,10 @@ namespace three {
         }
     }
 
- 
+    /**
+     * Create unique ID for the shader instance, based
+     * on the shader code, configurations and definitions tacked on to it
+     */
     string ShaderLib::getID() {
         stringstream ss;
         ss << name << "_";
@@ -222,6 +230,9 @@ namespace three {
         return ss.str();
     }
     
+    /**
+     * Check if the fragment or vertex code is empty
+     */
     bool ShaderLib::empty() {
         return fragmentCode.empty() || vertexCode.empty();
     }
@@ -233,6 +244,7 @@ namespace three {
     string ShaderLib::getVertexParams() {
         return this->vertexParams;
     }
+    
     string ShaderLib::getFragmentParams() {
         return this->fragmentParams;
     }
@@ -246,6 +258,9 @@ namespace three {
         return this->fragmentCode;
     }
     
+    /**
+     * String the fragment shader chunks together into a vertex shader code
+     */
     string ShaderLib::constructFragmentShader() {
         return Utils::join({
             this->version,
@@ -256,6 +271,9 @@ namespace three {
         });
     }
     
+    /**
+     * String the vertex shader chunks together into a vertex shader code
+     */
     string ShaderLib::constructVertexShader() {
         return Utils::join({
             this->version,
@@ -265,6 +283,4 @@ namespace three {
             this->vertexCode,
         });
     }
-    
-    ShaderLib::~ShaderLib(){}
 }

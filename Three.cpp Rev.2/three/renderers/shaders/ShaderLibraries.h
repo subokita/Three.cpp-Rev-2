@@ -14,6 +14,7 @@
 
 namespace three {
 
+#pragma mark SIMPLE_PASS
 static const ptr<ShaderLib> SHADERLIB_SIMPLE_PASS = ShaderLib::create(
 "depthRGBA",
 {"precision highp float;", "precision highp int;"},
@@ -37,6 +38,7 @@ static const ptr<ShaderLib> SHADERLIB_SIMPLE_PASS = ShaderLib::create(
     })
 );
 
+#pragma mark DEPTH_PASS
 static const ptr<ShaderLib> SHADERLIB_DEPTH_RGBA = ShaderLib::create(
 "depthRGBA",
 {"precision highp float;", "precision highp int;"},
@@ -60,7 +62,7 @@ static const ptr<ShaderLib> SHADERLIB_DEPTH_RGBA = ShaderLib::create(
     })
 );
 
-
+#pragma mark LAMBERTIAN_SHADING
 static const ptr<ShaderLib> SHADERLIB_LAMBERT = ShaderLib::create(
     "lambert",
 
@@ -115,6 +117,7 @@ static const ptr<ShaderLib> SHADERLIB_LAMBERT = ShaderLib::create(
     })
 );
 
+#pragma mark BASIC_SHADING
 static const ptr<ShaderLib> SHADERLIB_BASIC = ShaderLib::create(
     "basic",
     {},
@@ -163,6 +166,7 @@ static const ptr<ShaderLib> SHADERLIB_BASIC = ShaderLib::create(
     })
 );
 
+#pragma mark CUBEMAP
 static const ptr<ShaderLib> SHADERLIB_CUBEMAP = ShaderLib::create(
     "cubemap",
     {},
@@ -189,7 +193,8 @@ static const ptr<ShaderLib> SHADERLIB_CUBEMAP = ShaderLib::create(
     "}",
     })
 );
-
+    
+#pragma mark PHONG_SHADING
 static const ptr<ShaderLib> SHADERLIB_PHONG = ShaderLib::create(
     "phong",
     {"precision highp float;", "precision highp int;"},

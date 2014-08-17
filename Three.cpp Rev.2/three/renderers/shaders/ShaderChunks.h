@@ -19,7 +19,7 @@ namespace three {
     
     namespace Chunks {
         
-#pragma VERTEX_COLOR
+#pragma mark VERTEX_COLOR
         static const string colorVertexParams = Utils::join({
             "#ifdef USE_COLOR",
                 "layout (location = 3) in vec3 vertex_color;",
@@ -54,7 +54,7 @@ namespace three {
             "",
         }, "\t");
         
-#pragma SIMPLE_PASS
+#pragma mark SIMPLE_PASS
         static const string simplePassVertexParams = Utils::join({
             "layout (location = 0) in vec3 vertex_pos_m;",
             "out vec2 uv;",
@@ -86,7 +86,7 @@ namespace three {
             "",
         }, "\t");
         
-#pragma DEPTH_TEXTURE_PASS
+#pragma mark DEPTH_TEXTURE_PASS
         static const string depthRGBAFragmentParams = Utils::join({
             "layout (location = 0 ) out vec4 fragment_depth;",
             "uniform mat4 view_mat;",
@@ -110,7 +110,7 @@ namespace three {
             "",
         }, "\t");
         
-#pragma CUBEMAP
+#pragma mark CUBEMAP
         static const string cubeMapVertexParams = Utils::join({
             "out vec3 vertex_pos_w;",
             "",
@@ -133,7 +133,7 @@ namespace three {
             "",
         }, "\t");
         
-#pragma STANDARD_PARAMS
+#pragma mark STANDARD_PARAMS
         static const string standardVertexParams = Utils::join({
             "layout (location = 0) in vec3 vertex_pos_m;",
             "layout (location = 1) in vec3 vertex_normal_m;",
@@ -324,7 +324,7 @@ namespace three {
         });
         
         
-#pragma SPECULAR_MAP
+#pragma mark SPECULAR_MAP
         static const string specularMapFragmentParams = Utils::join({
             "#ifdef USE_SPECULARMAP",
                 "uniform sampler2D specular_map;",
@@ -340,7 +340,7 @@ namespace three {
             "",
         }, "\t");
         
-#pragma ENV_MAP
+#pragma mark ENV_MAP
         static const string envMapVertexParams = Utils::join({
             "#if defined( USE_ENVMAP ) && !defined( USE_BUMPMAP ) && !defined( USE_NORMALMAP )",
                 "out vec3 reflect_c;",
@@ -426,7 +426,7 @@ namespace three {
             "",
         });
 
-#pragma NORMAL_MAP
+#pragma mark NORMAL_MAP
         static const string normalMapFragmentParams = Utils::join({
             "#ifdef USE_NORMALMAP",
                 "uniform sampler2D normal_map;",
@@ -458,7 +458,7 @@ namespace three {
             "",
         }, "\t");
         
-#pragma TEXTURE
+#pragma mark TEXTURE
         static const string textureVertexParams = Utils::join({
             "#if defined( USE_MAP ) || defined( USE_NORMALMAP ) || defined( USE_SPECULARMAP )",
                 "out vec2 uv;",
@@ -501,7 +501,7 @@ namespace three {
             "",
         });
         
-#pragma ALPHA_TEST
+#pragma mark ALPHA_TEST
         static const string alphaTestFragment = Utils::join({
             "#ifdef ALPHATEST",
                 "if( frag_color.a < ALPHATEST ) discard;",
@@ -509,7 +509,7 @@ namespace three {
             "",
         });
         
-#pragma BASIC_MATERIAL
+#pragma mark BASIC_MATERIAL
         static const string basicVertexParams = Utils::join({
             "out vec3 normal_c;",
             "out vec3 eye_direction_c;",
@@ -559,7 +559,7 @@ namespace three {
             "",
         }, "\t" );
         
-#pragma LAMBERT_MATERIAL
+#pragma mark LAMBERT_MATERIAL
         static const string lambertVertexParams = Utils::join({
             "out vec3 light_front_color;",
             
@@ -867,7 +867,7 @@ namespace three {
             "",
         }, "\t" );
 
-#pragma POINT_LIGHT
+#pragma mark POINT_LIGHT
         static const string pointLightsParams = Utils::join({
             "#if MAX_POINT_LIGHTS > 0",
                 "uniform vec3 point_light_color     [MAX_POINT_LIGHTS];",
@@ -1070,7 +1070,7 @@ namespace three {
             "",
         }, "\t");
         
-#pragma FOG
+#pragma mark FOG
         static const string fogFragmentParams = Utils::join({
             "#ifdef USE_FOG",
                 "uniform vec3 fog_color;",

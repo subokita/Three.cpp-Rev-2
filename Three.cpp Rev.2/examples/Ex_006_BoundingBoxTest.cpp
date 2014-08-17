@@ -93,13 +93,13 @@ namespace three  {
         scene->add( plane );
 
         /* Cubemap */
-        auto env = Mesh::create( CubeGeometry::create(50.0f), MeshCubeMapMaterial::create() );
-        env->setTexture( TextureUtils::loadAsEnvMap( path + "cube/pisa",
-                                                    "nx.png", "ny.png", "nz.png",
-                                                    "px.png", "py.png", "pz.png"));
-        
+//        auto env = Mesh::create( CubeGeometry::create(50.0f), MeshCubeMapMaterial::create() );
+//        env->setTexture( TextureUtils::loadAsEnvMap( path + "cube/pisa",
+//                                                    "nx.png", "ny.png", "nz.png",
+//                                                    "px.png", "py.png", "pz.png"));
+//        
 //        cylinder->setEnvMap( env->getTexture() );
-        scene->add( env );
+//        scene->add( env );
         
         
         /* Create a (rotating) directional light */

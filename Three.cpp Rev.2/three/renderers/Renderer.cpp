@@ -109,64 +109,6 @@ namespace three {
         glCullFace( GL_BACK );
     }
     
-    /**
-     * Initialize all the necessary callbacks for GLFW
-     */
-    void Renderer::initCallbacks() {
-        errorCallbackHandler = [](int error, const char * desc) {
-            cerr << desc << endl;
-        };
-        
-        frameBufferSizeHandler = [](GLFWwindow *window, int width, int height) {
-            glViewport(0, 0, width, height);
-        };
-        
-        defaultKeyCallbackHandler = [](GLFWwindow *window, int key, int scancode, int action, int mod) {
-            if( action == GLFW_PRESS ) {
-                switch ( key) {
-                    case GLFW_KEY_ESCAPE: case GLFW_KEY_Q:
-                        glfwSetWindowShouldClose( window, GL_TRUE );
-                        return;
-                        
-                    default:
-                        break;
-                }
-            }
-        };
-        
-        keyCallbackHandler = [](GLFWwindow *window, int key, int scancode, int action, int mod) {};
-        
-        scrollCallbackHandler = []( GLFWwindow *window, double x, double y ) {
-            if( instance->camControl != nullptr ) {
-                instance->camControl->scrollCallback(window, x, y);
-            }
-        };
-        
-        defaultCursorCallbackHandler = []( GLFWwindow *window, double x, double y ) {
-            if( instance->camControl != nullptr ) {
-                instance->cursorPosition = instance->camControl->toScreenCoord(x, y);
-                instance->camControl->cursorCallback( window, x, y );
-            }
-        };
-        
-        cursorCallbackHandler = []( GLFWwindow *window, double x, double y ) {};
-        
-        defaultMouseButtonCallbackHandler = []( GLFWwindow * window, int button, int action, int mods ) {
-            if( instance->camControl != nullptr )
-                instance->camControl->mouseButtonCallback( window, button, action, mods );
-        };
-        
-        mouseButtonCallbackHandler = []( GLFWwindow * window, int button, int action, int mods ) {};
-        
-        glfwSetErrorCallback          ( Renderer::errorCallback );
-        glfwSetFramebufferSizeCallback( window, Renderer::frameBufferSizeCallback );
-        glfwSetKeyCallback            ( window, Renderer::keyCallback );
-        glfwSetScrollCallback         ( window, Renderer::scrollCallback );
-        glfwSetCursorPosCallback      ( window, Renderer::cursorCallback );
-        glfwSetMouseButtonCallback    ( window, Renderer::mouseButtonCallback );
-    }
-    
-    
     void Renderer::render(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera) {
         if( instance == nullptr )
             throw runtime_error( "Unable to start Renderer, please invoke init() first" );
@@ -272,6 +214,64 @@ namespace three {
         }
     }
     
+#pragma mark CALLBACKS
+    /**
+     * Initialize all the necessary callbacks for GLFW
+     */
+    void Renderer::initCallbacks() {
+        errorCallbackHandler = [](int error, const char * desc) {
+            cerr << desc << endl;
+        };
+        
+        frameBufferSizeHandler = [](GLFWwindow *window, int width, int height) {
+            glViewport(0, 0, width, height);
+        };
+        
+        defaultKeyCallbackHandler = [](GLFWwindow *window, int key, int scancode, int action, int mod) {
+            if( action == GLFW_PRESS ) {
+                switch ( key) {
+                    case GLFW_KEY_ESCAPE: case GLFW_KEY_Q:
+                        glfwSetWindowShouldClose( window, GL_TRUE );
+                        return;
+                        
+                    default:
+                        break;
+                }
+            }
+        };
+        
+        keyCallbackHandler = [](GLFWwindow *window, int key, int scancode, int action, int mod) {};
+        
+        scrollCallbackHandler = []( GLFWwindow *window, double x, double y ) {
+            if( instance->camControl != nullptr ) {
+                instance->camControl->scrollCallback(window, x, y);
+            }
+        };
+        
+        defaultCursorCallbackHandler = []( GLFWwindow *window, double x, double y ) {
+            if( instance->camControl != nullptr ) {
+                instance->cursorPosition = instance->camControl->toScreenCoord(x, y);
+                instance->camControl->cursorCallback( window, x, y );
+            }
+        };
+        
+        cursorCallbackHandler = []( GLFWwindow *window, double x, double y ) {};
+        
+        defaultMouseButtonCallbackHandler = []( GLFWwindow * window, int button, int action, int mods ) {
+            if( instance->camControl != nullptr )
+                instance->camControl->mouseButtonCallback( window, button, action, mods );
+        };
+        
+        mouseButtonCallbackHandler = []( GLFWwindow * window, int button, int action, int mods ) {};
+        
+        glfwSetErrorCallback          ( Renderer::errorCallback );
+        glfwSetFramebufferSizeCallback( window, Renderer::frameBufferSizeCallback );
+        glfwSetKeyCallback            ( window, Renderer::keyCallback );
+        glfwSetScrollCallback         ( window, Renderer::scrollCallback );
+        glfwSetCursorPosCallback      ( window, Renderer::cursorCallback );
+        glfwSetMouseButtonCallback    ( window, Renderer::mouseButtonCallback );
+    }
+    
     void Renderer::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mod) {
         instance->defaultKeyCallbackHandler( window, key, scancode, action, mod );
         instance->keyCallbackHandler( window, key, scancode, action, mod );
@@ -298,7 +298,6 @@ namespace three {
         instance->defaultCursorCallbackHandler(window, x, y);
         instance->cursorCallbackHandler(window, x, y);
     }
-    
     
     void Renderer::setPostRenderCallbackHandler( function<void()> handler ) {
         postRenderCallback = handler;

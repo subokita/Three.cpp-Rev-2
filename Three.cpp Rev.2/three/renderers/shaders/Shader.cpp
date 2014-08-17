@@ -157,6 +157,7 @@ namespace three {
         return location;
     }
     
+#pragma mark SET_UNIFORMS
     bool Shader::setUniform( const char * struct_name, const char * variable, GLfloat v0 ) {
         GLint location = getStructLocation( struct_name, variable );
         if( location == -1 )
@@ -165,7 +166,6 @@ namespace three {
         glUniform1f( location, v0 );
         return true;
     }
-    
     
     bool Shader::setUniform( const char * struct_name, const char * variable, glm::vec3 vector ) {
         GLint location = getStructLocation( struct_name, variable );
@@ -184,7 +184,6 @@ namespace three {
         glUniform4f( location, vector.x, vector.y, vector.z, vector.w );
         return true;
     }
-    
     
     bool Shader::setUniform( const char * uniform_name, vector<Color>& colors, vector<float>& intensities, bool gamma_input ) {
         if( uniforms.count( uniform_name ) == 0  ) {
@@ -214,6 +213,7 @@ namespace three {
         glUniform1fv( uniforms[uniform_name], static_cast<GLsizei>(vector.size()), &vector[0] );
         return true;
     }
+    
     bool Shader::setUniform( const char * uniform_name, std::vector<glm::vec2>& vector ) {
         if( uniforms.count( uniform_name ) == 0  ) {
             /* cerr << uniform_name << " was not generated previously" << endl; */
@@ -222,7 +222,6 @@ namespace three {
         glUniform2fv( uniforms[uniform_name], static_cast<GLsizei>(vector.size()), &vector[0][0] );
         return true;
     }
-
     
     bool Shader::setUniform( const char * uniform_name, std::vector<glm::vec3>& vector ) {
         if( uniforms.count( uniform_name ) == 0  ) {
@@ -241,8 +240,6 @@ namespace three {
         glUniform4f( uniforms[uniform_name], vector.x, vector.y, vector.z, vector.w );
         return true;
     }
-    
-    
     
     bool Shader::setUniform( const char * uniform_name, Color color, float intensity, bool gamma_input ) {
         if( !gamma_input )
@@ -269,7 +266,6 @@ namespace three {
         return true;
     }
     
-    
     bool Shader::setUniform( const char * uniform_name, std::vector<GLint>& vector ){
         if( uniforms.count( uniform_name ) == 0  ) {
             /* cerr << uniform_name << " was not generated previously" << endl; */
@@ -278,7 +274,6 @@ namespace three {
         glUniform1iv( uniforms[uniform_name], static_cast<GLsizei>(vector.size()), &vector[0] );
         return true;
     }
-    
     
     bool Shader::setUniform( const char * uniform_name, GLint v0 ) {
         if( uniforms.count( uniform_name ) == 0  ) {
@@ -306,7 +301,6 @@ namespace three {
         glUniformMatrix3fv( uniforms[uniform_name], 1, GL_FALSE, glm::value_ptr( matrix ));
         return true;
     }
-    
     
     bool Shader::setUniform( const char * uniform_name, std::vector<glm::mat4>& matrix ) {
         if( uniforms.count( uniform_name ) == 0  ) {
