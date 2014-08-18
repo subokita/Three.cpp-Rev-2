@@ -23,6 +23,7 @@ namespace three {
     /**
      * An adapter class for FontStash library,
      * this replaces glfontstash.h, since glfonstash uses pre OpenGL 3.0 syntax (e.g. no shaders)
+     * Special thanks to Mikko Mononen for providing fontstash library at https://github.com/memononen/fontstash/
      */
     class FontStashAdapter{
     public:
