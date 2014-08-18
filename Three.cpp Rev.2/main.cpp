@@ -22,8 +22,9 @@ int main(int argc, const char * argv[])
 //    Ex_003_EnvironmentMapping::create()->run();
 //    Ex_004_ShadowMapping::create()->run();
 //    Ex_005_PLYLoading::create()->run();
-    Ex_006_BoundingBoxTest::create()->run();
+//    Ex_006_BoundingBoxTest::create()->run();
 //    Ex_007_PointCloudTest::create()->run();
+    Ex_008_FontStashIntegration::create()->run();
     
     
     return 0;

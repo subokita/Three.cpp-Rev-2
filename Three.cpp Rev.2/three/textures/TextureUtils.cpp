@@ -89,8 +89,6 @@ namespace three {
         map->genTexture();
         map->bind();
         
-        
-        
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, map->width, map->height, 0, GL_RED, GL_FLOAT, &speculars[0]);
         
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -134,6 +132,11 @@ namespace three {
         return map;
     }
     
+    
+    /**
+     * Load an image as a texture.
+     * It will generate GL TEXTURE, and bind the image into it.
+     */
     ptr<Texture> TextureUtils::loadAsTexture( const string path, const string filename ) {
         ptr<fipImage> image = loadImage(path, filename);
         
@@ -168,7 +171,9 @@ namespace three {
         return texture;
     }
     
-    
+    /**
+     * Load empty white texture, I don't think this is needed anymore
+     */
     ptr<Texture> TextureUtils::loadEmptyWhiteTexture() {
         ptr<Texture> texture = Texture::create();
         texture->width  = 1;

@@ -79,6 +79,38 @@ namespace three {
         return this->height;
     }
     
+#pragma mark FONT_RELATED
+    void Renderer::addFont( const std::string font_name, const std::string filename ) {
+        if( !fontStash.isInitialized() ) {
+            Rect viewport = scene == nullptr ? Rect(0, 0, width, height) : scene->getViewportSize();
+            fontStash.init(512, 512, FONS_ZERO_TOPLEFT, viewport );
+        }
+        
+        fontStash.addFont(font_name, filename);
+    }
+    
+    unsigned int Renderer::addText( std::string text, int x, int y,
+                                    std::string font_name, Color color, float font_size, float spacing, float blur ) {
+        return fontStash.addText( text, x, y, font_name, color, font_size, spacing, blur );
+    }
+    
+    void Renderer::setText( unsigned int text_entry_ID, std::string text ) {
+        fontStash.setText(text_entry_ID, text );
+    }
+    
+    void Renderer::setText( unsigned int text_entry_ID, std::string text, int x, int y ) {
+        fontStash.setText(text_entry_ID, text, x, y );
+    }
+    void Renderer::setText( unsigned int text_entry_ID, std::string text, int x, int y,
+                            std::string font_name, Color color, float font_size, float spacing, float blur ) {
+        fontStash.setText(text_entry_ID, text, x, y, font_name, color, font_size, spacing, blur );
+    }
+    
+    void Renderer::clearText() {
+        fontStash.clearText();
+    }
+    
+    
     void Renderer::setGamma( const bool input, const bool output ) {
         this->gammaInput  = input;
         this->gammaOutput = output;
@@ -108,6 +140,26 @@ namespace three {
         
         glCullFace( GL_BACK );
     }
+    
+    
+    void dash(float dx, float dy)
+    {
+        glBegin(GL_LINES);
+        glColor4ub(0,0,0,128);
+        glVertex2f(dx-5,dy);
+        glVertex2f(dx-10,dy);
+        glEnd();
+    }
+    
+    void line(float sx, float sy, float ex, float ey)
+    {
+        glBegin(GL_LINES);
+        glColor4ub(0,0,0,128);
+        glVertex2f(sx,sy);
+        glVertex2f(ex,ey);
+        glEnd();
+    }
+
     
     void Renderer::render(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera) {
         if( instance == nullptr )
@@ -151,6 +203,9 @@ namespace three {
 
         const Rect viewport = scene->getViewportSize();
         
+        auto shader = SHADERLIB_FONT_PASS->clone();
+        shader->compileShader();
+        
         while( !glfwWindowShouldClose( window )) {
             /* Update objects' world matrices */
             for( auto object: descendants )
@@ -177,6 +232,10 @@ namespace three {
                 shader_lib->unbind();
             }
             
+            /* Draw font if it's initialized */
+            if( fontStash.isInitialized() )
+                fontStash.render();
+            
             #ifdef DEBUG_SHADOW
             setDefaultGLState();
             
@@ -193,7 +252,6 @@ namespace three {
             
             postRenderCallback();
         }
-        
     }
     
     void Renderer::setCameraControl( ptr<CameraControl> cam_control ) {

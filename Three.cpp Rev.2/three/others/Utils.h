@@ -14,13 +14,16 @@
 #include <glm/glm.hpp>
 
 #include "internal_headers.h"
-
+#include "Color.h"
 
 namespace three {
     
     class Utils {
     public:
         static void printWithLineNumbers( const std::string str );
+        
+        static unsigned int rgbaTo32Bit(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+        static unsigned int rgbaTo32Bit(Color color);
         
         static std::string toString( ShaderLib& shader );
         

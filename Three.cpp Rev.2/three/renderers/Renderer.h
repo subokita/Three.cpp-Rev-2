@@ -16,6 +16,8 @@
 #include "internal_headers.h"
 #include "Color.h"
 
+#include "FontStashAdapter.h"
+
 namespace three {
     class Renderer : public std::enable_shared_from_this<Renderer> {
     public:
@@ -43,6 +45,16 @@ namespace three {
         glm::vec3 getCursorPosition();
         
         void setCameraControl( ptr<CameraControl> cam_control );
+        
+        
+        void addFont( const std::string font_name, const std::string filename );
+        unsigned int addText( std::string text, int x, int y,
+                              std::string font_name, Color color, float font_size, float spacing = 0.0f, float blur = 0.0f );
+        void setText( unsigned int text_entry_ID, std::string text );
+        void setText( unsigned int text_entry_ID, std::string text, int x, int y );
+        void setText( unsigned int text_entry_ID, std::string text, int x, int y,
+                     std::string font_name, Color color, float font_size, float spacing, float blur );
+        void clearText();
         
         
     protected:
@@ -75,6 +87,8 @@ namespace three {
         GLuint width;
         GLuint height;
         GLuint vertexArrayId;
+        
+        FontStashAdapter fontStash;
         
         GLFWwindow* window;
         

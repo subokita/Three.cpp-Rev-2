@@ -18,12 +18,13 @@ namespace three  {
     
     void Ex_001_SimplePrimitives::run() {
         Renderer renderer;
-        renderer.init( "Ex 001: Simple Primitives", 1600 * 3 / 4, 900 * 3 / 4 );
+        renderer.init( "Ex 001: Simple Primitives", 1600 * 2 / 4, 900 * 2 / 4 );
+        renderer.setCameraControl(Arcball::create(2.0f));
         
         /* Create scene */
         auto scene = Scene::create();
-        scene->setFog(Fog::create( 0x72645b / 2, 2.0, 15.0 ));
-        scene->setViewport(0, 0, 1600 * 3 / 4, 900 * 3 / 4);
+        scene->setFog(Fog::create( 0x72645b / 2, 2.0, 10.0 ));
+        scene->setViewport(0, 0, 1600 * 2 / 4, 900 * 2 / 4);
         
         /* Create camera */
         auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100.0 );
@@ -83,10 +84,6 @@ namespace three  {
         renderer.setKeyCallbackHandler([&](GLFWwindow *window, int key, int scancode, int action, int mod) {
             if( action == GLFW_PRESS ) {
                 switch ( key) {
-                    case GLFW_KEY_ESCAPE: case GLFW_KEY_Q:
-                        glfwSetWindowShouldClose( window, GL_TRUE );
-                        return;
-                        
                     case GLFW_KEY_R: /* Toggle rotation */
                         rotate_objects = !rotate_objects;
                         break;
@@ -98,7 +95,6 @@ namespace three  {
         });
         
         renderer.setGamma( true, true );
-        
         renderer.setClearColor( scene->getFog()->getColor() );
         renderer.render(scene, camera );
     }

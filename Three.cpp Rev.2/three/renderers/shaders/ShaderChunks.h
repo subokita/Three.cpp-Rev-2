@@ -18,6 +18,37 @@ namespace three {
     using namespace std;
     
     namespace Chunks {
+#pragma mark FONT_PASS
+        static const string fontVertexParams = Utils::join({
+            "layout (location = 0) in vec2 vertex_pos_m;",
+            "layout (location = 1) in vec2 vertex_uv_m;",
+            "layout (location = 2) in vec4 vertex_color;",
+            
+            "uniform mat4 ortho;",
+            "out vec2 uv;",
+            "out vec4 color;",
+        });
+
+        static const string fontVertex = Utils::join({
+            "uv          = vertex_uv_m;",
+            "color       = vertex_color / 255.0;",
+            "gl_Position = ortho * vec4(vertex_pos_m, 0.0, 1.0);",
+            "",
+        });
+        
+        static const string fontFragmentParams = Utils::join({
+            "out vec4 font_color;"
+            
+            "uniform sampler2D font;",
+            "in vec4 color;",
+            "in vec2 uv;",
+            "",
+        });
+        
+        static const string fontFragment = Utils::join({
+            "font_color = color * texture( font, uv ).r;",
+            "",
+        });
         
 #pragma mark VERTEX_COLOR
         static const string colorVertexParams = Utils::join({
@@ -800,6 +831,7 @@ namespace three {
             "",
         });
         
+#pragma mark PHONG
         static const string phongVertexParams = Utils::join({
             "out vec3 normal_c;",
             "out vec3 eye_direction_c;",

@@ -41,13 +41,13 @@ namespace three  {
                                    PhongMaterial::create(0x777777, 0x0, 0x0, 0x999999, 30, true) );
         
         sphere->setNormalMap( TextureUtils::loadAsNormalMap  ( path, "tutorial_normals07.gif" ) );
-        sphere->translate(0.0, 0.0, 0.0);
+        sphere->translate(-2.0, 0.66f, 0.0);
         sphere->castShadow = true;
         sphere->receiveShadow = true;
         
         auto cube = Mesh::create( CubeGeometry::create(1.0, 10),
                                  PhongMaterial::create(0x777777, 0x0, 0x0, 0x0, 30, false) );
-//        cube->setTexture( TextureUtils::loadAsTexture( path, "four_shapes_color.tga" ) );
+        cube->setTexture( TextureUtils::loadAsTexture( path, "four_shapes_color.tga" ) );
         cube->translate(0.0, 0.5, 0.0);
         cube->castShadow = true;
         cube->receiveShadow = true;
@@ -61,9 +61,9 @@ namespace three  {
         cylinder->setNormalMap( TextureUtils::loadAsNormalMap ( path, "rock_normal.tga" ) );
         cylinder->translate(+2.0f, 0.5f, -2.0f);
         
-//        scene->add( cylinder );
+        scene->add( cylinder );
         scene->add( cube );
-//        scene->add( sphere );
+        scene->add( sphere );
         
         /* And the ground plane */
         auto plane = Mesh::create( PlaneGeometry::create(20.0f),
@@ -119,10 +119,6 @@ namespace three  {
         renderer.setKeyCallbackHandler([&](GLFWwindow *window, int key, int scancode, int action, int mod) {
             if( action == GLFW_PRESS ) {
                 switch ( key) {
-                    case GLFW_KEY_ESCAPE: case GLFW_KEY_Q:
-                        glfwSetWindowShouldClose( window, GL_TRUE );
-                        return;
-                        
                     case GLFW_KEY_R: /* Toggle rotation */
                         rotate_objects = !rotate_objects;
                         break;

@@ -194,4 +194,21 @@ namespace three {
         while( std::getline( ss , string , '\n' ) )
             printf( "%6d:\t%s\n", i++, string.c_str() );
     }
+    
+    /**
+     * Convert color to 32 bit unsigned int representation
+     */
+    unsigned int Utils::rgbaTo32Bit(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
+        return (r) | (g << 8) | (b << 16) | (a << 24);
+    }
+    
+    /**
+     * Convert color to 32 bit unsigned int representation
+     */
+    unsigned int Utils::rgbaTo32Bit(Color color) {
+        unsigned char r = static_cast<unsigned char>(color.rep.r * 255);
+        unsigned char g = static_cast<unsigned char>(color.rep.g * 255);
+        unsigned char b = static_cast<unsigned char>(color.rep.b * 255);
+        return rgbaTo32Bit(r, g, b, 255);
+    }
 }

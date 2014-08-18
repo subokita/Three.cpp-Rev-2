@@ -138,10 +138,6 @@ namespace three  {
         renderer.setKeyCallbackHandler([&](GLFWwindow *window, int key, int scancode, int action, int mod) {
             if( action == GLFW_PRESS ) {
                 switch ( key) {
-                    case GLFW_KEY_ESCAPE: case GLFW_KEY_Q:
-                        glfwSetWindowShouldClose( window, GL_TRUE );
-                        return;
-                        
                     case GLFW_KEY_R: /* Toggle rotation */
                         rotate_objects = !rotate_objects;
                         break;

@@ -13,11 +13,35 @@
 #include "ShaderLib.h"
 
 namespace three {
-
+#pragma mark FONT_PASS
+static const ptr<ShaderLib> SHADERLIB_FONT_PASS = ShaderLib::create(
+    "fontPass",
+    {"precision highp float;", "precision highp int;"},
+    {},
+    Utils::join({
+        Chunks::fontVertexParams,
+    }),
+    
+    Utils::join({
+        "void main(){",
+            Chunks::fontVertex,
+        "}",
+    }),
+    Utils::join({
+        Chunks::fontFragmentParams,
+    }),
+    
+    Utils::join({
+        "void main(){",
+            Chunks::fontFragment,
+        "}",
+    })
+);
+    
 #pragma mark SIMPLE_PASS
 static const ptr<ShaderLib> SHADERLIB_SIMPLE_PASS = ShaderLib::create(
-"depthRGBA",
-{"precision highp float;", "precision highp int;"},
+    "simplePass",
+    {"precision highp float;", "precision highp int;"},
     {},
     Utils::join({
         Chunks::simplePassVertexParams,

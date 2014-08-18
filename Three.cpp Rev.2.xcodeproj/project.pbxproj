@@ -39,6 +39,8 @@
 		A88AF9FB196C669700601287 /* AmbientLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A88AF9F9196C669700601287 /* AmbientLight.cpp */; };
 		A88AF9FE196D0CCA00601287 /* IFog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A88AF9FC196D0CCA00601287 /* IFog.cpp */; };
 		A88AFA01196D0D3C00601287 /* Fog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A88AF9FF196D0D3C00601287 /* Fog.cpp */; };
+		A89782E619A1025B00A8A88E /* Ex_008_FontStashIntegration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A89782E419A1025B00A8A88E /* Ex_008_FontStashIntegration.cpp */; };
+		A89782E919A1367D00A8A88E /* FontStashAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A89782E719A1367D00A8A88E /* FontStashAdapter.cpp */; };
 		A8A33FAC1973D8F900037E90 /* Arcball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A33FAA1973D8F900037E90 /* Arcball.cpp */; };
 		A8A33FAF1973EA3700037E90 /* Box3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A33FAD1973EA3700037E90 /* Box3.cpp */; };
 		A8A33FB41973F78D00037E90 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A33FB01973F78D00037E90 /* Event.cpp */; };
@@ -168,6 +170,13 @@
 		A88AF9FD196D0CCA00601287 /* IFog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFog.h; sourceTree = "<group>"; };
 		A88AF9FF196D0D3C00601287 /* Fog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fog.cpp; sourceTree = "<group>"; };
 		A88AFA00196D0D3C00601287 /* Fog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fog.h; sourceTree = "<group>"; };
+		A89782E119A101ED00A8A88E /* fontstash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fontstash.h; sourceTree = "<group>"; };
+		A89782E219A101ED00A8A88E /* glfontstash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfontstash.h; sourceTree = "<group>"; };
+		A89782E319A101ED00A8A88E /* stb_truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_truetype.h; sourceTree = "<group>"; };
+		A89782E419A1025B00A8A88E /* Ex_008_FontStashIntegration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ex_008_FontStashIntegration.cpp; sourceTree = "<group>"; };
+		A89782E519A1025B00A8A88E /* Ex_008_FontStashIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ex_008_FontStashIntegration.h; sourceTree = "<group>"; };
+		A89782E719A1367D00A8A88E /* FontStashAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontStashAdapter.cpp; sourceTree = "<group>"; };
+		A89782E819A1367D00A8A88E /* FontStashAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontStashAdapter.h; sourceTree = "<group>"; };
 		A8A33FAA1973D8F900037E90 /* Arcball.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Arcball.cpp; sourceTree = "<group>"; };
 		A8A33FAB1973D8F900037E90 /* Arcball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arcball.h; sourceTree = "<group>"; };
 		A8A33FAD1973EA3700037E90 /* Box3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box3.cpp; sourceTree = "<group>"; };
@@ -292,6 +301,8 @@
 				A831C97F19927EAD009523D1 /* Ex_006_BoundingBoxTest.h */,
 				A8A9BE3F199BDEAC0018B67E /* Ex_007_PointCloudTest.cpp */,
 				A8A9BE40199BDEAC0018B67E /* Ex_007_PointCloudTest.h */,
+				A89782E419A1025B00A8A88E /* Ex_008_FontStashIntegration.cpp */,
+				A89782E519A1025B00A8A88E /* Ex_008_FontStashIntegration.h */,
 			);
 			path = examples;
 			sourceTree = "<group>";
@@ -343,6 +354,16 @@
 			children = (
 			);
 			path = shaders;
+			sourceTree = "<group>";
+		};
+		A89782E019A100EE00A8A88E /* fontstash */ = {
+			isa = PBXGroup;
+			children = (
+				A89782E119A101ED00A8A88E /* fontstash.h */,
+				A89782E219A101ED00A8A88E /* glfontstash.h */,
+				A89782E319A101ED00A8A88E /* stb_truetype.h */,
+			);
+			path = fontstash;
 			sourceTree = "<group>";
 		};
 		A8A33FA91973D8F000037E90 /* controls */ = {
@@ -406,6 +427,7 @@
 		A8F4C3DD196A687600D191DC /* Three.cpp Rev.2 */ = {
 			isa = PBXGroup;
 			children = (
+				A89782E019A100EE00A8A88E /* fontstash */,
 				A84D1377197EB33F00BC5A03 /* examples */,
 				A88AFA03196D180E00601287 /* shaders */,
 				A8F4C3EE196A692800D191DC /* three */,
@@ -520,6 +542,8 @@
 				A8876CAC198AD10C006553C8 /* Rect.h */,
 				A8E2567719952C7A00901AC8 /* Raycaster.cpp */,
 				A8E2567819952C7A00901AC8 /* Raycaster.h */,
+				A89782E719A1367D00A8A88E /* FontStashAdapter.cpp */,
+				A89782E819A1367D00A8A88E /* FontStashAdapter.h */,
 			);
 			path = cores;
 			sourceTree = "<group>";
@@ -661,6 +685,7 @@
 				A8DC9EC419794618004C75FB /* NormalMap.cpp in Sources */,
 				A8F4C431196AF9DC00D191DC /* Material.cpp in Sources */,
 				A8C424A6197FDD7800FA8F77 /* LambertMaterial.cpp in Sources */,
+				A89782E919A1367D00A8A88E /* FontStashAdapter.cpp in Sources */,
 				A81C53C41970792F00EDCA57 /* SpotLight.cpp in Sources */,
 				A8BD1EF9198A2CBE00E28B15 /* HasID.cpp in Sources */,
 				A84D137D197EB36000BC5A03 /* Example.cpp in Sources */,
@@ -700,6 +725,7 @@
 				A8F4C426196AB1B800D191DC /* PerspectiveCamera.cpp in Sources */,
 				A8F4C3F9196A825E00D191DC /* Shader.cpp in Sources */,
 				A8BD1EFA198A2CBE00E28B15 /* HasShaderUniforms.cpp in Sources */,
+				A89782E619A1025B00A8A88E /* Ex_008_FontStashIntegration.cpp in Sources */,
 				A82B1287198A331700F442C1 /* DirectionalLightsArray.cpp in Sources */,
 				A8E4341F19825249000BE965 /* Ray.cpp in Sources */,
 				A88AF9FB196C669700601287 /* AmbientLight.cpp in Sources */,

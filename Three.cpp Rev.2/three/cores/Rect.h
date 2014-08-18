@@ -17,7 +17,10 @@ namespace three {
     public:
         Rect();
         Rect( float x, float y, float width, float height );
+        Rect(const Rect& rhs);
         ~Rect();
+        
+        Rect& operator=(const Rect& rhs);
         
     public:
         float x;
