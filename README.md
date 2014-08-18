@@ -47,7 +47,7 @@ Working Examples
 
 ![Ray casting](http://subokita.files.wordpress.com/2014/08/2014-08-11-11_23_27.gif?w=400)
 
-* Integration with FontStash ()
+* Integration with FontStash (https://www.youtube.com/watch?v=82OoIITVs80)
 
 ![Integration with FontStash](https://subokita.files.wordpress.com/2014/08/2014-08-18-14_19_12.gif?w=400)
 
