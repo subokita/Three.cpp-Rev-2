@@ -49,7 +49,7 @@ Working Examples
 
 * Integration with FontStash ()
 
-![Integration with FontStash](https://subokita.files.wordpress.com/2014/08/2014-08-18-14_19_12.gifw=400)
+![Integration with FontStash](https://subokita.files.wordpress.com/2014/08/2014-08-18-14_19_12.gif?w=400)
 
 FAQ
 ===
