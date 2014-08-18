@@ -41,12 +41,15 @@ Working Examples
 
 * Loading PLY models (https://www.youtube.com/watch?v=xL2jixliwb4):
 
-![Loading PLY Models](http://abload.de/img/2014-08-0418_53_49xrai2.gif)
+![Loading PLY Models](https://subokita.files.wordpress.com/2014/08/2014-08-04-18_53_49.gif?w=400)
 
 * Ray casting / picking (https://www.youtube.com/watch?v=Ku-UwyC8RAc)
 
 ![Ray casting](http://subokita.files.wordpress.com/2014/08/2014-08-11-11_23_27.gif?w=400)
 
+* Integration with FontStash ()
+
+![Integration with FontStash](https://subokita.files.wordpress.com/2014/08/2014-08-18-14_19_12.gifw=400)
 
 FAQ
 ===
