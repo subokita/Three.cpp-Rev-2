@@ -41,46 +41,27 @@ namespace three  {
         camera->translate(0.0, 1.5, 5.5);
         camera->lookAt( 0.0, 1.0, 0.0 );
         
-        /* Load our ply models */
-        auto statue = Loader::loadPLY(path + "/obj models/", "teapot.obj",
-                                      aiProcess_JoinIdenticalVertices |
-                                      aiProcess_GenSmoothNormals );
-        
-        statue->setMaterial(PhongMaterial::create(0x777777, 0x0, 0x777777, 0x0, 0, true));
-        statue->getGeometry()->setScale(1.f);
-        statue->castShadow      = true;
-        statue->receiveShadow   = true;
-        
-        auto bounding_box = statue->computeBoundingBox();
-        glm::vec3 size    = bounding_box->size();
-        glm::vec3 center  = bounding_box->center();
-        statue->translate(0, -(center.y - size.y * 0.5), 0.0);
-        
-//        scene->add( statue );
-        
-        
-        
-        /* A sphere, cube, and cylinder walk into a pub */
-        auto sphere = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
-                                   PhongMaterial::create( 0xCCCCCC, 0x0, 0x0, 0x222222, 130.0, true ) );
-        
-        sphere->setTexture      ( TextureUtils::loadAsTexture    ( path + "planets", "earth_atmos_2048.jpg") );
-        sphere->setNormalMap    ( TextureUtils::loadAsNormalMap  ( path + "planets", "earth_normal_2048.jpg" ) );
-        sphere->setSpecularMap  ( TextureUtils::loadAsSpecularMap( path + "planets", "earth_specular_2048.jpg" ) );
-        sphere->receiveShadow = true;
-        sphere->castShadow    = true;
-        sphere->translate( 3.0, 0.66f, 0.0f );
-        scene->add( sphere );
-        
         auto torus = Mesh::create( TorusGeometry::create(0.5, 0.25, 40, 30), PhongMaterial::create( 0xFF00FF, 0x0, 0x0, 0x222222, 10.0, true ) );
-        torus->translate( -3.0f, 0.75f, 0.0f );
+        torus->translate( -4.0f, 0.75f, 0.0f );
         torus->receiveShadow = true;
         torus->castShadow    = true;
         scene->add(torus);
         
+        auto octahedron = Mesh::create( OctahedronGeometry::create(1.0), PhongMaterial::create(0x00FFFF, 0x0, 0x0, 0222222, 1.0, true));
+        octahedron->translate(-2.0f, 1.0f, 0.0f);
+        octahedron->receiveShadow = true;
+        octahedron->castShadow    = true;
+        scene->add(octahedron);
+        
+        auto tetrahedron = Mesh::create( TetrahedronGeometry::create(1.0), PhongMaterial::create(0x0000FF, 0x0, 0x0, 0222222, 1.0, true));
+        tetrahedron->translate(0.0f, 1.0f, 0.0f);
+        tetrahedron->receiveShadow = true;
+        tetrahedron->castShadow    = true;
+        scene->add(tetrahedron);
+        
+        
         auto plane = Mesh::create( PlaneGeometry::create(20.0f),
                                   PhongMaterial::create(0x777777, 0x777777, 0x0, 0x999999, 30) );
-        plane->name = "plane";
         plane->rotateX(-90.0f);
         plane->receiveShadow = true;
         scene->add( plane );
@@ -90,7 +71,6 @@ namespace three  {
         env->setTexture( TextureUtils::loadAsEnvMap( path + "cube/pisa",
                                                     "nx.png", "ny.png", "nz.png",
                                                     "px.png", "py.png", "pz.png"));
-        statue->setEnvMap( env->getTexture() );
         scene->add( env );
         
         
@@ -122,7 +102,7 @@ namespace three  {
             
             if( rotate_objects ) {
                 torus->rotateY(1.0f);
-                sphere->rotateY(-1.0f);
+                octahedron->rotateY(-1.0f);
             }
         });
         

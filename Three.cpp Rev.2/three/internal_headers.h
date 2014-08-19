@@ -102,6 +102,8 @@ namespace three {
     class CylinderGeometry;
     class PlaneGeometry;
     class PolyhedronGeometry;
+    class OctahedronGeometry;
+    class TetrahedronGeometry;
     class SphereGeometry;
     class TorusGeometry;
     

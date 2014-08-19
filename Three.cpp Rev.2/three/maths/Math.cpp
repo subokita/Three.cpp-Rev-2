@@ -235,6 +235,12 @@ namespace three {
     }
     
     
+    glm::vec3 Math::lerp( glm::vec3 a, glm::vec3 b, float alpha ) {
+        return glm::vec3( a.x + (b.x - a.x) * alpha,
+                          a.y + (b.y - a.y) * alpha,
+                          a.z + (b.z - a.z) * alpha);
+    }
+    
     bool Math::equals( glm::vec3 a, glm::vec3 b, int precision ) {
         float multiplier = pow(10, precision);
         return glm::round(a * multiplier) == glm::round(b * multiplier);

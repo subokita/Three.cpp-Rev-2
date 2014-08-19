@@ -34,6 +34,7 @@ namespace three {
         static float degToRad( float degree );
         static float radToDeg( float radians );
         static bool isPowerOfTwo( int value );
+        static glm::vec3 lerp( glm::vec3 a, glm::vec3 b, float alpha );
         
         static float hueToRGB( float p, float q, float t );
         static glm::mat4x4 composeMatrix( glm::vec3 position, glm::quat quaternion, glm::vec3 scale );

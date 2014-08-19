@@ -84,6 +84,8 @@
 #include "CylinderGeometry.h"
 #include "PlaneGeometry.h"
 #include "PolyhedronGeometry.h"
+#include "OctahedronGeometry.h"
+#include "TetrahedronGeometry.h"
 #include "SphereGeometry.h"
 #include "TorusGeometry.h"
 

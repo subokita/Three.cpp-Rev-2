@@ -13,10 +13,6 @@
 #include <sstream>
 #include <glm/gtc/matrix_inverse.hpp>
 
-
-
-
-
 namespace three {
     Renderer* Renderer::instance = nullptr;
     
