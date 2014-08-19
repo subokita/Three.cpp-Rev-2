@@ -34,6 +34,7 @@
 		A850585219756B0500866386 /* Frustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A850585019756B0500866386 /* Frustum.cpp */; };
 		A8628FA619A3964F00EC0860 /* OctahedronGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8628FA419A3964F00EC0860 /* OctahedronGeometry.cpp */; };
 		A8628FA919A39C5C00EC0860 /* TetrahedronGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8628FA719A39C5C00EC0860 /* TetrahedronGeometry.cpp */; };
+		A8628FC119A3E59000EC0860 /* IcosahedronGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8628FBF19A3E59000EC0860 /* IcosahedronGeometry.cpp */; };
 		A87DA58F198A418C00DFC011 /* PointLightsArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A87DA58D198A418C00DFC011 /* PointLightsArray.cpp */; };
 		A87DA592198A477C00DFC011 /* SpotLightsArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A87DA590198A477C00DFC011 /* SpotLightsArray.cpp */; };
 		A882D375196D903D0051958C /* FogExp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A882D373196D903D0051958C /* FogExp2.cpp */; };
@@ -162,6 +163,8 @@
 		A8628FA519A3964F00EC0860 /* OctahedronGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OctahedronGeometry.h; sourceTree = "<group>"; };
 		A8628FA719A39C5C00EC0860 /* TetrahedronGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TetrahedronGeometry.cpp; sourceTree = "<group>"; };
 		A8628FA819A39C5C00EC0860 /* TetrahedronGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TetrahedronGeometry.h; sourceTree = "<group>"; };
+		A8628FBF19A3E59000EC0860 /* IcosahedronGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IcosahedronGeometry.cpp; sourceTree = "<group>"; };
+		A8628FC019A3E59000EC0860 /* IcosahedronGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IcosahedronGeometry.h; sourceTree = "<group>"; };
 		A87DA58D198A418C00DFC011 /* PointLightsArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointLightsArray.cpp; sourceTree = "<group>"; };
 		A87DA58E198A418C00DFC011 /* PointLightsArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointLightsArray.h; sourceTree = "<group>"; };
 		A87DA590198A477C00DFC011 /* SpotLightsArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpotLightsArray.cpp; sourceTree = "<group>"; };
@@ -592,6 +595,8 @@
 				A8628FA519A3964F00EC0860 /* OctahedronGeometry.h */,
 				A8628FA719A39C5C00EC0860 /* TetrahedronGeometry.cpp */,
 				A8628FA819A39C5C00EC0860 /* TetrahedronGeometry.h */,
+				A8628FBF19A3E59000EC0860 /* IcosahedronGeometry.cpp */,
+				A8628FC019A3E59000EC0860 /* IcosahedronGeometry.h */,
 			);
 			path = primitives;
 			sourceTree = "<group>";
@@ -729,6 +734,7 @@
 				A84AFEFE1999D710009AC1E0 /* LineBasicMaterial.cpp in Sources */,
 				A848B2E5197CFB2C0042B91B /* EnvMap.cpp in Sources */,
 				A81C53C119706B1400EDCA57 /* HemisphereLight.cpp in Sources */,
+				A8628FC119A3E59000EC0860 /* IcosahedronGeometry.cpp in Sources */,
 				A825E618196D6D290003C5C7 /* PhongMaterial.cpp in Sources */,
 				A84D1381197EBDFA00BC5A03 /* Ex_002_TextureSpecularNormalMappings.cpp in Sources */,
 				A84D1376197E8E7300BC5A03 /* RenderTarget.cpp in Sources */,

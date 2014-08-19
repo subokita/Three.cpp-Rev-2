@@ -60,6 +60,13 @@ namespace three  {
         scene->add(tetrahedron);
         
         
+        auto icosahedron = Mesh::create( IcosahedronGeometry::create(1.0), PhongMaterial::create(0xFF00FF, 0x0, 0x0, 0222222, 1.0, true));
+        icosahedron->translate(2.0f, 1.0f, 0.0f);
+        icosahedron->receiveShadow = true;
+        icosahedron->castShadow    = true;
+        scene->add(icosahedron);
+        
+        
         auto plane = Mesh::create( PlaneGeometry::create(20.0f),
                                   PhongMaterial::create(0x777777, 0x777777, 0x0, 0x999999, 30) );
         plane->rotateX(-90.0f);

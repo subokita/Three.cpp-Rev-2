@@ -9,6 +9,7 @@
 #include "TetrahedronGeometry.h"
 
 using std::vector;
+using glm::vec3;
 
 namespace three {
     
@@ -17,10 +18,10 @@ namespace three {
     }
     
     TetrahedronGeometry::TetrahedronGeometry(float radius, int detail):
-        PolyhedronGeometry( {glm::vec3( 1.0, 1.0,  1.0), glm::vec3(-1.0, -1.0,  1.0),
-                             glm::vec3(-1.0, 1.0, -1.0), glm::vec3( 1.0, -1.0, -1.0)},
-                           { 2, 1, 0, 0, 3, 2,
-                             1, 3, 0, 2, 3, 1 },
+        PolyhedronGeometry( {vec3( 1.0, 1.0,  1.0), vec3(-1.0, -1.0,  1.0),
+                             vec3(-1.0, 1.0, -1.0), vec3( 1.0, -1.0, -1.0)},
+                            { 2, 1, 0, 0, 3, 2,
+                              1, 3, 0, 2, 3, 1 },
                            radius, detail )
     {}
     
