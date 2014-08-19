@@ -17,8 +17,7 @@ Current Progress
 ================
 Read more about it here: https://github.com/subokita/Three.cpp-Rev-2/wiki/Current-Progress
 
-Many codes are still unoptimized, and some of the codes are patchy in the nature, aka not the optimal solution, but at least able to show working example. 
-
+The code is doing okay, might not be game developers' level, but it works, it shows what it needs to show, and it's quite straightforward.
 
 
 Working Examples
