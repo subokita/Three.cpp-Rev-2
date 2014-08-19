@@ -8,11 +8,9 @@
 
 #include "Face3.h"
 
-using namespace std;
+using std::vector;
 
 namespace  three {
-    
-    
     ptr<Face3> Face3::create(int a, int b, int c) {
         return make_shared<Face3>(Face3(a, b, c));
     }

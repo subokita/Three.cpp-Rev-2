@@ -7,9 +7,9 @@
 //
 
 #include "FogExp2.h"
-#include "three.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-using namespace std;
 namespace three {
     
     ptr<FogExp2> FogExp2::create( Color color, float distance ) {

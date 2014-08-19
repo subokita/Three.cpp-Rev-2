@@ -7,9 +7,9 @@
 //
 
 #include "LambertMaterial.h"
-#include "three.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-using namespace std;
 
 namespace three {
     ptr<LambertMaterial> LambertMaterial::create( Color diffuse, Color ambient, Color emissive ){

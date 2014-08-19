@@ -7,10 +7,10 @@
 //
 
 #include "SpotLightsArray.h"
+#include "SpotLight.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-#include "three.h"
-
-using namespace std;
 namespace three {
     
     SpotLightsArray::SpotLightsArray():

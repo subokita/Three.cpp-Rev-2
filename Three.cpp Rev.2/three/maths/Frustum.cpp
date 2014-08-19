@@ -7,9 +7,10 @@
 //
 
 #include "Frustum.h"
-#include "three.h"
-
-using namespace std;
+#include "Plane.h"
+#include "Box3.h"
+#include "Sphere.h"
+#include "Object3D.h"
 
 namespace three {
     

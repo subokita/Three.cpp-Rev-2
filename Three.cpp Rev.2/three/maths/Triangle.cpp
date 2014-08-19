@@ -7,9 +7,8 @@
 //
 
 #include "Triangle.h"
-#include "three.h"
+#include "Plane.h"
 
-using namespace std;
 
 namespace three {
     ptr<Triangle> Triangle::create(){
@@ -39,7 +38,7 @@ namespace three {
         float length = glm::dot(result, result);
         
         if( length > 0.0 )
-            return result / sqrt(length);
+            return result / sqrtf(length);
         return glm::vec3(0.0);
     }
     

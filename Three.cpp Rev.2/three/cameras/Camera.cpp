@@ -12,7 +12,6 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include "Math.h"
 
-using namespace std;
 
 namespace three {
     Camera::Camera():

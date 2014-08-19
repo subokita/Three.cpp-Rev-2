@@ -13,7 +13,7 @@
 #include <cstdlib>
 #include "Utils.h"
 
-using namespace std;
+using std::string;
 
 namespace three {
     

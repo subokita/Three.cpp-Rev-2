@@ -9,8 +9,6 @@
 #include "Scene.h"
 #include "three.h"
 
-using namespace std;
-
 namespace three {
     Scene::Scene() :
         autoUpdate   ( true ),

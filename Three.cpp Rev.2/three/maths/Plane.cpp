@@ -7,9 +7,9 @@
 //
 
 #include "Plane.h"
-#include "three.h"
+#include "Line3.h"
+#include "Sphere.h"
 
-using namespace std;
 namespace three {
     
     ptr<Plane> Plane::create() {

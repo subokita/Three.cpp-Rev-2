@@ -7,9 +7,9 @@
 //
 
 #include "AmbientLight.h"
-#include "three.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-using namespace std;
 namespace three {
     
     ptr<AmbientLight> AmbientLight::create(Color color) {

@@ -7,9 +7,9 @@
 //
 
 #include "HemisphereLight.h"
-#include "three.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-using namespace std;
 namespace three {
     
     ptr<HemisphereLight> HemisphereLight::create(const Color sky_color, const Color ground_color, const float intensity){

@@ -7,9 +7,12 @@
 //
 
 #include "Box3.h"
-#include "three.h"
+#include "Object3D.h"
+#include "Mesh.h"
+#include "Geometry.h"
+#include "Sphere.h"
 
-using namespace std;
+using std::vector;
 
 namespace three {
     

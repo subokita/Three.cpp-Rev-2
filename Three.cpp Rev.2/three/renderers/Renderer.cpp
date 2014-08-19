@@ -7,14 +7,15 @@
 //
 
 #include "Renderer.h"
-#include <exception>
-#include <sstream>
-
-#include <glm/gtc/matrix_inverse.hpp>
-
 #include "three.h"
 
-using namespace std;
+#include <exception>
+#include <sstream>
+#include <glm/gtc/matrix_inverse.hpp>
+
+
+
+
 
 namespace three {
     Renderer* Renderer::instance = nullptr;

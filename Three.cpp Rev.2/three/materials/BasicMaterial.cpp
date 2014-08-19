@@ -7,9 +7,8 @@
 //
 
 #include "BasicMaterial.h"
-#include "three.h"
-
-using namespace std;
+#include "ShaderLib.h"
+#include "Shader.h"
 
 namespace three {
     

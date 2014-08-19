@@ -7,9 +7,9 @@
 //
 
 #include "Raycaster.h"
-#include "three.h"
-
-using namespace std;
+#include "Ray.h"
+#include "Sphere.h"
+#include "Mesh.H"
 
 namespace three {
     

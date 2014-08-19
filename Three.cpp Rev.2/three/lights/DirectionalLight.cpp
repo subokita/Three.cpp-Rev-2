@@ -7,9 +7,9 @@
 //
 
 #include "DirectionalLight.h"
-#include "three.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-using namespace std;
 namespace three {
     
     ptr<DirectionalLight> DirectionalLight::create() {

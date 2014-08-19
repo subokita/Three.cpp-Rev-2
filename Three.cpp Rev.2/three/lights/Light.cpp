@@ -7,9 +7,6 @@
 //
 
 #include "Light.h"
-#include "three.h"
-
-using namespace std;
 
 namespace three {
     Light::Light():

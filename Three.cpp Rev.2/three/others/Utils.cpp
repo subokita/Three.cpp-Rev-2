@@ -7,12 +7,16 @@
 //
 
 #include "Utils.h"
+#include "Shader.h"
+
 #include <sstream>
 #include <glm/gtc/quaternion.hpp>
 
-#include "three.h"
-
-using namespace std;
+using std::string;
+using std::stringstream;
+using std::istringstream;
+using std::initializer_list;
+using std::vector;
 
 namespace three {
     string Utils::join( initializer_list<string> vec ) {

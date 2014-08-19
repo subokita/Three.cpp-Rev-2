@@ -7,9 +7,10 @@
 //
 
 #include "Loader.h"
-#include "three.h"
+#include "Geometry.h"
+#include "Face3.h"
+#include "Mesh.h"
 
-using namespace std;
 namespace three {
     
     ptr<Mesh> Loader::loadPLY( const std::string path, const std::string filename, unsigned int flags ) {

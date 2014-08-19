@@ -7,9 +7,8 @@
 //
 
 #include "EnvMap.h"
-#include "three.h"
-
-using namespace std;
+#include "ShaderLib.h"
+#include "Shader.h"
 
 namespace three {
     ptr<EnvMap> EnvMap::create() {
@@ -44,6 +43,5 @@ namespace three {
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, wrapT );
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, magFilter);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, minFilter);
-        
     }
 }

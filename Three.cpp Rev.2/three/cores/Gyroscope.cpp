@@ -7,9 +7,6 @@
 //
 
 #include "Gyroscope.h"
-#include "three.h"
-
-using namespace std;
 
 namespace three {
     ptr<Gyroscope> Gyroscope::create(){

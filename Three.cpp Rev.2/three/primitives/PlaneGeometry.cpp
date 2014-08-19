@@ -7,8 +7,9 @@
 //
 
 #include "PlaneGeometry.h"
-#include "three.h"
-using namespace std;
+#include "Face3.h"
+
+using std::vector;
 
 namespace three {
     

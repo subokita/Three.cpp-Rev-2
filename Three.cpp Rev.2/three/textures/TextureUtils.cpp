@@ -7,9 +7,12 @@
 //
 
 #include "TextureUtils.h"
-#include "three.h"
+#include "EnvMap.h"
+#include "NormalMap.h"
+#include "SpecularMap.h"
 
-using namespace std;
+using std::string;
+using std::vector;
 
 namespace three {
     

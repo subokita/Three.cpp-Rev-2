@@ -7,9 +7,11 @@
 //
 
 #include "Ray.h"
-#include "three.h"
+#include "Plane.h"
+#include "Box3.h"
+#include "Sphere.h"
+#include "Triangle.h"
 
-using namespace std;
 namespace three {
     
     ptr<Ray> Ray::create( glm::vec3 origin, glm::vec3 direction ){

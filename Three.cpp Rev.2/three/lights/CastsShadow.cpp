@@ -8,8 +8,6 @@
 
 #include "CastsShadow.h"
 
-using namespace std;
-
 namespace three {
     
     CastsShadow::CastsShadow() :

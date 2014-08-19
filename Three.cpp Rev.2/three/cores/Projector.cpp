@@ -7,11 +7,10 @@
 //
 
 #include "Projector.h"
-
-#include "three.h"
+#include "Camera.h"
+#include "Raycaster.h"
 
 namespace three {
-    
     glm::vec4 Projector::projectVector( const glm::vec4 vector, ptr<Camera> camera ){
         glm::mat4 vp = camera->getProjectionMatrix() * camera->matrix;
         return vp * vector;

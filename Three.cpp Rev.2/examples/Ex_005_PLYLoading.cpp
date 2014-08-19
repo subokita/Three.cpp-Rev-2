@@ -22,6 +22,7 @@ namespace three  {
         
         Renderer renderer;
         renderer.init( "Ex 005: Loading PLY objects", 1600 * 2 / 4, 900 * 2 / 4 );
+        renderer.setCameraControl(Arcball::create(2.0f));
         
         /* Create scene */
         auto scene = Scene::create();
@@ -48,7 +49,12 @@ namespace three  {
                                           aiProcess_JoinIdenticalVertices |
                                           aiProcess_GenSmoothNormals | aiProcess_FlipWindingOrder );
             
-            statue->setMaterial(PhongMaterial::create(0x777777, 0x0, 0x777777, 0x0, 0, true));
+            auto material = PhongMaterial::create(0xF2BA5A, 0x0, 0x777777, 0x0, 20, true);
+            material->setReflectivity(0.7);
+            material->setMetal(false);
+            
+            
+            statue->setMaterial(material);
             statue->getGeometry()->setScale(10.f);
             statue->castShadow      = true;
             statue->receiveShadow   = true;
@@ -57,6 +63,7 @@ namespace three  {
             glm::vec3 size    = bounding_box->size();
             glm::vec3 center  = bounding_box->center();
             statue->translate(x_offset, -(center.y - size.y * 0.5), 0.0);
+            
             
             x_offset += 2.0f;
             scene->add( statue );
@@ -95,6 +102,8 @@ namespace three  {
                                                     "nx.png", "ny.png", "nz.png",
                                                     "px.png", "py.png", "pz.png"));
         
+        statues[0]->setEnvMap( env->getTexture() );
+        statues[1]->setEnvMap( env->getTexture() );
         sphere->setEnvMap( env->getTexture() );
         scene->add( env );
         
@@ -102,9 +111,10 @@ namespace three  {
         /* Create a (rotating) directional light */
         auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3( 3.0, 1.0, 3.0 ) );
         dir_light->castShadow       = true;
-        dir_light->shadowBias       = -0.001;
+        dir_light->shadowBias       = -0.01;
         dir_light->shadowCameraNear = -10.0;
         dir_light->shadowCameraFar  =  10.0;
+        dir_light->shadowMapSize    = glm::vec2(1024, 1024);
         scene->add( dir_light );
         
         /* Create a spotlight, the shadow should be casted no the left hand side */

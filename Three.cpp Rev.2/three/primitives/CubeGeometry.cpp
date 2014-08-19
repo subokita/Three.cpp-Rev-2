@@ -7,10 +7,10 @@
 //
 
 #include "CubeGeometry.h"
-#include "three.h"
+#include "Face3.h"
 #include <exception>
 
-using namespace std;
+using std::vector;
 
 namespace three {
     

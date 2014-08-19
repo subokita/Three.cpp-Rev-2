@@ -9,9 +9,7 @@
 #include "CameraControl.h"
 #include "three.h"
 
-using namespace std;
 namespace three {
-    
     
     CameraControl::CameraControl(bool x_axis, bool y_axis):
         mouseEvent  ( 0 ),

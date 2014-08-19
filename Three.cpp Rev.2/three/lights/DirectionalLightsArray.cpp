@@ -7,9 +7,10 @@
 //
 
 #include "DirectionalLightsArray.h"
-#include "three.h"
+#include "DirectionalLight.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-using namespace std;
 namespace three {
     
     DirectionalLightsArray::DirectionalLightsArray():

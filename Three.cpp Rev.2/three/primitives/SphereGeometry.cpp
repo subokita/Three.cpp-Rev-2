@@ -7,10 +7,11 @@
 //
 
 #include "SphereGeometry.h"
+#include "Face3.h"
 #include <vector>
-#include "three.h"
 
-using namespace std;
+using std::vector;
+
 namespace three {
     
     ptr<SphereGeometry> SphereGeometry::create(const int slices, const int parallels, const float radius,
@@ -52,8 +53,8 @@ namespace three {
     
     
     void SphereGeometry::init(){
-        int width_segments  = max( 3, this->slices );
-        int height_segments = max( 2, this->parallels );
+        int width_segments  = std::max( 3, this->slices );
+        int height_segments = std::max( 2, this->parallels );
         
         float phi_start     = Math::degToRad( this->phiStart );
         float phi_length    = Math::degToRad( this->phiEnd );

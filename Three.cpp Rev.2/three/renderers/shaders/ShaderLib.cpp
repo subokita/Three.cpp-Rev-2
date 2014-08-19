@@ -10,7 +10,7 @@
 #include "three.h"
 #include <sstream>
 
-using namespace std;
+using std::stringstream;
 
 namespace three {
     ptr<ShaderLib> ShaderLib::create( ptr<Mesh> mesh ) {

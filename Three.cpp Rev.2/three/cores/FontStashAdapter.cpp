@@ -7,12 +7,14 @@
 //
 
 #include "FontStashAdapter.h"
-#include "three.h"
+#include "Utils.h"
+#include "ShaderLib.h"
+#include "ShaderLibraries.h"
+#include "Shader.h"
 
 #define FONTSTASH_IMPLEMENTATION
 #include "fontstash.h"
 
-using namespace std;
 
 namespace three {
     TextInfo::TextInfo( std::string text, int x, int y, int font_id,

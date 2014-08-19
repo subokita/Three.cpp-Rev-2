@@ -7,9 +7,9 @@
 //
 
 #include "CylinderGeometry.h"
-#include "three.h"
+#include "Face3.h"
 
-using namespace std;
+using std::vector;
 
 namespace three {
     ptr<CylinderGeometry> CylinderGeometry::create(const float radius_top, const float radius_bottom,

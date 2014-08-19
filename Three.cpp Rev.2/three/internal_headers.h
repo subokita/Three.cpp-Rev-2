@@ -21,8 +21,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 
-
 #include "Constants.h"
+
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::runtime_error;
+using std::make_shared;
+
 
 /* FORWARD DECLARATIONS */
 namespace three {
@@ -95,7 +101,9 @@ namespace three {
     class CubeGeometry;
     class CylinderGeometry;
     class PlaneGeometry;
+    class PolyhedronGeometry;
     class SphereGeometry;
+    class TorusGeometry;
     
     /* ./three/renderers */
     class Renderer;

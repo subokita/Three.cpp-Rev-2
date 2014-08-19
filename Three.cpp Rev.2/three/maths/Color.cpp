@@ -11,7 +11,8 @@
 #include <sstream>
 #include <iomanip>
 
-using namespace std;
+using std::string;
+using std::stringstream;
 
 namespace three {
     

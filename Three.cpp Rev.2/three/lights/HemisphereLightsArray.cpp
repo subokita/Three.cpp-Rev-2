@@ -7,9 +7,10 @@
 //
 
 #include "HemisphereLightsArray.h"
-#include "three.h"
+#include "HemisphereLight.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-using namespace std;
 namespace three {
     
     HemisphereLightsArray::HemisphereLightsArray():

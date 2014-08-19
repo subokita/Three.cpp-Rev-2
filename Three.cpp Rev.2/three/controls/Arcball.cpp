@@ -7,7 +7,7 @@
 //
 
 #include "Arcball.h"
-#include "three.h"
+#include "Camera.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -18,7 +18,7 @@
 namespace three {
     
     ptr<Arcball> Arcball::create( GLfloat roll_speed, bool x_axis, bool y_axis  ) {
-        return std::make_shared<Arcball>(Arcball(roll_speed, x_axis, y_axis ));
+        return make_shared<Arcball>(Arcball(roll_speed, x_axis, y_axis ));
     }
     
     

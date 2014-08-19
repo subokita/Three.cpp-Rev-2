@@ -9,6 +9,8 @@
 #ifndef Three_cpp_Rev_2_examples_header_h
 #define Three_cpp_Rev_2_examples_header_h
 
+#include "ScratchPad.h"
+
 #include "Ex_001_SimplePrimitives.h"
 #include "Ex_002_TextureSpecularNormalMappings.h"
 #include "Ex_003_EnvironmentMapping.h"
@@ -17,4 +19,5 @@
 #include "Ex_006_BoundingBoxTest.h"
 #include "Ex_007_PointCloudTest.h"
 #include "Ex_008_FontStashIntegration.h"
+
 #endif

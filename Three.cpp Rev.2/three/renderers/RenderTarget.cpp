@@ -7,9 +7,7 @@
 //
 
 #include "RenderTarget.h"
-#include "three.h"
 
-using namespace std;
 
 namespace three {
     

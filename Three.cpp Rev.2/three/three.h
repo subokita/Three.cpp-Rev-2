@@ -31,6 +31,9 @@
 #include "Raycaster.h"
 #include "Rect.h"
 
+/* ./three/helpers/ */
+
+
 /* ./three/lights */
 #include "Light.h"
 #include "AmbientLight.h"
@@ -80,7 +83,9 @@
 #include "CubeGeometry.h"
 #include "CylinderGeometry.h"
 #include "PlaneGeometry.h"
+#include "PolyhedronGeometry.h"
 #include "SphereGeometry.h"
+#include "TorusGeometry.h"
 
 /* ./three/renderers */
 #include "Renderer.h"

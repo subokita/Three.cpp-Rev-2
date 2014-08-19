@@ -19,10 +19,6 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 
-#include "three.h"
-
-
-using namespace std;
 
 namespace three {
     
@@ -52,7 +48,6 @@ namespace three {
         shader->initFromSource( vertex_filename, fragment_filename );
         return shader;
     }
-    
     
     ptr<Shader> Shader::create( ShaderLib& shader_code ) {
         shared_ptr<Shader> shader = make_shared<Shader>();

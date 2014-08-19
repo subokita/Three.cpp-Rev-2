@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A800967519A30EA400B9EF8D /* ScratchPad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A800967319A30EA400B9EF8D /* ScratchPad.cpp */; };
+		A800967819A30FEF00B9EF8D /* TorusGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A800967619A30FEF00B9EF8D /* TorusGeometry.cpp */; };
 		A81C53C119706B1400EDCA57 /* HemisphereLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A81C53BF19706B1400EDCA57 /* HemisphereLight.cpp */; };
 		A81C53C41970792F00EDCA57 /* SpotLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A81C53C21970792F00EDCA57 /* SpotLight.cpp */; };
 		A825E618196D6D290003C5C7 /* PhongMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A825E616196D6D290003C5C7 /* PhongMaterial.cpp */; };
@@ -14,6 +16,7 @@
 		A82B1287198A331700F442C1 /* DirectionalLightsArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A82B1285198A331700F442C1 /* DirectionalLightsArray.cpp */; };
 		A82B128A198A3E0E00F442C1 /* HemisphereLightsArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A82B1288198A3E0E00F442C1 /* HemisphereLightsArray.cpp */; };
 		A831C98019927EAD009523D1 /* Ex_006_BoundingBoxTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A831C97E19927EAD009523D1 /* Ex_006_BoundingBoxTest.cpp */; };
+		A838186B19A326230000A7EC /* PolyhedronGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A838186919A326230000A7EC /* PolyhedronGeometry.cpp */; };
 		A83D90BE19812E2C00A2D59F /* ShadowMapPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A83D90BC19812E2C00A2D59F /* ShadowMapPlugin.cpp */; };
 		A83D90C11981939E00A2D59F /* CastsShadow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A83D90BF1981939E00A2D59F /* CastsShadow.cpp */; };
 		A842BD47198E351C00129512 /* Ex_004_ShadowMapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A842BD45198E351C00129512 /* Ex_004_ShadowMapping.cpp */; };
@@ -102,6 +105,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A800967319A30EA400B9EF8D /* ScratchPad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScratchPad.cpp; sourceTree = "<group>"; };
+		A800967419A30EA400B9EF8D /* ScratchPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScratchPad.h; sourceTree = "<group>"; };
+		A800967619A30FEF00B9EF8D /* TorusGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TorusGeometry.cpp; sourceTree = "<group>"; };
+		A800967719A30FEF00B9EF8D /* TorusGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TorusGeometry.h; sourceTree = "<group>"; };
 		A81C53BF19706B1400EDCA57 /* HemisphereLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HemisphereLight.cpp; sourceTree = "<group>"; };
 		A81C53C019706B1400EDCA57 /* HemisphereLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HemisphereLight.h; sourceTree = "<group>"; };
 		A81C53C21970792F00EDCA57 /* SpotLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpotLight.cpp; sourceTree = "<group>"; };
@@ -116,6 +123,8 @@
 		A82B1289198A3E0E00F442C1 /* HemisphereLightsArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HemisphereLightsArray.h; sourceTree = "<group>"; };
 		A831C97E19927EAD009523D1 /* Ex_006_BoundingBoxTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ex_006_BoundingBoxTest.cpp; sourceTree = "<group>"; };
 		A831C97F19927EAD009523D1 /* Ex_006_BoundingBoxTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ex_006_BoundingBoxTest.h; sourceTree = "<group>"; };
+		A838186919A326230000A7EC /* PolyhedronGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolyhedronGeometry.cpp; sourceTree = "<group>"; };
+		A838186A19A326230000A7EC /* PolyhedronGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyhedronGeometry.h; sourceTree = "<group>"; };
 		A83D90BC19812E2C00A2D59F /* ShadowMapPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShadowMapPlugin.cpp; sourceTree = "<group>"; };
 		A83D90BD19812E2C00A2D59F /* ShadowMapPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShadowMapPlugin.h; sourceTree = "<group>"; };
 		A83D90BF1981939E00A2D59F /* CastsShadow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CastsShadow.cpp; sourceTree = "<group>"; };
@@ -281,12 +290,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A80FC13219A31C7B0070283F /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = helpers;
+			sourceTree = "<group>";
+		};
 		A84D1377197EB33F00BC5A03 /* examples */ = {
 			isa = PBXGroup;
 			children = (
 				A84D137E197EBA3500BC5A03 /* examples_header.h */,
 				A84D137B197EB36000BC5A03 /* Example.cpp */,
 				A84D137C197EB36000BC5A03 /* Example.h */,
+				A800967319A30EA400B9EF8D /* ScratchPad.cpp */,
+				A800967419A30EA400B9EF8D /* ScratchPad.h */,
 				A84D1378197EB35100BC5A03 /* Ex_001_SimplePrimitives.cpp */,
 				A84D1379197EB35100BC5A03 /* Ex_001_SimplePrimitives.h */,
 				A84D137F197EBDFA00BC5A03 /* Ex_002_TextureSpecularNormalMappings.cpp */,
@@ -444,6 +462,7 @@
 				A8F4C420196AAFCB00D191DC /* cameras */,
 				A8A33FA91973D8F000037E90 /* controls */,
 				A8F4C40C196AA06E00D191DC /* cores */,
+				A80FC13219A31C7B0070283F /* helpers */,
 				A8BD1EF4198A2CAA00E28B15 /* interfaces */,
 				A88AF9F5196C64F300601287 /* lights */,
 				A8F4C42E196AF9C300D191DC /* materials */,
@@ -557,8 +576,12 @@
 				A8DC9EC6197994DD004C75FB /* CylinderGeometry.h */,
 				A8F4C435196B08F300D191DC /* PlaneGeometry.cpp */,
 				A8F4C436196B08F300D191DC /* PlaneGeometry.h */,
+				A838186919A326230000A7EC /* PolyhedronGeometry.cpp */,
+				A838186A19A326230000A7EC /* PolyhedronGeometry.h */,
 				A8F0EE38196E8C74003EDB98 /* SphereGeometry.cpp */,
 				A8F0EE39196E8C74003EDB98 /* SphereGeometry.h */,
+				A800967619A30FEF00B9EF8D /* TorusGeometry.cpp */,
+				A800967719A30FEF00B9EF8D /* TorusGeometry.h */,
 			);
 			path = primitives;
 			sourceTree = "<group>";
@@ -742,9 +765,12 @@
 				A8F0EE34196E7C7A003EDB98 /* PointLight.cpp in Sources */,
 				A83D90C11981939E00A2D59F /* CastsShadow.cpp in Sources */,
 				A8A33FAF1973EA3700037E90 /* Box3.cpp in Sources */,
+				A838186B19A326230000A7EC /* PolyhedronGeometry.cpp in Sources */,
+				A800967819A30FEF00B9EF8D /* TorusGeometry.cpp in Sources */,
 				A8F4C3FD196A839F00D191DC /* Utils.cpp in Sources */,
 				A8A9BE41199BDEAC0018B67E /* Ex_007_PointCloudTest.cpp in Sources */,
 				A825E61B196D71F20003C5C7 /* Mesh.cpp in Sources */,
+				A800967519A30EA400B9EF8D /* ScratchPad.cpp in Sources */,
 				A82B128A198A3E0E00F442C1 /* HemisphereLightsArray.cpp in Sources */,
 				A87DA58F198A418C00DFC011 /* PointLightsArray.cpp in Sources */,
 				A8A4BB9B198817010090B91A /* ShadowTexture.cpp in Sources */,

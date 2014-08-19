@@ -7,10 +7,9 @@
 //
 
 #include "PhongMaterial.h"
-#include "three.h"
+#include "ShaderLib.h"
 #include "Shader.h"
 
-using namespace std;
 
 namespace three {
     ptr<PhongMaterial> PhongMaterial::create( Color color, Color ambient, Color emissive, Color specular,

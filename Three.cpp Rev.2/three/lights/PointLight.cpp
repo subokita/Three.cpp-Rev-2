@@ -7,9 +7,9 @@
 //
 
 #include "PointLight.h"
-#include "three.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-using namespace std;
 
 namespace three {
     ptr<PointLight> PointLight::create( const glm::vec3 position, const Color color, const float intensity, const float distance ){

@@ -9,8 +9,6 @@
 #include "OrthographicCamera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-using namespace std;
-
 namespace three{
     
     ptr<OrthographicCamera> OrthographicCamera::create(float left, float right, float top, float bottom,

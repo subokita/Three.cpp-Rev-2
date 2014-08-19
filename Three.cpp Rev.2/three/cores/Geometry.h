@@ -22,7 +22,7 @@ namespace three {
     public:
         static ptr<Geometry> create();
         Geometry();
-        ~Geometry();
+        virtual ~Geometry();
         
         void addVertex( glm::vec3 vertex );
         void addFace( ptr<Face3> face );

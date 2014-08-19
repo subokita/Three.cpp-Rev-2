@@ -20,6 +20,7 @@ namespace three {
     class Camera : public Object3D {
     public:
         const glm::mat4& getProjectionMatrix();
+        virtual ~Camera();
         
         /* Methods */
         void lookAt( const glm::vec3 vec );
@@ -43,7 +44,6 @@ namespace three {
         Camera();
         Camera(const glm::vec3 position, const glm::vec3 up);
         
-        virtual ~Camera();
         virtual void updateProjectionMatrix() = 0;
         
         

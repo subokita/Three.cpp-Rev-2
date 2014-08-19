@@ -7,9 +7,8 @@
 //
 
 #include "Fog.h"
-#include "three.h"
-
-using namespace std;
+#include "ShaderLib.h"
+#include "Shader.h"
 
 namespace three {
     ptr<Fog> Fog::create( Color color, float near, float far ){

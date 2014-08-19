@@ -7,9 +7,9 @@
 //
 
 #include "ShadowTexture.h"
-#include "three.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-using namespace std;
 
 namespace three  {
     ptr<ShadowTexture> ShadowTexture::create(GLuint wrap_s, GLuint wrap_t, GLuint wrap_r, GLuint mag_filter, GLuint min_filter){

@@ -7,11 +7,15 @@
 //
 
 #include "Geometry.h"
+#include "Face3.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <sstream>
-#include "three.h"
 
-using namespace std;
+using std::stringstream;
+using std::map;
+using std::string;
+using std::vector;
 
 namespace three {
     ptr<Geometry> Geometry::create() {

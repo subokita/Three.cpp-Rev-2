@@ -9,7 +9,8 @@
 #include "EventDispatcher.h"
 #include "Event.h"
 
-using namespace std;
+using std::string;
+using std::find;
 
 namespace three {
     void EventDispatcher::addEventListener(string type, ptr<EventDispatcher> obj ){
@@ -26,7 +27,7 @@ namespace three {
     
     void EventDispatcher::removeEventListener( string type, ptr<EventDispatcher> obj ) {
         if( hasEventListener(type, obj) )
-            std::remove( listeners[type].begin(), listeners[type].end(), obj );
+            remove( listeners[type].begin(), listeners[type].end(), obj );
     }
     
     void EventDispatcher::dispatchEvent(Event event){

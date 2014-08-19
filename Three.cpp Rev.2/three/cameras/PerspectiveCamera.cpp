@@ -9,8 +9,6 @@
 #include "PerspectiveCamera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-using namespace std;
-
 namespace three {
     PerspectiveCamera::PerspectiveCamera() :
         fov   ( 50.0 ),

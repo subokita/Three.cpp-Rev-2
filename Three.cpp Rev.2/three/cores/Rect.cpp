@@ -8,9 +8,7 @@
 
 #include "Rect.h"
 
-
 namespace three {
-    
     Rect::Rect() {}
     
     Rect::Rect( float x, float y, float width, float height ):

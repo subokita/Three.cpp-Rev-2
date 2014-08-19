@@ -7,9 +7,9 @@
 //
 
 #include "LineBasicMaterial.h"
-#include "three.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-using namespace std;
 namespace three {
     
     ptr<LineBasicMaterial> LineBasicMaterial::create( Color color ) {

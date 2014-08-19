@@ -22,7 +22,7 @@ namespace three {
         static ptr<Mesh> create(ptr<Geometry> geometry, ptr<Material> material);
         
         Mesh();
-        ~Mesh();
+        virtual ~Mesh();
         
         void initGLBuffers();
         void draw();

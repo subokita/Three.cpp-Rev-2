@@ -7,7 +7,7 @@
 //
 
 #include "Line3.h"
-#include "three.h"
+#include "Math.h"
 
 namespace three {
     

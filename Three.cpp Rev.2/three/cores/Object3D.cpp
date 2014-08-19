@@ -7,9 +7,9 @@
 //
 
 #include "Object3D.h"
-#include "three.h"
+#include "Box3.h"
 
-using namespace std;
+using std::vector;
 
 namespace three {
     

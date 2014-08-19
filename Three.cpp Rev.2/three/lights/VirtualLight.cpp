@@ -7,9 +7,9 @@
 //
 
 #include "VirtualLight.h"
-#include "three.h"
+#include "Math.h"
 
-using namespace std;
+using std::vector;
 
 namespace three {
     

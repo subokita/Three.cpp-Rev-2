@@ -7,7 +7,6 @@
 //
 
 #include "RenderPlugin.h"
-#include "three.h"
 
 namespace three {
     

@@ -7,9 +7,9 @@
 //
 
 #include "SpotLight.h"
-#include "three.h"
+#include "ShaderLib.h"
+#include "Shader.h"
 
-using namespace std;
 
 namespace three {
     
