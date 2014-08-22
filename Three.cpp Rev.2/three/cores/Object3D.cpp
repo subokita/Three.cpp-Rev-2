@@ -7,8 +7,8 @@
 //
 
 #include "Object3D.h"
-#include "../maths/Box3.h"
-#include "../maths/MathUtils.h"
+#include "Box3.h"
+#include "MathUtils.h"
 
 using std::vector;
 

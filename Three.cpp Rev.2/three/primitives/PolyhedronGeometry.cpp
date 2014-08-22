@@ -7,8 +7,8 @@
 //
 
 #include "PolyhedronGeometry.h"
-#include "../cores/Face3.h"
-#include "../maths/MathUtils.h"
+#include "Face3.h"
+#include "MathUtils.h"
 
 using std::vector;
 using std::initializer_list;

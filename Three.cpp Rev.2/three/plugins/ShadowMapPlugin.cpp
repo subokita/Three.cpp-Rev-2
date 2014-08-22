@@ -16,9 +16,9 @@
 #include "ShaderLib.h"
 #include "ShaderLibraries.h"
 #include "ShadowTexture.h"
-#include "../cores/Projector.h"
+#include "Projector.h"
 #include "VirtualLight.h"
-#include "../cores/Gyroscope.h"
+#include "Gyroscope.h"
 
 namespace three {
     ptr<ShadowMapPlugin> ShadowMapPlugin::create() {

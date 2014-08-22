@@ -12,7 +12,7 @@
 #include <iostream>
 #include "IFog.h"
 #include "../../internal_headers.h"
-#include "../../cores/Object3D.h"
+#include "Object3D.h"
 #include "Mesh.h"
 #include "AmbientLight.h"
 #include "../../interfaces/HasShaderUniforms.h"
@@ -20,7 +20,7 @@
 #include "HemisphereLightsArray.h"
 #include "PointLightsArray.h"
 #include "SpotLightsArray.h"
-#include "../../cores/Rect.h"
+#include "Rect.h"
 
 namespace three {
     class Scene : public Object3D, public HasShaderUniforms {

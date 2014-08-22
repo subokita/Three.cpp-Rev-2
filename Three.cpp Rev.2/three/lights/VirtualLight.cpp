@@ -7,7 +7,7 @@
 //
 
 #include "VirtualLight.h"
-#include "../maths/MathUtils.h"
+#include "MathUtils.h"
 
 using std::vector;
 

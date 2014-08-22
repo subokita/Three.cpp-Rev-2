@@ -10,7 +10,7 @@
 #include "HemisphereLight.h"
 #include "ShaderLib.h"
 #include "Shader.h"
-#include "../maths/MathUtils.h"
+#include "MathUtils.h"
     
 namespace three {
     

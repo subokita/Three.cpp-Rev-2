@@ -7,8 +7,8 @@
 //
 
 #include "Box3.h"
-#include "../cores/Geometry.h"
-#include "../cores/Object3D.h"
+#include "Geometry.h"
+#include "Object3D.h"
 #include "Mesh.h"
 #include "Sphere.h"
 

@@ -7,7 +7,7 @@
 //
 
 #include "TorusGeometry.h"
-#include "../cores/Face3.h"
+#include "Face3.h"
 
 using std::vector;
 

@@ -13,7 +13,7 @@
 
 #include "../internal_headers.h"
 #include "Material.h"
-#include "../maths/Color.h"
+#include "Color.h"
 
 namespace three {
     class LambertMaterial : public Material {

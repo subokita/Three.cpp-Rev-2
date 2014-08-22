@@ -12,7 +12,7 @@
 #include <iostream>
 #include "../internal_headers.h"
 #include "RenderPlugin.h"
-#include "../maths/Frustum.h"
+#include "Frustum.h"
 
 namespace three {
     class ShadowMapPlugin : public RenderPlugin {

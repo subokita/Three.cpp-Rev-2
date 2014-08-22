@@ -12,7 +12,7 @@
 #include <iostream>
 #include "../internal_headers.h"
 #include "Material.h"
-#include "../maths/Color.h"
+#include "Color.h"
 #include "../Constants.h"
 
 namespace three {

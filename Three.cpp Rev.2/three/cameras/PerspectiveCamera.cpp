@@ -7,7 +7,7 @@
 //
 
 #include "PerspectiveCamera.h"
-#include "../maths/MathUtils.h"
+#include "MathUtils.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 

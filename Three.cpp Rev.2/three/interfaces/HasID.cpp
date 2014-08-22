@@ -7,7 +7,7 @@
 //
 
 #include "HasID.h"
-#include "../maths/MathUtils.h"
+#include "MathUtils.h"
 
 namespace three {
     

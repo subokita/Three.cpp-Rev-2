@@ -15,7 +15,7 @@
 
 #include "../Constants.h"
 #include "Utils.h"
-#include "../maths/Color.h"
+#include "Color.h"
 
 
 namespace three {

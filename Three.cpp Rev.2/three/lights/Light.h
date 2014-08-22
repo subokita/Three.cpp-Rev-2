@@ -12,8 +12,8 @@
 #include <iostream>
 #include "../internal_headers.h"
 
-#include "../maths/Color.h"
-#include "../cores/Object3D.h"
+#include "Color.h"
+#include "Object3D.h"
 #include "RenderTarget.h"
 #include "CastsShadow.h"
 #include "../interfaces/HasShaderUniforms.h"

@@ -7,8 +7,8 @@
 //
 
 #include "SphereGeometry.h"
-#include "../cores/Face3.h"
-#include "../maths/MathUtils.h"
+#include "Face3.h"
+#include "MathUtils.h"
 #include <vector>
 
 using std::vector;

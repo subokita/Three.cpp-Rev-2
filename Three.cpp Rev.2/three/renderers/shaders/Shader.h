@@ -12,7 +12,7 @@
 #include "../../internal_headers.h"
 
 #include "ShaderLib.h"
-#include "../../maths/Color.h"
+#include "Color.h"
 
 namespace three {
     class Shader {

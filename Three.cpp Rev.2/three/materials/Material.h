@@ -13,7 +13,7 @@
 #include <glm/glm.hpp>
 
 #include "../internal_headers.h"
-#include "../maths/MathUtils.h"
+#include "MathUtils.h"
 #include "../interfaces/HasID.h"
 #include "../interfaces/HasShaderUniforms.h"
 

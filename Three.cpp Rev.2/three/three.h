@@ -21,15 +21,15 @@
 #include "Arcball.h"
 
 /* ./three/cores/ */
-#include "cores/Event.h"
-#include "cores/EventDispatcher.h"
-#include "cores/Face3.h"
-#include "cores/Geometry.h"
-#include "cores/Object3D.h"
-#include "cores/Gyroscope.h"
-#include "cores/Projector.h"
-#include "cores/Raycaster.h"
-#include "cores/Rect.h"
+#include "Event.h"
+#include "EventDispatcher.h"
+#include "Face3.h"
+#include "Geometry.h"
+#include "Object3D.h"
+#include "Gyroscope.h"
+#include "Projector.h"
+#include "Raycaster.h"
+#include "Rect.h"
 
 /* ./three/helpers/ */
 
@@ -58,15 +58,15 @@
 #include "PhongMaterial.h"
 
 /* ./three/maths */
-#include "maths/Box3.h"
-#include "maths/Color.h"
-#include "maths/Frustum.h"
-#include "maths/Line3.h"
-#include "maths/MathUtils.h"
-#include "maths/Plane.h"
-#include "maths/Ray.h"
-#include "maths/Sphere.h"
-#include "maths/Triangle.h"
+#include "Box3.h"
+#include "Color.h"
+#include "Frustum.h"
+#include "Line3.h"
+#include "MathUtils.h"
+#include "Plane.h"
+#include "Ray.h"
+#include "Sphere.h"
+#include "Triangle.h"
 
 /* ./three/objects */
 #include "Mesh.h"

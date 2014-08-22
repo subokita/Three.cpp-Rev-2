@@ -14,7 +14,7 @@
 #include <glm/glm.hpp>
 
 #include "../internal_headers.h"
-#include "../maths/Color.h"
+#include "Color.h"
 
 namespace three {
     

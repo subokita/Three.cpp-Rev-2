@@ -12,7 +12,7 @@
 #include <iostream>
 #include "../../internal_headers.h"
 #include "../../interfaces/HasShaderUniforms.h"
-#include "../../maths/Color.h"
+#include "Color.h"
 
 namespace three {
     class IFog: public HasShaderUniforms {

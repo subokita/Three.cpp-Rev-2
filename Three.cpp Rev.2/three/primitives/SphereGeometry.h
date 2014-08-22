@@ -10,7 +10,7 @@
 #define __Three_cpp_Rev_2__SphereGeometry__
 
 #include <iostream>
-#include "../cores/Geometry.h"
+#include "Geometry.h"
 
 namespace three {
     class SphereGeometry: public Geometry {

@@ -14,7 +14,7 @@
 #include "../interfaces/HasShaderUniforms.h"
 
 #include "../Constants.h"
-#include "../cores/Object3D.h"
+#include "Object3D.h"
 
 namespace three {
     class Mesh : public Object3D, public HasShaderUniforms {

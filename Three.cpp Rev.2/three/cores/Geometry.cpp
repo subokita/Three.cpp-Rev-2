@@ -8,7 +8,7 @@
 
 #include "Geometry.h"
 #include "Face3.h"
-#include "../maths/MathUtils.h"
+#include "MathUtils.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <sstream>

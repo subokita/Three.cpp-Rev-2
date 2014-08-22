@@ -13,7 +13,7 @@
 
 #include "../../fontstash/fontstash.h"
 #include "../internal_headers.h"
-#include "../maths/Color.h"
+#include "Color.h"
 #include "Rect.h"
 
 namespace three {

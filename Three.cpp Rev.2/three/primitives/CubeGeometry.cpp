@@ -7,7 +7,7 @@
 //
 
 #include "CubeGeometry.h"
-#include "../cores/Face3.h"
+#include "Face3.h"
 #include <exception>
 
 using std::vector;

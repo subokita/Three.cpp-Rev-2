@@ -12,7 +12,7 @@
 #include <iostream>
 
 #include "../internal_headers.h"
-#include "../cores/EventDispatcher.h"
+#include "EventDispatcher.h"
 #include "../interfaces/HasID.h"
 #include "../interfaces/HasShaderUniforms.h"
 

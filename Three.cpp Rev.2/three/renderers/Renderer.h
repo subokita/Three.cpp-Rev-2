@@ -14,9 +14,9 @@
 #include <vector>
 
 #include "../internal_headers.h"
-#include "../maths/Color.h"
+#include "Color.h"
 
-#include "../cores/FontStashAdapter.h"
+#include "FontStashAdapter.h"
 
 namespace three {
     class Renderer : public std::enable_shared_from_this<Renderer> {

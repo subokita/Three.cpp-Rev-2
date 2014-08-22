@@ -10,7 +10,7 @@
 #define __Three_cpp_Rev_2__OctahedronGeometry__
 
 #include <iostream>
-#include "../cores/Geometry.h"
+#include "Geometry.h"
 #include "PolyhedronGeometry.h"
 
 namespace three {
