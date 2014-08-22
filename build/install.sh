@@ -1,40 +1,78 @@
+
+# First try to install all brew related stuff, and install everything that could be installed using brew
 clear
+	brew help
 
-pwd
-shopt -s extglob
+	if [[ $? != 0 ]]; then
+		echo "Downloading homebrew"
+		ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+	fi
 
-# Remove all the files
-rm -rf !(run.sh)
+	brew list glfw3
+	if [[ $? != 0 ]]; then
+		echo "Installing glfw3"
+		brew install glfw3
+	fi
 
-# Run CMake
-cmake ..
+	brew list glm
+	if [[ $? != 0 ]]; then
+		echo "Installing glm"
+		brew install glm
+	fi
 
-if [[ $? != 0 ]]; then
-	echo "Cmake failed"
-	rm -rf !(run.sh)
+	brew list assimp
+	if [[ $? != 0 ]]; then
+		echo "Installing glm"
+		brew install assimp
+	fi
 
-	exit
-fi
+	brew list freeimage
+	if [[ $? != 0 ]]; then
+		echo "Installing freeimage"
+		brew install freeimage
+	fi
 
-# Run make file
-make -j 4
+# Then try to install three.cpp
 
-if [[ $? != 0 ]]; then
-	echo "make failed"
-	rm -rf !(run.sh)
+clear
+	pwd
+	shopt -s extglob
 
-	exit
-fi
+	# Remove all the files
+	rm -rf !(install.sh)
 
-# Copy our assets from the examples directory
-cp -r ../examples ./examples
+	# Run CMake
+	echo "Running Cmake"
+	cmake ..
 
-# Copy the library to lib directory
-mkdir lib
-mv "Three.cpp Rev.2/libthree_cpp.a" "lib/libthree_cpp.a"
+	if [[ $? != 0 ]]; then
+		echo "Cmake failed"
+		rm -rf !(install.sh)
 
-# Remove everything except for lib, bin, includes, and examples directories
-rm -rf !(run.sh|lib|bin|includes|examples)
+		exit
+	fi
 
+	echo "Running make"
+	# Run make file
+	make -j 4
 
-./bin/main
+	if [[ $? != 0 ]]; then
+		echo "make failed"
+		rm -rf !(install.sh)
+
+		exit
+	fi
+
+	echo "Copying files"
+	# Copy our assets from the examples directory
+	cp -r ../examples ./examples
+
+	# Copy the library to lib directory
+	mkdir lib
+	mv "Three.cpp Rev.2/libthree_cpp.a" "lib/libthree_cpp.a"
+
+	# Remove everything except for lib, bin, includes, and examples directories
+	rm -rf !(install.sh|lib|bin|includes|examples)
+
+	echo "Test run"
+	./bin/main
