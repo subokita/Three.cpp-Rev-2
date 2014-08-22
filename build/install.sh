@@ -8,6 +8,12 @@ clear
 		ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 	fi
 
+	brew list cmake
+	if [[ $? != 0 ]]; then
+		echo "Installing CMake"
+		brew install cmake
+	fi
+
 	brew list glfw3
 	if [[ $? != 0 ]]; then
 		echo "Installing glfw3"
