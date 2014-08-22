@@ -7,7 +7,7 @@
 //
 
 #include "Line3.h"
-#include "Math.h"
+#include "MathUtils.h"
 
 namespace three {
     
@@ -64,7 +64,7 @@ namespace three {
         float start_end_dot_start_point = glm::dot( start_end, start_point );
         float t = start_end_dot_start_point / start_end_squared;
         
-        return clamp_to_line ? Math::clamp( t, 0.0, 1.0 ) : t;
+        return clamp_to_line ? MathUtils::clamp( t, 0.0, 1.0 ) : t;
     }
     
     glm::vec3 Line3::closestPointToPoint( glm::vec3 point, bool clamp_to_line ) {

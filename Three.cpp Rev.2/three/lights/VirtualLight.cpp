@@ -7,7 +7,7 @@
 //
 
 #include "VirtualLight.h"
-#include "Math.h"
+#include "../maths/MathUtils.h"
 
 using std::vector;
 
@@ -33,6 +33,6 @@ namespace three {
     
     void VirtualLight::lookAt(const glm::vec3 vec ) {
         this->matrix = glm::lookAt( this->position, vec, this->up );
-        Math::decomposeMatrix( this->matrix, this->position, this->quaternion, this->scale );
+        MathUtils::decomposeMatrix( this->matrix, this->position, this->quaternion, this->scale );
     }
 }

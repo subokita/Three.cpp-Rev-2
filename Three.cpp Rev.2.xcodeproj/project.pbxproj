@@ -88,7 +88,7 @@
 		A8F4C423196AB09B00D191DC /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F4C421196AB09B00D191DC /* Camera.cpp */; };
 		A8F4C426196AB1B800D191DC /* PerspectiveCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F4C424196AB1B800D191DC /* PerspectiveCamera.cpp */; };
 		A8F4C429196AD14100D191DC /* OrthographicCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F4C427196AD14100D191DC /* OrthographicCamera.cpp */; };
-		A8F4C42D196AE05D00D191DC /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F4C42B196AE05D00D191DC /* Math.cpp */; };
+		A8F4C42D196AE05D00D191DC /* MathUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F4C42B196AE05D00D191DC /* MathUtils.cpp */; };
 		A8F4C431196AF9DC00D191DC /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F4C42F196AF9DC00D191DC /* Material.cpp */; };
 		A8F4C434196B069C00D191DC /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F4C432196B069C00D191DC /* Color.cpp */; };
 		A8F4C437196B08F300D191DC /* PlaneGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F4C435196B08F300D191DC /* PlaneGeometry.cpp */; };
@@ -277,8 +277,8 @@
 		A8F4C425196AB1B800D191DC /* PerspectiveCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerspectiveCamera.h; sourceTree = "<group>"; };
 		A8F4C427196AD14100D191DC /* OrthographicCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OrthographicCamera.cpp; sourceTree = "<group>"; };
 		A8F4C428196AD14100D191DC /* OrthographicCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrthographicCamera.h; sourceTree = "<group>"; };
-		A8F4C42B196AE05D00D191DC /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
-		A8F4C42C196AE05D00D191DC /* Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Math.h; sourceTree = "<group>"; };
+		A8F4C42B196AE05D00D191DC /* MathUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MathUtils.cpp; sourceTree = "<group>"; };
+		A8F4C42C196AE05D00D191DC /* MathUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathUtils.h; sourceTree = "<group>"; };
 		A8F4C42F196AF9DC00D191DC /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
 		A8F4C430196AF9DC00D191DC /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
 		A8F4C432196B069C00D191DC /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
@@ -625,8 +625,8 @@
 				A850585119756B0500866386 /* Frustum.h */,
 				A8A33FBC19740CEF00037E90 /* Line3.cpp */,
 				A8A33FBD19740CEF00037E90 /* Line3.h */,
-				A8F4C42B196AE05D00D191DC /* Math.cpp */,
-				A8F4C42C196AE05D00D191DC /* Math.h */,
+				A8F4C42B196AE05D00D191DC /* MathUtils.cpp */,
+				A8F4C42C196AE05D00D191DC /* MathUtils.h */,
 				A8A33FBF19740D9C00037E90 /* Plane.cpp */,
 				A8A33FC019740D9C00037E90 /* Plane.h */,
 				A8E4341D19825249000BE965 /* Ray.cpp */,
@@ -747,7 +747,7 @@
 				A87DA592198A477C00DFC011 /* SpotLightsArray.cpp in Sources */,
 				A8E434221982DF41000BE965 /* Triangle.cpp in Sources */,
 				A8A33FB51973F78D00037E90 /* EventDispatcher.cpp in Sources */,
-				A8F4C42D196AE05D00D191DC /* Math.cpp in Sources */,
+				A8F4C42D196AE05D00D191DC /* MathUtils.cpp in Sources */,
 				A8AEA5C41993587900D80D4C /* CameraControl.cpp in Sources */,
 				A8DA557D1976E689000CC869 /* RenderPlugin.cpp in Sources */,
 				A8DC9EC7197994DD004C75FB /* CylinderGeometry.cpp in Sources */,
@@ -875,10 +875,10 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/Cellar/glfw3/3.0.4/include,
-					/usr/local/Cellar/glm/0.9.5.3/include,
 					/usr/local/Cellar/freeimage/3.15.4/include,
 					/usr/local/Cellar/assimp/3.0.1270/include,
 					/usr/local/Cellar/tbb/4.2.3/include,
+					/usr/local/Cellar/glm/0.9.5.3/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/glfw3/3.0.4/lib,
@@ -905,10 +905,10 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/Cellar/glfw3/3.0.4/include,
-					/usr/local/Cellar/glm/0.9.5.3/include,
 					/usr/local/Cellar/freeimage/3.15.4/include,
 					/usr/local/Cellar/assimp/3.0.1270/include,
 					/usr/local/Cellar/tbb/4.2.3/include,
+					/usr/local/Cellar/glm/0.9.5.3/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/glfw3/3.0.4/lib,

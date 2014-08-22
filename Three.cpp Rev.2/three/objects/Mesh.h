@@ -10,11 +10,11 @@
 #define __Three_cpp_Rev_2__Mesh__
 
 #include <iostream>
-#include "internal_headers.h"
-#include "HasShaderUniforms.h"
+#include "../internal_headers.h"
+#include "../interfaces/HasShaderUniforms.h"
 
-#include "Constants.h"
-#include "Object3D.h"
+#include "../Constants.h"
+#include "../cores/Object3D.h"
 
 namespace three {
     class Mesh : public Object3D, public HasShaderUniforms {

@@ -10,7 +10,7 @@
 #define __Three_cpp_Rev_2__Sphere__
 
 #include <iostream>
-#include "internal_headers.h"
+#include "../internal_headers.h"
 #include "Utils.h"
 
 namespace three {

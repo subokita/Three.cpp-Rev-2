@@ -10,12 +10,14 @@
 #define __Three_cpp_Rev_2__SHADERLIB__
 
 #include <iostream>
-#include "internal_headers.h"
+#include "../../internal_headers.h"
 #include "Utils.h"
 #include "ShaderChunks.h"
 
+#define SHADER_VERSION "#version 410 core"
+
 namespace three {
-    static const std::string SHADER_VERSION = "#version 410 core";
+//    static const std::string SHADER_VERSION = "#version 410 core";
     
     class ShaderLib : public std::enable_shared_from_this<ShaderLib> {
     public:

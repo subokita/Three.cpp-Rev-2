@@ -13,7 +13,7 @@
 #include "Shader.h"
 
 #define FONTSTASH_IMPLEMENTATION
-#include "fontstash.h"
+#include "../../fontstash/fontstash.h"
 
 
 namespace three {

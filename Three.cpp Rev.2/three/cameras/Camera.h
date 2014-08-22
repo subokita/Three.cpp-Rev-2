@@ -12,8 +12,8 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
-#include "internal_headers.h"
-#include "Object3D.h"
+#include "../internal_headers.h"
+#include "../cores/Object3D.h"
 #include "Utils.h"
 
 namespace three {

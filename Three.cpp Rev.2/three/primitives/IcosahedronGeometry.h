@@ -12,7 +12,7 @@
 #include <iostream>
 
 #include <iostream>
-#include "Geometry.h"
+#include "../cores/Geometry.h"
 #include "PolyhedronGeometry.h"
 
 namespace three {

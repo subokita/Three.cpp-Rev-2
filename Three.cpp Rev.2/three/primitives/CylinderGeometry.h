@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-#include "Geometry.h"
+#include "../cores/Geometry.h"
 
 namespace three {
     class CylinderGeometry : public Geometry {

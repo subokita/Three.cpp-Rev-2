@@ -7,7 +7,7 @@
 //
 
 #include "ShaderLib.h"
-#include "three.h"
+#include "../../three.h"
 #include <sstream>
 
 using std::stringstream;

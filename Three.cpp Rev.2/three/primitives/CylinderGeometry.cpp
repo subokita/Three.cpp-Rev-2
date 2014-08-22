@@ -7,7 +7,7 @@
 //
 
 #include "CylinderGeometry.h"
-#include "Face3.h"
+#include "../cores/Face3.h"
 
 using std::vector;
 

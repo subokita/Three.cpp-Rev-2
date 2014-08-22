@@ -7,10 +7,10 @@
 //
 
 #include "Frustum.h"
-#include "Plane.h"
 #include "Box3.h"
+#include "Plane.h"
 #include "Sphere.h"
-#include "Object3D.h"
+#include "../cores/Object3D.h"
 
 namespace three {
     

@@ -10,8 +10,8 @@
 #define __Three_cpp_Rev_2__Example__
 
 #include <iostream>
-#include "internal_headers.h"
-#include "three.h"
+#include "../three/internal_headers.h"
+#include "../three/three.h"
 
 namespace three {
     class Example {

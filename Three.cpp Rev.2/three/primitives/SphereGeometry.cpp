@@ -7,7 +7,8 @@
 //
 
 #include "SphereGeometry.h"
-#include "Face3.h"
+#include "../cores/Face3.h"
+#include "../maths/MathUtils.h"
 #include <vector>
 
 using std::vector;
@@ -56,11 +57,11 @@ namespace three {
         int width_segments  = std::max( 3, this->slices );
         int height_segments = std::max( 2, this->parallels );
         
-        float phi_start     = Math::degToRad( this->phiStart );
-        float phi_length    = Math::degToRad( this->phiEnd );
+        float phi_start     = MathUtils::degToRad( this->phiStart );
+        float phi_length    = MathUtils::degToRad( this->phiEnd );
         
-        float theta_start   = Math::degToRad( this->thetaStart );
-        float theta_length  = Math::degToRad( this->thetaEnd );
+        float theta_start   = MathUtils::degToRad( this->thetaStart );
+        float theta_length  = MathUtils::degToRad( this->thetaEnd );
         
         this->vertices.clear();
         

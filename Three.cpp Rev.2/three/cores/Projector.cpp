@@ -7,8 +7,8 @@
 //
 
 #include "Projector.h"
-#include "Camera.h"
 #include "Raycaster.h"
+#include "Camera.h"
 
 namespace three {
     glm::vec4 Projector::projectVector( const glm::vec4 vector, ptr<Camera> camera ){

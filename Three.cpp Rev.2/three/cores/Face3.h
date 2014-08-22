@@ -13,9 +13,10 @@
 #include <vector>
 #include <glm/glm.hpp>
 
+#include "../Constants.h"
 #include "Utils.h"
-#include "Color.h"
-#include "Constants.h"
+#include "../maths/Color.h"
+
 
 namespace three {
     class Face3 {

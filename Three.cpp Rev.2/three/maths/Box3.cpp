@@ -7,9 +7,9 @@
 //
 
 #include "Box3.h"
-#include "Object3D.h"
+#include "../cores/Geometry.h"
+#include "../cores/Object3D.h"
 #include "Mesh.h"
-#include "Geometry.h"
 #include "Sphere.h"
 
 using std::vector;

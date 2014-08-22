@@ -10,9 +10,9 @@
 #define __Three_cpp_Rev_2__PointLightsArray__
 #include <iostream>
 #include <map>
-#include "internal_headers.h"
+#include "../internal_headers.h"
 #include "PointLight.h"
-#include "HasShaderUniforms.h"
+#include "../interfaces/HasShaderUniforms.h"
 
 namespace three {
     class PointLightsArray: public HasShaderUniforms {

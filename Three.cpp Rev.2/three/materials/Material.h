@@ -12,10 +12,10 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
-#include "internal_headers.h"
-#include "HasID.h"
-#include "Math.h"
-#include "HasShaderUniforms.h"
+#include "../internal_headers.h"
+#include "../maths/MathUtils.h"
+#include "../interfaces/HasID.h"
+#include "../interfaces/HasShaderUniforms.h"
 
 using namespace std;
 

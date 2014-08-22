@@ -8,6 +8,7 @@
 
 #include "Geometry.h"
 #include "Face3.h"
+#include "../maths/MathUtils.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <sstream>
@@ -169,7 +170,7 @@ namespace three {
                 /* If they same the same vertices, then we average the normal vectors (by summing and normalizing) */
                 for( int a = 0; a < 3; a++ ) {
                     for( int b = 0; b < 3; b++ ) {
-                        if( Math::equals(vertices_1[a], vertices_2[b], 3)) {
+                        if( MathUtils::equals(vertices_1[a], vertices_2[b], 3)) {
                             face_1->vertexNormals[a] += face_2->vertexNormals[b];
                             face_2->vertexNormals[b] += face_1->vertexNormals[a];
                         }

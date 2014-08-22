@@ -7,6 +7,7 @@
 //
 
 #include "Gyroscope.h"
+#include "../maths/MathUtils.h"
 
 namespace three {
     ptr<Gyroscope> Gyroscope::create(){
@@ -24,10 +25,10 @@ namespace three {
         if( matrixWorldNeedsUpdate || force ) {
             if( parent != nullptr ) {
                 matrixWorld = parent->matrixWorld * matrix;
-                Math::decomposeMatrix(matrixWorld, translationWorld, quaternionWorld, scaleWorld );
-                Math::decomposeMatrix(matrix, translationObject, quaternionObject, scaleObject );
+                MathUtils::decomposeMatrix(matrixWorld, translationWorld, quaternionWorld, scaleWorld );
+                MathUtils::decomposeMatrix(matrix, translationObject, quaternionObject, scaleObject );
                 
-                matrixWorld = Math::composeMatrix( translationWorld, quaternionObject, scaleWorld );
+                matrixWorld = MathUtils::composeMatrix( translationWorld, quaternionObject, scaleWorld );
             }
             else {
                 matrixWorld = matrix;

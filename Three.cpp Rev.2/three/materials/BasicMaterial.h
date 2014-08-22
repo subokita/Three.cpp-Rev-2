@@ -11,9 +11,9 @@
 
 #include <iostream>
 
-#include "internal_headers.h"
+#include "../internal_headers.h"
 #include "Material.h"
-#include "Color.h"
+#include "../maths/Color.h"
 
 namespace three {
     class BasicMaterial : public Material {

@@ -24,8 +24,8 @@ int main(int argc, const char * argv[])
 //    Ex_005_PLYLoading::create()->run();
 //    Ex_006_BoundingBoxTest::create()->run();
 //    Ex_007_PointCloudTest::create()->run();
-//    Ex_008_FontStashIntegration::create()->run();
-    ScratchPad::create()->run();
+    Ex_008_FontStashIntegration::create()->run();
+//    ScratchPad::create()->run();
     
     
     return 0;

@@ -7,7 +7,7 @@
 //
 
 #include "Renderer.h"
-#include "three.h"
+#include "../three.h"
 
 #include <exception>
 #include <sstream>

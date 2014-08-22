@@ -7,7 +7,8 @@
 //
 
 #include "Object3D.h"
-#include "Box3.h"
+#include "../maths/Box3.h"
+#include "../maths/MathUtils.h"
 
 using std::vector;
 
@@ -100,7 +101,7 @@ namespace three {
     }
     
     void Object3D::updateMatrix() {
-        this->matrix = Math::composeMatrix( this->position, this->quaternion, this->scale );
+        this->matrix = MathUtils::composeMatrix( this->position, this->quaternion, this->scale );
         this->matrixWorldNeedsUpdate = true;
     }
     

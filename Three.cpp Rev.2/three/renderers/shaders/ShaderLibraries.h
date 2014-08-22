@@ -9,7 +9,7 @@
 #ifndef Three_cpp_Rev_2_ShaderLibraries_h
 #define Three_cpp_Rev_2_ShaderLibraries_h
 
-#include "internal_headers.h"
+#include "../../internal_headers.h"
 #include "ShaderLib.h"
 
 namespace three {

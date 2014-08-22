@@ -9,6 +9,7 @@
 #include "SpotLight.h"
 #include "ShaderLib.h"
 #include "Shader.h"
+#include "../maths/MathUtils.h"
 
 
 namespace three {
@@ -20,7 +21,7 @@ namespace three {
     /** Constructors **/
     SpotLight::SpotLight():
         distance(0.0),
-        angle   (Math::radToDeg(M_PI / 3.0)),
+        angle   (MathUtils::radToDeg(M_PI / 3.0)),
         exponent(10.0)
     {
         this->position = glm::vec3( 0.0, 1.0, 0.0 );

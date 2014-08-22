@@ -9,10 +9,10 @@
 #ifndef __Three_cpp_Rev_2__Shader__
 #define __Three_cpp_Rev_2__Shader__
 
-#include "internal_headers.h"
+#include "../../internal_headers.h"
 
 #include "ShaderLib.h"
-#include "Color.h"
+#include "../../maths/Color.h"
 
 namespace three {
     class Shader {

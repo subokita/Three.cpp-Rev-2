@@ -11,10 +11,10 @@
 
 #include <iostream>
 
-#include "internal_headers.h"
-#include "EventDispatcher.h"
-#include "HasID.h"
-#include "HasShaderUniforms.h"
+#include "../internal_headers.h"
+#include "../cores/EventDispatcher.h"
+#include "../interfaces/HasID.h"
+#include "../interfaces/HasShaderUniforms.h"
 
 namespace three {
     static unsigned int textureIDCount = 0;

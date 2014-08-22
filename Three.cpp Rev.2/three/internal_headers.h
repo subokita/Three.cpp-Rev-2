@@ -33,7 +33,7 @@ using std::make_shared;
 /* FORWARD DECLARATIONS */
 namespace three {
     
-    /* ./three/cameras/ */
+    /* ./three/ */
     class Camera;
     class OrthographicCamera;
     class PerspectiveCamera;

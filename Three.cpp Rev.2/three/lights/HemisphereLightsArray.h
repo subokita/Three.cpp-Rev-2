@@ -11,9 +11,9 @@
 
 #include <iostream>
 #include <map>
-#include "internal_headers.h"
+#include "../internal_headers.h"
 #include "HemisphereLight.h"
-#include "HasShaderUniforms.h"
+#include "../interfaces/HasShaderUniforms.h"
 
 namespace three {
     class HemisphereLightsArray: public HasShaderUniforms {

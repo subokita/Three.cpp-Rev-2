@@ -10,18 +10,17 @@
 #define __Three_cpp_Rev_2__Scene__
 
 #include <iostream>
-#include "Object3D.h"
+#include "IFog.h"
+#include "../../internal_headers.h"
+#include "../../cores/Object3D.h"
 #include "Mesh.h"
 #include "AmbientLight.h"
-#include "IFog.h"
-#include "HasShaderUniforms.h"
-
-#include "internal_headers.h"
+#include "../../interfaces/HasShaderUniforms.h"
 #include "DirectionalLightsArray.h"
 #include "HemisphereLightsArray.h"
 #include "PointLightsArray.h"
 #include "SpotLightsArray.h"
-#include "Rect.h"
+#include "../../cores/Rect.h"
 
 namespace three {
     class Scene : public Object3D, public HasShaderUniforms {

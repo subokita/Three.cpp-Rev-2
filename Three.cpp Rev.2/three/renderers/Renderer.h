@@ -13,10 +13,10 @@
 #include <map>
 #include <vector>
 
-#include "internal_headers.h"
-#include "Color.h"
+#include "../internal_headers.h"
+#include "../maths/Color.h"
 
-#include "FontStashAdapter.h"
+#include "../cores/FontStashAdapter.h"
 
 namespace three {
     class Renderer : public std::enable_shared_from_this<Renderer> {

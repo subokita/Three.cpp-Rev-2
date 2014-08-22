@@ -1,22 +1,21 @@
 //
-//  Math.h
+//  MathUtils.h
 //  Three.cpp
 //
 //  Created by Saburo Okita on 27/06/14.
 //  Copyright (c) 2014 Saburo Okita. All rights reserved.
 //
 
-#ifndef __Three_cpp__Math__
-#define __Three_cpp__Math__
+#ifndef __Three_cpp__MathUtils__
+#define __Three_cpp__MathUtils__
 
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 namespace three {
-    class Quaternion;
     
-    class Math {
+    class MathUtils {
     public:
         static bool equals( glm::vec3 a, glm::vec3 b, int precision );
         static std::string generateUUID();
@@ -36,7 +35,6 @@ namespace three {
         static bool isPowerOfTwo( int value );
         static glm::vec3 lerp( glm::vec3 a, glm::vec3 b, float alpha );
         
-        static float hueToRGB( float p, float q, float t );
         static glm::mat4x4 composeMatrix( glm::vec3 position, glm::quat quaternion, glm::vec3 scale );
         static void decomposeMatrix( glm::mat4& mat, glm::vec3& position, glm::quat& quaternion, glm::vec3& scale );
         
@@ -45,4 +43,4 @@ namespace three {
     };
 }
 
-#endif /* defined(__Three_cpp__Math__) */
+#endif /* defined(__Three_cpp__MathUtils__) */

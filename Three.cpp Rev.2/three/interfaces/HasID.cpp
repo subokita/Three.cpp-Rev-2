@@ -7,13 +7,13 @@
 //
 
 #include "HasID.h"
-
+#include "../maths/MathUtils.h"
 
 namespace three {
     
     HasID::HasID( const unsigned int id ) :
         id  ( id ),
-        uuid( Math::generateUUID() ),
+        uuid( MathUtils::generateUUID() ),
         name( "" )
     {}
 

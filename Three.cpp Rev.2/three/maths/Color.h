@@ -45,21 +45,21 @@ namespace three {
         Color& offsetHSL( float h, float s, float l );
         
         Color& operator=( int hex );
+        
         Color operator+(const Color& rhs);
-        Color& operator+=(const Color& rhs);
         Color operator+(float scalar);
+        Color& operator+=(const Color& rhs);
         Color& operator+=(float scalar);
+        
         Color operator*( const Color& rhs );
-        Color& operator*=( const Color& rhs );
         Color operator*( float scalar );
+        Color& operator*=( const Color& rhs );
         Color& operator*=( float scalar );
         
         Color& lerp(Color& rhs, float alpha);
         bool equals( Color& rhs );
-        Color clone() const;
         
-    public:
-        glm::vec3 rep;
+        static float hueToRGB( float p, float q, float t );
         
         friend std::ostream &operator <<( std::ostream& os, const Color& color ) {
             os << "(" << color.rep.x << " " << color.rep.y << " " << color.rep.z << ")";
@@ -74,6 +74,10 @@ namespace three {
             os << "]";
             return os;
         }
+        
+        
+    public:
+        glm::vec3 rep;
     };
 }
 

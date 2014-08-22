@@ -7,7 +7,6 @@
 //
 
 #include "Color.h"
-#include "Math.h"
 #include <sstream>
 #include <iomanip>
 
@@ -69,9 +68,9 @@ namespace three {
             float q = (2 * l) - p;
             
             rep = glm::vec3(
-                Math::hueToRGB( q, p, h + 1.0 / 3.0 ),
-                Math::hueToRGB( q, p, h ),
-                Math::hueToRGB( q, p, h - 1.0 / 3.0 )
+                hueToRGB( q, p, h + 1.0 / 3.0 ),
+                hueToRGB( q, p, h ),
+                hueToRGB( q, p, h - 1.0 / 3.0 )
             );
             
         }
@@ -223,8 +222,20 @@ namespace three {
         return rep == rhs.rep;
     }
     
-    Color Color::clone() const {
-        return Color( *this );
+    float Color::hueToRGB( float p, float q, float t ) {
+        if( t < 0.0 )
+            t += 1.0;
+        if( t > 1.0 )
+            t -= 1.0;
+        
+        if( t < (1.0 / 6.0))
+            return p + (q - p) * 6 * t;
+        
+        if( t < (1.0 / 2.0))
+            return q;
+        
+        if( t < (2.0 / 3.0))
+            return p + (q - p) * 6 * (2.0 / 3.0 - t);
+        return p;
     }
-    
 }

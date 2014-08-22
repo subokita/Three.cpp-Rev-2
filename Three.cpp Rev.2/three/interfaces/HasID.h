@@ -10,11 +10,7 @@
 #define __Three_cpp_Rev_2__HasID__
 
 #include <iostream>
-#include "Math.h"
-
 namespace three {
-    
-    
     /***
      * Most objects should inherit this to have (presumably) unique-id
      */

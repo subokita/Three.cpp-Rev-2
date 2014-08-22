@@ -7,7 +7,8 @@
 //
 
 #include "PolyhedronGeometry.h"
-#include "Face3.h"
+#include "../cores/Face3.h"
+#include "../maths/MathUtils.h"
 
 using std::vector;
 using std::initializer_list;
@@ -95,8 +96,8 @@ namespace three {
         vector2D<TempVec> v( cols+1, vector<TempVec>(cols+1, TempVec()) );
 
         for( int i = 0; i <= cols; i++ ) {
-            TempVec aj = prepare( Math::lerp( a.vertex, c.vertex, i / cols ) );
-            TempVec bj = prepare( Math::lerp( b.vertex, c.vertex, i / cols ) );
+            TempVec aj = prepare( MathUtils::lerp( a.vertex, c.vertex, i / cols ) );
+            TempVec bj = prepare( MathUtils::lerp( b.vertex, c.vertex, i / cols ) );
             
             float rows = cols - i;
             
@@ -105,7 +106,7 @@ namespace three {
                     v[i][j] = aj;
                 }
                 else {
-                    v[i][j] = prepare( Math::lerp( aj.vertex, bj.vertex, j / rows) );
+                    v[i][j] = prepare( MathUtils::lerp( aj.vertex, bj.vertex, j / rows) );
                 }
             }
         }

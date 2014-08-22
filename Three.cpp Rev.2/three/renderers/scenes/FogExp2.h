@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include "IFog.h"
-#include "HasShaderUniforms.h"
+#include "../../interfaces/HasShaderUniforms.h"
 
 namespace three {
     class FogExp2 : public IFog {

@@ -7,18 +7,18 @@
 //
 
 #include "ShadowMapPlugin.h"
-#include "Frustum.h"
-#include "Scene.h"
+
 #include "Camera.h"
+#include "PerspectiveCamera.h"
+#include "OrthographicCamera.h"
+#include "Scene.h"
 #include "Shader.h"
 #include "ShaderLib.h"
 #include "ShaderLibraries.h"
 #include "ShadowTexture.h"
-#include "Projector.h"
-#include "PerspectiveCamera.h"
-#include "OrthographicCamera.h"
+#include "../cores/Projector.h"
 #include "VirtualLight.h"
-#include "Gyroscope.h"
+#include "../cores/Gyroscope.h"
 
 namespace three {
     ptr<ShadowMapPlugin> ShadowMapPlugin::create() {

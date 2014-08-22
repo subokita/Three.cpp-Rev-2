@@ -8,7 +8,7 @@
 
 #include "Sphere.h"
 #include "Box3.h"
-#include "Math.h"
+#include "MathUtils.h"
 
 #include <glm/gtc/matrix_access.hpp>
 
@@ -111,7 +111,7 @@ namespace three {
     
     Sphere& Sphere::applyMatrix( glm::mat4x4& mat ) {
         this->center   = glm::vec3( mat * glm::vec4( center, 1 ) );
-        this->radius   = this->radius * Math::getMaxScaleOnAxis( mat );
+        this->radius   = this->radius * MathUtils::getMaxScaleOnAxis( mat );
         return *this;
     }
     

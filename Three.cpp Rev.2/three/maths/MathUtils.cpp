@@ -1,12 +1,12 @@
 //
-//  Math.cpp
+//  MathUtils.cpp
 //  Three.cpp
 //
 //  Created by Saburo Okita on 27/06/14.
 //  Copyright (c) 2014 Saburo Okita. All rights reserved.
 //
 
-#include "Math.h"
+#include "MathUtils.h"
 #include <algorithm>
 #include <glm/gtc/matrix_access.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -21,7 +21,7 @@ namespace three {
      * Generate universal unique ID, based on: http://www.broofa.com/Tools/Math.uuid.htm
      * FIXME: Still not tested, not sure if the differences between datatypes in C++ and JavaScript might cause issues
      */
-    string Math::generateUUID() {
+    string MathUtils::generateUUID() {
         static const char chars[63] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         
         char uuid[36];
@@ -45,7 +45,7 @@ namespace three {
         return string(uuid);
     }
     
-    float Math::getMaxScaleOnAxis(glm::mat4x4 &mat) {
+    float MathUtils::getMaxScaleOnAxis(glm::mat4x4 &mat) {
         float scale_x = mat[0][0] * mat[0][0] + mat[0][1] * mat[0][1] + mat[0][2] * mat[0][2];
         float scale_y = mat[1][0] * mat[1][0] + mat[1][1] * mat[1][1] + mat[1][2] * mat[1][2];
         float scale_z = mat[2][0] * mat[2][0] + mat[2][1] * mat[2][1] + mat[2][2] * mat[2][2];
@@ -53,20 +53,20 @@ namespace three {
         return sqrtf(std::max( scale_x, std::max( scale_y, scale_z ) ));
     }
     
-    float Math::clamp( float val, float min, float max ) {
+    float MathUtils::clamp( float val, float min, float max ) {
         return (val < min) ? min : ((val > max) ? max: val );
     }
  
-    float Math::clampBottom( float val, float min ) {
+    float MathUtils::clampBottom( float val, float min ) {
         return val < min ? min: val;
     }
 
     
-    float Math::mapLinear( float val, float a1, float a2, float b1, float b2 ) {
+    float MathUtils::mapLinear( float val, float a1, float a2, float b1, float b2 ) {
         return b1 + (val - a1) * (b2 - b1) / (a2 - a1);
     }
     
-    float Math::smoothStep( float val, float min, float max ) {
+    float MathUtils::smoothStep( float val, float min, float max ) {
         if( val <= min )
             return 0.0;
         if( val >= max )
@@ -75,7 +75,7 @@ namespace three {
         return val * val * (3 - 2 * val);
     }
     
-    float Math::smootherStep( float val, float min, float max ) {
+    float MathUtils::smootherStep( float val, float min, float max ) {
         if( val <= min )
             return 0.0;
         if( val >= max )
@@ -84,60 +84,43 @@ namespace three {
         return val * val * val * ( val * (val * 6 - 15) + 10 );
     }
     
-    int Math::random16() {
+    int MathUtils::random16() {
         return ( 65280 * rand() + 255 * rand() ) / 65535;
     }
     
-    int Math::randomInt(float low, float high) {
+    int MathUtils::randomInt(float low, float high) {
         return low + floorf( rand() * (high - low + 1) );
     }
     
-    float Math::randomFloat(float low, float high) {
+    float MathUtils::randomFloat(float low, float high) {
         return low + rand() * (high - low);
     }
     
-    float Math::randomFloatSpread( float range ) {
+    float MathUtils::randomFloatSpread( float range ) {
         return range * (0.5 * rand() );
     }
     
-    int Math::sign( float x ) {
+    int MathUtils::sign( float x ) {
         return (x < 0) ? -1 : ((x > 0) ? +1 : 0);
     }
     
-    float Math::degToRad( float degree ){
+    float MathUtils::degToRad( float degree ){
         return degree * M_PI / 180.0;
     }
     
-    float Math::radToDeg( float radians ) {
+    float MathUtils::radToDeg( float radians ) {
         return radians * 180.0 / M_PI;
     }
     
-    bool Math::isPowerOfTwo( int value ){
+    bool MathUtils::isPowerOfTwo( int value ){
         return (value & (value - 1)) == 0 && value != 0;
     }
     
     
-    float Math::hueToRGB( float p, float q, float t ) {
-        if( t < 0.0 )
-            t += 1.0;
-        if( t > 1.0 )
-            t -= 1.0;
-        
-        if( t < (1.0 / 6.0))
-            return p + (q - p) * 6 * t;
-        
-        if( t < (1.0 / 2.0))
-            return q;
-        
-        if( t < (2.0 / 3.0))
-            return p + (q - p) * 6 * (2.0 / 3.0 - t);
-        return p;
-    }
     
     
     
-    
-    glm::mat4 Math::lookAt( glm::vec3 eye, glm::vec3 target, glm::vec3 up ) {
+    glm::mat4 MathUtils::lookAt( glm::vec3 eye, glm::vec3 target, glm::vec3 up ) {
         glm::vec3 z = glm::normalize(eye - target);
         
         if( glm::length(z) == 0.0 )
@@ -170,7 +153,7 @@ namespace three {
     }
     
     
-    glm::mat4x4 Math::composeMatrix( glm::vec3 position, glm::quat q, glm::vec3 scale ) {
+    glm::mat4x4 MathUtils::composeMatrix( glm::vec3 position, glm::quat q, glm::vec3 scale ) {
         glm::mat4x4 mat = glm::scale( glm::mat4_cast( q ), scale );
         mat[3][0] = position.x;
         mat[3][1] = position.y;
@@ -178,7 +161,7 @@ namespace three {
         return mat;
     }
     
-    void Math::decomposeMatrix( glm::mat4& mat, glm::vec3& position, glm::quat& quaternion, glm::vec3& scale ) {
+    void MathUtils::decomposeMatrix( glm::mat4& mat, glm::vec3& position, glm::quat& quaternion, glm::vec3& scale ) {
 //        glm::mat4 mat = glm::inverse( matrix );
         
         float sx = glm::length( glm::vec3( mat[0][0], mat[1][0], mat[2][0] ) );
@@ -219,7 +202,7 @@ namespace three {
     
     
     
-    glm::vec3 Math::applyQuaternion( glm::vec3& vec, glm::quat& q ) {
+    glm::vec3 MathUtils::applyQuaternion( glm::vec3& vec, glm::quat& q ) {
         glm::vec3 result;
         
 		float ix =  q.w * vec.x + q.y * vec.z - q.z * vec.y;
@@ -235,13 +218,13 @@ namespace three {
     }
     
     
-    glm::vec3 Math::lerp( glm::vec3 a, glm::vec3 b, float alpha ) {
+    glm::vec3 MathUtils::lerp( glm::vec3 a, glm::vec3 b, float alpha ) {
         return glm::vec3( a.x + (b.x - a.x) * alpha,
                           a.y + (b.y - a.y) * alpha,
                           a.z + (b.z - a.z) * alpha);
     }
     
-    bool Math::equals( glm::vec3 a, glm::vec3 b, int precision ) {
+    bool MathUtils::equals( glm::vec3 a, glm::vec3 b, int precision ) {
         float multiplier = pow(10, precision);
         return glm::round(a * multiplier) == glm::round(b * multiplier);
     }

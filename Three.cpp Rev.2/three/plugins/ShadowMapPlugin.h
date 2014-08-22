@@ -10,9 +10,9 @@
 #define __Three_cpp_Rev_2__ShadowMapPlugin__
 
 #include <iostream>
-#include "internal_headers.h"
+#include "../internal_headers.h"
 #include "RenderPlugin.h"
-#include "Frustum.h"
+#include "../maths/Frustum.h"
 
 namespace three {
     class ShadowMapPlugin : public RenderPlugin {

@@ -7,7 +7,7 @@
 //
 
 #include "CameraControl.h"
-#include "three.h"
+#include "../three.h"
 
 namespace three {
     

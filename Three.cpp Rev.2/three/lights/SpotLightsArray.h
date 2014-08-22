@@ -10,9 +10,9 @@
 #define __Three_cpp_Rev_2__SpotLightsArray__
 #include <iostream>
 #include <map>
-#include "internal_headers.h"
+#include "../internal_headers.h"
 #include "SpotLight.h"
-#include "HasShaderUniforms.h"
+#include "../interfaces/HasShaderUniforms.h"
 
 namespace three {
     class SpotLightsArray: public HasShaderUniforms {

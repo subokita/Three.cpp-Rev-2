@@ -13,8 +13,8 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-#include "internal_headers.h"
-#include "Color.h"
+#include "../internal_headers.h"
+#include "../maths/Color.h"
 
 namespace three {
     

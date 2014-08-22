@@ -7,6 +7,8 @@
 //
 
 #include "PerspectiveCamera.h"
+#include "../maths/MathUtils.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace three {
@@ -41,7 +43,7 @@ namespace three {
         if ( frame_height < 1.0 )
             frame_height = 24.0;
         
-        this->fov = 2 * Math::radToDeg( atan( frame_height / (focal_length * 2.0) ) );
+        this->fov = 2 * MathUtils::radToDeg( atan( frame_height / (focal_length * 2.0) ) );
         updateProjectionMatrix();
     }
     
@@ -63,7 +65,7 @@ namespace three {
         if( this->fullWidth > 0.0 ) {
             
             float aspect = fullWidth / fullHeight;
-            float top    = tan( Math::degToRad( fov * 0.5 ) ) * near;
+            float top    = tan( MathUtils::degToRad( fov * 0.5 ) ) * near;
             float bottom = -top;
             float left   = aspect * bottom;
             float right  = aspect * top;

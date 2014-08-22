@@ -11,11 +11,10 @@
 
 #include <iostream>
 
-#include "fontstash.h"
-
-#include "internal_headers.h"
+#include "../../fontstash/fontstash.h"
+#include "../internal_headers.h"
+#include "../maths/Color.h"
 #include "Rect.h"
-#include "Color.h"
 
 namespace three {
     class TextInfo;

@@ -10,6 +10,7 @@
 #include "SpotLight.h"
 #include "ShaderLib.h"
 #include "Shader.h"
+#include "../maths/MathUtils.h"
 
 namespace three {
     
@@ -63,7 +64,7 @@ namespace three {
             intensities.push_back(light->intensity);
             positions.push_back  (light->position);
             directions.push_back (glm::normalize(light->position - light->target->position));
-            cos_angles.push_back (cosf(Math::degToRad(light->angle)));
+            cos_angles.push_back (cosf(MathUtils::degToRad(light->angle)));
             exponents.push_back  (light->exponent);
             distances.push_back  (light->distance);
         }

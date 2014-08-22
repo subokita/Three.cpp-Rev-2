@@ -7,8 +7,8 @@
 //
 
 #include "Loader.h"
-#include "Geometry.h"
-#include "Face3.h"
+#include "../cores/Geometry.h"
+#include "../cores/Face3.h"
 #include "Mesh.h"
 
 namespace three {

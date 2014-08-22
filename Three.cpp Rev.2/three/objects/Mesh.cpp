@@ -9,13 +9,13 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "ShaderLib.h"
-#include "Geometry.h"
+#include "../cores/Geometry.h"
 #include "Material.h"
 #include "NormalMap.h"
 #include "SpecularMap.h"
-#include "Face3.h"
+#include "../cores/Face3.h"
 #include "EnvMap.h"
-#include "Box3.h"
+#include "../maths/Box3.h"
 
 namespace three {
     

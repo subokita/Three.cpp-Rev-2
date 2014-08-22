@@ -10,6 +10,7 @@
 #include "DirectionalLight.h"
 #include "ShaderLib.h"
 #include "Shader.h"
+#include "../maths/MathUtils.h"
 
 namespace three {
     
