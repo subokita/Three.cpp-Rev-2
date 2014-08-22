@@ -11,11 +11,11 @@
 
 #include <iostream>
 #include "IFog.h"
-#include "../../internal_headers.h"
+#include "internal_headers.h"
 #include "Object3D.h"
 #include "Mesh.h"
 #include "AmbientLight.h"
-#include "../../interfaces/HasShaderUniforms.h"
+#include "HasShaderUniforms.h"
 #include "DirectionalLightsArray.h"
 #include "HemisphereLightsArray.h"
 #include "PointLightsArray.h"

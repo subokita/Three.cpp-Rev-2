@@ -11,8 +11,8 @@
 
 #include <iostream>
 
-#include "../../fontstash/fontstash.h"
-#include "../internal_headers.h"
+#include "fontstash.h"
+#include "internal_headers.h"
 #include "Color.h"
 #include "Rect.h"
 

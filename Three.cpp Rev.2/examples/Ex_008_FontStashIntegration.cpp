@@ -18,7 +18,7 @@ namespace three  {
     }
     
     void Ex_008_FontStashIntegration::run() {
-        const string path = "/Users/saburookita/Personal Projects/Three.cpp Rev.2/examples/assets/";
+        const string path = "../examples/assets/";
         
         Renderer renderer;
         renderer.init( "Ex 008: FontStash integration test", 1600 * 2 / 4, 900 * 2 / 4 );

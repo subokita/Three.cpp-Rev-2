@@ -18,8 +18,8 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "EventDispatcher.h"
-#include "../Constants.h"
-#include "../interfaces/HasID.h"
+#include "Constants.h"
+#include "HasID.h"
 
 namespace three {
     static unsigned int Object3DIDCount = 0;

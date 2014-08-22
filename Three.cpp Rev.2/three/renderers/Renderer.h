@@ -13,7 +13,7 @@
 #include <map>
 #include <vector>
 
-#include "../internal_headers.h"
+#include "internal_headers.h"
 #include "Color.h"
 
 #include "FontStashAdapter.h"

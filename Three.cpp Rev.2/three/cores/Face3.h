@@ -13,7 +13,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-#include "../Constants.h"
+#include "Constants.h"
 #include "Utils.h"
 #include "Color.h"
 

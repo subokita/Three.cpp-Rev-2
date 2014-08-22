@@ -7,7 +7,7 @@
 //
 
 #include "Material.h"
-#include "../Constants.h"
+#include "Constants.h"
 
 namespace three {
     Material::Material() :

@@ -10,8 +10,8 @@
 #define __Three_cpp_Rev_2__IFog__
 
 #include <iostream>
-#include "../../internal_headers.h"
-#include "../../interfaces/HasShaderUniforms.h"
+#include "internal_headers.h"
+#include "HasShaderUniforms.h"
 #include "Color.h"
 
 namespace three {

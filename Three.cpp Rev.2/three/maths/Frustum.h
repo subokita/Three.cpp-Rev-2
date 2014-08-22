@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <vector>
-#include "../internal_headers.h"
+#include "internal_headers.h"
 
 namespace three {
     class Frustum{

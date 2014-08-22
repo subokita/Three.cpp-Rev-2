@@ -7,7 +7,7 @@
 //
 
 #include "Scene.h"
-#include "../../three.h"
+#include "three.h"
 
 namespace three {
     Scene::Scene() :

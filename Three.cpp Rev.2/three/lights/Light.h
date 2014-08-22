@@ -10,13 +10,13 @@
 #define __Three_cpp_Rev_2__Light__
 
 #include <iostream>
-#include "../internal_headers.h"
+#include "internal_headers.h"
 
 #include "Color.h"
 #include "Object3D.h"
 #include "RenderTarget.h"
 #include "CastsShadow.h"
-#include "../interfaces/HasShaderUniforms.h"
+#include "HasShaderUniforms.h"
 
 namespace three {
     class Light : public Object3D, public CastsShadow {

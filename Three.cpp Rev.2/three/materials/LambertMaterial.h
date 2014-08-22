@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-#include "../internal_headers.h"
+#include "internal_headers.h"
 #include "Material.h"
 #include "Color.h"
 

@@ -10,10 +10,10 @@
 #define __Three_cpp_Rev_2__PhongMaterial__
 
 #include <iostream>
-#include "../internal_headers.h"
+#include "internal_headers.h"
 #include "Material.h"
 #include "Color.h"
-#include "../Constants.h"
+#include "Constants.h"
 
 namespace three {
     class PhongMaterial: public Material {

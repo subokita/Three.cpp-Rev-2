@@ -9,8 +9,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "three/three.h"
-#include "examples/examples_header.h"
+#include "three.h"
+#include "examples_header.h"
 
 using namespace std;
 using namespace three;
