@@ -18,9 +18,8 @@ Just be warned that I haven't tried out the part where it automatically installs
 
 After cloning the repository, go to build/ and run install.sh, it should install Homebrew and the necessary libraries (e.g. glfw3, glm, etc) when it's needed. After that it will proceed to run cmake and make to build the three.cpp library, and run a test program
 
-Current Progress
+[Current Progress](https://github.com/subokita/Three.cpp-Rev-2/wiki/Current-Progress)
 ================
-Read more about it here: https://github.com/subokita/Three.cpp-Rev-2/wiki/Current-Progress
 
 The code is doing okay, might not be game developers' level, but it works, it shows what it needs to show, and it's quite straightforward.
 
@@ -55,6 +54,6 @@ Working Examples
 
 ![Integration with FontStash](https://subokita.files.wordpress.com/2014/08/2014-08-18-14_19_12.gif?w=400)
 
-FAQ
+[FAQ](https://github.com/subokita/Three.cpp-Rev-2/wiki/FAQs)
 ===
 Read more about it here: https://github.com/subokita/Three.cpp-Rev-2/wiki/FAQs
