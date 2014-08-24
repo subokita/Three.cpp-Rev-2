@@ -58,8 +58,8 @@ namespace three {
             
             size++;
             directions.push_back ( light->position );
-            colors.push_back     ( light->color );
-            intensities.push_back( light->intensity );
+            colors.push_back     ( light->getColor() );
+            intensities.push_back( light->getIntensity() );
         }
     }
     

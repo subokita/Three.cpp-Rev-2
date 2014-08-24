@@ -26,9 +26,8 @@ namespace three {
         Light( const Color color, const float intensity );
         virtual ~Light();
         
-    public:
-        Color color;
-        float intensity;
+        const Color& getColor();
+        const float getIntensity();
         
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const Light& obj ) {
@@ -37,6 +36,11 @@ namespace three {
             os << "}";
             return os;
         }
+        
+        
+    protected:
+        Color color;
+        float intensity;
     };
 }
 

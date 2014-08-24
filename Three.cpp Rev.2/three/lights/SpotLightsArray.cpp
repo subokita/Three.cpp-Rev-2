@@ -60,8 +60,8 @@ namespace three {
                 continue;
             
             size++;
-            colors.push_back     (light->color);
-            intensities.push_back(light->intensity);
+            colors.push_back     (light->getColor() );
+            intensities.push_back(light->getIntensity() );
             positions.push_back  (light->position);
             directions.push_back (glm::normalize(light->position - light->target->position));
             cos_angles.push_back (cosf(MathUtils::degToRad(light->angle)));

@@ -20,4 +20,13 @@ namespace three {
     {}
     
     Light::~Light(){}
+    
+    
+    const Color& Light::getColor() {
+        return this->color;
+    }
+    
+    const float Light::getIntensity() {
+        return this->intensity;
+    }
 }

@@ -14,23 +14,12 @@
 
 namespace three {
     class PointLight: public Light {
-    friend class ShaderLib;
 
     public:
         static ptr<PointLight> create( const glm::vec3 position, const Color color, const float intensity, const float distance );
         ~PointLight();
         
         const float getDistance();
-        
-    protected:
-        /** Constructors **/
-        PointLight();
-        PointLight( const glm::vec3 position, const Color color, const float intensity, const float distance );
-
-        
-        /* Data members */
-        float distance;
-        
         
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const PointLight& obj ) {
@@ -40,6 +29,13 @@ namespace three {
             os << "}";
             return os;
         }
+        
+    protected:
+        PointLight();
+        PointLight( const glm::vec3 position, const Color color, const float intensity, const float distance );
+
+    protected:
+        float distance;
     };
 }
 

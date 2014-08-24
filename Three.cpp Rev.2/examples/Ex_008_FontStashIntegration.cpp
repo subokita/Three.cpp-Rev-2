@@ -18,6 +18,7 @@ namespace three  {
     }
     
     void Ex_008_FontStashIntegration::run() {
+//        const string path = "/Users/saburookita/Personal Projects/Three.cpp Rev.2/examples/assets/";
         const string path = "../examples/assets/";
         
         Renderer renderer;
