@@ -154,19 +154,15 @@ namespace three  {
                     case GLFW_KEY_P:
                         for( auto statue: statues ) {
                             statue->getMaterial()->setPolygonMode( POLYGON_MODE::POINT );
-                            statue->getMaterial()->setLineWidth(2.0f);
                         }
                         sphere->getMaterial()->setPolygonMode( POLYGON_MODE::POINT );
-                        sphere->getMaterial()->setLineWidth(2.0f);
                         break;
                         
                     case GLFW_KEY_W:
                         for( auto statue: statues ) {
                             statue->getMaterial()->setPolygonMode( POLYGON_MODE::WIREFRAME );
-                            statue->getMaterial()->setLineWidth(1.0f);
                         }
                         sphere->getMaterial()->setPolygonMode( POLYGON_MODE::WIREFRAME );
-                        sphere->getMaterial()->setLineWidth(1.0f);
                         break;
                         
                     case GLFW_KEY_R: /* Toggle rotation */

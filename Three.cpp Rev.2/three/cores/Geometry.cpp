@@ -44,6 +44,18 @@ namespace three {
     }
     
     
+    void Geometry::addVertices( std::vector<glm::vec3>& vertices ) {
+        this->vertices.insert( this->vertices.end(), vertices.begin(), vertices.end() );
+    }
+    
+    void Geometry::addFaces( std::vector<ptr<Face3>>& faces ) {
+        this->faces.insert( this->faces.end(), faces.begin(), faces.end() );
+    }
+    
+    const std::vector<ptr<Face3>>& Geometry::getFaces() {
+        return this->faces;
+    }
+    
     const std::vector<glm::vec3>& Geometry::getVertices() {
         return this->vertices;
     }

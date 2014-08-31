@@ -385,7 +385,7 @@ namespace three {
             return false;
         }
         else {
-            os << message << ": OK" << endl;
+//            os << message << ": OK" << endl;
             return true;
         }
     }

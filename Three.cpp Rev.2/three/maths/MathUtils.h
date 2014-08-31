@@ -35,6 +35,8 @@ namespace three {
         static bool isPowerOfTwo( int value );
         static glm::vec3 lerp( glm::vec3 a, glm::vec3 b, float alpha );
         
+        static glm::mat4x4 rodriguesToMatrix( glm::vec3 rodrigues_vector );
+        
         static glm::mat4x4 composeMatrix( glm::vec3 position, glm::quat quaternion, glm::vec3 scale );
         static void decomposeMatrix( glm::mat4& mat, glm::vec3& position, glm::quat& quaternion, glm::vec3& scale );
         

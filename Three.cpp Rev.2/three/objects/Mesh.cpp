@@ -245,8 +245,43 @@ namespace three {
     void Mesh::draw() {
         
         glPolygonMode( GL_FRONT_AND_BACK, static_cast<GLint>(material->getPolygonMode()) );
-        glLineWidth( material->getLineWidth() );
-        glPointSize( material->getLineWidth() );
+        glPointSize( material->getPointSize() );
+        
+        switch( material->getBlendingMode() ) {
+            case BLENDING_MODE::NONE:
+                glDisable( GL_BLEND );
+                break;
+                
+            case BLENDING_MODE::ADDITIVE:
+                glEnable( GL_BLEND );
+                glBlendEquation( GL_FUNC_ADD );
+                glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+                break;
+                
+            case BLENDING_MODE::SUBTRACTIVE:
+                glEnable( GL_BLEND );
+                glBlendEquation( GL_FUNC_ADD );
+                glBlendFunc( GL_ZERO, GL_ONE_MINUS_SRC_ALPHA );
+                break;
+                
+            case BLENDING_MODE::MULTIPLY:
+                glEnable( GL_BLEND );
+                glBlendEquation( GL_FUNC_ADD );
+                glBlendFunc( GL_ZERO, GL_SRC_COLOR );
+                break;
+                
+            case BLENDING_MODE::CUSTOM:
+                //FIXME: do something
+                throw runtime_error( "Unimplemented blending equation" );
+                glEnable( GL_BLEND );
+                break;
+                
+            default:
+                glEnable( GL_BLEND );
+                glBlendEquationSeparate( GL_FUNC_ADD, GL_FUNC_ADD );
+                glBlendFuncSeparate( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
+                break;
+        }
         
         if( material->getSide() == SIDE::DOUBLE_SIDE )  {
             glDisable( GL_CULL_FACE );

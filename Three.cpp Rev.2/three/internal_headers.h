@@ -52,6 +52,9 @@ namespace three {
     class CameraControl;
     class Arcball;
     
+    /* ./three/helpers/ */
+    class CameraHelper;
+    
     /* ./three/lights */
     class CastsShadow;
     class Light;
@@ -107,6 +110,7 @@ namespace three {
     class TetrahedronGeometry;
     class SphereGeometry;
     class TorusGeometry;
+
     
     /* ./three/renderers */
     class Renderer;

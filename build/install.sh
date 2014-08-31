@@ -1,6 +1,8 @@
+#!/bin/bash 
+shopt -s extglob
 
-# First try to install all brew related stuff, and install everything that could be installed using brew
-clear
+# Install the libraries needed for three.cpp using Homebrew
+install_libraries() {
 	brew help
 
 	if [[ $? != 0 ]]; then
@@ -37,13 +39,10 @@ clear
 		echo "Installing freeimage"
 		brew install freeimage
 	fi
+}
 
-# Then try to install three.cpp
-
-clear
-	pwd
-	shopt -s extglob
-
+# Install the three.cpp library
+install_three_cpp() {
 	# Remove all the files
 	rm -rf !(install.sh)
 
@@ -54,7 +53,6 @@ clear
 	if [[ $? != 0 ]]; then
 		echo "Cmake failed"
 		rm -rf !(install.sh)
-
 		exit
 	fi
 
@@ -65,7 +63,6 @@ clear
 	if [[ $? != 0 ]]; then
 		echo "make failed"
 		rm -rf !(install.sh)
-
 		exit
 	fi
 
@@ -82,3 +79,26 @@ clear
 
 	echo "Test run"
 	./bin/main
+}
+
+
+
+if [[ $1 == "--clean" ]]; then
+	echo "Cleaning up files"
+	rm -rf !(install.sh)
+	clear
+elif [[ $1 == "" ]]; then
+	# First try to install all brew related stuff, and install everything that could be installed using brew
+	clear
+	install_libraries
+
+	# Then try to install three.cpp
+	clear
+	pwd
+	install_three_cpp
+else
+	echo "Unrecognized parameter"
+fi
+
+
+

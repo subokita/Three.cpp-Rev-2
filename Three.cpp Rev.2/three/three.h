@@ -32,7 +32,7 @@
 #include "Rect.h"
 
 /* ./three/helpers/ */
-
+#include "CameraHelper.h"
 
 /* ./three/lights */
 #include "Light.h"
@@ -89,6 +89,7 @@
 #include "TetrahedronGeometry.h"
 #include "SphereGeometry.h"
 #include "TorusGeometry.h"
+
 
 /* ./three/renderers */
 #include "Renderer.h"

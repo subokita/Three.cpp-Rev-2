@@ -60,7 +60,6 @@ namespace three  {
             statue->getGeometry()->rotateZ(y_rotations[i]);
             statue->castShadow      = true;
             statue->receiveShadow   = true;
-            statue->getMaterial()->setLineWidth(2.0);
             statue->setPointMode(true);
             
             auto bounding_box = statue->computeBoundingBox();

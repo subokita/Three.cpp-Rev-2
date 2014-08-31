@@ -26,13 +26,16 @@ namespace three {
         
         void addVertex( glm::vec3 vertex );
         void addFace( ptr<Face3> face );
+        void addVertices( std::vector<glm::vec3>& vertices );
+        void addFaces( std::vector<ptr<Face3>>& faces );
+        
+        const std::vector<glm::vec3>& getVertices();
+        const std::vector<ptr<Face3>>& getFaces();
         
         void mergeVertices();
         void computeFaceNormals();
         void computeVertexNormalsForNonMergedFaces();
         void computeVertexNormals( bool area_weighted );
-        
-        const std::vector<glm::vec3>& getVertices();
         
     protected:
         virtual void init();

@@ -153,6 +153,26 @@ namespace three {
     }
     
     
+    /**
+     * Convert from Rodrigues vector to Rotation matrix representation
+     */
+    glm::mat4x4 MathUtils::rodriguesToMatrix( glm::vec3 rodrigues_vector ) {
+        float theta     = sqrtf(glm::dot( rodrigues_vector, rodrigues_vector ));
+        float cos_theta = cosf( theta );
+        glm::vec3 r     = rodrigues_vector / theta;
+        
+        glm::mat3x3 symmetric_skew = {
+            0.0,   r.z, -r.y,
+            -r.z,  0.0,  r.x,
+            r.y, -r.x,  0.0
+        };
+        
+        return glm::mat4x4( cos_theta * glm::mat3( 1.0 ) +
+                            (1.0f - cos_theta) * glm::outerProduct(r, r) +
+                            sinf(theta) * symmetric_skew );
+    }
+    
+    
     glm::mat4x4 MathUtils::composeMatrix( glm::vec3 position, glm::quat q, glm::vec3 scale ) {
         glm::mat4x4 mat = glm::scale( glm::mat4_cast( q ), scale );
         mat[3][0] = position.x;

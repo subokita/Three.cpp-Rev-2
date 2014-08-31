@@ -7,6 +7,7 @@
 //
 
 #include "ScratchPad.h"
+#include <glm/gtx/quaternion.hpp>
 
 using namespace std;
 
@@ -23,52 +24,61 @@ namespace three  {
         renderer.init( "Scratch Pad", 1600 * 2 / 4, 900 * 2 / 4 );
         renderer.setCameraControl(Arcball::create(2.0f));
         
-        
         /* First load the fonts */
         renderer.addFont("droid-bold",      path + "fonts/DroidSerif-Bold.ttf");
         
-        /*Then write on screen*/
-        renderer.addText( "Test Torus", 40, 40, "droid-bold", 0xFF0000, 20.0f );
 
         /* Create scene */
         auto scene = Scene::create();
-        scene->setFog(Fog::create( 0x72645b, 2.0, 15.0 ));
+        scene->setFog(Fog::create( 0x72645b, 2.0, 100000.0 ));
         scene->setViewport( 0.0, 0.0, renderer.getWidth(), renderer.getHeight() );
         scene->setShadowMapType( SHADOW_MAP::PCF_SOFT );
         
         /* Create camera */
-        auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100.0 );
+        auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100000.0 );
         camera->translate(0.0, 1.5, 5.5);
         camera->lookAt( 0.0, 1.0, 0.0 );
         
-        auto torus = Mesh::create( TorusGeometry::create(0.5, 0.25, 40, 30), PhongMaterial::create( 0xFF00FF, 0x0, 0x0, 0x222222, 10.0, true ) );
-        torus->translate( -4.0f, 0.75f, 0.0f );
-        torus->receiveShadow = true;
-        torus->castShadow    = true;
-        scene->add(torus);
+        /* Load our ply models */
+        const string ply_path = "/Users/saburookita/Sandbox/VoxelCarving/";
+        const vector<string> filenames = {
+            "morpheus/morpheus.ply",
+        };
         
-        auto octahedron = Mesh::create( OctahedronGeometry::create(1.0), PhongMaterial::create(0x00FFFF, 0x0, 0x0, 0222222, 1.0, true));
-        octahedron->translate(-2.0f, 1.0f, 0.0f);
-        octahedron->receiveShadow = true;
-        octahedron->castShadow    = true;
-        scene->add(octahedron);
+        vector<ptr<Mesh>> statues;
         
-        auto tetrahedron = Mesh::create( TetrahedronGeometry::create(1.0), PhongMaterial::create(0x0000FF, 0x0, 0x0, 0222222, 1.0, true));
-        tetrahedron->translate(0.0f, 1.0f, 0.0f);
-        tetrahedron->receiveShadow = true;
-        tetrahedron->castShadow    = true;
-        scene->add(tetrahedron);
+        for( int i = 0; i < filenames.size(); i++ ) {
+            auto statue = Loader::loadPLY( ply_path, filenames[i], 0
+                                          | aiProcess_JoinIdenticalVertices
+                                          | aiProcess_GenSmoothNormals );
+            
+            statue->setMaterial(PhongMaterial::create(0x777777, 0x0, 0x777777, 0x0, 0, true));
+            statue->getGeometry()->rotateX(-90.0f);
+            statue->castShadow      = true;
+            statue->receiveShadow   = true;
+            statue->setPointMode(true);
+            
+            auto bounding_box = statue->computeBoundingBox();
+            
+            glm::vec3 size    = bounding_box->size();
+            glm::vec3 center  = bounding_box->center();
+            cout << center << endl;
+            cout << size << endl;
+            
+            statue->translate( 0.0, -(center.y - size.y * 0.5), 0.0);
+            
+            scene->add( statue );
+            statues.push_back( statue );
+            
+            camera->translate(center.x, center.y, size.x );
+            camera->lookAt( center );
+        }
         
+        ptr<Mesh> cam_helper = CameraHelper::create(glm::vec3(0.0, 1.5, -5.5), glm::vec3(0.0));
+        scene->add( cam_helper );
         
-        auto icosahedron = Mesh::create( IcosahedronGeometry::create(1.0), PhongMaterial::create(0xFF00FF, 0x0, 0x0, 0222222, 1.0, true));
-        icosahedron->translate(2.0f, 1.0f, 0.0f);
-        icosahedron->receiveShadow = true;
-        icosahedron->castShadow    = true;
-        scene->add(icosahedron);
-        
-        
-        auto plane = Mesh::create( PlaneGeometry::create(20.0f),
-                                  PhongMaterial::create(0x777777, 0x777777, 0x0, 0x999999, 30) );
+        /* Add the ground plane */
+        auto plane = Mesh::create( PlaneGeometry::create(50.0f), PhongMaterial::create() );
         plane->rotateX(-90.0f);
         plane->receiveShadow = true;
         scene->add( plane );
@@ -108,8 +118,7 @@ namespace three  {
             light_rotation_1 += 0.01;
             
             if( rotate_objects ) {
-                torus->rotateY(1.0f);
-                octahedron->rotateY(-1.0f);
+                statues[0]->rotateY(1.0f);
             }
         });
         

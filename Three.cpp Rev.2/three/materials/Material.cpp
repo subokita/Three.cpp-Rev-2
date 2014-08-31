@@ -36,7 +36,7 @@ namespace three {
         needsUpdate         = true;
         
         polygonMode         = POLYGON_MODE::POLYGON;
-        lineWidth           = 1;
+        pointSize           = 1.0;
         wireframeLinecap    = "round";
         wireframeLinejoin   = "round";
         
@@ -48,20 +48,20 @@ namespace three {
         
     }
     
+    float Material::getPointSize() {
+        return pointSize;
+    }
+    
+    void Material::setPointSize( float size ) {
+        this->pointSize = size;
+    }
+    
     void Material::setPolygonMode(three::POLYGON_MODE mode) {
         this->polygonMode = mode;
     }
     
     const POLYGON_MODE Material::getPolygonMode() {
         return polygonMode;
-    }
-    
-    int Material::getLineWidth() {
-        return lineWidth;
-    }
-    
-    void Material::setLineWidth( float width ) {
-        lineWidth = width;
     }
     
     const SIDE Material::getSide() {

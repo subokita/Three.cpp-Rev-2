@@ -60,8 +60,9 @@ namespace three {
         float getOpacity();
         bool isTransparent();
         const BLENDING_MODE getBlendingMode();
+        float getPointSize();
         
-        void setLineWidth( float width );
+        void setPointSize( float size );
         void setPolygonMode( POLYGON_MODE mode );
         void setSide(SIDE side);
         void setVisible( bool flag );
@@ -78,7 +79,7 @@ namespace three {
         SIDE side;
         
         POLYGON_MODE polygonMode;
-        float       lineWidth;
+        float       pointSize;
         std::string wireframeLinecap;
         std::string wireframeLinejoin;
 
