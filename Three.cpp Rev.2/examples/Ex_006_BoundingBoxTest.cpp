@@ -19,7 +19,7 @@ namespace three  {
     void Ex_006_BoundingBoxTest::run() {
         const string path = "/Users/saburookita/Personal Projects/Three.cpp Rev.2/examples/assets/";
         
-        Renderer renderer;
+        ForwardRenderer renderer;
         renderer.init( "Ex 006: Bounding Box Tests", 1600 * 2 / 4, 900 * 2 / 4 );
         renderer.setCameraControl(Arcball::create(2.0f));
         

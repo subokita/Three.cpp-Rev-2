@@ -17,7 +17,7 @@ namespace three  {
     }
     
     void Ex_001_SimplePrimitives::run() {
-        Renderer renderer;
+        ForwardRenderer renderer;
         renderer.init( "Ex 001: Simple Primitives", 1600 * 2 / 4, 900 * 2 / 4 );
         renderer.setCameraControl(Arcball::create(2.0f));
         

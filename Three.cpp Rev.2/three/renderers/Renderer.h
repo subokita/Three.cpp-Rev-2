@@ -24,8 +24,8 @@ namespace three {
         Renderer();
         virtual ~Renderer();
         
-        void init( std::string window_title, GLuint window_width, GLuint window_height );
-        void render( ptr<Scene> scene, ptr<Camera> camera );
+        virtual void init( std::string window_title, GLuint window_width, GLuint window_height ) = 0;
+        virtual void render( ptr<Scene> scene, ptr<Camera> camera ) = 0;
         void setDefaultGLState();
         
         void setPostRenderCallbackHandler ( std::function<void()> handler );

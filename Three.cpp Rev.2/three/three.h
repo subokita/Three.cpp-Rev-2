@@ -93,6 +93,7 @@
 
 /* ./three/renderers */
 #include "Renderer.h"
+#include "ForwardRenderer.h"
 #include "RenderTarget.h"
 
 /* ./three/textures */

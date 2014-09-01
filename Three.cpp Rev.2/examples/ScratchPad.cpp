@@ -20,7 +20,7 @@ namespace three  {
     void ScratchPad::run() {
         const string path = "/Users/saburookita/Personal Projects/Three.cpp Rev.2/examples/assets/";
         
-        Renderer renderer;
+        ForwardRenderer renderer;
         renderer.init( "Scratch Pad", 1600 * 2 / 4, 900 * 2 / 4 );
         renderer.setCameraControl(Arcball::create(2.0f));
         

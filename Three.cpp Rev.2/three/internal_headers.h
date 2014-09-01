@@ -114,6 +114,7 @@ namespace three {
     
     /* ./three/renderers */
     class Renderer;
+    class ForwardRenderer;
     class RenderTarget;
     
     /* ./three/renderers/scenes */
