@@ -1,3 +1,8 @@
+Notification:
+=======
+If the version of three.cpp that you're suing doesn't show any shadow mapping, then try to get the newest version, I have already fixed the issue.
+
+
 Three.cpp (Rev 2)
 =========
 
