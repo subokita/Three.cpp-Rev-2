@@ -15,9 +15,9 @@
 #include <glm/glm.hpp>
 
 #define instance_of(var, type) ( std::dynamic_pointer_cast<type>(var) != nullptr )
-#define downcast(var, type) (std::dynamic_pointer_cast<type>(var))
+#define downcast(var, type) ( std::dynamic_pointer_cast<type>(var) )
 
-//#define DEBUG_SHADOW
+#define DEBUG_SHADOW
 
 /* Use alias declaration instead of macro definitions */
 template<typename T>
@@ -26,8 +26,8 @@ using ptr = std::shared_ptr<T>;
 template<typename T>
 using vector2D = std::vector<std::vector<T>>;
 
-static const float MAX_FLOAT = std::numeric_limits<GLfloat>::max();
-static const float MIN_FLOAT = -MAX_FLOAT;
+static const float MAX_FLOAT     = std::numeric_limits<GLfloat>::max();
+static const float MIN_FLOAT     = -MAX_FLOAT;
 static const glm::vec3 NULL_VEC3 = glm::vec3( MIN_FLOAT, MIN_FLOAT, MIN_FLOAT );
 
 
@@ -169,13 +169,13 @@ namespace three {
     static const int RGBA_S3TC_DXT5_Format = 2004;
     
     
-    static std::function<void()> UVMapping = [](){};
-    
-    static std::function<void()> CubeReflectionMapping = [](){};
-    static std::function<void()> CubeRefractionMapping = [](){};
-    
-    static std::function<void()> SphericalReflectionMapping = [](){};
-    static std::function<void()> SphericalRefractionMapping = [](){};
+//    static std::function<void()> UVMapping = [](){};
+//    
+//    static std::function<void()> CubeReflectionMapping = [](){};
+//    static std::function<void()> CubeRefractionMapping = [](){};
+//    
+//    static std::function<void()> SphericalReflectionMapping = [](){};
+//    static std::function<void()> SphericalRefractionMapping = [](){};
 };
 
 

@@ -178,9 +178,6 @@ namespace three {
     void ShadowMapPlugin::setState( ptr<Scene> scene, ptr<Camera> camera ) {
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glDisable( GL_BLEND );
-        glEnable( GL_CULL_FACE );
-        glCullFace( GL_FRONT_AND_BACK );
-        
         glEnable( GL_DEPTH_TEST );
     }
 
@@ -217,6 +214,7 @@ namespace three {
                 
                 if( frustum->intersects(object) == false )
                     continue;
+                
                 
                 depthShader->draw(shadow_cam, nullptr, object, false );
             }
@@ -293,14 +291,14 @@ namespace three {
     void ShadowMapPlugin::updateVirtualLight( ptr<Light> light, int cascade ) {
         ptr<VirtualLight> virtual_light = light->shadowCascadeArray[cascade];
         
-        virtual_light->position = light->position;
+        virtual_light->position         = light->position;
         virtual_light->target->position = light->target->position ;
         
         virtual_light->lookAt( virtual_light->target->position );
         
         virtual_light->shadowCameraVisible  = light->shadowCameraVisible;
         virtual_light->shadowDarkness       = light->shadowDarkness;
-        virtual_light->shadowBias           = light->shadowBias;
+        virtual_light->shadowBias           = light->shadowCascadeBias[cascade];
         
         float near_z = light->shadowCascadeNearZ[cascade];
         float far_z  = light->shadowCascadeFarZ[cascade];

@@ -27,6 +27,7 @@ namespace three {
         void initGLBuffers();
         void draw();
 
+        void setGLState();
         virtual void setUniforms(ptr<ShaderLib> shader_lib, bool gamma ) override;
         
         bool hasTexture();

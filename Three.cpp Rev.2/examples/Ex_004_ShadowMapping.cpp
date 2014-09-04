@@ -87,7 +87,7 @@ namespace three  {
         /* Create a (rotating) directional light */
         auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3( 3.0, 1.0, 3.0 ) );
         dir_light->castShadow       = true;
-        dir_light->shadowBias       = -0.001;
+        dir_light->shadowBias       = -0.0005;
         dir_light->shadowMapSize    = glm::vec2(512);
         scene->add( dir_light );
         

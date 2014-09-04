@@ -107,6 +107,9 @@ namespace three {
                 if( instance_of(object, Mesh) == false )
                     continue;
                 
+                /* Set the GL state here */
+                downcast(object, Mesh)->setGLState();
+                
                 ptr<ShaderLib> shader_lib = shaderLibs[object->shaderID];
                 shader_lib->bind();
                 {

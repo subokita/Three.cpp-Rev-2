@@ -27,6 +27,35 @@ namespace three {
         Material();
         virtual ~Material();
         
+        const POLYGON_MODE getPolygonMode();
+        bool isVisible();
+        bool requiresUpdate();
+        bool doesWrapAround();
+        
+        int getLineWidth();
+        const SIDE getSide();
+        const glm::vec3 getWrapRGB();
+        float getAlphaTest();
+        const SHADING getShading();
+        float getOpacity();
+        bool isTransparent();
+        const BLENDING_MODE getBlendingMode();
+        float getPointSize();
+        
+        void setGLState();
+        void setPointSize( float size );
+        void setPolygonMode( POLYGON_MODE mode );
+        void setSide(SIDE side);
+        void setVisible( bool flag );
+        void setRequiresUpdate( bool flag );
+        void setWrapAround( bool flag );
+        void setWrapRGB( const glm::vec3 wrap_rgb );
+        void setAlphaTest(const float alpha);
+        void setShading( SHADING shading );
+        void setOpacity( float opacity );
+        void setTransparent( bool flag );
+        void setBlendingMode( BLENDING_MODE mode );
+        
         /** Output stream overloading */
         friend std::ostream &operator <<( std::ostream& os, const Material& obj ) {
             os << "Material {" << std::endl;
@@ -47,34 +76,7 @@ namespace three {
             return os;
         }
         
-        const POLYGON_MODE getPolygonMode();
-        bool isVisible();
-        bool requiresUpdate();
-        bool doesWrapAround();
         
-        int getLineWidth();
-        const SIDE getSide();
-        const glm::vec3 getWrapRGB();
-        float getAlphaTest();
-        const SHADING getShading();
-        float getOpacity();
-        bool isTransparent();
-        const BLENDING_MODE getBlendingMode();
-        float getPointSize();
-        
-        void setPointSize( float size );
-        void setPolygonMode( POLYGON_MODE mode );
-        void setSide(SIDE side);
-        void setVisible( bool flag );
-        void setRequiresUpdate( bool flag );
-        void setWrapAround( bool flag );
-        void setWrapRGB( const glm::vec3 wrap_rgb );
-        void setAlphaTest(const float alpha);
-        void setShading( SHADING shading );
-        void setOpacity( float opacity );
-        void setTransparent( bool flag );
-        void setBlendingMode( BLENDING_MODE mode );
-
     protected:
         SIDE side;
         
