@@ -49,8 +49,6 @@ namespace three {
     
     
     void Material::setGLState() {
-        glPointSize( this->pointSize );
-        
         //FIXME: causing problems for the shadow
         switch( this->blending ) {
             case BLENDING_MODE::NONE:

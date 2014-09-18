@@ -25,9 +25,11 @@ namespace three {
                   instance_of(mesh->getMaterial(), LineBasicMaterial ) )
             return SHADERLIB_BASIC->clone();
         
-        
         else if ( instance_of(mesh->getMaterial(), LambertMaterial))
             return SHADERLIB_LAMBERT->clone();
+        
+        else if( instance_of(mesh->getMaterial(), ParticleSystemMaterial))
+            return SHADERLIB_PARTICLE_BASIC->clone();
         
         return nullptr;
     }
@@ -119,7 +121,10 @@ namespace three {
         ss.str("");
         ss << "#define MAX_SPOT_LIGHTS " << scene->getSpotLights().getSize();
         this->defines.push_back( ss.str() );
-        
+    
+        ss.str("");
+        ss << "#define POINT_SIZE " << mesh->getMaterial()->getPointSize();
+        this->defines.push_back( ss.str() );
         
         if( mesh->hasTexture() ) {
             this->defines.push_back( "#define USE_MAP" );
@@ -212,7 +217,13 @@ namespace three {
         shader->setUniform( "normal_mat", glm::inverseTranspose( glm::mat3(mv) ) );
         shader->setUniform( "model_view_mat", mv );
         
-        if( instance_of(object, Mesh ) ) {
+        if( instance_of( object, ParticleSystem) ) {
+            ptr<ParticleSystem> particle_system = downcast(object, ParticleSystem) ;
+            particle_system->sort(camera);
+            particle_system->setUniforms(shared_from_this(), gamma_input );
+            particle_system->draw();
+        }
+        else if( instance_of(object, Mesh ) ) {
             ptr<Mesh> mesh = downcast(object, Mesh) ;
             mesh->setUniforms(shared_from_this(), gamma_input );
             mesh->draw();

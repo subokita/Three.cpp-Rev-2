@@ -28,9 +28,9 @@ namespace three {
         void debugShadow();
         
     protected:
-        ptr<VirtualLight> createVirtualLight( ptr<Light> light, int cascade );
-        void updateVirtualLight( ptr<Light> light, int cascade );
-        void updateShadowCamera( ptr<Camera> camera, ptr<VirtualLight> light );
+//        ptr<VirtualLight> createVirtualLight( ptr<Light> light, int cascade );
+//        void updateVirtualLight( ptr<Light> light, int cascade );
+//        void updateShadowCamera( ptr<Camera> camera, ptr<VirtualLight> light );
         
     protected:
         ptr<Texture> depthTexture;

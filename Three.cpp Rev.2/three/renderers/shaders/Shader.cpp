@@ -66,7 +66,7 @@ namespace three {
     void Shader::initFromSource( ShaderLib& shader ) {
         if( shader.empty() )
             throw runtime_error( "Unable to use empty shader code" );
-        
+                
         parseShader( shader );
         
         string vertex_code      = shader.constructVertexShader();
@@ -78,7 +78,6 @@ namespace three {
 //        cout << fragment_code << endl;
 //        Utils::printWithLineNumbers( vertex_code );
 //        Utils::printWithLineNumbers( fragment_code );
-        
         compileShader( vertex_code, fragment_code );
     }
     

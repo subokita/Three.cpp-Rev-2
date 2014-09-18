@@ -60,6 +60,15 @@ namespace three {
         return this->vertices;
     }
     
+    
+    void Geometry::setNoOfElements( int size ) {
+        this->noOfElements = size;
+    }
+    
+    int Geometry::getNoOfElements() const {
+        return this->noOfElements;
+    }
+    
     void Geometry::computeFaceNormals() {
         for( ptr<Face3> face: faces ) {
             glm::vec3 a = this->vertices[face->a];

@@ -56,6 +56,7 @@
 #include "LineBasicMaterial.h"
 #include "LambertMaterial.h"
 #include "PhongMaterial.h"
+#include "ParticleSystemMaterial.h"
 
 /* ./three/maths */
 #include "Box3.h"
@@ -71,6 +72,7 @@
 /* ./three/objects */
 #include "Mesh.h"
 #include "Loader.h"
+#include "ParticleSystem.h"
 
 /* ./three/others */
 #include "Utils.h"

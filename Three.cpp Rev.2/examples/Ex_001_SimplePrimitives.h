@@ -13,6 +13,9 @@
 #include "Example.h"
 
 namespace three {
+    /**
+     * Simple primitive examples
+     */
     class Ex_001_SimplePrimitives: public Example {
     public:
         static ptr<Ex_001_SimplePrimitives> create();

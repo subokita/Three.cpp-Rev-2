@@ -18,6 +18,53 @@ namespace three {
     using namespace std;
     
     namespace Chunks {
+        static const string pointSizeVertex = Utils::join({
+            "#ifdef SIZE_ATTENUATION",
+                "gl_PointSize = POINT_SIZE;",
+            "#else",
+                "gl_PointSize = POINT_SIZE;",
+            "#endif",
+            "",
+        }, "\t");
+        
+#pragma mark PARTICLE_BASIC
+        static const string particleBasicVertexParams = Utils::join({
+            "out vec3 eye_direction_c;",
+            "out vec3 vertex_pos_w;",
+            "",
+        });
+        
+        static const string particleBasicVertex = Utils::join({
+            "eye_direction_c   = vec3(0.0) - ( model_view_mat * vec4(vertex_pos_m, 1.0) ).xyz;",
+            "vertex_pos_w      = vec3( model_mat * vec4(vertex_pos_m, 1.0) );",
+            "vec3 vertex_pos_c = vec3( model_view_mat * vec4(vertex_pos_m, 1.0) );",
+            "gl_Position       = projection_mat * model_view_mat * vec4(vertex_pos_m, 1.0);",
+            
+            "",
+        }, "\t" );
+        
+        static const string particleBasicFragmentParams = Utils::join({
+            "out vec3 eye_direction_c;",
+            "in vec3 vertex_pos_w;",
+            
+            "uniform vec3 particle_color;",
+            "uniform float opacity;",
+            "",
+        });
+        
+        static const string particleBasicFragment_1 = Utils::join({
+            "frag_color = vec4( particle_color, opacity );",
+            "",
+        }, "\t" );
+        
+        
+        static const string textureParticleFragment = Utils::join({
+            "#ifdef USE_MAP",
+                "frag_color = frag_color * texture( map, vec2( gl_PointCoord.x, 1.0 - gl_PointCoord.y ) );",
+            "#endif",
+            "",
+        });
+        
 #pragma mark FONT_PASS
         static const string fontVertexParams = Utils::join({
             "layout (location = 0) in vec2 vertex_pos_m;",
@@ -169,7 +216,6 @@ namespace three {
             "layout (location = 0) in vec3 vertex_pos_m;",
             "layout (location = 1) in vec3 vertex_normal_m;",
             "layout (location = 2) in vec2 vertex_uv_m;",
-            
             
             "uniform mat4 model_mat;",
             "uniform mat4 model_view_mat;",
@@ -531,6 +577,7 @@ namespace three {
             "#endif",
             "",
         });
+        
         
 #pragma mark ALPHA_TEST
         static const string alphaTestFragment = Utils::join({

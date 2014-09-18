@@ -30,6 +30,7 @@ namespace three {
         glBuffersInitialized(false)
     {}
     
+    //FIXME: Can't remember why I commented this one out.
 //    Mesh::Mesh( ptr<Geometry> geometry, ptr<Material> material ) :
 //        geometry            ( geometry ),
 //        material            ( material ),
@@ -38,7 +39,7 @@ namespace three {
     
     Mesh::~Mesh() {
         if( glBuffersInitialized )
-            glDeleteBuffers(4, bufferIDs );
+            glDeleteBuffers(5, bufferIDs );
     }
     
     
@@ -145,7 +146,7 @@ namespace three {
     
     void Mesh::setGeometry( const ptr<Geometry> geometry ) {
         if( this->geometry != nullptr ) {
-            this->geometry->parent = nullptr;
+            this->geometry->setParent( nullptr );
             this->remove( this->geometry );
         }
         
@@ -187,8 +188,6 @@ namespace three {
         std::vector<glm::vec3> normals( geometry->vertices.size() );
         std::vector<glm::vec2> uvs    ( geometry->vertices.size() );
         std::vector<glm::vec3> colors ( geometry->vertices.size() );
-        
-        std::map<int, int> count;
         
         for( ptr<Face3> face: geometry->faces ) {
             index.push_back( face->a );
@@ -243,7 +242,6 @@ namespace three {
     }
     
     void Mesh::setGLState() {
-        
         glPolygonMode( GL_FRONT_AND_BACK, static_cast<GLint>(material->getPolygonMode()) );
         material->setGLState();
     }

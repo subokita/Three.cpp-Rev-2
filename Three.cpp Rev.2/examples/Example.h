@@ -14,6 +14,9 @@
 #include "three.h"
 
 namespace three {
+    /**
+     * Abstract Example class, all other examples should inherit this class
+     */
     class Example {
     public:
         virtual void run() = 0;

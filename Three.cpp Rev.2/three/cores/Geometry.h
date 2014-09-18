@@ -17,6 +17,7 @@
 namespace three {
     class Geometry : public Object3D{
         friend class Mesh;
+        friend class ParticleSystem;
         friend class Loader;
         
     public:
@@ -37,11 +38,11 @@ namespace three {
         void computeVertexNormalsForNonMergedFaces();
         void computeVertexNormals( bool area_weighted );
         
+        void setNoOfElements( int size );
+        int getNoOfElements() const;
+        
     protected:
         virtual void init();
-        
-
-    public:
         
     protected:
         std::vector<glm::vec3> vertices;

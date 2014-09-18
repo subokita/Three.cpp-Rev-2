@@ -44,12 +44,16 @@ namespace three {
 
         if( instance_of(light, AmbientLight) )
             this->ambientLight = downcast(light, AmbientLight);
+        
         else if( instance_of(light, DirectionalLight) )
             directionalLights.add( light );
+        
         else if( instance_of(light, PointLight) )
             pointLights.add( light );
+        
         else if( instance_of(light, HemisphereLight) )
             hemisphereLights.add( light );
+        
         else if( instance_of(light, SpotLight) )
             spotLights.add( light );
     }

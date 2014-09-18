@@ -76,6 +76,7 @@ namespace three {
     class LineBasicMaterial;
     class LambertMaterial;
     class PhongMaterial;
+    class ParticleSystemMaterial;
     
     /* ./three/maths */
     class Box3;
@@ -92,6 +93,7 @@ namespace three {
     /* ./three/objects */
     class Mesh;
     class Loader;
+    class ParticleSystem;
     
     /* ./three/plugins */
     class RenderPlugin;

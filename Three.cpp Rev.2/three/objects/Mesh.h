@@ -20,14 +20,13 @@ namespace three {
     class Mesh : public Object3D, public HasShaderUniforms {
     public:
         static ptr<Mesh> create(ptr<Geometry> geometry, ptr<Material> material);
-        
+
         Mesh();
         virtual ~Mesh();
         
-        void initGLBuffers();
-        void draw();
-
-        void setGLState();
+        virtual void initGLBuffers();
+        virtual void draw();
+        virtual void setGLState();
         virtual void setUniforms(ptr<ShaderLib> shader_lib, bool gamma ) override;
         
         bool hasTexture();
@@ -55,8 +54,6 @@ namespace three {
         void setEnvMap      ( const ptr<EnvMap> env_map );
         void setGeometry    ( const ptr<Geometry> geometry );
         void setMaterial    ( const ptr<Material> material );
-        
-    protected:
         
     protected:
         GLuint bufferIDs[5];

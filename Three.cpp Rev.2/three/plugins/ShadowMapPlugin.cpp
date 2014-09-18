@@ -48,28 +48,32 @@ namespace three {
                 continue;
             
             if( light->shadowCascade ) {
-                for(int i = 0; i < light->shadowCascadeArray.size(); i++ ) {
-                    ptr<VirtualLight> virtual_light;
-                    
-                    if( light->shadowCascadeArray[i] == nullptr  ) {
-                        virtual_light = createVirtualLight( light, i );
-                        virtual_light->originalCamera = camera;
-                        
-                        ptr<Gyroscope> gyro = Gyroscope::create();
-                        gyro->position = light->shadowCascadeOffset;
-                        gyro->add   ( virtual_light );
-                        gyro->add   ( virtual_light->target );
-                        camera->add ( gyro );
-                        
-                        light->shadowCascadeArray[i] = virtual_light;
-                    }
-                    else {
-                        virtual_light = light->shadowCascadeArray[i];
-                    }
-                    
-                    updateVirtualLight(light, i );
-                    lights.push_back( virtual_light );
-                }
+                throw runtime_error( "Cascaded shadow is not implemented at this moment" );
+//                /* Use shadow cascade */
+//                for(int i = 0; i < light->shadowCascadeArray.size(); i++ ) {
+//                    ptr<VirtualLight> virtual_light;
+//                    
+//                    if( light->shadowCascadeArray[i] == nullptr  ) {
+//                        virtual_light = createVirtualLight( light, i );
+//                        virtual_light->originalCamera = camera;
+//                        
+//                        
+//                        /* FIXME: Ummm, what's the point of this? */
+//                        ptr<Gyroscope> gyro = Gyroscope::create();
+//                        gyro->position = light->shadowCascadeOffset;
+//                        gyro->add   ( virtual_light );
+//                        gyro->add   ( virtual_light->target );
+//                        camera->add ( gyro );
+//                        
+//                        light->shadowCascadeArray[i] = virtual_light;
+//                    }
+//                    else {
+//                        virtual_light = light->shadowCascadeArray[i];
+//                    }
+//                    
+//                    updateVirtualLight(light, i );
+//                    lights.push_back( virtual_light );
+//                }
             }
             else {
                 lights.push_back( light );
@@ -141,12 +145,12 @@ namespace three {
 //            if( light->shadowCameraVisible && !light->cameraHelper ) {
 //                
 //            }
-            
-            if( instance_of(light, VirtualLight) ) {
-                ptr<VirtualLight> vlight = downcast(light, VirtualLight );
-                if( vlight->originalCamera == camera )
-                    updateShadowCamera(camera, vlight );
-            }
+//            
+//            if( instance_of(light, VirtualLight) ) {
+//                ptr<VirtualLight> vlight = downcast(light, VirtualLight );
+//                if( vlight->originalCamera == camera )
+//                    updateShadowCamera(camera, vlight );
+//            }
         }
         
         
@@ -180,7 +184,6 @@ namespace three {
         glDisable( GL_BLEND );
         glEnable( GL_DEPTH_TEST );
     }
-
     
     void ShadowMapPlugin::render( ptr<Scene> scene, ptr<Camera> camera ) {
         const Rect viewport = scene->getViewportSize();
@@ -251,104 +254,104 @@ namespace three {
     }
     
     
-    ptr<VirtualLight> ShadowMapPlugin::createVirtualLight( ptr<Light> light, int cascade ) {
-        ptr<VirtualLight> virtual_light = VirtualLight::create();
-        
-        virtual_light->isVirtual  = true;
-        virtual_light->onlyShadow = true;
-        virtual_light->castShadow = true;
-        
-        virtual_light->shadowCameraNear     = light->shadowCameraNear;
-        virtual_light->shadowCameraFar      = light->shadowCameraFar;
-        virtual_light->shadowCameraTop      = light->shadowCameraTop;
-        virtual_light->shadowCameraBottom   = light->shadowCameraBottom;
-        virtual_light->shadowCameraLeft     = light->shadowCameraLeft;
-        virtual_light->shadowCameraRight    = light->shadowCameraRight;
-        
-        virtual_light->shadowCameraVisible  = light->shadowCameraVisible;
-        virtual_light->shadowDarkness       = light->shadowDarkness;
-        
-        virtual_light->shadowBias           = light->shadowCascadeBias[cascade];
-        virtual_light->shadowMapSize.x      = light->shadowCascadeWidth[cascade];
-        virtual_light->shadowMapSize.y      = light->shadowCascadeHeight[cascade];
-        
-        float near_z = light->shadowCascadeNearZ[cascade];
-        float far_z  = light->shadowCascadeFarZ[cascade];
-        
-        virtual_light->pointsFrustum[0] = glm::vec3(-1.0, -1.0, near_z);
-        virtual_light->pointsFrustum[1] = glm::vec3( 1.0, -1.0, near_z);
-        virtual_light->pointsFrustum[2] = glm::vec3(-1.0,  1.0, near_z);
-        virtual_light->pointsFrustum[3] = glm::vec3( 1.0,  1.0, near_z);
-        
-        virtual_light->pointsFrustum[4] = glm::vec3(-1.0, -1.0, far_z);
-        virtual_light->pointsFrustum[5] = glm::vec3( 1.0, -1.0, far_z);
-        virtual_light->pointsFrustum[6] = glm::vec3(-1.0,  1.0, far_z);
-        virtual_light->pointsFrustum[7] = glm::vec3( 1.0,  1.0, far_z);
-        
-        return virtual_light;
-    }
-    
-    void ShadowMapPlugin::updateVirtualLight( ptr<Light> light, int cascade ) {
-        ptr<VirtualLight> virtual_light = light->shadowCascadeArray[cascade];
-        
-        virtual_light->position         = light->position;
-        virtual_light->target->position = light->target->position ;
-        
-        virtual_light->lookAt( virtual_light->target->position );
-        
-        virtual_light->shadowCameraVisible  = light->shadowCameraVisible;
-        virtual_light->shadowDarkness       = light->shadowDarkness;
-        virtual_light->shadowBias           = light->shadowCascadeBias[cascade];
-        
-        float near_z = light->shadowCascadeNearZ[cascade];
-        float far_z  = light->shadowCascadeFarZ[cascade];
-        
-        virtual_light->pointsFrustum[0].z = near_z;
-        virtual_light->pointsFrustum[1].z = near_z;
-        virtual_light->pointsFrustum[2].z = near_z;
-        virtual_light->pointsFrustum[3].z = near_z;
-        
-        virtual_light->pointsFrustum[4].z = far_z;
-        virtual_light->pointsFrustum[5].z = far_z;
-        virtual_light->pointsFrustum[6].z = far_z;
-        virtual_light->pointsFrustum[7].z = far_z;
-    }
-    
-    void ShadowMapPlugin::updateShadowCamera( ptr<Camera> camera, ptr<VirtualLight> light ) {
-        glm::vec3 min_vec( MAX_FLOAT, MAX_FLOAT, MAX_FLOAT );
-        glm::vec3 max_vec( MIN_FLOAT, MIN_FLOAT, MIN_FLOAT );
-        
-        ptr<OrthographicCamera> shadow_cam = downcast(light->shadowCamera, OrthographicCamera);
-        
-        for( int i = 0; i < 8; i++ ) {
-            glm::vec4 point = glm::vec4(light->pointsWorld[i], 1.0);
-            
-            point = Projector::unprojectVector(point, camera);
-            point = shadow_cam->matrixWorldInverse * point;
-            
-            if( point.x < min_vec.x )
-                min_vec.x = point.x;
-            if( point.x > max_vec.x )
-                max_vec.x = point.x;
-            
-            
-            if( point.y < min_vec.y )
-                min_vec.y = point.y;
-            if( point.y > max_vec.y )
-                max_vec.y = point.y;
-            
-            
-            if( point.z < min_vec.z )
-                min_vec.z = point.z;
-            if( point.z > max_vec.z )
-                max_vec.z = point.z;
-        }
-        
-        shadow_cam->left  = min_vec.x;
-        shadow_cam->right = max_vec.x;
-        shadow_cam->bottom = min_vec.y;
-        shadow_cam->top    = max_vec.y;
-        shadow_cam->updateProjectionMatrix();
-    }
+//    ptr<VirtualLight> ShadowMapPlugin::createVirtualLight( ptr<Light> light, int cascade ) {
+//        ptr<VirtualLight> virtual_light = VirtualLight::create();
+//        
+//        virtual_light->isVirtual  = true;
+//        virtual_light->onlyShadow = true;
+//        virtual_light->castShadow = true;
+//        
+//        virtual_light->shadowCameraNear     = light->shadowCameraNear;
+//        virtual_light->shadowCameraFar      = light->shadowCameraFar;
+//        virtual_light->shadowCameraTop      = light->shadowCameraTop;
+//        virtual_light->shadowCameraBottom   = light->shadowCameraBottom;
+//        virtual_light->shadowCameraLeft     = light->shadowCameraLeft;
+//        virtual_light->shadowCameraRight    = light->shadowCameraRight;
+//        
+//        virtual_light->shadowCameraVisible  = light->shadowCameraVisible;
+//        virtual_light->shadowDarkness       = light->shadowDarkness;
+//        
+//        virtual_light->shadowBias           = light->shadowCascadeBias[cascade];
+//        virtual_light->shadowMapSize.x      = light->shadowCascadeWidth[cascade];
+//        virtual_light->shadowMapSize.y      = light->shadowCascadeHeight[cascade];
+//        
+//        float near_z = light->shadowCascadeNearZ[cascade];
+//        float far_z  = light->shadowCascadeFarZ[cascade];
+//        
+//        virtual_light->pointsFrustum[0] = glm::vec3(-1.0, -1.0, near_z);
+//        virtual_light->pointsFrustum[1] = glm::vec3( 1.0, -1.0, near_z);
+//        virtual_light->pointsFrustum[2] = glm::vec3(-1.0,  1.0, near_z);
+//        virtual_light->pointsFrustum[3] = glm::vec3( 1.0,  1.0, near_z);
+//        
+//        virtual_light->pointsFrustum[4] = glm::vec3(-1.0, -1.0, far_z);
+//        virtual_light->pointsFrustum[5] = glm::vec3( 1.0, -1.0, far_z);
+//        virtual_light->pointsFrustum[6] = glm::vec3(-1.0,  1.0, far_z);
+//        virtual_light->pointsFrustum[7] = glm::vec3( 1.0,  1.0, far_z);
+//        
+//        return virtual_light;
+//    }
+//    
+//    void ShadowMapPlugin::updateVirtualLight( ptr<Light> light, int cascade ) {
+//        ptr<VirtualLight> virtual_light = light->shadowCascadeArray[cascade];
+//        
+//        virtual_light->position         = light->position;
+//        virtual_light->target->position = light->target->position ;
+//        
+//        virtual_light->lookAt( virtual_light->target->position );
+//        
+//        virtual_light->shadowCameraVisible  = light->shadowCameraVisible;
+//        virtual_light->shadowDarkness       = light->shadowDarkness;
+//        virtual_light->shadowBias           = light->shadowCascadeBias[cascade];
+//        
+//        float near_z = light->shadowCascadeNearZ[cascade];
+//        float far_z  = light->shadowCascadeFarZ[cascade];
+//        
+//        virtual_light->pointsFrustum[0].z = near_z;
+//        virtual_light->pointsFrustum[1].z = near_z;
+//        virtual_light->pointsFrustum[2].z = near_z;
+//        virtual_light->pointsFrustum[3].z = near_z;
+//        
+//        virtual_light->pointsFrustum[4].z = far_z;
+//        virtual_light->pointsFrustum[5].z = far_z;
+//        virtual_light->pointsFrustum[6].z = far_z;
+//        virtual_light->pointsFrustum[7].z = far_z;
+//    }
+//    
+//    void ShadowMapPlugin::updateShadowCamera( ptr<Camera> camera, ptr<VirtualLight> light ) {
+//        glm::vec3 min_vec( MAX_FLOAT, MAX_FLOAT, MAX_FLOAT );
+//        glm::vec3 max_vec( MIN_FLOAT, MIN_FLOAT, MIN_FLOAT );
+//        
+//        ptr<OrthographicCamera> shadow_cam = downcast(light->shadowCamera, OrthographicCamera);
+//        
+//        for( int i = 0; i < 8; i++ ) {
+//            glm::vec4 point = glm::vec4(light->pointsWorld[i], 1.0);
+//            
+//            point = Projector::unprojectVector(point, camera);
+//            point = shadow_cam->matrixWorldInverse * point;
+//            
+//            if( point.x < min_vec.x )
+//                min_vec.x = point.x;
+//            if( point.x > max_vec.x )
+//                max_vec.x = point.x;
+//            
+//            
+//            if( point.y < min_vec.y )
+//                min_vec.y = point.y;
+//            if( point.y > max_vec.y )
+//                max_vec.y = point.y;
+//            
+//            
+//            if( point.z < min_vec.z )
+//                min_vec.z = point.z;
+//            if( point.z > max_vec.z )
+//                max_vec.z = point.z;
+//        }
+//        
+//        shadow_cam->left  = min_vec.x;
+//        shadow_cam->right = max_vec.x;
+//        shadow_cam->bottom = min_vec.y;
+//        shadow_cam->top    = max_vec.y;
+//        shadow_cam->updateProjectionMatrix();
+//    }
     
 }

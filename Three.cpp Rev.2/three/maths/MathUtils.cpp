@@ -85,19 +85,19 @@ namespace three {
     }
     
     int MathUtils::random16() {
-        return ( 65280 * rand() + 255 * rand() ) / 65535;
+        return ( 65280 * (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) + 255 * (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) ) / 65535;
     }
     
     int MathUtils::randomInt(float low, float high) {
-        return low + floorf( rand() * (high - low + 1) );
+        return low + floorf( (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * (high - low + 1) );
     }
     
     float MathUtils::randomFloat(float low, float high) {
-        return low + rand() * (high - low);
+        return low + (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * (high - low);
     }
     
     float MathUtils::randomFloatSpread( float range ) {
-        return range * (0.5 * rand() );
+        return range * (0.5 * (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) );
     }
     
     int MathUtils::sign( float x ) {

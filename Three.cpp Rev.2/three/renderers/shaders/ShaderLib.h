@@ -60,7 +60,7 @@ namespace three {
                    std::string fragment_params, std::string fragment_code );
         
         
-    protected:
+    public:
         ptr<Shader> shader;
         std::bitset<32> config;
         

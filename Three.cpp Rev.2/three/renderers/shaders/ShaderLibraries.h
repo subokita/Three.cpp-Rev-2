@@ -13,6 +13,42 @@
 #include "ShaderLib.h"
 
 namespace three {
+#pragma mark PARTICLE_BASIC
+static const ptr<ShaderLib> SHADERLIB_PARTICLE_BASIC = ShaderLib::create(
+    "particleBasic",
+    {"precision highp float;", "precision highp int;"},
+    {},
+    Utils::join({
+        Chunks::standardVertexParams,
+        Chunks::particleBasicVertexParams,
+        Chunks::colorVertexParams,
+        Chunks::textureVertexParams,
+    }),
+    Utils::join({
+        "void main() {",
+            Chunks::pointSizeVertex,
+            Chunks::colorVertex,
+            Chunks::particleBasicVertex,
+        "}",
+    }),
+                                                                         
+    Utils::join({
+        Chunks::standardFragmentParams,
+        Chunks::particleBasicFragmentParams,
+        Chunks::colorFragmentParams,
+        Chunks::textureFragmentParams,
+    }),
+    Utils::join({
+        "void main() {",
+            Chunks::particleBasicFragment_1,
+            Chunks::textureParticleFragment,
+            Chunks::alphaTestFragment,
+            Chunks::colorFragment,
+        "}",
+    })
+);
+    
+    
 #pragma mark FONT_PASS
 static const ptr<ShaderLib> SHADERLIB_FONT_PASS = ShaderLib::create(
     "fontPass",
@@ -105,6 +141,7 @@ static const ptr<ShaderLib> SHADERLIB_LAMBERT = ShaderLib::create(
     }),
     Utils::join({
     "void main(){",
+        Chunks::pointSizeVertex,
         Chunks::lambertVertex_1,
         Chunks::textureVertex,
         Chunks::envMapVertex,
@@ -156,6 +193,7 @@ static const ptr<ShaderLib> SHADERLIB_BASIC = ShaderLib::create(
 
     Utils::join({
     "void main(){",
+        Chunks::pointSizeVertex,
         Chunks::textureVertex,
         Chunks::basicVertex,
         Chunks::envMapVertex,
@@ -233,6 +271,7 @@ static const ptr<ShaderLib> SHADERLIB_PHONG = ShaderLib::create(
     }),
     Utils::join({
     "void main() {",
+        Chunks::pointSizeVertex,
         Chunks::colorVertex,
         Chunks::textureVertex,
         Chunks::phongVertex,

@@ -151,17 +151,21 @@ namespace three {
         texture->bind();
         
         
-        
         switch( image->getColorType() ) {
             case FIC_RGB:
                 image->convertTo32Bits();
                 glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->accessPixels() );
-                
                 break;
+                
             case FIC_PALETTE:
                 image->convertTo32Bits();
                 glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->accessPixels() );
                 break;
+                
+            case FIC_RGBALPHA:
+                glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->accessPixels() );
+                break;
+                
             default:
                 throw runtime_error( "Unhandled image type" );
                 break;

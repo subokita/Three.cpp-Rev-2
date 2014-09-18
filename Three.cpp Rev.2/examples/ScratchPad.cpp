@@ -25,101 +25,67 @@ namespace three  {
         renderer.setCameraControl(Arcball::create(2.0f));
         
         /* First load the fonts */
-        renderer.addFont("droid-bold",      path + "fonts/DroidSerif-Bold.ttf");
+        renderer.addFont("droid-bold", path + "fonts/DroidSerif-Bold.ttf");
         
 
         /* Create scene */
         auto scene = Scene::create();
-        scene->setFog(Fog::create( 0x72645b, 2.0, 100000.0 ));
+        scene->setFog(Fog::create( 0x0, 2.0, 1000.0 ));
         scene->setViewport( 0.0, 0.0, renderer.getWidth(), renderer.getHeight() );
         scene->setShadowMapType( SHADOW_MAP::PCF_SOFT );
         
         /* Create camera */
-        auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100000.0 );
+        auto camera = PerspectiveCamera::create( 90.0, renderer.getAspectRatio(), 0.001, 1000.0 );
         camera->translate(0.0, 1.5, 5.5);
         camera->lookAt( 0.0, 1.0, 0.0 );
         
-        /* Load our ply models */
-        const string ply_path = "/Users/saburookita/Sandbox/VoxelCarving/";
-        const vector<string> filenames = {
-            "morpheus/morpheus.ply",
-        };
-        
-        vector<ptr<Mesh>> statues;
-        
-        for( int i = 0; i < filenames.size(); i++ ) {
-            auto statue = Loader::loadPLY( ply_path, filenames[i], 0
-                                          | aiProcess_JoinIdenticalVertices
-                                          | aiProcess_GenSmoothNormals );
-            
-            statue->setMaterial(PhongMaterial::create(0x777777, 0x0, 0x777777, 0x0, 0, true));
-            statue->getGeometry()->rotateX(-90.0f);
-            statue->castShadow      = true;
-            statue->receiveShadow   = true;
-            statue->setPointMode(true);
-            
-            auto bounding_box = statue->computeBoundingBox();
-            
-            glm::vec3 size    = bounding_box->size();
-            glm::vec3 center  = bounding_box->center();
-            cout << center << endl;
-            cout << size << endl;
-            
-            statue->translate( 0.0, -(center.y - size.y * 0.5), 0.0);
-            
-            scene->add( statue );
-            statues.push_back( statue );
-            
-            camera->translate(center.x, center.y, size.x );
-            camera->lookAt( center );
+        auto geometry = Geometry::create();
+        for( int i = 0; i < 1000; i++ ) {
+            geometry->addVertex( glm::vec3(MathUtils::randomFloat(-500.0, 500.0),
+                                           MathUtils::randomFloat(-500.0, 500.0),
+                                           MathUtils::randomFloat(-500.0, 500.0)) );
         }
         
-        ptr<Mesh> cam_helper = CameraHelper::create(glm::vec3(0.0, 1.5, -5.5), glm::vec3(0.0));
-        scene->add( cam_helper );
+        auto material = ParticleSystemMaterial::create();
+        material->setColor( 0x99CCFF );
+        material->setSizeAttenuation( true );
+        material->setPointSize(35.0f);
+
+        ptr<ParticleSystem> particles = ParticleSystem::create(geometry, material);
+        particles->setTexture( TextureUtils::loadAsTexture(path, "disc.png") );
         
-        /* Add the ground plane */
-        auto plane = Mesh::create( PlaneGeometry::create(50.0f), PhongMaterial::create() );
-        plane->rotateX(-90.0f);
-        plane->receiveShadow = true;
-        scene->add( plane );
+        particles->setSortParticles(true);
         
-        /* Cubemap */
-        auto env = Mesh::create( CubeGeometry::create(50.0f), MeshCubeMapMaterial::create() );
-        env->setTexture( TextureUtils::loadAsEnvMap( path + "cube/pisa",
-                                                    "nx.png", "ny.png", "nz.png",
-                                                    "px.png", "py.png", "pz.png"));
-        scene->add( env );
+        scene->add( static_cast<ptr<Mesh>>(particles) );
         
         
-        /* Create a (rotating) directional light */
-        auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3( 3.0, 1.0, 3.0 ) );
-        dir_light->castShadow       = true;
-        dir_light->shadowBias       = -0.001;
-        dir_light->shadowCameraNear = -10.0;
-        dir_light->shadowCameraFar  =  10.0;
-        scene->add( dir_light );
-        
-        /* Create a spotlight, the shadow should be casted no the left hand side */
-        auto spot_light = SpotLight::create(0x99CCFF, 1.0, 20.0, 50.0, 1.0 );
-        spot_light->position = glm::vec3(3.0, 2.0, 3.0);
-        spot_light->castShadow = true;
-        scene->add( spot_light );
-        
-        /* Create an ambient light */
-        scene->add( AmbientLight::create(0x777777));
-        
-        /* Create a post render callback for objects rotation */
+//        /* Create a (rotating) directional light */
+//        auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3( 3.0, 1.0, 3.0 ) );
+//        dir_light->castShadow       = true;
+//        dir_light->shadowBias       = -0.001;
+//        dir_light->shadowCameraNear = -10.0;
+//        dir_light->shadowCameraFar  =  10.0;
+//        scene->add( dir_light );
+//        
+//        /* Create a spotlight, the shadow should be casted no the left hand side */
+//        auto spot_light = SpotLight::create(0x99CCFF, 1.0, 20.0, 50.0, 1.0 );
+//        spot_light->position = glm::vec3(3.0, 2.0, 3.0);
+//        spot_light->castShadow = true;
+//        scene->add( spot_light );
+//        
+//        /* Create an ambient light */
+//        scene->add( AmbientLight::create(0x777777));
+//        
+//        /* Create a post render callback for objects rotation */
         bool rotate_objects = false;
         float light_rotation_1 = 0.0;
         renderer.setPostRenderCallbackHandler( [&](){
-            dir_light->position.x = ( 3.0 * cosf( light_rotation_1 ) );
-            dir_light->position.z = ( 3.0 * sinf( light_rotation_1 ) );
+//            dir_light->position.x = ( 3.0 * cosf( light_rotation_1 ) );
+//            dir_light->position.z = ( 3.0 * sinf( light_rotation_1 ) );
             
-            light_rotation_1 += 0.01;
+//            light_rotation_1 += 0.01;
             
-            if( rotate_objects ) {
-                statues[0]->rotateY(1.0f);
-            }
+//            particles->rotateY(1.0f);
         });
         
         /* Override key callback handler */

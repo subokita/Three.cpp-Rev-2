@@ -24,12 +24,12 @@ namespace three {
         static ptr<Face3> create(int a, int b, int c);
         static ptr<Face3> create(int a, int b, int c, glm::vec3 normal, Color color = 0xFFFFFF, int material_index = 0);
         
-        ~Face3();
+        virtual ~Face3();
         
         void setVertexNormals( std::initializer_list<glm::vec3> vertex_normals );
-        void setVertexUVs( std::initializer_list<glm::vec2> vertex_uvs );
-        void setVertexColors( std::initializer_list<Color> vertex_colors );
-        void setVertexColors( std::initializer_list<glm::vec3> vertex_colors );
+        void setVertexUVs    ( std::initializer_list<glm::vec2> vertex_uvs );
+        void setVertexColors ( std::initializer_list<Color>     vertex_colors );
+        void setVertexColors ( std::initializer_list<glm::vec3> vertex_colors );
         
         const glm::vec3& getFaceNormal();
         void setFaceNormal(glm::vec3 normal);

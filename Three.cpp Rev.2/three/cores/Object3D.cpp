@@ -190,6 +190,11 @@ namespace three {
     }
     
     
+    void Object3D::setParent( ptr<Object3D> parent ) {
+        this->parent = parent;
+    }
+    
+    
     void Object3D::setScale(float scale) {
         this->scale = glm::vec3( scale );
     }

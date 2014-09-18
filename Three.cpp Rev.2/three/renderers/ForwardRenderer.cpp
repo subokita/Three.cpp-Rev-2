@@ -37,7 +37,8 @@ namespace three {
         glGenVertexArrays(1, &vertexArrayId );
         glBindVertexArray(vertexArrayId);
         
-        shadowMapPlugin = ShadowMapPlugin::create();
+        glEnable( GL_POINT_SPRITE );
+        glEnable( GL_VERTEX_PROGRAM_POINT_SIZE );
         
         initCallbacks();
         instance = this;
@@ -66,8 +67,9 @@ namespace three {
             if( instance_of(object, Mesh)) {
                 ptr<Mesh> mesh = downcast(object, Mesh);
                 
-                if( mesh->hasGeometry() && !mesh->areGLBuffersInitialized() )
+                if( mesh->hasGeometry() && !mesh->areGLBuffersInitialized() ) {
                     mesh->initGLBuffers();
+                }
                 
                 ptr<ShaderLib> shader_lib = ShaderLib::create(mesh);
                 shader_lib->addDefinitions( scene, mesh, gammaInput, gammaOutput );
@@ -80,15 +82,16 @@ namespace three {
             }
         }
         
-        this->preRenderPlugins.push_back( shadowMapPlugin );
+        
+        if( this->scene->getShadowCasterCount() > 0 ) {
+            shadowMapPlugin = ShadowMapPlugin::create();
+            this->preRenderPlugins.push_back( shadowMapPlugin );
+        }
         
         for( ptr<RenderPlugin> pre_render_plugin: preRenderPlugins )
             pre_render_plugin->init(scene, camera);
         
         const Rect viewport = scene->getViewportSize();
-        
-        auto shader = SHADERLIB_FONT_PASS->clone();
-        shader->compileShader();
         
         while( !glfwWindowShouldClose( window )) {
             /* Update objects' world matrices */
@@ -123,12 +126,12 @@ namespace three {
             if( fontStash.isInitialized() )
                 fontStash.render();
             
-#ifdef DEBUG_SHADOW
-            setDefaultGLState();
-            
-            if( shadowMapPlugin != nullptr )
+            #ifdef DEBUG_SHADOW
+            if( shadowMapPlugin != nullptr ) {
+                setDefaultGLState();
                 shadowMapPlugin->debugShadow();
-#endif
+            }
+            #endif
             
             renderPlugins( postRenderPlugins, scene, camera );
             

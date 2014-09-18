@@ -58,6 +58,7 @@ namespace three {
         
         bool useVertexColors();
         void setUseVertexColors( bool flag );
+        void setParent( ptr<Object3D> parent );
         
     public:
         bool visible;
