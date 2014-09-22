@@ -1,7 +1,7 @@
 Notifications:
 =======
+* After updating to XCode 6, seems like the library can't show anything on screen anymore. I'm investigating and working to fix it now. Please be patient.
 * I found out there's something wrong with the shadow on the newest version, I'm working to fix it now. [QUICKLY FIXED, WILL REVISIT THE LOGIC IN THE FUTURE]
-* If the version of three.cpp that you're suing doesn't show any shadow mapping, then try to get the newest version, I have already fixed the issue. [FIXED]
 
 
 Three.cpp (Rev 2)
