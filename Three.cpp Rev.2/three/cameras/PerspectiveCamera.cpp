@@ -16,7 +16,8 @@ namespace three {
         fov   ( 50.0 ),
         aspect( 1.0 ),
         near  ( 0.1 ),
-        far   ( 2000.0 )
+        far   ( 2000.0 ),
+        fullWidth( 0.0 )
     {
         updateProjectionMatrix();
     }
@@ -25,7 +26,8 @@ namespace three {
         fov   ( fov ),
         aspect( aspect ),
         near  ( near ),
-        far   ( far )
+        far   ( far ),
+        fullWidth( 0.0 )
     {
         updateProjectionMatrix();
     }

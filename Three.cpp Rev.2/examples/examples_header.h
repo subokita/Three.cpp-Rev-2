@@ -19,5 +19,6 @@
 #include "Ex_006_BoundingBoxTest.h"
 #include "Ex_007_PointCloudTest.h"
 #include "Ex_008_FontStashIntegration.h"
+#include "Ex_009_ParticleSystem.h"
 
 #endif

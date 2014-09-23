@@ -21,71 +21,66 @@ namespace three  {
         const string path = "/Users/saburookita/Personal Projects/Three.cpp Rev.2/examples/assets/";
         
         ForwardRenderer renderer;
-        renderer.init( "Scratch Pad", 1600 * 2 / 4, 900 * 2 / 4 );
+        renderer.init( "Ex 001: Simple Primitives", 1600 * 2 / 4, 900 * 2 / 4 );
         renderer.setCameraControl(Arcball::create(2.0f));
         
-        /* First load the fonts */
-        renderer.addFont("droid-bold", path + "fonts/DroidSerif-Bold.ttf");
-        
-
         /* Create scene */
         auto scene = Scene::create();
-        scene->setFog(Fog::create( 0x0, 2.0, 1000.0 ));
-        scene->setViewport( 0.0, 0.0, renderer.getWidth(), renderer.getHeight() );
-        scene->setShadowMapType( SHADOW_MAP::PCF_SOFT );
+        scene->setFog(Fog::create( 0x72645b / 2, 2.0, 10.0 ));
+        scene->setViewport(0, 0, 1600 * 2 / 4, 900 * 2 / 4);
         
         /* Create camera */
-        auto camera = PerspectiveCamera::create( 90.0, renderer.getAspectRatio(), 0.001, 1000.0 );
-        camera->translate(0.0, 1.5, 5.5);
-        camera->lookAt( 0.0, 1.0, 0.0 );
+        auto camera = PerspectiveCamera::create( 50.0, renderer.getAspectRatio(), 0.001, 100.0 );
+        camera->position = glm::vec3(0.0, 0.0, 5.5);
+        camera->lookAt( 0.0, 0.0, 0.0 );
         
-        auto geometry = Geometry::create();
-        for( int i = 0; i < 1000; i++ ) {
-            geometry->addVertex( glm::vec3(MathUtils::randomFloat(-500.0, 500.0),
-                                           MathUtils::randomFloat(-500.0, 500.0),
-                                           MathUtils::randomFloat(-500.0, 500.0)) );
-        }
+        /* A sphere, cube, and cylinder walk into a pub */
+        auto sphere = Mesh::create( SphereGeometry::create(30, 20, 0.66f ),
+                                   PhongMaterial::create( 0xCC00CC, 0x0, 0x0, 0x222222, 130.0, true ) );
         
-        auto material = ParticleSystemMaterial::create();
-        material->setColor( 0x99CCFF );
-        material->setSizeAttenuation( true );
-        material->setPointSize(35.0f);
-
-        ptr<ParticleSystem> particles = ParticleSystem::create(geometry, material);
-        particles->setTexture( TextureUtils::loadAsTexture(path, "disc.png") );
+        auto cube = Mesh::create( CubeGeometry::create( 1.0f ),
+                                 PhongMaterial::create( 0x00CCCC, 0x0, 0x0, 0x111111, 150.0, false ) );
         
-        particles->setSortParticles(true);
+        cube->translate(2.0f, 0.0f, 0.0f);
         
-        scene->add( static_cast<ptr<Mesh>>(particles) );
+        auto cylinder = Mesh::create( CylinderGeometry::create(0.5, 0.3, 1.0, 30, 5, true),
+                                     PhongMaterial::create( 0xCCCC00, 0x0, 0x0, 0x111111, 150.0, false ) );
+        cylinder->getMaterial()->setSide( SIDE::DOUBLE_SIDE );
+        cylinder->translate(-2.0f, 0.0f, 0.0f);
         
+        scene->add( sphere );
+        scene->add( cube );
+        scene->add( cylinder );
         
-//        /* Create a (rotating) directional light */
-//        auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3( 3.0, 1.0, 3.0 ) );
-//        dir_light->castShadow       = true;
-//        dir_light->shadowBias       = -0.001;
-//        dir_light->shadowCameraNear = -10.0;
-//        dir_light->shadowCameraFar  =  10.0;
-//        scene->add( dir_light );
-//        
-//        /* Create a spotlight, the shadow should be casted no the left hand side */
-//        auto spot_light = SpotLight::create(0x99CCFF, 1.0, 20.0, 50.0, 1.0 );
-//        spot_light->position = glm::vec3(3.0, 2.0, 3.0);
-//        spot_light->castShadow = true;
-//        scene->add( spot_light );
-//        
-//        /* Create an ambient light */
-//        scene->add( AmbientLight::create(0x777777));
-//        
-//        /* Create a post render callback for objects rotation */
+        auto plane = Mesh::create( PlaneGeometry::create(20.0f, 1),
+                                  PhongMaterial::create(0x333333, 0x333333, 0x333333, 0x101010 ) );
+        plane->rotateX(-90.0);
+        plane->translate( 0.0, -1.5, 0.0 );
+        scene->add( plane );
+        
+        /* Create directional light */
+        auto dir_light = DirectionalLight::create(0x99CCFF, 1.35, glm::vec3(3.0, 1.0, 3.0) );
+        scene->add( dir_light );
+        
+        scene->add(HemisphereLight::create(0xFFFFFF, 0x333333, 0.8));
+        
+        /* Create an ambient light */
+        scene->add( AmbientLight::create(0x777777));
+        
+        /* Create a post render callback for objects rotation */
         bool rotate_objects = false;
         float light_rotation_1 = 0.0;
         renderer.setPostRenderCallbackHandler( [&](){
-//            dir_light->position.x = ( 3.0 * cosf( light_rotation_1 ) );
-//            dir_light->position.z = ( 3.0 * sinf( light_rotation_1 ) );
+            dir_light->position.x = ( 2.0 * cosf( light_rotation_1 ) );
+            dir_light->position.z = ( 2.0 * sinf( light_rotation_1 ) );
             
-//            light_rotation_1 += 0.01;
+            light_rotation_1 += 0.01;
             
-//            particles->rotateY(1.0f);
+            if( rotate_objects ) {
+                sphere->rotateY  (-1.0f);
+                cube->rotateY    (-1.0f);
+                cylinder->rotateX(-1.0f);
+            }
         });
         
         /* Override key callback handler */
@@ -102,9 +97,7 @@ namespace three  {
             }
         });
         
-        
         renderer.setGamma( true, true );
-        
         renderer.setClearColor( scene->getFog()->getColor() );
         renderer.render(scene, camera );
     }

@@ -36,16 +36,62 @@ namespace three {
         instance = nullptr;
     }
     
-    
+    /**
+     * Return the GLFW window's width
+     * @return width of the GLFW window
+     */
     GLuint Renderer::getWidth(){
         return this->width;
     }
     
+    /**
+     * Return the GLFW window's height
+     * @return width of the GLFW height
+     */
     GLuint Renderer::getHeight() {
         return this->height;
     }
     
+    /**
+     * Initialize renderer, it does several things including:
+     * - setting up GLFW
+     * - init callbacks for the user input
+     *
+     * @param window_title  title of the GLFW window
+     * @param window_width  width of the GLFW window
+     * @param window_height height of the GLFW window
+     */
+    void Renderer::init( std::string window_title, GLuint window_width, GLuint window_height ) {
+        width       = window_width;
+        height      = window_height;
+        aspectRatio = width * 1.0 / height;
+        
+        if( !glfwInit() )
+            throw std::runtime_error( "Unable to init GLFW" );
+        
+        /* Tell GLFW to use OpenGL 4.5 */
+        glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
+        glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 1 );
+        glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
+        glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+        
+        window = glfwCreateWindow( window_width, window_height, window_title.c_str(), nullptr, nullptr );
+        if(!window) {
+            glfwTerminate();
+            throw std::runtime_error( "Unable to create GLFW window" );
+        }
+        
+        glfwSetInputMode( window, GLFW_STICKY_KEYS, GL_TRUE );
+        glfwMakeContextCurrent( window );
+    }
+    
 #pragma mark FONT_RELATED
+    /**
+     * Load font using fontstash, it will also compile the font shader internally
+     *
+     * @param font_name the name used to identify the font to be loaded
+     * @param filename  the filename (and path) of the font to be loaded
+     */
     void Renderer::addFont( const std::string font_name, const std::string filename ) {
         if( !fontStash.isInitialized() ) {
             Rect viewport = scene == nullptr ? Rect(0, 0, width, height) : scene->getViewportSize();
@@ -90,6 +136,9 @@ namespace three {
         return this->aspectRatio;
     }
     
+    /**
+     * Set the default OpenGL state
+     */
     void Renderer::setDefaultGLState() {
         glClearColor( clearColor.rep.x, clearColor.rep.y, clearColor.rep.z, clearAlpha );
         glClearDepth( 1.0 );

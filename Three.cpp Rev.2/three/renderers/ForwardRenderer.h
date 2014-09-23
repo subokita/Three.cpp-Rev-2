@@ -13,6 +13,9 @@
 #include "Renderer.h"
 
 namespace three {
+    /**
+     * A forward renderer
+     */
     class ForwardRenderer: public Renderer {
     public:
         virtual void init( std::string window_title, GLuint window_width, GLuint window_height ) override;

@@ -96,7 +96,7 @@ namespace three {
                 if( scene->getShadowMapType() == SHADOW_MAP::PCF_SOFT )
                     shadow_filter = FILTER::NEAREST;
                 
-                light->shadowMap     = RenderTarget::create(GL_FRAMEBUFFER, 0);
+                light->shadowMap     = RenderTarget::create(GL_FRAMEBUFFER);
                 light->shadowTexture = ShadowTexture::create(GL_CLAMP, GL_CLAMP, GL_CLAMP, static_cast<GLuint>(shadow_filter), static_cast<GLuint>(shadow_filter));
                 
                 light->shadowMap->generateFrameBuffer();
@@ -118,6 +118,8 @@ namespace three {
                 glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, light->shadowTexture->textureID, 0 );
                 glDrawBuffer( GL_COLOR_ATTACHMENT0 );
                 glReadBuffer( GL_NONE );
+                
+                light->shadowMap->unbind();
 
             }
             

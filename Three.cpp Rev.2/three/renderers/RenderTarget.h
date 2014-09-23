@@ -16,10 +16,11 @@ namespace three {
     class RenderTarget {
         
     public:
-        static ptr<RenderTarget> create( GLenum target, GLuint framebuffer );
-        ~RenderTarget();
+        static ptr<RenderTarget> create( GLenum target, GLuint framebuffer = 0 );
+        virtual ~RenderTarget();
         
         void bind();
+        void unbind();
         void generateFrameBuffer();
     
     protected:
