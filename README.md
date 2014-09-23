@@ -1,6 +1,6 @@
 Notifications:
 =======
-* After updating to XCode 6, seems like the library can't show anything on screen anymore. I'm investigating and working to fix it now. Please be patient.
+* After updating to XCode 6, seems like the library can't show anything on screen anymore. I'm investigating and working to fix it now. Please be patient. [Fixed it's just my silly mistake].
 * I found out there's something wrong with the shadow on the newest version, I'm working to fix it now. [QUICKLY FIXED, WILL REVISIT THE LOGIC IN THE FUTURE]
 
 
