@@ -1,3 +1,7 @@
+### This is my upcoming project: https://plusplusone.herokuapp.com
+### Please register your email address if you're interested in it.
+------
+
 Notifications:
 =======
 * After updating to XCode 6, seems like the library can't show anything on screen anymore. I'm investigating and working to fix it now. Please be patient. [Fixed it's just my silly mistake].
